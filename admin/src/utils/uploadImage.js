@@ -7,6 +7,9 @@ const BUCKET_NAME = 'Products';
 
 export const uploadImage = async (file, folder = 'products') => {
   try {
+    if (!supabase) {
+      throw new Error("Supabase is not configured. Please add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables.");
+    }
     // 1. Validation
     if (!file) throw new Error("No file provided");
     
@@ -60,6 +63,9 @@ export const deleteImage = async (imagePath) => {
   if (!imagePath) return { success: false, error: "No image path provided" };
 
   try {
+    if (!supabase) {
+      throw new Error("Supabase is not configured. Please add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables.");
+    }
     const { error } = await supabase.storage
       .from(BUCKET_NAME)
       .remove([imagePath]);
