@@ -28,7 +28,7 @@ const HomePage = () => (
     transition={{ duration: 0.55, ease: 'easeOut' }}
     className="flex-1"
   >
-    {/* <Hero /> */}
+    <Hero />
     <ProductCollection />
     <ExploreCategory />
     <BenefitsMarquee />
