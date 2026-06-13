@@ -10,7 +10,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/effect-coverflow';
 
-const API_BASE = 'http://localhost:5000';
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const CAROUSEL_SLUGS = [
   "rose-gulkhand-jam",

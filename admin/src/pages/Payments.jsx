@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FiDollarSign, FiTrendingUp, FiActivity, FiRefreshCcw, FiEye, FiDownload, FiSearch } from 'react-icons/fi';
 
-const API_URL = 'http://localhost:5000/api/payments';
+const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/payments';
 
 const Payments = () => {
   const [payments, setPayments] = useState([]);

@@ -46,7 +46,7 @@ const OurCommunityManagement = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const res = await axios.get('http://localhost:5000/api/settings');
+      const res = await axios.get((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/settings');
       if (res.data?.ourCommunityData) {
         setData({ ...defaultData, ...res.data.ourCommunityData });
       }
@@ -61,7 +61,7 @@ const OurCommunityManagement = () => {
     setSaving(true);
     setMessage('');
     try {
-      await axios.put('http://localhost:5000/api/settings', { ourCommunityData: data });
+      await axios.put((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/settings', { ourCommunityData: data });
       setMessage('Community Page Settings saved successfully!');
       setTimeout(() => setMessage(''), 3000);
     } catch (error) {

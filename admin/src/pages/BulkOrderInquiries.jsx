@@ -14,7 +14,7 @@ const BulkOrderInquiries = () => {
   const fetchInquiries = async () => {
     try {
       const config = { headers: { Authorization: `Bearer ${authService.getToken()}` } };
-      const res = await axios.get('http://localhost:5000/api/bulk-orders', config);
+      const res = await axios.get((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/bulk-orders', config);
       setInquiries(res.data);
     } catch (error) {
       console.error('Failed to fetch inquiries', error);
@@ -26,7 +26,7 @@ const BulkOrderInquiries = () => {
   const updateStatus = async (id, newStatus) => {
     try {
       const config = { headers: { Authorization: `Bearer ${authService.getToken()}` } };
-      await axios.patch(`http://localhost:5000/api/bulk-orders/${id}/status`, { status: newStatus }, config);
+      await axios.patch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/bulk-orders/${id}/status`, { status: newStatus }, config);
       fetchInquiries(); // Refresh
     } catch (error) {
       console.error('Failed to update status', error);
@@ -37,7 +37,7 @@ const BulkOrderInquiries = () => {
     if (!window.confirm('Are you sure you want to delete this inquiry?')) return;
     try {
       const config = { headers: { Authorization: `Bearer ${authService.getToken()}` } };
-      await axios.delete(`http://localhost:5000/api/bulk-orders/${id}`, config);
+      await axios.delete(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/bulk-orders/${id}`, config);
       fetchInquiries(); // Refresh
     } catch (error) {
       console.error('Failed to delete inquiry', error);

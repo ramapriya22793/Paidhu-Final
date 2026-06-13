@@ -81,7 +81,7 @@ const OurPhilosophyManagement = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const res = await axios.get('http://localhost:5000/api/settings');
+      const res = await axios.get((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/settings');
       if (res.data?.ourPhilosophyData) {
         setData({ ...defaultData, ...res.data.ourPhilosophyData });
       }
@@ -96,7 +96,7 @@ const OurPhilosophyManagement = () => {
     setSaving(true);
     setMessage('');
     try {
-      await axios.put('http://localhost:5000/api/settings', { ourPhilosophyData: data });
+      await axios.put((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/settings', { ourPhilosophyData: data });
       setMessage('Philosophy Page Settings saved successfully!');
       setTimeout(() => setMessage(''), 3000);
     } catch (error) {

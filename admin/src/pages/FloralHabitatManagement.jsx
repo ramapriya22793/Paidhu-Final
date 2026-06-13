@@ -51,7 +51,7 @@ const FloralHabitatManagement = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/settings');
+      const response = await axios.get((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/settings');
       if (response.data && response.data.floralHabitatData) {
         setData({ ...defaultData, ...response.data.floralHabitatData });
       }
@@ -86,7 +86,7 @@ const FloralHabitatManagement = () => {
     setMessage('');
     
     try {
-      await axios.put('http://localhost:5000/api/settings', {
+      await axios.put((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/settings', {
         floralHabitatData: data
       });
       setMessage('Floral Habitat content updated successfully!');

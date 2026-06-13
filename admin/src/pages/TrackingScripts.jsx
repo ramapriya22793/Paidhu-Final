@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FiSave, FiCheck, FiPlus, FiTrash2, FiActivity } from 'react-icons/fi';
 
-const API_URL = 'http://localhost:5000/api/tracking';
+const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/tracking';
 
 const TrackingScripts = () => {
   const [scripts, setScripts] = useState([]);

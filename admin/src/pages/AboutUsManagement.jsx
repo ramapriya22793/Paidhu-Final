@@ -69,7 +69,7 @@ const AboutUsManagement = () => {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/settings');
+      const res = await axios.get((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/settings');
       if (res.data?.aboutUsData) {
         const deepMerge = (defaultObj, dbObj) => {
           if (!dbObj || typeof dbObj !== 'object') return defaultObj;
@@ -110,7 +110,7 @@ const AboutUsManagement = () => {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await axios.put('http://localhost:5000/api/settings', {
+      await axios.put((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/settings', {
         aboutUsData: data
       });
       alert('About Us page updated successfully!');

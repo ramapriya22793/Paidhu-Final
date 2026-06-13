@@ -38,7 +38,7 @@ const Dashboard = () => {
   const fetchStats = async () => {
     try {
       const config = { headers: { Authorization: `Bearer ${authService.getToken()}` } };
-      const response = await axios.get('http://localhost:5000/api/admin/stats', config);
+      const response = await axios.get((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/admin/stats', config);
       setStats(response.data);
     } catch (error) {
       console.error("Failed to fetch dashboard stats", error);

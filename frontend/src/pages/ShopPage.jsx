@@ -9,7 +9,7 @@ import PageBanner from '../components/ui/PageBanner';
 import paidhuLogo from '../assets/paidhulogo.png';
 import { useCart } from '../context/CartContext';
 
-const API_BASE = 'http://localhost:5000';
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 // ---------- NAV SECTION META ----------
 const NAV_META = {

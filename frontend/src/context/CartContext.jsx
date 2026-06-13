@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const CartContext = createContext();
 
-const API_BASE = 'http://localhost:5000';
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 // Helper to generate or load persistent guest client UUID
 const getGuestId = () => {

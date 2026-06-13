@@ -30,7 +30,7 @@ const Settings = () => {
 
   const fetchSettings = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/settings');
+      const response = await axios.get((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/settings');
       if (response.data && response.data.navbarLinks) {
         setNavbarLinks(response.data.navbarLinks);
       } else {
@@ -78,7 +78,7 @@ const Settings = () => {
     const cleanedLinks = navbarLinks.filter(link => link.name.trim() !== '' || link.path.trim() !== '');
 
     try {
-      await axios.put('http://localhost:5000/api/settings', {
+      await axios.put((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/settings', {
         navbarLinks: cleanedLinks
       });
       setMessage('Settings updated successfully!');

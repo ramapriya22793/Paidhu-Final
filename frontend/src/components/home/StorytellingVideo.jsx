@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import videoThumbnail from '../../assets/video_thumbnail.png';
 
-const API_BASE = 'http://localhost:5000';
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 const FALLBACK_VIDEO_URL = "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Landing%20-%20Videos/Videos.mp4";
 
 const StorytellingVideo = () => {

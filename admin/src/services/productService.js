@@ -1,7 +1,7 @@
 import axios from 'axios';
 import authService from './authService';
 
-const API_URL = 'http://localhost:5000/api/products';
+const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/products';
 
 const getProducts = async () => {
   const response = await axios.get(API_URL, { params: { limit: 1000, status: 'all' } });
