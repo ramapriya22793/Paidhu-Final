@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-plum: #662654;
+  --color-brand-cream: #ede7de;
+  --color-brand-beige: #f5f0eb;
+  --color-brand-gold: #d4af37;
+  --color-brand-dark: #1a1a1a;
+  --color-brand-gray: #f9f9f9;
+  
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply font-sans bg-brand-gray text-gray-800 antialiased;
+  }
+}
