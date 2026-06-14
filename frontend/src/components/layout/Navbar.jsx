@@ -281,7 +281,7 @@ const Navbar = () => {
                 <img
                   src={paidhuLogo}
                   alt="Paidhu The Edible Flower Co."
-                  className="h-28 md:h-34 lg:h-40 w-auto object-contain -my-3 md:-my-5 lg:-my-7"
+                  className="h-36 md:h-38 lg:h-44 w-auto object-contain -my-5 md:-my-6 lg:-my-8"
                   style={{ filter: 'brightness(0) saturate(100%) invert(92%) sepia(12%) saturate(308%) hue-rotate(34deg) brightness(96%) contrast(93%)' }}
                 />
               </Link>
