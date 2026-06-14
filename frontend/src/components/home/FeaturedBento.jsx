@@ -10,8 +10,7 @@ const features = [
     images: [
       'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780937180748-WhatsAppImage20251128at14404PM600x402jpeg.jpeg',
       'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936984001-aavarampoo600x403jpeg.jpeg',
-      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936736170-whitelotuscookie300x300jpeg.jpeg',
-      'https://images.unsplash.com/photo-1626132647523-66f5bf380027?q=80&w=800&auto=format&fit=crop'
+      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936736170-whitelotuscookie300x300jpeg.jpeg'
     ]
   },
   {
