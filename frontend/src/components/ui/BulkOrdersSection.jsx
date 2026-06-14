@@ -27,7 +27,7 @@ const defaultData = {
     title: 'WHY CHOOSE PAIDHU?',
     trustedText: 'TRUSTED BY\n1 MILLION PARENTS',
     bullets: 'No artificial colors\nMade with real floral ingredients\nNo preservatives',
-    image: 'https://images.unsplash.com/photo-1621213459955-442460b64d1f?q=80&w=800&auto=format&fit=crop'
+    image: '/bulk_why_choose_us.png'
   },
   foundersNote: {
     title: 'MADE BY\nTwo Friends',
@@ -210,7 +210,7 @@ const BulkOrdersSection = () => {
               alt="Why Choose Paidhu B2B"
               className="absolute inset-0 w-full h-full object-cover"
               onError={(e) => {
-                e.target.src = 'https://images.unsplash.com/photo-1621213459955-442460b64d1f?q=80&w=800&auto=format&fit=crop';
+                e.target.src = '/bulk_why_choose_us.png';
               }}
             />
           </div>
