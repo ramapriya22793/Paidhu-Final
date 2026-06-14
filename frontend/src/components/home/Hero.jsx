@@ -5,17 +5,7 @@ import { Link } from 'react-router-dom';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-const FALLBACK_SLIDES = [
-  {
-    id: 'f3',
-    headline: "Artisanal Floral Jams",
-    subheading: "Sweetness infused with organic petals.",
-    description: "Elevate your morning toast or evening desserts with our signature rose and lavender infused fruit preserves.",
-    cta: "Discover Jams",
-    image: "https://images.unsplash.com/photo-1589535036124-747385202613?q=80&w=1200&auto=format&fit=crop",
-    bgColor: "bg-[#7a2e64]",
-  }
-];
+const FALLBACK_SLIDES = [];
 
 const resolveUrl = (path) => {
   if (!path) return null;
@@ -82,6 +72,7 @@ const Hero = () => {
 
   // Auto-slide every 6 seconds
   useEffect(() => {
+    if (slides.length <= 1) return;
     const timer = setInterval(() => {
       setCurrentSlide(prev => (prev === slides.length - 1 ? 0 : prev + 1));
     }, 6000);
@@ -92,6 +83,7 @@ const Hero = () => {
   const prevSlide = () => setCurrentSlide(prev => (prev === 0 ? slides.length - 1 : prev - 1));
 
   const current = slides[currentSlide];
+  if (!current) return null;
   const currentKey = `${current.id}-${(isMobile && current.mobileImage) ? 'mobile' : 'web'}`;
   const currentAspect = aspectRatios[currentKey] || 2;
 
