@@ -56,9 +56,8 @@ const CATEGORY_FALLBACK_IMAGES = {
 };
 
 const searchPhrases = [
-  "Search for flowers, saffron, honey...",
+  "Search for flowers, saffron...",
   "Search for edible flowers...",
-  "Search for organic honey...",
   "Search for pure saffron...",
   "Search for premium gift boxes..."
 ];
@@ -236,7 +235,7 @@ const Navbar = () => {
       <div className="w-full h-1.5 bg-[#1a2b3c]" />
 
       {/* Top Row */}
-      <div className="w-full bg-[#662654] py-2 md:py-3 px-4 md:px-8">
+      <div className="w-full bg-[#662654] py-1 md:py-1.5 px-4 md:px-8">
         <div className="max-w-[1400px] mx-auto flex justify-between items-center relative">
 
           {/* Mobile Menu Button */}
@@ -279,7 +278,7 @@ const Navbar = () => {
                 <img
                   src={paidhuLogo}
                   alt="Paidhu The Edible Flower Co."
-                  className="h-24 md:h-28 lg:h-32 w-auto object-contain"
+                  className="h-28 md:h-34 lg:h-40 w-auto object-contain -my-3 md:-my-5 lg:-my-7"
                   style={{ filter: 'brightness(0) saturate(100%) invert(92%) sepia(12%) saturate(308%) hue-rotate(34deg) brightness(96%) contrast(93%)' }}
                 />
               </Link>
@@ -338,11 +337,11 @@ const Navbar = () => {
       </div>
 
       {/* Second Row — Desktop Navigation */}
-      <div className="hidden lg:block w-full bg-[#662654] border-b border-[#ede7d7]/10 pb-3">
+      <div className="hidden lg:block w-full bg-[#662654] border-b border-[#ede7d7]/10 pb-1.5">
         <nav className="max-w-[1400px] mx-auto px-4 xl:px-8">
-          <div className="flex justify-center gap-x-6 xl:gap-x-8 w-full mt-1">
+          <div className="flex justify-center gap-x-6 xl:gap-x-8 w-full mt-0">
             {navColumns.map((col, i) => (
-              <div key={i} className="flex flex-col items-center justify-start gap-y-3">
+              <div key={i} className="flex flex-col items-center justify-start gap-y-1">
 
                 {/* "Shop by Category" gets the dropdown */}
                 {col.top.name === 'Shop by Category' ? (
@@ -480,7 +479,7 @@ const Navbar = () => {
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
                   onKeyDown={handleSearch}
-                  placeholder="Search for flowers, saffron, honey..."
+                  placeholder="Search for flowers, saffron..."
                   className="w-full pl-5 pr-10 py-2.5 rounded-full border border-[#ede7d7]/20 bg-white/10 text-[#ede7d7] placeholder-[#ede7d7]/60 shadow-sm focus:outline-none focus:border-[#ede7d7] focus:ring-0 text-sm transition-all"
                 />
                 <Search size={18} className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#ede7d7] group-focus-within:text-white" strokeWidth={1.5} />
