@@ -230,20 +230,20 @@ const Navbar = () => {
 
   return (
     <motion.header
-      className={`w-full z-50 bg-white transition-all duration-300 font-sans ${isScrolled ? 'shadow-md' : ''}`}
+      className={`w-full z-50 bg-[#662624] transition-all duration-300 font-sans ${isScrolled ? 'shadow-md' : ''}`}
     >
       {/* Top Plum Bar */}
       <div className="w-full h-1.5 bg-[#1a2b3c]" />
 
       {/* Top Row */}
-      <div className="w-full bg-white py-2 md:py-3 px-4 md:px-8">
+      <div className="w-full bg-[#662624] py-2 md:py-3 px-4 md:px-8">
         <div className="max-w-[1400px] mx-auto flex justify-between items-center relative">
 
           {/* Mobile Menu Button */}
           <div className="lg:hidden flex items-center">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-[#333]"
+              className="text-[#ede7d7]"
             >
               {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
@@ -258,11 +258,11 @@ const Navbar = () => {
                 onChange={e => setSearchQuery(e.target.value)}
                 onKeyDown={handleSearch}
                 placeholder={currentText + '|'}
-                className="w-full pl-5 pr-12 py-2 rounded-[8px] border-[1.5px] border-[#444444] bg-white focus:outline-none focus:border-[var(--color-brand-plum)] focus:ring-1 focus:ring-[var(--color-brand-plum)] text-[14px] placeholder-gray-500 transition-all"
+                className="w-full pl-5 pr-12 py-2 rounded-[8px] border-[1.5px] border-[#ede7d7]/20 bg-white/10 focus:outline-none focus:border-[#ede7d7] focus:ring-0 text-[14px] text-[#ede7d7] placeholder-[#ede7d7]/60 transition-all"
               />
               <Search
                 size={22}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#444444] group-focus-within:text-[var(--color-brand-plum)] transition-colors cursor-pointer"
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#ede7d7] group-focus-within:text-white transition-colors cursor-pointer"
                 strokeWidth={1.5}
                 onClick={() => {
                   if (searchQuery.trim())
@@ -280,16 +280,17 @@ const Navbar = () => {
                   src={paidhuLogo}
                   alt="Paidhu The Edible Flower Co."
                   className="h-24 md:h-28 lg:h-32 w-auto object-contain"
+                  style={{ filter: 'brightness(0) saturate(100%) invert(92%) sepia(12%) saturate(308%) hue-rotate(34deg) brightness(96%) contrast(93%)' }}
                 />
               </Link>
             </motion.div>
           </div>
 
           {/* Right: Icons */}
-          <div className="flex w-1/3 justify-end items-center space-x-5 text-[#333333]">
+          <div className="flex w-1/3 justify-end items-center space-x-5 text-[#ede7d7]">
             <motion.button
               whileHover={{ scale: 1.1 }}
-              className="hover:text-[var(--color-brand-plum)] transition-colors hidden lg:flex items-center"
+              className="hover:text-white transition-colors hidden lg:flex items-center"
             >
               <User size={24} strokeWidth={1.5} />
             </motion.button>
@@ -299,7 +300,7 @@ const Navbar = () => {
               onClick={() => setIsWishlistOpen(true)}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className="hover:text-[var(--color-brand-plum)] transition-colors relative"
+              className="hover:text-white transition-colors relative"
             >
               <Heart size={24} strokeWidth={1.5} />
               {wishlistCount > 0 && (
@@ -319,7 +320,7 @@ const Navbar = () => {
               transition={{ duration: 0.5 }}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className="hover:text-[var(--color-brand-plum)] transition-colors relative"
+              className="hover:text-white transition-colors relative"
             >
               <ShoppingCart size={24} strokeWidth={1.5} />
               {cartCount > 0 && (
@@ -337,7 +338,7 @@ const Navbar = () => {
       </div>
 
       {/* Second Row — Desktop Navigation */}
-      <div className="hidden lg:block w-full bg-white border-b border-gray-200 pb-3">
+      <div className="hidden lg:block w-full bg-[#662624] border-b border-[#ede7d7]/10 pb-3">
         <nav className="max-w-[1400px] mx-auto px-4 xl:px-8">
           <div className="flex justify-center gap-x-6 xl:gap-x-8 w-full mt-1">
             {navColumns.map((col, i) => (
@@ -349,14 +350,14 @@ const Navbar = () => {
                     <button
                       onMouseEnter={() => setShowCatDropdown(true)}
                       onClick={() => setShowCatDropdown(v => !v)}
-                      className="relative flex items-center gap-1 text-[#222222] font-semibold text-[13px] xl:text-[14px] hover:text-[var(--color-brand-plum)] transition-colors cursor-pointer whitespace-nowrap group"
+                      className="relative flex items-center gap-1 text-[#ede7d7] font-semibold text-[13px] xl:text-[14px] hover:text-white transition-colors cursor-pointer whitespace-nowrap group"
                     >
                       {col.top.name}
                       <ChevronDown
                         size={13}
                         className={`transition-transform duration-200 ${showCatDropdown ? 'rotate-180' : ''}`}
                       />
-                      <span className="absolute -bottom-0.5 left-0 w-0 h-[2px] bg-[var(--color-brand-plum)] group-hover:w-full transition-all duration-300 rounded-full" />
+                      <span className="absolute -bottom-0.5 left-0 w-0 h-[2px] bg-[#ede7d7] group-hover:w-full transition-all duration-300 rounded-full" />
                     </button>
 
                     {/* ── Category Dropdown ── */}
@@ -373,8 +374,8 @@ const Navbar = () => {
                           {/* Dropdown Header */}
                           <div className="px-6 pt-5 pb-3 border-b border-gray-100">
                             <div className="flex items-center gap-2">
-                              <Grid3X3 size={15} className="text-[#662654]" />
-                              <p className="text-[12px] font-bold uppercase tracking-widest text-[#662654]">
+                              <Grid3X3 size={15} className="text-[#662624]" />
+                              <p className="text-[12px] font-bold uppercase tracking-widest text-[#662624]">
                                 Discover Our Range of Floral Foods
                               </p>
                             </div>
@@ -399,7 +400,7 @@ const Navbar = () => {
                                     <button
                                       key={catName}
                                       onClick={() => handleCategoryClick(catName)}
-                                      className="flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-[#662654]/5 hover:text-[#662654] text-gray-700 transition-all duration-150 group/cat text-left w-full cursor-pointer"
+                                      className="flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-[#662624]/5 hover:text-[#662624] text-gray-700 transition-all duration-150 group/cat text-left w-full cursor-pointer"
                                     >
                                       <div className="w-6.5 h-6.5 rounded-full overflow-hidden flex-shrink-0 border border-gray-100 bg-gray-50 flex items-center justify-center">
                                         {catImage ? (
@@ -414,7 +415,7 @@ const Navbar = () => {
                                           />
                                         ) : null}
                                         <span 
-                                          className="text-xs font-bold text-[#662654]" 
+                                          className="text-xs font-bold text-[#662624]" 
                                           style={{ display: catImage ? 'none' : 'block' }}
                                         >
                                           {iconFallback}
@@ -440,7 +441,7 @@ const Navbar = () => {
                                 setShowCatDropdown(false);
                                 navigate('/shop/shop-by-category');
                               }}
-                              className="text-[13px] font-bold text-[#662654] hover:underline flex items-center gap-1"
+                              className="text-[13px] font-bold text-[#662624] hover:underline flex items-center gap-1"
                             >
                               View All →
                             </button>
@@ -469,7 +470,7 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white border-b border-gray-200 overflow-hidden"
+            className="lg:hidden bg-[#662624] border-b border-[#ede7d7]/10 overflow-hidden"
           >
             <div className="px-4 py-4">
               {/* Mobile search */}
@@ -480,9 +481,9 @@ const Navbar = () => {
                   onChange={e => setSearchQuery(e.target.value)}
                   onKeyDown={handleSearch}
                   placeholder="Search for flowers, saffron, honey..."
-                  className="w-full pl-5 pr-10 py-2.5 rounded-full border border-gray-800 bg-white shadow-sm focus:outline-none focus:border-[var(--color-brand-plum)] focus:ring-1 focus:ring-[var(--color-brand-plum)] text-sm transition-all"
+                  className="w-full pl-5 pr-10 py-2.5 rounded-full border border-[#ede7d7]/20 bg-white/10 text-[#ede7d7] placeholder-[#ede7d7]/60 shadow-sm focus:outline-none focus:border-[#ede7d7] focus:ring-0 text-sm transition-all"
                 />
-                <Search size={18} className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-800 group-focus-within:text-[var(--color-brand-plum)]" strokeWidth={1.5} />
+                <Search size={18} className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#ede7d7] group-focus-within:text-white" strokeWidth={1.5} />
               </div>
 
               <div className="flex flex-col space-y-1">
@@ -496,7 +497,7 @@ const Navbar = () => {
                       {/* Mobile: collapsible category section */}
                       <button
                         onClick={() => setMobileCatOpen(v => !v)}
-                        className="w-full text-left text-gray-800 font-medium text-sm border-b border-gray-100 py-3 hover:text-[var(--color-brand-plum)] transition-colors flex items-center justify-between"
+                        className="w-full text-left text-[#ede7d7] font-medium text-sm border-b border-[#ede7d7]/10 py-3 hover:text-white transition-colors flex items-center justify-between"
                       >
                         {link.name}
                         <ChevronDown
@@ -524,9 +525,9 @@ const Navbar = () => {
                                   <button
                                     key={catName}
                                     onClick={() => handleCategoryClick(catName)}
-                                    className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-[#662654]/8 hover:text-[#662654] text-gray-700 text-[13px] font-medium transition-all text-left cursor-pointer"
+                                    className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-[#662624]/10 hover:text-white text-[#ede7d7]/90 text-[13px] font-medium transition-all text-left cursor-pointer"
                                   >
-                                    <div className="w-5.5 h-5.5 rounded-full overflow-hidden flex-shrink-0 border border-gray-100 bg-gray-50 flex items-center justify-center">
+                                    <div className="w-5.5 h-5.5 rounded-full overflow-hidden flex-shrink-0 border border-[#ede7d7]/10 bg-white/5 flex items-center justify-center">
                                       {catImage ? (
                                         <img 
                                           src={catImage.startsWith('http') ? catImage : `${API_BASE}${catImage.startsWith('/') ? '' : '/'}${catImage}`} 
@@ -539,7 +540,7 @@ const Navbar = () => {
                                         />
                                       ) : null}
                                       <span 
-                                        className="text-[10px]" 
+                                        className="text-[10px] text-[#ede7d7]" 
                                         style={{ display: catImage ? 'none' : 'block' }}
                                       >
                                         {iconFallback}
@@ -558,7 +559,7 @@ const Navbar = () => {
                     <button
                       key={link.name}
                       onClick={() => handleNavClick(link.name)}
-                      className="text-left text-gray-800 font-medium text-sm border-b border-gray-100 py-3 hover:text-[var(--color-brand-plum)] transition-colors"
+                      className="text-left text-[#ede7d7] font-medium text-sm border-b border-[#ede7d7]/10 py-3 hover:text-white transition-colors"
                     >
                       {link.name}
                     </button>
@@ -593,10 +594,10 @@ const Navbar = () => {
               {/* Drawer Header */}
               <div className="p-6 border-b border-gray-100 flex items-center justify-between bg-white">
                 <div className="flex items-center gap-2">
-                  <ShoppingCart className="text-[#662654]" size={20} />
+                  <ShoppingCart className="text-[#662624]" size={20} />
                   <h2 className="text-lg font-black text-gray-900">Your Cart</h2>
                   {cartCount > 0 && (
-                    <span className="bg-[#662654]/10 text-[#662654] text-xs px-2.5 py-0.5 rounded-full font-extrabold">
+                    <span className="bg-[#662624]/10 text-[#662624] text-xs px-2.5 py-0.5 rounded-full font-extrabold">
                       {cartCount} {cartCount === 1 ? 'item' : 'items'}
                     </span>
                   )}
@@ -623,7 +624,7 @@ const Navbar = () => {
                         setIsCartOpen(false);
                         navigate('/shop');
                       }}
-                      className="bg-[#662654] hover:bg-[#7a2e64] text-white px-6 py-2.5 rounded-full text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer"
+                      className="bg-[#662624] hover:bg-[#7a2e64] text-white px-6 py-2.5 rounded-full text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer"
                     >
                       Start Shopping
                     </button>
@@ -632,13 +633,13 @@ const Navbar = () => {
                   <div className="space-y-4">
                     {/* Free Shipping Progress */}
                     {cartTotal < 500 ? (
-                      <div className="bg-[#662654]/5 rounded-2xl p-4 border border-[#662654]/10">
+                      <div className="bg-[#662624]/5 rounded-2xl p-4 border border-[#662624]/10">
                         <p className="text-xs font-semibold text-gray-700 mb-2">
-                          Add <span className="font-bold text-[#662654]">₹{500 - cartTotal}</span> more for <span className="font-bold text-[#662654]">FREE Shipping!</span>
+                          Add <span className="font-bold text-[#662624]">₹{500 - cartTotal}</span> more for <span className="font-bold text-[#662624]">FREE Shipping!</span>
                         </p>
                         <div className="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden">
                           <div 
-                            className="bg-[#662654] h-full rounded-full transition-all duration-500"
+                            className="bg-[#662624] h-full rounded-full transition-all duration-500"
                             style={{ width: `${(cartTotal / 500) * 100}%` }}
                           />
                         </div>
@@ -677,7 +678,7 @@ const Navbar = () => {
 
                               {/* Item Details */}
                               <div className="flex-1 min-w-0">
-                                <h4 className="text-[13px] font-bold text-gray-900 truncate group-hover/item:text-[#662654] transition-colors">
+                                <h4 className="text-[13px] font-bold text-gray-900 truncate group-hover/item:text-[#662624] transition-colors">
                                   {item.name}
                                 </h4>
                                 {item.selectedVariant && (
@@ -685,7 +686,7 @@ const Navbar = () => {
                                     Size: {item.selectedVariant.size}
                                   </span>
                                 )}
-                                <p className="text-[12px] font-black text-[#662654] mt-1">
+                                <p className="text-[12px] font-black text-[#662624] mt-1">
                                   ₹{itemPrice.toLocaleString()}
                                 </p>
                               </div>
@@ -746,7 +747,7 @@ const Navbar = () => {
                       setIsCartOpen(false);
                       navigate('/checkout');
                     }}
-                    className="w-full bg-[#662654] hover:bg-[#7a2e64] text-white py-4 rounded-full flex items-center justify-center gap-2 font-bold text-sm shadow-lg shadow-[#662654]/15 hover:shadow-[#662654]/30 hover:scale-[1.01] active:scale-[0.98] transition-all duration-300 group/btn cursor-pointer"
+                    className="w-full bg-[#662624] hover:bg-[#7a2e64] text-white py-4 rounded-full flex items-center justify-center gap-2 font-bold text-sm shadow-lg shadow-[#662624]/15 hover:shadow-[#662624]/30 hover:scale-[1.01] active:scale-[0.98] transition-all duration-300 group/btn cursor-pointer"
                   >
                     <Lock size={14} />
                     <span>Proceed to Checkout</span>
@@ -787,10 +788,10 @@ const Navbar = () => {
               {/* Drawer Header */}
               <div className="p-6 border-b border-gray-100 flex items-center justify-between bg-white">
                 <div className="flex items-center gap-2">
-                  <Heart className="text-[#662654] fill-[#662654]" size={20} />
+                  <Heart className="text-[#662624] fill-[#662624]" size={20} />
                   <h2 className="text-lg font-black text-gray-900">Your Wishlist</h2>
                   {wishlistCount > 0 && (
-                    <span className="bg-[#662654]/10 text-[#662654] text-xs px-2.5 py-0.5 rounded-full font-extrabold">
+                    <span className="bg-[#662624]/10 text-[#662624] text-xs px-2.5 py-0.5 rounded-full font-extrabold">
                       {wishlistCount} {wishlistCount === 1 ? 'item' : 'items'}
                     </span>
                   )}
@@ -817,7 +818,7 @@ const Navbar = () => {
                         setIsWishlistOpen(false);
                         navigate('/shop');
                       }}
-                      className="bg-[#662654] hover:bg-[#7a2e64] text-white px-6 py-2.5 rounded-full text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer"
+                      className="bg-[#662624] hover:bg-[#7a2e64] text-white px-6 py-2.5 rounded-full text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer"
                     >
                       Browse Products
                     </button>
@@ -847,10 +848,10 @@ const Navbar = () => {
 
                             {/* Item Details */}
                             <div className="flex-1 min-w-0">
-                              <h4 className="text-[13px] font-bold text-gray-900 truncate group-hover/item:text-[#662654] transition-colors">
+                              <h4 className="text-[13px] font-bold text-gray-900 truncate group-hover/item:text-[#662624] transition-colors">
                                 {item.name}
                               </h4>
-                              <p className="text-[12px] font-black text-[#662654] mt-1">
+                              <p className="text-[12px] font-black text-[#662624] mt-1">
                                 ₹{itemPrice.toLocaleString()}
                               </p>
                             </div>
@@ -862,7 +863,7 @@ const Navbar = () => {
                                   addToCart(item, 1);
                                   removeFromWishlist(item.id);
                                 }}
-                                className="bg-[#662654] hover:bg-[#7a2e64] text-white p-2 rounded-full transition-colors cursor-pointer"
+                                className="bg-[#662624] hover:bg-[#7a2e64] text-white p-2 rounded-full transition-colors cursor-pointer"
                                 title="Move to Cart"
                               >
                                 <ShoppingCart size={14} />
@@ -894,10 +895,10 @@ const Navbar = () => {
 const NavItem = ({ name, onClick }) => (
   <button
     onClick={onClick}
-    className="relative text-[#222222] font-semibold text-[13px] xl:text-[14px] hover:text-[var(--color-brand-plum)] transition-colors cursor-pointer whitespace-nowrap text-center group"
+    className="relative text-[#ede7d7] font-semibold text-[13px] xl:text-[14px] hover:text-white transition-colors cursor-pointer whitespace-nowrap text-center group"
   >
     {name}
-    <span className="absolute -bottom-0.5 left-0 w-0 h-[2px] bg-[var(--color-brand-plum)] group-hover:w-full transition-all duration-300 rounded-full" />
+    <span className="absolute -bottom-0.5 left-0 w-0 h-[2px] bg-[#ede7d7] group-hover:w-full transition-all duration-300 rounded-full" />
   </button>
 );
 

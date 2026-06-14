@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-plum: #662654;
+  --color-brand-plum: #662624;
   --color-brand-cream: #ede7d7;
   --font-sans: "Inter", "system-ui", sans-serif;
   --font-serif: "Playfair Display", "Georgia", serif;
