@@ -7,16 +7,6 @@ const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const FALLBACK_SLIDES = [
   {
-    id: 'f1',
-    headline: "FLAT 10% OFF",
-    subheading: "Exotic Finds",
-    description: "Use Coupon: PAIDHU10",
-    cta: "Shop Now",
-    image: "/hero_banner_full.png",
-    bgColor: "bg-white",
-    hideTextOverlay: true,
-  },
-  {
     id: 'f2',
     headline: "Pure Kashmiri Saffron",
     subheading: "The world's most luxurious spice, ethically sourced.",
