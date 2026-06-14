@@ -8,6 +8,7 @@ import {
 import PageBanner from '../components/ui/PageBanner';
 import paidhuLogo from '../assets/paidhulogo.png';
 import { useCart } from '../context/CartContext';
+import BulkOrdersSection from '../components/ui/BulkOrdersSection';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -472,6 +473,19 @@ const ShopPage = () => {
   };
 
   const sortLabel = SORT_OPTIONS.find(o => o.value === sort)?.label || 'Sort';
+
+  if (navSection === 'bulk-orders') {
+    return (
+      <motion.div 
+        initial={{ opacity: 0, y: 12 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.55, ease: 'easeOut' }}
+        className="min-h-screen bg-[#faf9f7]"
+      >
+        <BulkOrdersSection />
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div 
