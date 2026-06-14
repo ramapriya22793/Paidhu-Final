@@ -14,6 +14,7 @@ const FALLBACK_SLIDES = [
     cta: "Shop Now",
     image: "/hero_banner_full.png",
     bgColor: "bg-white",
+    hideTextOverlay: true,
   },
   {
     id: 'f2',
@@ -171,7 +172,7 @@ const Hero = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none" />
 
               {/* Glassmorphic floating text overlay for fallback/text banners */}
-              {!current.isBackendBanner && current.headline && (
+              {!current.isBackendBanner && !current.hideTextOverlay && current.headline && (
                 <div className="absolute inset-0 bg-black/20 z-10 flex items-center px-6 sm:px-12 md:px-20 lg:px-32">
                   <div className="max-w-xl text-white">
                     <motion.span 
