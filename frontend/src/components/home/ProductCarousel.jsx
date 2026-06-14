@@ -72,7 +72,7 @@ const initialProducts = [
     name: "Premium Raw Honey",
     weight: "400g",
     price: "₹599",
-    image: "https://images.unsplash.com/photo-1587049352847-4d4b1240562e?q=80&w=800&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1587049352851-8d4e89134292?q=80&w=800&auto=format&fit=crop",
     image2: "https://images.unsplash.com/photo-1471193945509-9ad0617afabf?q=80&w=800&auto=format&fit=crop",
     rawProduct: { id: 27, price: 599, discountPrice: null, category: "Petal Jam" }
   }
