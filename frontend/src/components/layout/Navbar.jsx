@@ -160,8 +160,19 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Fetch categories and their images from backend
+  // Fetch categories and their images from backend with 24h caching
   useEffect(() => {
+    const cachedCats = localStorage.getItem('paidhu_categories');
+    const cachedTime = localStorage.getItem('paidhu_categories_time');
+    const oneDay = 24 * 60 * 60 * 1000;
+
+    if (cachedCats && cachedTime && (Date.now() - Number(cachedTime) < oneDay)) {
+      try {
+        setCategories(JSON.parse(cachedCats));
+        return;
+      } catch (e) {}
+    }
+
     fetch(`${API_BASE}/api/products?limit=200`)
       .then(r => r.json())
       .then(data => {
@@ -181,6 +192,8 @@ const Navbar = () => {
         }));
         
         setCategories(cats);
+        localStorage.setItem('paidhu_categories', JSON.stringify(cats));
+        localStorage.setItem('paidhu_categories_time', String(Date.now()));
       })
       .catch(() => {});
   }, []);
