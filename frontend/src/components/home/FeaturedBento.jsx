@@ -11,7 +11,6 @@ const features = [
       'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780937180748-WhatsAppImage20251128at14404PM600x402jpeg.jpeg',
       'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936984001-aavarampoo600x403jpeg.jpeg',
       'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936736170-whitelotuscookie300x300jpeg.jpeg',
-      'https://images.unsplash.com/photo-1590080875515-8a3a8dc5735e?q=80&w=800&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1626132647523-66f5bf380027?q=80&w=800&auto=format&fit=crop'
     ]
   },
@@ -45,7 +44,6 @@ const features = [
     images: [
       'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780897222396-IMG20250917121311600x404png.png',
       'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780939517153-saffronneign600x600jpg.jpg',
-      'https://images.unsplash.com/photo-1587049352846-4a222e784d38?q=80&w=800&auto=format&fit=crop',
       'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg'
     ]
   }
