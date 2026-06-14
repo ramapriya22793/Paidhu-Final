@@ -279,7 +279,7 @@ const Navbar = () => {
                 <img
                   src={paidhuLogo}
                   alt="Paidhu The Edible Flower Co."
-                  className="h-16 md:h-20 lg:h-24 w-auto object-contain"
+                  className="h-24 md:h-28 lg:h-32 w-auto object-contain"
                 />
               </Link>
             </motion.div>
