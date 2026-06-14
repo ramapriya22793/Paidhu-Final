@@ -30,10 +30,9 @@ const features = [
     title: 'Moms Community',
     description: 'Join the Paidhu moms community to share parenting experiences, healthy food ideas, and lifestyle tips.',
     images: [
-      'https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&q=80&w=1200',
-      'https://images.unsplash.com/photo-1536640712247-c57f6ff9c26a?q=80&w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1581579438747-1dc8d1e0ca96?q=80&w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1484981138541-3d074aa97716?q=80&w=800&auto=format&fit=crop'
+      '/moms_sharing_cookies.png',
+      '/mom_drinking_tea.png',
+      '/moms_garden_gathering.png'
     ]
   },
   {
