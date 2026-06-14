@@ -7,15 +7,6 @@ const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const FALLBACK_SLIDES = [
   {
-    id: 'f2',
-    headline: "Pure Kashmiri Saffron",
-    subheading: "The world's most luxurious spice, ethically sourced.",
-    description: "Experience the rich aroma and vibrant color of our premium organic saffron threads, hand-harvested for purity.",
-    cta: "Shop Saffron",
-    image: "https://images.unsplash.com/photo-1596591606975-97ee5cef3a1e?q=80&w=1200&auto=format&fit=crop",
-    bgColor: "bg-[#5a1e48]",
-  },
-  {
     id: 'f3',
     headline: "Artisanal Floral Jams",
     subheading: "Sweetness infused with organic petals.",
