@@ -238,41 +238,44 @@ const Navbar = () => {
       <div className="w-full bg-[#662654] py-1 md:py-1.5 px-4 md:px-8">
         <div className="max-w-[1400px] mx-auto flex justify-between items-center relative">
 
-          {/* Mobile Menu Button */}
-          <div className="lg:hidden flex items-center">
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-[#ede7d7]"
-            >
-              {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-            </button>
-          </div>
+          {/* Left: Mobile Menu & Search */}
+          <div className="flex w-1/3 items-center">
+            {/* Mobile Menu Button */}
+            <div className="lg:hidden flex items-center">
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="text-[#ede7d7]"
+              >
+                {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+              </button>
+            </div>
 
-          {/* Left: Search */}
-          <div className="hidden lg:flex w-1/3">
-            <div className="relative w-full max-w-[320px] group">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                onKeyDown={handleSearch}
-                placeholder={currentText + '|'}
-                className="w-full pl-5 pr-12 py-2 rounded-[8px] border-[1.5px] border-[#ede7d7]/20 bg-white/10 focus:outline-none focus:border-[#ede7d7] focus:ring-0 text-[14px] text-[#ede7d7] placeholder-[#ede7d7]/60 transition-all"
-              />
-              <Search
-                size={22}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#ede7d7] group-focus-within:text-white transition-colors cursor-pointer"
-                strokeWidth={1.5}
-                onClick={() => {
-                  if (searchQuery.trim())
-                    navigate(`/shop/shop-all?q=${encodeURIComponent(searchQuery.trim())}`);
-                }}
-              />
+            {/* Desktop Search */}
+            <div className="hidden lg:flex w-full">
+              <div className="relative w-full max-w-[320px] group">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  onKeyDown={handleSearch}
+                  placeholder={currentText + '|'}
+                  className="w-full pl-5 pr-12 py-2 rounded-[8px] border-[1.5px] border-[#ede7d7]/20 bg-white/10 focus:outline-none focus:border-[#ede7d7] focus:ring-0 text-[14px] text-[#ede7d7] placeholder-[#ede7d7]/60 transition-all"
+                />
+                <Search
+                  size={22}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#ede7d7] group-focus-within:text-white transition-colors cursor-pointer"
+                  strokeWidth={1.5}
+                  onClick={() => {
+                    if (searchQuery.trim())
+                      navigate(`/shop/shop-all?q=${encodeURIComponent(searchQuery.trim())}`);
+                  }}
+                />
+              </div>
             </div>
           </div>
 
           {/* Center: Logo */}
-          <div className="flex-1 lg:w-1/3 flex justify-center z-10">
+          <div className="flex w-1/3 justify-center z-10">
             <motion.div whileHover={{ scale: 1.05 }} className="flex items-center justify-center">
               <Link to="/" className="flex items-center justify-center">
                 <img
