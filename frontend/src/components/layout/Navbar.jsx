@@ -92,7 +92,7 @@ const navSlugMap = {
   'Our Philosophy':              'our-philosophy',
   'Bulk Orders':                 'bulk-orders',
   'Blogs':                       null,
-  'About Us':                    null,
+  'About Us':                    'about-us',
 };
 
 const Navbar = () => {

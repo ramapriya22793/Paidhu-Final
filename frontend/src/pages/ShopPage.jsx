@@ -9,6 +9,7 @@ import PageBanner from '../components/ui/PageBanner';
 import paidhuLogo from '../assets/paidhulogo.png';
 import { useCart } from '../context/CartContext';
 import BulkOrdersSection from '../components/ui/BulkOrdersSection';
+import AboutUsSection from '../components/ui/AboutUsSection';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -483,6 +484,19 @@ const ShopPage = () => {
         className="min-h-screen bg-[#faf9f7]"
       >
         <BulkOrdersSection />
+      </motion.div>
+    );
+  }
+
+  if (navSection === 'about-us') {
+    return (
+      <motion.div 
+        initial={{ opacity: 0, y: 12 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.55, ease: 'easeOut' }}
+        className="min-h-screen bg-[#faf9f7]"
+      >
+        <AboutUsSection />
       </motion.div>
     );
   }
