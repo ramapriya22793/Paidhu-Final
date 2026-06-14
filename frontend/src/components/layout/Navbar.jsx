@@ -239,7 +239,7 @@ const Navbar = () => {
         <div className="max-w-[1400px] mx-auto flex justify-between items-center relative">
 
           {/* Left: Mobile Menu & Search */}
-          <div className="flex w-1/3 items-center">
+          <div className="flex w-1/4 lg:w-1/3 items-center">
             {/* Mobile Menu Button */}
             <div className="lg:hidden flex items-center">
               <button
@@ -275,13 +275,13 @@ const Navbar = () => {
           </div>
 
           {/* Center: Logo */}
-          <div className="flex w-1/3 justify-center z-10">
+          <div className="flex w-1/2 lg:w-1/3 justify-center z-10">
             <motion.div whileHover={{ scale: 1.05 }} className="flex items-center justify-center">
               <Link to="/" className="flex items-center justify-center">
                 <img
                   src={paidhuLogo}
                   alt="Paidhu The Edible Flower Co."
-                  className="h-36 md:h-38 lg:h-44 w-auto object-contain -my-5 md:-my-6 lg:-my-8"
+                  className="h-16 md:h-24 lg:h-32 w-auto object-contain scale-[1.55] md:scale-110 lg:scale-100 origin-center -my-1.5 md:-my-3 lg:-my-5"
                   style={{ filter: 'brightness(0) saturate(100%) invert(92%) sepia(12%) saturate(308%) hue-rotate(34deg) brightness(96%) contrast(93%)' }}
                 />
               </Link>
@@ -289,7 +289,7 @@ const Navbar = () => {
           </div>
 
           {/* Right: Icons */}
-          <div className="flex w-1/3 justify-end items-center space-x-5 text-[#ede7d7]">
+          <div className="flex w-1/4 lg:w-1/3 justify-end items-center space-x-5 text-[#ede7d7]">
             <motion.button
               whileHover={{ scale: 1.1 }}
               className="hover:text-white transition-colors hidden lg:flex items-center"
