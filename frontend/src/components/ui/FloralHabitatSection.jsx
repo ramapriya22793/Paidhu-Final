@@ -176,6 +176,13 @@ const FloralHabitatSection = () => {
     }
   }, [activeIndex]);
 
+  // Sync mute state of the HTML video element with isMuted state
+  useEffect(() => {
+    if (activeVideoRef.current) {
+      activeVideoRef.current.muted = isMuted;
+    }
+  }, [isMuted, activeIndex]);
+
   const handleVideoClick = (index) => {
     setActiveIndex(index);
   };
