@@ -326,7 +326,7 @@ const ShopPage = () => {
     ? { ...baseMeta, label: activeCategory, desc: `Showing all products in ${activeCategory}` }
     : baseMeta;
 
-  const LIMIT = 12;
+  const LIMIT = 24;
 
   // Adjust page synchronously during render when dependencies change (prevents cascading duplicate fetches)
   const [prevNavSection, setPrevNavSection] = useState(navSection);
