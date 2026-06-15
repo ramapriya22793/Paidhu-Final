@@ -141,17 +141,35 @@ const ProductCard = ({ product, index, navSection }) => {
   const [isAdding, setIsAdding] = useState(false);
   const { addToCart, wishlist, toggleWishlist } = useCart();
 
-  const isInWishlist = wishlist && wishlist.some(item => item.id === product.id);
+  const variants = typeof product.variants === 'string' 
+    ? JSON.parse(product.variants) 
+    : (product.variants || []);
+  const hasVariants = Array.isArray(variants) && variants.length > 0;
+  const [selectedVariant, setSelectedVariant] = useState(hasVariants ? variants[0] : null);
 
-  const discountPct = product.discountPrice && product.price
-    ? Math.round(((product.price - product.discountPrice) / product.price) * 100)
-    : null;
+  const currentPrice = selectedVariant 
+    ? (selectedVariant.offerPrice && selectedVariant.offerPrice !== '' ? Number(selectedVariant.offerPrice) : Number(selectedVariant.price))
+    : (product.discountPrice || product.price);
+
+  const originalPrice = selectedVariant 
+    ? (selectedVariant.offerPrice && selectedVariant.offerPrice !== '' ? Number(selectedVariant.price) : null)
+    : (product.discountPrice ? product.price : null);
+
+  const discountPct = selectedVariant
+    ? (selectedVariant.offerPrice && selectedVariant.offerPrice !== '' 
+        ? Math.round(((Number(selectedVariant.price) - Number(selectedVariant.offerPrice)) / Number(selectedVariant.price)) * 100) 
+        : null)
+    : (product.discountPrice && product.price
+        ? Math.round(((product.price - product.discountPrice) / product.price) * 100)
+        : null);
+
+  const isInWishlist = wishlist && wishlist.some(item => item.id === product.id);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
     setIsAdding(true);
-    addToCart(product, 1);
+    addToCart(product, 1, selectedVariant);
     setTimeout(() => {
       setIsAdding(false);
     }, 800);
@@ -227,14 +245,40 @@ const ProductCard = ({ product, index, navSection }) => {
           <p className="text-[11.5px] text-gray-400 line-clamp-1 mb-3">{product.shortDescription}</p>
         )}
 
+        {/* Size Selector */}
+        {hasVariants && (
+          <div className="flex flex-wrap gap-1.5 mb-3">
+            {variants.map((v, i) => {
+              const isSelected = selectedVariant && selectedVariant.size === v.size;
+              return (
+                <button
+                  key={i}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setSelectedVariant(v);
+                  }}
+                  className={`text-[10px] md:text-[11px] font-bold px-2.5 py-1 rounded-full border transition-all duration-200 cursor-pointer ${
+                    isSelected
+                      ? 'bg-[#662654] text-white border-[#662654] shadow-sm'
+                      : 'bg-[#faf9f7] text-[#662654] border-gray-200 hover:border-[#662654]/50'
+                  }`}
+                >
+                  {v.size}
+                </button>
+              );
+            })}
+          </div>
+        )}
+
         {/* Price */}
         <div className="flex items-baseline gap-2 mb-3">
           <span className="text-[16px] font-bold text-gray-900">
-            ₹{(product.discountPrice || product.price).toLocaleString('en-IN')}
+            ₹{currentPrice.toLocaleString('en-IN')}
           </span>
-          {product.discountPrice && (
+          {originalPrice && (
             <span className="text-[12px] text-gray-400 line-through">
-              ₹{product.price.toLocaleString('en-IN')}
+              ₹{originalPrice.toLocaleString('en-IN')}
             </span>
           )}
         </div>
@@ -280,6 +324,7 @@ const ProductCard = ({ product, index, navSection }) => {
     </motion.div>
   );
 };
+
 
 // ---------- SKELETON CARD ----------
 const SkeletonCard = () => (

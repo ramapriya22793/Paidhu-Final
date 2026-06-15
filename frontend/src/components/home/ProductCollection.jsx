@@ -44,6 +44,167 @@ const cardVariants = {
   }
 };
 
+// ---------- COLLECTION PRODUCT CARD ----------
+const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId, isInWishlist, handleToggleWishlist }) => {
+  const { addToCart } = useCart();
+  const raw = product.raw || {};
+  const variants = typeof raw.variants === 'string' 
+    ? JSON.parse(raw.variants) 
+    : (raw.variants || []);
+  const hasVariants = Array.isArray(variants) && variants.length > 0;
+  
+  const [selectedVariant, setSelectedVariant] = useState(hasVariants ? variants[0] : null);
+
+  const currentPrice = selectedVariant 
+    ? (selectedVariant.offerPrice && selectedVariant.offerPrice !== '' ? Number(selectedVariant.offerPrice) : Number(selectedVariant.price))
+    : product.discountedPrice;
+
+  const originalPrice = selectedVariant 
+    ? (selectedVariant.offerPrice && selectedVariant.offerPrice !== '' ? Number(selectedVariant.price) : null)
+    : (product.originalPrice > product.discountedPrice ? product.originalPrice : null);
+
+  const discountPercent = selectedVariant
+    ? (selectedVariant.offerPrice && selectedVariant.offerPrice !== '' 
+        ? Math.round(((Number(selectedVariant.price) - Number(selectedVariant.offerPrice)) / Number(selectedVariant.price)) * 100) 
+        : null)
+    : product.discountPercent;
+
+  const handleAddToCartClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    setAddingId(product.id);
+    addToCart({
+      id: product.id,
+      name: product.title,
+      price: selectedVariant ? Number(selectedVariant.price) : product.originalPrice,
+      discountPrice: selectedVariant 
+        ? (selectedVariant.offerPrice && selectedVariant.offerPrice !== '' ? Number(selectedVariant.offerPrice) : null)
+        : (product.originalPrice > product.discountedPrice ? product.discountedPrice : null),
+      image: product.image,
+      category: activeCategory,
+      shortDescription: product.description
+    }, 1, selectedVariant);
+
+    setTimeout(() => {
+      setAddingId(null);
+    }, 800);
+  };
+
+  return (
+    <motion.div 
+      variants={cardVariants}
+      whileHover={{ y: -8, scale: 1.01 }}
+      whileTap={{ scale: 0.98 }}
+      className="w-full h-full bg-white rounded-2xl border border-gray-100 hover:shadow-[0_12px_30px_rgba(102,38,84,0.08)] transition-all duration-300 overflow-hidden flex flex-col group shadow-sm"
+    >
+      {/* Image Area */}
+      <Link to={`/product/${product.id}`} state={{ product: product.raw }} className="block relative aspect-square bg-[#faf8f6] overflow-hidden flex items-center justify-center p-4">
+        {product.badge && (
+          <div className={`absolute top-0 left-0 z-10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${product.badgeColor} rounded-br-lg shadow-sm`}>
+            {product.badge}
+          </div>
+        )}
+        {/* Wishlist Button */}
+        <motion.button
+          onClick={(e) => handleToggleWishlist(e, product)}
+          whileHover={{ scale: 1.15 }}
+          whileTap={{ scale: 0.9 }}
+          className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md transition-all duration-200 hover:bg-white"
+        >
+          <Heart
+            size={14}
+            className={isInWishlist(product.id) ? 'fill-[#662654] text-[#662654]' : 'text-gray-400'}
+            strokeWidth={2}
+          />
+        </motion.button>
+        <img 
+          src={product.image} 
+          alt={product.title} 
+          className="max-w-full max-h-full object-contain transition-transform duration-500 ease-out group-hover:scale-105"
+        />
+      </Link>
+
+      {/* Content Area */}
+      <div className="p-4 flex flex-col flex-grow">
+        {/* Title */}
+        <Link to={`/product/${product.id}`} state={{ product: product.raw }} className="block text-[14px] md:text-[15px] font-bold text-gray-800 hover:text-[#662654] leading-[1.3] mb-1.5 transition-colors duration-200 line-clamp-1">
+          {product.title}
+        </Link>
+
+        {/* Description */}
+        <p className="text-[12px] md:text-[13px] text-gray-500 line-clamp-2 leading-relaxed mb-4 min-h-[36px] md:min-h-[40px]">
+          {product.description}
+        </p>
+
+        {/* Size Selector */}
+        {hasVariants && (
+          <div className="flex flex-wrap gap-1.5 mb-3">
+            {variants.map((v, i) => {
+              const isSelected = selectedVariant && selectedVariant.size === v.size;
+              return (
+                <button
+                  key={i}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setSelectedVariant(v);
+                  }}
+                  className={`text-[10px] md:text-[11px] font-bold px-2.5 py-1 rounded-full border transition-all duration-200 cursor-pointer ${
+                    isSelected
+                      ? 'bg-[#662654] text-white border-[#662654] shadow-sm'
+                      : 'bg-[#faf9f7] text-[#662654] border-gray-200 hover:border-[#662654]/50'
+                  }`}
+                >
+                  {v.size}
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Price Section */}
+        <div className="mt-auto flex items-center mb-4 flex-wrap gap-y-1">
+          {originalPrice > currentPrice && (
+            <span className="text-[11px] md:text-[12px] text-gray-400 line-through mr-1.5">
+              ₹{originalPrice}
+            </span>
+          )}
+          <span className="text-[14px] md:text-[15px] font-extrabold text-black mr-2">
+            ₹{currentPrice}
+          </span>
+          {discountPercent > 0 && (
+            <span className="text-[9px] md:text-[10px] font-bold text-[#166534] bg-[#dcfce7] px-1.5 py-0.5 rounded whitespace-nowrap">
+              {discountPercent}% OFF
+            </span>
+          )}
+        </div>
+
+        {/* Add to Cart Button */}
+        <motion.button 
+          onClick={handleAddToCartClick}
+          disabled={addingId === product.id}
+          whileHover={{ scale: 1.02, y: -1 }}
+          whileTap={{ scale: 0.98 }}
+          className="w-full bg-gradient-to-r from-[#662654] to-[#7f2d68] hover:from-[#7a2e64] hover:to-[#913b7e] disabled:from-emerald-600 disabled:to-teal-500 text-white rounded-full py-2.5 flex items-center justify-center gap-2 font-bold text-xs uppercase tracking-wider shadow-[0_4px_12px_rgba(102,38,84,0.12)] hover:shadow-[0_6px_20px_rgba(102,38,84,0.22)] transition-all duration-300 group/btn cursor-pointer"
+        >
+          {addingId === product.id ? (
+            <>
+              <Check size={14} strokeWidth={3} className="text-white animate-bounce" />
+              <span>Added!</span>
+            </>
+          ) : (
+            <>
+              <ShoppingCart size={13} strokeWidth={2.5} className="transform group-hover/btn:scale-110 transition-transform" />
+              <span>Add to Cart</span>
+            </>
+          )}
+        </motion.button>
+      </div>
+    </motion.div>
+  );
+};
+
 const ProductCollection = () => {
   const [activeCategory, setActiveCategory] = useState("Bestsellers");
   const [products, setProducts] = useState(() => {
@@ -249,92 +410,16 @@ const ProductCollection = () => {
             </div>
           ) : (
             products.slice(0, 5).map((product) => (
-            <motion.div 
-              key={product.id}
-              variants={cardVariants}
-              whileHover={{ y: -8, scale: 1.01 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full h-full bg-white rounded-2xl border border-gray-100 hover:shadow-[0_12px_30px_rgba(102,38,84,0.08)] transition-all duration-300 overflow-hidden flex flex-col group shadow-sm"
-            >
-              {/* Image Area */}
-              <Link to={`/product/${product.id}`} state={{ product: product.raw }} className="block relative aspect-square bg-[#faf8f6] overflow-hidden flex items-center justify-center p-4">
-                {product.badge && (
-                  <div className={`absolute top-0 left-0 z-10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${product.badgeColor} rounded-br-lg shadow-sm`}>
-                    {product.badge}
-                  </div>
-                )}
-                {/* Wishlist Button */}
-                <motion.button
-                  onClick={(e) => handleToggleWishlist(e, product)}
-                  whileHover={{ scale: 1.15 }}
-                  whileTap={{ scale: 0.9 }}
-                  className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md transition-all duration-200 hover:bg-white"
-                >
-                  <Heart
-                    size={14}
-                    className={isInWishlist(product.id) ? 'fill-[#662654] text-[#662654]' : 'text-gray-400'}
-                    strokeWidth={2}
-                  />
-                </motion.button>
-                <img 
-                  src={product.image} 
-                  alt={product.title} 
-                  className="max-w-full max-h-full object-contain transition-transform duration-500 ease-out group-hover:scale-105"
-                />
-              </Link>
-
-              {/* Content Area */}
-              <div className="p-4 flex flex-col flex-1">
-                {/* Title */}
-                <Link to={`/product/${product.id}`} state={{ product: product.raw }} className="block text-[14px] md:text-[15px] font-bold text-gray-800 hover:text-[#662654] leading-[1.3] mb-1.5 transition-colors duration-200 line-clamp-1">
-                  {product.title}
-                </Link>
-
-                {/* Description */}
-                <p className="text-[12px] md:text-[13px] text-gray-500 line-clamp-2 leading-relaxed mb-4 min-h-[36px] md:min-h-[40px]">
-                  {product.description}
-                </p>
-
-                {/* Price Section */}
-                <div className="mt-auto flex items-center mb-4 flex-wrap gap-y-1">
-                  {product.originalPrice > product.discountedPrice && (
-                    <span className="text-[11px] md:text-[12px] text-gray-400 line-through mr-1.5">
-                      ₹{product.originalPrice}
-                    </span>
-                  )}
-                  <span className="text-[14px] md:text-[15px] font-extrabold text-black mr-2">
-                    ₹{product.discountedPrice}
-                  </span>
-                  {product.discountPercent && (
-                    <span className="text-[9px] md:text-[10px] font-bold text-[#166534] bg-[#dcfce7] px-1.5 py-0.5 rounded whitespace-nowrap">
-                      {product.discountPercent}% OFF
-                    </span>
-                  )}
-                </div>
-
-                {/* Add to Cart Button */}
-                <motion.button 
-                  onClick={(e) => handleAddToCart(e, product)}
-                  disabled={addingId === product.id}
-                  whileHover={{ scale: 1.02, y: -1 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full bg-gradient-to-r from-[#662654] to-[#7f2d68] hover:from-[#7a2e64] hover:to-[#913b7e] disabled:from-emerald-600 disabled:to-teal-500 text-white rounded-full py-2.5 flex items-center justify-center gap-2 font-bold text-xs uppercase tracking-wider shadow-[0_4px_12px_rgba(102,38,84,0.12)] hover:shadow-[0_6px_20px_rgba(102,38,84,0.22)] transition-all duration-300 group/btn cursor-pointer"
-                >
-                  {addingId === product.id ? (
-                    <>
-                      <Check size={14} strokeWidth={3} className="text-white animate-bounce" />
-                      <span>Added!</span>
-                    </>
-                  ) : (
-                    <>
-                      <ShoppingCart size={13} strokeWidth={2.5} className="transform group-hover/btn:scale-110 transition-transform" />
-                      <span>Add to Cart</span>
-                    </>
-                  )}
-                </motion.button>
-              </div>
-            </motion.div>
-          )))}
+              <CollectionProductCard
+                key={product.id}
+                product={product}
+                activeCategory={activeCategory}
+                addingId={addingId}
+                setAddingId={setAddingId}
+                isInWishlist={isInWishlist}
+                handleToggleWishlist={handleToggleWishlist}
+              />
+            )))}
         </motion.div>
 
         {/* Bottom Actions */}
