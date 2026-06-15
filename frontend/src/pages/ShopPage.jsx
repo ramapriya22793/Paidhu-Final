@@ -10,6 +10,7 @@ import paidhuLogo from '../assets/paidhulogo.png';
 import { useCart } from '../context/CartContext';
 import BulkOrdersSection from '../components/ui/BulkOrdersSection';
 import AboutUsSection from '../components/ui/AboutUsSection';
+import BlogsSection from '../components/ui/BlogsSection';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -24,6 +25,7 @@ const NAV_META = {
   'our-own-community':          { label: 'Our Own Community',          emoji: '🤝',  desc: 'Products loved and recommended by our community.' },
   'our-philosophy':             { label: 'Our Philosophy',             emoji: '💚',  desc: 'Products that embody our core values and philosophy.' },
   'bulk-orders':                { label: 'Bulk Orders',                emoji: '📦',  desc: 'Get the best prices when ordering in bulk.' },
+  'blogs':                      { label: 'Blogs',                      emoji: '✍️',  desc: 'Discover stories, recipes, and insights from Paidhu.' },
 };
 
 const SORT_OPTIONS = [
@@ -497,6 +499,19 @@ const ShopPage = () => {
         className="min-h-screen bg-[#faf9f7]"
       >
         <AboutUsSection />
+      </motion.div>
+    );
+  }
+
+  if (navSection === 'blogs') {
+    return (
+      <motion.div 
+        initial={{ opacity: 0, y: 12 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.55, ease: 'easeOut' }}
+        className="min-h-screen bg-[#faf9f7]"
+      >
+        <BlogsSection />
       </motion.div>
     );
   }

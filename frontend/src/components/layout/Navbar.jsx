@@ -90,7 +90,7 @@ const navSlugMap = {
   'Our Own Community':           'our-own-community',
   'Our Philosophy':              'our-philosophy',
   'Bulk Orders':                 'bulk-orders',
-  'Blogs':                       null,
+  'Blogs':                       'blogs',
   'About Us':                    'about-us',
 };
 
