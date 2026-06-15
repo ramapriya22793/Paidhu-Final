@@ -79,7 +79,64 @@ const updateSettings = async (req, res) => {
   }
 };
 
+const getHabitatVideos = async (req, res) => {
+  try {
+    const objects = await prisma.$queryRawUnsafe(`
+      SELECT name, metadata, created_at FROM storage.objects
+      WHERE bucket_id = 'starting-floral-food-habitat'
+      ORDER BY created_at ASC
+    `);
+
+    const videos = objects
+      .filter(obj => {
+        const name = obj.name.toLowerCase();
+        return name.endsWith('.mp4') || name.endsWith('.mov') || name.endsWith('.webm');
+      })
+      .map((obj, index) => {
+        const publicUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/starting-floral-food-habitat/${encodeURIComponent(obj.name)}`;
+        const sizeBytes = obj.metadata?.size || 0;
+        
+        // Create an elegant visual title
+        const titles = [
+          "Curated Floral Food Starter Pack 🌸",
+          "Nourishing Your Family Naturally 🍯",
+          "Rich Organic Flower Medleys 🌺",
+          "Artisanal Farm-to-Table Process 🌿",
+          "Healthy Living and Floral Habitats ✨"
+        ];
+        const title = titles[index % titles.length];
+
+        const descs = [
+          "Discover how our hand-selected botanical ingredients support daily vitality.",
+          "Wholesome nutrients direct from organic floral habitats, zero preservatives.",
+          "Hand-mixed blossoms and roots curated for premium flavor and nutrition.",
+          "Our sustainable sourcing ensures the purest grade of floral wellness.",
+          "Bring nature's premium superfoods into your home and pantry."
+        ];
+        const desc = descs[index % descs.length];
+
+        return {
+          id: obj.name,
+          name: obj.name,
+          url: publicUrl,
+          size: sizeBytes,
+          createdAt: obj.created_at,
+          title,
+          description: desc,
+          likes: Math.floor((index * 137 + 452) % 350) + 120, // Stable, dynamic mock likes
+          shares: Math.floor((index * 47 + 56) % 120) + 24 // Stable, dynamic mock shares
+        };
+      });
+
+    res.json(videos);
+  } catch (error) {
+    console.error("Error in getHabitatVideos:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   getSettings,
-  updateSettings
+  updateSettings,
+  getHabitatVideos
 };

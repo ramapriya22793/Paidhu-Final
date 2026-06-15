@@ -11,6 +11,7 @@ import { useCart } from '../context/CartContext';
 import BulkOrdersSection from '../components/ui/BulkOrdersSection';
 import AboutUsSection from '../components/ui/AboutUsSection';
 import BlogsSection from '../components/ui/BlogsSection';
+import FloralHabitatSection from '../components/ui/FloralHabitatSection';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -512,6 +513,19 @@ const ShopPage = () => {
         className="min-h-screen bg-[#faf9f7]"
       >
         <BlogsSection />
+      </motion.div>
+    );
+  }
+
+  if (navSection === 'starting-floral-food-habitat') {
+    return (
+      <motion.div 
+        initial={{ opacity: 0, y: 12 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.55, ease: 'easeOut' }}
+        className="min-h-screen bg-[#faf9f7]"
+      >
+        <FloralHabitatSection />
       </motion.div>
     );
   }
