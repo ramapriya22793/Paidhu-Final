@@ -1,19 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import fallbacks from './fallbacks.json';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-const PaidhuSpotlight = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+const spotlightCache = { current: null };
 
+const PaidhuSpotlight = () => {
   const resolveImage = (img) => {
     if (!img) return null;
     if (img.startsWith('http')) return img;
     return `${API_BASE}${img.startsWith('/') ? '' : '/'}${img}`;
   };
 
+  const [products, setProducts] = useState(() => {
+    if (spotlightCache.current) return spotlightCache.current;
+    const initialList = fallbacks["Bestsellers"] || [];
+    return initialList.map(p => ({
+      id: p.id,
+      name: p.title,
+      slug: p.raw ? p.raw.slug : `product-${p.id}`,
+      image: p.image
+    }));
+  });
+  const [loading, setLoading] = useState(() => !spotlightCache.current);
+
   useEffect(() => {
+    let isMounted = true;
+    
     // Fetch products dynamically from the database
     fetch(`${API_BASE}/api/products?limit=25`)
       .then(res => res.ok ? res.json() : { products: [] })
@@ -27,13 +41,22 @@ const PaidhuSpotlight = () => {
             image: resolveImage(image) || "https://images.unsplash.com/photo-1599598425947-330026217432?q=80&w=500&auto=format&fit=crop"
           };
         });
-        setProducts(mapped);
-        setLoading(false);
+        spotlightCache.current = mapped;
+        if (isMounted) {
+          setProducts(mapped);
+          setLoading(false);
+        }
       })
       .catch(err => {
         console.error("Error fetching spotlight products:", err);
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       });
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   // Duplicate items for seamless infinite scrolling loop

@@ -3,8 +3,11 @@ import { motion } from 'framer-motion';
 import { Plus, ChevronRight, ChevronLeft, Check, Heart, ShoppingCart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
+import fallbacks from './fallbacks.json';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+const productsCache = {};
 
 const categories = [
   "Bestsellers",
@@ -43,8 +46,13 @@ const cardVariants = {
 
 const ProductCollection = () => {
   const [activeCategory, setActiveCategory] = useState("Bestsellers");
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState(() => {
+    return productsCache[activeCategory] || fallbacks[activeCategory] || [];
+  });
+  const [loading, setLoading] = useState(() => {
+    const initialList = productsCache[activeCategory] || fallbacks[activeCategory] || [];
+    return initialList.length === 0;
+  });
   const [addingId, setAddingId] = useState(null);
   const { addToCart, wishlist, toggleWishlist } = useCart();
 
@@ -88,8 +96,13 @@ const ProductCollection = () => {
   };
 
   useEffect(() => {
+    let isMounted = true;
+    
+    const instantList = productsCache[activeCategory] || fallbacks[activeCategory] || [];
+    setProducts(instantList);
+    setLoading(instantList.length === 0);
+
     const fetchProducts = async () => {
-      setLoading(true);
       try {
         const queryParams = new URLSearchParams({ limit: '10' });
         if (activeCategory === "Bestsellers") {
@@ -163,15 +176,25 @@ const ProductCollection = () => {
           };
         });
 
-        setProducts(mappedProducts);
+        productsCache[activeCategory] = mappedProducts;
+
+        if (isMounted) {
+          setProducts(mappedProducts);
+          setLoading(false);
+        }
       } catch (err) {
         console.error("Error fetching products:", err);
-      } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchProducts();
+    
+    return () => {
+      isMounted = false;
+    };
   }, [activeCategory]);
 
   return (

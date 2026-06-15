@@ -76,42 +76,77 @@ const resolveImage = (img) => {
   return `${API_BASE}${img.startsWith('/') ? '' : '/'}${img}`;
 };
 
+const countsCache = { current: null };
+
+const DEFAULT_COUNTS = {
+  "Bloom Cookies": 4,
+  "Petal Jam": 4,
+  "Saffron": 1,
+  "Medley Teas": 3,
+  "Brew Flora": 3,
+  "Bloom Powder": 0
+};
+
 const ExploreCategory = () => {
   const [hoveredIndex, setHoveredIndex] = useState(0);
   const navigate = useNavigate();
-  const [categories, setCategories] = useState(
-    CATEGORY_CONFIG.map(c => ({ ...c, img: c.img || c.fallback, loading: true }))
-  );
+  const [categories, setCategories] = useState(() => {
+    if (countsCache.current) return countsCache.current;
+    return CATEGORY_CONFIG.map(c => ({
+      ...c,
+      img: c.img || c.fallback,
+      loading: false,
+      productCount: DEFAULT_COUNTS[c.title] || 0
+    }));
+  });
 
   const handleCategoryClick = (cat) => {
     navigate(`/shop/shop-by-category?category=${encodeURIComponent(cat.title)}`);
   };
 
   useEffect(() => {
-    // Fetch count per category dynamically
+    let isMounted = true;
+    
     const fetchCategoryCounts = async () => {
-      const updated = await Promise.all(
-        CATEGORY_CONFIG.map(async (cat) => {
-          try {
-            const res = await fetch(
-              `${API_BASE}/api/products?category=${encodeURIComponent(cat.title)}&limit=1`
-            );
-            const data = await res.json();
+      try {
+        const updated = await Promise.all(
+          CATEGORY_CONFIG.map(async (cat) => {
+            try {
+              const res = await fetch(
+                `${API_BASE}/api/products?category=${encodeURIComponent(cat.title)}&limit=1`
+              );
+              const data = await res.json();
 
-            return {
-              ...cat,
-              loading: false,
-              productCount: data.total || 0
-            };
-          } catch (e) {
-            return { ...cat, loading: false, productCount: 0 };
-          }
-        })
-      );
-      setCategories(updated);
+              return {
+                ...cat,
+                img: cat.img || cat.fallback,
+                loading: false,
+                productCount: data.total || 0
+              };
+            } catch (e) {
+              return {
+                ...cat,
+                img: cat.img || cat.fallback,
+                loading: false,
+                productCount: DEFAULT_COUNTS[cat.title] || 0
+              };
+            }
+          })
+        );
+        
+        countsCache.current = updated;
+        if (isMounted) {
+          setCategories(updated);
+        }
+      } catch (err) {
+        console.error("Error fetching category counts:", err);
+      }
     };
 
     fetchCategoryCounts();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (

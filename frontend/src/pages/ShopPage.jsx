@@ -12,8 +12,25 @@ import BulkOrdersSection from '../components/ui/BulkOrdersSection';
 import AboutUsSection from '../components/ui/AboutUsSection';
 import BlogsSection from '../components/ui/BlogsSection';
 import FloralHabitatSection from '../components/ui/FloralHabitatSection';
+import fallbacks from '../components/home/fallbacks.json';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+const allFallbackProducts = (() => {
+  const seen = new Set();
+  const list = [];
+  Object.values(fallbacks).forEach(categoryList => {
+    categoryList.forEach(p => {
+      if (!seen.has(p.id) && p.raw) {
+        seen.add(p.id);
+        list.push(p.raw);
+      }
+    });
+  });
+  return list;
+})();
+
+const shopCache = {};
 
 // ---------- NAV SECTION META ----------
 const NAV_META = {
@@ -288,10 +305,15 @@ const ShopPage = () => {
   // Build page meta — if a specific category is active, show its name
   const baseMeta = NAV_META[navSection] || NAV_META['shop-all'];
 
-  // State
-  const [products, setProducts]     = useState([]);
-  const [loading, setLoading]       = useState(true);
-  const [total, setTotal]           = useState(0);
+  const [products, setProducts]     = useState(() => {
+    return allFallbackProducts;
+  });
+  const [loading, setLoading]       = useState(() => {
+    return allFallbackProducts.length === 0;
+  });
+  const [total, setTotal]           = useState(() => {
+    return allFallbackProducts.length;
+  });
   const [pages, setPages]           = useState(1);
 
   // Page synchronization with URL
@@ -401,11 +423,27 @@ const ShopPage = () => {
       .catch(() => {});
   }, []);
 
-  // Fetch products
+  // Fetch products with caching and fallback hydration
   useEffect(() => {
     let active = true;
+    const cacheKey = `${navSection}-${page}-${sort}-${debouncedSearch}-${appliedMinPrice}-${appliedMaxPrice}-${activeCategory}`;
+    
+    // Instantly resolve cached result if available
+    if (shopCache[cacheKey]) {
+      setProducts(shopCache[cacheKey].products);
+      setTotal(shopCache[cacheKey].total);
+      setPages(shopCache[cacheKey].pages);
+      setLoading(false);
+    } else {
+      // If no cache but we are on default shop-all page 1, keep showing fallbacks without loader
+      if (cacheKey === 'shop-all-1-newest----' && allFallbackProducts.length > 0) {
+        setLoading(false);
+      } else {
+        setLoading(true);
+      }
+    }
+
     const loadProducts = async () => {
-      setLoading(true);
       try {
         const params = new URLSearchParams({
           navSection,
@@ -421,9 +459,16 @@ const ShopPage = () => {
         const res = await fetch(`${API_BASE}/api/products?${params}`);
         const data = await res.json();
         if (active) {
-          setProducts(data.products || []);
+          const fetchedList = data.products || [];
+          setProducts(fetchedList);
           setTotal(data.total || 0);
           setPages(data.pages || 1);
+          
+          shopCache[cacheKey] = {
+            products: fetchedList,
+            total: data.total || 0,
+            pages: data.pages || 1
+          };
         }
       } catch (e) {
         console.error('Fetch error:', e);
