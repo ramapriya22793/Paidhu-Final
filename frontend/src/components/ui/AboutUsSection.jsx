@@ -112,21 +112,21 @@ const AboutUsSection = () => {
           HERO COVER IMAGE
           ══════════════════════════════════════════════════ */}
       <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
-        <div className="relative h-[250px] sm:h-[350px] md:h-[450px] rounded-[2.5rem] overflow-hidden shadow-lg border border-gray-100">
+        <div className="relative h-auto sm:h-[350px] md:h-[450px] rounded-[1.5rem] sm:rounded-[2.5rem] overflow-hidden shadow-lg border border-gray-100 bg-[#662654]/5">
           <img
             src={data.hero.image}
             alt="About Paidhu"
-            className="absolute inset-0 w-full h-full object-cover"
+            className="w-full h-auto block sm:absolute sm:inset-0 sm:h-full sm:object-cover"
             onError={(e) => {
               e.target.src = 'https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=1200&auto=format&fit=crop';
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#662654]/40 via-transparent to-transparent" />
-          <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12">
-            <h1 className="text-4xl md:text-6xl font-serif font-black text-white drop-shadow-md">
+          <div className="absolute inset-0 bg-gradient-to-t from-[#662654]/50 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute bottom-4 left-4 sm:bottom-8 sm:left-8 md:bottom-12 md:left-12">
+            <h1 className="text-2xl sm:text-4xl md:text-6xl font-serif font-black text-white drop-shadow-md">
               Our Story
             </h1>
-            <p className="text-white/80 font-bold uppercase tracking-widest text-xs mt-2 drop-shadow-sm">
+            <p className="text-white/80 font-bold uppercase tracking-widest text-[9px] sm:text-xs mt-1 sm:mt-2 drop-shadow-sm">
               We are Paidhu — The Edible Flower Co.
             </p>
           </div>
