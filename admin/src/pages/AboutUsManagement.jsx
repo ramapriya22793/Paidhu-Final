@@ -62,11 +62,7 @@ const defaultData = {
   }
 };
 
-const AboutUsManagement = () => {
-  const [data, setData] = useState(defaultData);
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState('hero');
+const ImageUploadZone = ({ id, label, value, onChange, folder = 'aboutus' }) => {
   const [dragActive, setDragActive] = useState(false);
   const [uploading, setUploading] = useState(false);
 
@@ -105,31 +101,91 @@ const AboutUsManagement = () => {
     
     setUploading(true);
     try {
-      // Show local preview instantly
       const localUrl = URL.createObjectURL(file);
-      setData(prev => ({
-        ...prev,
-        hero: { ...prev.hero, image: localUrl }
-      }));
+      onChange(localUrl);
       
-      // Upload to Supabase storage
-      const { publicUrl, error } = await uploadImage(file, 'aboutus');
+      const { publicUrl, error } = await uploadImage(file, folder);
       if (error) {
         throw new Error(error);
       }
-      
-      // Update with uploaded public URL
-      setData(prev => ({
-        ...prev,
-        hero: { ...prev.hero, image: publicUrl }
-      }));
+      onChange(publicUrl);
     } catch (err) {
       alert(`Upload failed: ${err.message}`);
-      fetchData();
     } finally {
       setUploading(false);
     }
   };
+
+  return (
+    <div className="space-y-1">
+      {label && <label className="block text-sm font-semibold text-gray-700 mb-1">{label}</label>}
+      <div 
+        onDragEnter={handleDrag}
+        onDragOver={handleDrag}
+        onDragLeave={handleDrag}
+        onDrop={handleDrop}
+        className={`relative border-2 border-dashed rounded-2xl p-4 transition-all flex flex-col items-center justify-center min-h-[160px] ${
+          dragActive 
+            ? "border-brand-gold bg-brand-plum/5" 
+            : "border-gray-300 bg-gray-50 hover:bg-gray-50/50 hover:border-brand-plum/40"
+        }`}
+      >
+        <input 
+          type="file" 
+          id={`upload-${id}`} 
+          className="hidden" 
+          accept="image/*" 
+          onChange={handleChange}
+          disabled={uploading}
+        />
+
+        {uploading ? (
+          <div className="flex flex-col items-center space-y-2">
+            <div className="w-8 h-8 border-4 border-brand-plum border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-xs font-semibold text-brand-plum">Uploading to secure storage...</p>
+          </div>
+        ) : value ? (
+          <div className="w-full relative group flex flex-col items-center">
+            <img 
+              src={value} 
+              alt="Preview" 
+              className="max-h-48 object-contain rounded-xl border shadow-sm transition duration-300 group-hover:brightness-75" 
+            />
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <label 
+                htmlFor={`upload-${id}`} 
+                className="bg-white/95 text-brand-plum px-4 py-2 rounded-full font-bold text-[10px] uppercase tracking-wider shadow-lg hover:scale-105 transition duration-200 cursor-pointer flex items-center gap-1.5"
+              >
+                <FiImage size={12} /> Replace Image
+              </label>
+            </div>
+          </div>
+        ) : (
+          <label 
+            htmlFor={`upload-${id}`} 
+            className="w-full h-full flex flex-col items-center justify-center cursor-pointer space-y-2 py-4"
+          >
+            <div className="w-10 h-10 rounded-full bg-brand-plum/5 flex items-center justify-center text-brand-plum shadow-inner transition duration-300">
+              <FiImage size={18} />
+            </div>
+            <div className="text-center">
+              <p className="text-xs font-bold text-gray-800">
+                <span className="text-brand-plum hover:underline">Click to upload</span> or drag and drop
+              </p>
+              <p className="text-[10px] text-gray-400 mt-0.5">PNG, JPG, JPEG, WebP up to 5MB</p>
+            </div>
+          </label>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const AboutUsManagement = () => {
+  const [data, setData] = useState(defaultData);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [activeTab, setActiveTab] = useState('hero');
 
   const fetchData = async () => {
     try {
@@ -250,68 +306,13 @@ const AboutUsManagement = () => {
         {activeTab === 'hero' && (
           <div className="space-y-6 max-w-3xl">
             <h2 className="text-xl font-bold text-brand-plum border-b pb-2 mb-6">Top Full-Width Hero Image</h2>
-            
-            <div 
-              onDragEnter={handleDrag}
-              onDragOver={handleDrag}
-              onDragLeave={handleDrag}
-              onDrop={handleDrop}
-              className={`relative border-2 border-dashed rounded-2xl p-8 transition-all flex flex-col items-center justify-center min-h-[220px] ${
-                dragActive 
-                  ? "border-brand-gold bg-brand-plum/5" 
-                  : "border-gray-300 bg-gray-50 hover:bg-gray-50/50 hover:border-brand-plum/40"
-              }`}
-            >
-              <input 
-                type="file" 
-                id="hero-image-upload" 
-                className="hidden" 
-                accept="image/*" 
-                onChange={handleChange}
-                disabled={uploading}
-              />
-
-              {uploading ? (
-                <div className="flex flex-col items-center space-y-3">
-                  <div className="w-10 h-10 border-4 border-brand-plum border-t-transparent rounded-full animate-spin"></div>
-                  <p className="text-sm font-semibold text-brand-plum">Uploading image to secure storage...</p>
-                </div>
-              ) : data.hero.image ? (
-                <div className="w-full relative group">
-                  <img 
-                    src={data.hero.image} 
-                    alt="Hero Preview" 
-                    className="w-full max-h-72 object-cover rounded-xl border shadow-sm transition duration-300 group-hover:brightness-75" 
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <label 
-                      htmlFor="hero-image-upload" 
-                      className="bg-white/95 text-brand-plum px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider shadow-lg hover:scale-105 transition duration-200 cursor-pointer flex items-center gap-2"
-                    >
-                      <FiImage size={14} /> Replace Image
-                    </label>
-                  </div>
-                  <div className="absolute bottom-3 right-3 bg-black/60 text-white text-[10px] font-semibold px-2.5 py-1 rounded-full backdrop-blur-sm">
-                    Drag & Drop another file to replace
-                  </div>
-                </div>
-              ) : (
-                <label 
-                  htmlFor="hero-image-upload" 
-                  className="w-full h-full flex flex-col items-center justify-center cursor-pointer space-y-4 py-8"
-                >
-                  <div className="w-16 h-16 rounded-full bg-brand-plum/5 flex items-center justify-center text-brand-plum shadow-inner transition duration-300">
-                    <FiImage size={28} />
-                  </div>
-                  <div className="text-center">
-                    <p className="text-sm font-bold text-gray-800">
-                      <span className="text-brand-plum hover:underline">Click to upload</span> or drag and drop
-                    </p>
-                    <p className="text-xs text-gray-400 mt-1">PNG, JPG, JPEG, WebP up to 5MB</p>
-                  </div>
-                </label>
-              )}
-            </div>
+            <ImageUploadZone 
+              id="hero-image"
+              label="Top Hero Image Preview"
+              value={data.hero.image}
+              onChange={(url) => setData(prev => ({...prev, hero: {...prev.hero, image: url}}))}
+              folder="aboutus"
+            />
           </div>
         )}
 
@@ -335,10 +336,13 @@ const AboutUsManagement = () => {
               <label className="block text-sm font-semibold text-gray-700 mb-1">Paragraph 3</label>
               <textarea value={data.foodLabels.text3} onChange={(e) => setData({...data, foodLabels: {...data.foodLabels, text3: e.target.value}})} className="w-full border rounded-lg px-4 py-2" rows={3}></textarea>
             </div>
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">Left Graphic Image URL</label>
-              <input type="text" value={data.foodLabels.image} onChange={(e) => setData({...data, foodLabels: {...data.foodLabels, image: e.target.value}})} className="w-full border rounded-lg px-4 py-2" />
-            </div>
+            <ImageUploadZone 
+              id="foodlabels-image"
+              label="Left Graphic Image"
+              value={data.foodLabels.image}
+              onChange={(url) => setData(prev => ({...prev, foodLabels: {...prev.foodLabels, image: url}}))}
+              folder="aboutus"
+            />
           </div>
         )}
 
@@ -358,10 +362,13 @@ const AboutUsManagement = () => {
               <label className="block text-sm font-semibold text-gray-700 mb-1">Paragraph 2</label>
               <textarea value={data.needToChange.text2} onChange={(e) => setData({...data, needToChange: {...data.needToChange, text2: e.target.value}})} className="w-full border rounded-lg px-4 py-2" rows={5}></textarea>
             </div>
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">Right Graphic/Field Image URL</label>
-              <input type="text" value={data.needToChange.image} onChange={(e) => setData({...data, needToChange: {...data.needToChange, image: e.target.value}})} className="w-full border rounded-lg px-4 py-2" />
-            </div>
+            <ImageUploadZone 
+              id="needtochange-image"
+              label="Right Graphic/Field Image"
+              value={data.needToChange.image}
+              onChange={(url) => setData(prev => ({...prev, needToChange: {...prev.needToChange, image: url}}))}
+              folder="aboutus"
+            />
           </div>
         )}
 
@@ -378,11 +385,13 @@ const AboutUsManagement = () => {
               {data.startNow.cards.map((card, idx) => (
                 <div key={card.id} className="bg-gray-50 border rounded-xl p-6 space-y-4">
                   <h3 className="font-bold text-lg text-gray-800">Card {idx + 1}</h3>
-                  <div>
-                    <label className="block text-xs font-semibold text-gray-700 mb-1">Icon/Stamp Image URL</label>
-                    <input type="text" value={card.icon} onChange={(e) => handleStartNowCardChange(idx, 'icon', e.target.value)} className="w-full border rounded px-3 py-2 text-sm" />
-                    {card.icon && <img src={card.icon} alt="icon" className="w-16 h-16 object-contain mt-2 bg-white rounded-full p-2 border shadow-sm" />}
-                  </div>
+                  <ImageUploadZone 
+                    id={`startnow-${card.id}`}
+                    label="Icon/Stamp Image"
+                    value={card.icon}
+                    onChange={(url) => handleStartNowCardChange(idx, 'icon', url)}
+                    folder="aboutus"
+                  />
                   <div>
                     <label className="block text-xs font-semibold text-gray-700 mb-1">Card Title</label>
                     <input type="text" value={card.title} onChange={(e) => handleStartNowCardChange(idx, 'title', e.target.value)} className="w-full border rounded px-3 py-2 text-sm font-bold text-gray-900" />
@@ -415,11 +424,13 @@ const AboutUsManagement = () => {
                       <label className="block text-xs font-semibold text-gray-700 mb-1">Name</label>
                       <input type="text" value={founder.name} onChange={(e) => handleFounderChange(idx, 'name', e.target.value)} className="w-full border rounded px-3 py-2 text-sm font-bold text-gray-900" />
                     </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-700 mb-1">Portrait Image URL</label>
-                      <input type="text" value={founder.image} onChange={(e) => handleFounderChange(idx, 'image', e.target.value)} className="w-full border rounded px-3 py-2 text-sm" />
-                      {founder.image && <img src={founder.image} alt={founder.name} className="w-32 h-32 object-cover rounded-full mt-2 border-4 border-white shadow-sm" />}
-                    </div>
+                    <ImageUploadZone 
+                      id={`founder-${founder.id}`}
+                      label="Portrait Image"
+                      value={founder.image}
+                      onChange={(url) => handleFounderChange(idx, 'image', url)}
+                      folder="aboutus"
+                    />
                   </div>
                   <div className="w-full md:w-2/3">
                     <label className="block text-xs font-semibold text-gray-700 mb-1">Biography</label>
@@ -436,10 +447,13 @@ const AboutUsManagement = () => {
         {activeTab === 'communityCta' && (
           <div className="space-y-6 max-w-3xl">
             <h2 className="text-xl font-bold text-brand-plum border-b pb-2 mb-6">Bottom Community Call-to-Action</h2>
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">Illustration / Background Image URL</label>
-              <input type="text" value={data.communityCta.illustration} onChange={(e) => setData({...data, communityCta: {...data.communityCta, illustration: e.target.value}})} className="w-full border rounded-lg px-4 py-2" />
-            </div>
+            <ImageUploadZone 
+              id="community-cta-illustration"
+              label="Illustration / Background Image"
+              value={data.communityCta.illustration}
+              onChange={(url) => setData(prev => ({...prev, communityCta: {...prev.communityCta, illustration: url}}))}
+              folder="aboutus"
+            />
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1">Title</label>
               <textarea value={data.communityCta.title} onChange={(e) => setData({...data, communityCta: {...data.communityCta, title: e.target.value}})} className="w-full border rounded-lg px-4 py-2" rows={2}></textarea>
