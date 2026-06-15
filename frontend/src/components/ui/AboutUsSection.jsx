@@ -257,7 +257,7 @@ const AboutUsSection = () => {
             {data.founders.list?.map((founder, i) => (
               <div key={founder.id || i} className="flex flex-col md:flex-row gap-6 items-start">
                 {/* Photo */}
-                <div className="w-full md:w-44 h-56 rounded-2xl overflow-hidden shrink-0 shadow-md relative">
+                <div className="w-44 h-56 rounded-2xl overflow-hidden shrink-0 shadow-md relative mx-auto md:mx-0">
                   <img
                     src={founder.image}
                     alt={founder.name}
