@@ -628,76 +628,30 @@ const CheckoutPage = () => {
                 Payment Method
               </h2>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 
                 {/* Razorpay Online */}
-                <motion.button
-                  type="button"
-                  onClick={() => setPaymentMethod('Online')}
-                  whileHover={{ scale: 1.015, y: -1 }}
-                  whileTap={{ scale: 0.985 }}
-                  className={`relative flex items-start gap-4 p-5 rounded-2xl border-2 text-left transition-all duration-300 cursor-pointer ${
-                    paymentMethod === 'Online' 
-                      ? 'border-[#662654] bg-[#662654]/[0.02] shadow-[0_10px_25px_rgba(102,38,84,0.05)]' 
-                      : 'border-gray-100 hover:border-gray-200 bg-white'
-                  }`}
+                <div
+                  className="relative flex items-start gap-4 p-5 rounded-2xl border-2 border-[#662654] bg-[#662654]/[0.02] shadow-[0_10px_25px_rgba(102,38,84,0.05)] text-left"
                 >
-                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 transition-colors ${
-                    paymentMethod === 'Online' ? 'border-[#662654]' : 'border-gray-300'
-                  }`}>
-                    {paymentMethod === 'Online' && (
-                      <motion.div layoutId="paymentActiveRing" className="w-2.5 h-2.5 rounded-full bg-[#662654]" />
-                    )}
+                  <div className="w-5 h-5 rounded-full border-2 border-[#662654] flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#662654]" />
                   </div>
                   <div className="space-y-1">
                     <span className="text-sm font-bold text-gray-900 flex items-center gap-1.5">
                       <div className="w-5 h-5 rounded-md bg-[#662654]/10 flex items-center justify-center">
                         <CreditCard size={12} className="text-[#662654]" />
                       </div>
-                      Pay Online (Card/UPI)
+                      Pay Online Securely (Card/UPI)
                     </span>
                     <span className="block text-[11px] font-semibold text-gray-400 leading-normal">
-                      UPI, Credit/Debit cards, NetBanking, and secure wallets.
+                      UPI, Credit/Debit cards, NetBanking, and secure wallets processed via Razorpay.
                     </span>
                   </div>
-                  {paymentMethod === 'Online' && (
-                    <div className="absolute top-3 right-3 text-[9px] font-black text-[#cca43b] bg-[#cca43b]/10 px-2 py-0.5 rounded-full flex items-center gap-0.5 uppercase tracking-wide">
-                      <Sparkles size={8} /> Fast Pay
-                    </div>
-                  )}
-                </motion.button>
-
-                {/* COD Option */}
-                <motion.button
-                  type="button"
-                  onClick={() => setPaymentMethod('COD')}
-                  whileHover={{ scale: 1.015, y: -1 }}
-                  whileTap={{ scale: 0.985 }}
-                  className={`relative flex items-start gap-4 p-5 rounded-2xl border-2 text-left transition-all duration-300 cursor-pointer ${
-                    paymentMethod === 'COD' 
-                      ? 'border-[#662654] bg-[#662654]/[0.02] shadow-[0_10px_25px_rgba(102,38,84,0.05)]' 
-                      : 'border-gray-100 hover:border-gray-200 bg-white'
-                  }`}
-                >
-                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 transition-colors ${
-                    paymentMethod === 'COD' ? 'border-[#662654]' : 'border-gray-300'
-                  }`}>
-                    {paymentMethod === 'COD' && (
-                      <motion.div layoutId="paymentActiveRing" className="w-2.5 h-2.5 rounded-full bg-[#662654]" />
-                    )}
+                  <div className="absolute top-3 right-3 text-[9px] font-black text-[#cca43b] bg-[#cca43b]/10 px-2 py-0.5 rounded-full flex items-center gap-0.5 uppercase tracking-wide">
+                    <Sparkles size={8} /> Fast Pay
                   </div>
-                  <div className="space-y-1">
-                    <span className="text-sm font-bold text-gray-900 flex items-center gap-1.5">
-                      <div className="w-5 h-5 rounded-md bg-[#662654]/10 flex items-center justify-center">
-                        <Truck size={12} className="text-[#662654]" />
-                      </div>
-                      Cash on Delivery
-                    </span>
-                    <span className="block text-[11px] font-semibold text-gray-400 leading-normal">
-                      Pay with cash at your doorstep when your package is delivered.
-                    </span>
-                  </div>
-                </motion.button>
+                </div>
               </div>
             </div>
 
