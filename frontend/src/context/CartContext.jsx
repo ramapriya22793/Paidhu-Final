@@ -116,6 +116,11 @@ export const CartProvider = ({ children }) => {
         const cartRes = await fetch(`${API_BASE}/api/cart`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
+        if (cartRes.status === 401) {
+          localStorage.removeItem('paidhu_token');
+          setToken('');
+          return;
+        }
         if (cartRes.ok) {
           const data = await cartRes.json();
           setCart(data.map(formatBackendCartItem).filter(Boolean));
@@ -124,6 +129,11 @@ export const CartProvider = ({ children }) => {
         const wishlistRes = await fetch(`${API_BASE}/api/wishlist`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
+        if (wishlistRes.status === 401) {
+          localStorage.removeItem('paidhu_token');
+          setToken('');
+          return;
+        }
         if (wishlistRes.ok) {
           const data = await wishlistRes.json();
           setWishlist(data.map(formatBackendWishlistItem).filter(Boolean));
@@ -139,6 +149,42 @@ export const CartProvider = ({ children }) => {
   // Cart Operations
   const addToCart = async (product, quantity = 1, selectedVariant = null) => {
     if (!token) return;
+    const previousCart = [...cart];
+    const variantSize = selectedVariant?.size || 'default';
+
+    // Optimistically update React cart state
+    setCart(prevCart => {
+      const existingItemIndex = prevCart.findIndex(
+        item => item.id === product.id && (item.selectedVariant?.size || 'default') === variantSize
+      );
+      if (existingItemIndex > -1) {
+        const newCart = [...prevCart];
+        newCart[existingItemIndex] = {
+          ...newCart[existingItemIndex],
+          quantity: newCart[existingItemIndex].quantity + quantity
+        };
+        return newCart;
+      } else {
+        const newItem = {
+          id: product.id,
+          name: product.name,
+          price: selectedVariant ? Number(selectedVariant.price) : Number(product.price),
+          offerPrice: selectedVariant 
+            ? (selectedVariant.offerPrice ? Number(selectedVariant.offerPrice) : null)
+            : (product.discountPrice ? Number(product.discountPrice) : null),
+          image: product.image,
+          category: product.category?.name || product.category || 'Uncategorized',
+          shortDescription: product.shortDescription || product.description,
+          selectedVariant,
+          quantity: quantity
+        };
+        return [...prevCart, newItem];
+      }
+    });
+
+    setCartBadgeAnimate(true);
+    showToast('Product added to cart', 'success');
+
     try {
       const res = await fetch(`${API_BASE}/api/cart/add`, {
         method: 'POST',
@@ -149,10 +195,19 @@ export const CartProvider = ({ children }) => {
         body: JSON.stringify({
           productId: product.id,
           quantity,
-          variant: selectedVariant?.size || 'default'
+          variant: variantSize
         })
       });
+
+      if (res.status === 401) {
+        localStorage.removeItem('paidhu_token');
+        setToken('');
+        setCart(previousCart);
+        return;
+      }
+
       if (res.ok) {
+        // Silent background sync
         const cartRes = await fetch(`${API_BASE}/api/cart`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -160,24 +215,40 @@ export const CartProvider = ({ children }) => {
           const data = await cartRes.json();
           setCart(data.map(formatBackendCartItem).filter(Boolean));
         }
-        setCartBadgeAnimate(true);
-        showToast('Product added to cart', 'success');
       }
     } catch (err) {
       console.error('Add to cart failed:', err);
+      setCart(previousCart);
       showToast('Failed to add product', 'error');
     }
   };
 
   const removeFromCart = async (productId, variantSize = null) => {
     if (!token) return;
+    const previousCart = [...cart];
+    const targetVariant = variantSize || 'default';
+
+    // Optimistically remove item from React cart state
+    setCart(prevCart => prevCart.filter(
+      item => !(item.id === productId && (item.selectedVariant?.size || 'default') === targetVariant)
+    ));
+    showToast('Removed from cart', 'success');
+
     try {
-      const variantQuery = variantSize || 'default';
-      const res = await fetch(`${API_BASE}/api/cart/remove/${productId}?variant=${encodeURIComponent(variantQuery)}`, {
+      const res = await fetch(`${API_BASE}/api/cart/remove/${productId}?variant=${encodeURIComponent(targetVariant)}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
+
+      if (res.status === 401) {
+        localStorage.removeItem('paidhu_token');
+        setToken('');
+        setCart(previousCart);
+        return;
+      }
+
       if (res.ok) {
+        // Silent background sync
         const cartRes = await fetch(`${API_BASE}/api/cart`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -185,10 +256,10 @@ export const CartProvider = ({ children }) => {
           const data = await cartRes.json();
           setCart(data.map(formatBackendCartItem).filter(Boolean));
         }
-        showToast('Removed from cart', 'success');
       }
     } catch (err) {
       console.error('Remove from cart failed:', err);
+      setCart(previousCart);
       showToast('Failed to remove product', 'error');
     }
   };
@@ -199,6 +270,18 @@ export const CartProvider = ({ children }) => {
       await removeFromCart(productId, variantSize);
       return;
     }
+
+    const previousCart = [...cart];
+    const targetVariant = variantSize || 'default';
+
+    // Optimistically update item quantity in React cart state
+    setCart(prevCart => prevCart.map(item => {
+      if (item.id === productId && (item.selectedVariant?.size || 'default') === targetVariant) {
+        return { ...item, quantity };
+      }
+      return item;
+    }));
+
     try {
       const res = await fetch(`${API_BASE}/api/cart/update`, {
         method: 'PUT',
@@ -209,10 +292,19 @@ export const CartProvider = ({ children }) => {
         body: JSON.stringify({
           productId,
           quantity,
-          variant: variantSize || 'default'
+          variant: targetVariant
         })
       });
+
+      if (res.status === 401) {
+        localStorage.removeItem('paidhu_token');
+        setToken('');
+        setCart(previousCart);
+        return;
+      }
+
       if (res.ok) {
+        // Silent background sync
         const cartRes = await fetch(`${API_BASE}/api/cart`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -223,22 +315,31 @@ export const CartProvider = ({ children }) => {
       }
     } catch (err) {
       console.error('Update quantity failed:', err);
+      setCart(previousCart);
     }
   };
 
   const clearCart = async () => {
     if (!token) return;
+    const previousCart = [...cart];
+    setCart([]);
+    showToast('Cart cleared', 'success');
+
     try {
       const res = await fetch(`${API_BASE}/api/cart/clear`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
-      if (res.ok) {
-        setCart([]);
-        showToast('Cart cleared', 'success');
+
+      if (res.status === 401) {
+        localStorage.removeItem('paidhu_token');
+        setToken('');
+        setCart(previousCart);
+        return;
       }
     } catch (err) {
       console.error('Clear cart failed:', err);
+      setCart(previousCart);
     }
   };
 
@@ -254,6 +355,11 @@ export const CartProvider = ({ children }) => {
         },
         body: JSON.stringify({ productId: product.id })
       });
+      if (res.status === 401) {
+        localStorage.removeItem('paidhu_token');
+        setToken('');
+        return;
+      }
       if (res.ok) {
         const data = await res.json();
         const wishlistRes = await fetch(`${API_BASE}/api/wishlist`, {
@@ -282,6 +388,11 @@ export const CartProvider = ({ children }) => {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
+      if (res.status === 401) {
+        localStorage.removeItem('paidhu_token');
+        setToken('');
+        return;
+      }
       if (res.ok) {
         const wishlistRes = await fetch(`${API_BASE}/api/wishlist`, {
           headers: { 'Authorization': `Bearer ${token}` }
