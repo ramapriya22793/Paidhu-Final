@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { FiSave, FiImage, FiType, FiList, FiUsers, FiHeart } from 'react-icons/fi';
 import axios from 'axios';
+import { uploadImage } from '../utils/uploadImage';
 
 const defaultData = {
   hero: {
@@ -66,6 +67,69 @@ const AboutUsManagement = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [activeTab, setActiveTab] = useState('hero');
+  const [dragActive, setDragActive] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  const handleDrag = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      await processFile(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleChange = async (e) => {
+    e.preventDefault();
+    if (e.target.files && e.target.files[0]) {
+      await processFile(e.target.files[0]);
+    }
+  };
+
+  const processFile = async (file) => {
+    if (file.size > 8 * 1024 * 1024) {
+      alert("Image must be smaller than 8MB");
+      return;
+    }
+    
+    setUploading(true);
+    try {
+      // Show local preview instantly
+      const localUrl = URL.createObjectURL(file);
+      setData(prev => ({
+        ...prev,
+        hero: { ...prev.hero, image: localUrl }
+      }));
+      
+      // Upload to Supabase storage
+      const { publicUrl, error } = await uploadImage(file, 'aboutus');
+      if (error) {
+        throw new Error(error);
+      }
+      
+      // Update with uploaded public URL
+      setData(prev => ({
+        ...prev,
+        hero: { ...prev.hero, image: publicUrl }
+      }));
+    } catch (err) {
+      alert(`Upload failed: ${err.message}`);
+      fetchData();
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const fetchData = async () => {
     try {
@@ -186,13 +250,68 @@ const AboutUsManagement = () => {
         {activeTab === 'hero' && (
           <div className="space-y-6 max-w-3xl">
             <h2 className="text-xl font-bold text-brand-plum border-b pb-2 mb-6">Top Full-Width Hero Image</h2>
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">Image URL</label>
-              <input type="text" value={data.hero.image} onChange={(e) => setData({...data, hero: {...data.hero, image: e.target.value}})} className="w-full border rounded-lg px-4 py-2" />
+            
+            <div 
+              onDragEnter={handleDrag}
+              onDragOver={handleDrag}
+              onDragLeave={handleDrag}
+              onDrop={handleDrop}
+              className={`relative border-2 border-dashed rounded-2xl p-8 transition-all flex flex-col items-center justify-center min-h-[220px] ${
+                dragActive 
+                  ? "border-brand-gold bg-brand-plum/5" 
+                  : "border-gray-300 bg-gray-50 hover:bg-gray-50/50 hover:border-brand-plum/40"
+              }`}
+            >
+              <input 
+                type="file" 
+                id="hero-image-upload" 
+                className="hidden" 
+                accept="image/*" 
+                onChange={handleChange}
+                disabled={uploading}
+              />
+
+              {uploading ? (
+                <div className="flex flex-col items-center space-y-3">
+                  <div className="w-10 h-10 border-4 border-brand-plum border-t-transparent rounded-full animate-spin"></div>
+                  <p className="text-sm font-semibold text-brand-plum">Uploading image to secure storage...</p>
+                </div>
+              ) : data.hero.image ? (
+                <div className="w-full relative group">
+                  <img 
+                    src={data.hero.image} 
+                    alt="Hero Preview" 
+                    className="w-full max-h-72 object-cover rounded-xl border shadow-sm transition duration-300 group-hover:brightness-75" 
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <label 
+                      htmlFor="hero-image-upload" 
+                      className="bg-white/95 text-brand-plum px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider shadow-lg hover:scale-105 transition duration-200 cursor-pointer flex items-center gap-2"
+                    >
+                      <FiImage size={14} /> Replace Image
+                    </label>
+                  </div>
+                  <div className="absolute bottom-3 right-3 bg-black/60 text-white text-[10px] font-semibold px-2.5 py-1 rounded-full backdrop-blur-sm">
+                    Drag & Drop another file to replace
+                  </div>
+                </div>
+              ) : (
+                <label 
+                  htmlFor="hero-image-upload" 
+                  className="w-full h-full flex flex-col items-center justify-center cursor-pointer space-y-4 py-8"
+                >
+                  <div className="w-16 h-16 rounded-full bg-brand-plum/5 flex items-center justify-center text-brand-plum shadow-inner transition duration-300">
+                    <FiImage size={28} />
+                  </div>
+                  <div className="text-center">
+                    <p className="text-sm font-bold text-gray-800">
+                      <span className="text-brand-plum hover:underline">Click to upload</span> or drag and drop
+                    </p>
+                    <p className="text-xs text-gray-400 mt-1">PNG, JPG, JPEG, WebP up to 5MB</p>
+                  </div>
+                </label>
+              )}
             </div>
-            {data.hero.image && (
-              <img src={data.hero.image} alt="Preview" className="w-full max-h-64 object-cover rounded-xl mt-4 border shadow-sm" />
-            )}
           </div>
         )}
 
