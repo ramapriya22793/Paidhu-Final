@@ -43,32 +43,41 @@ const calculateSummary = async (req, res) => {
     let deliveryCharge = 50; // Default Standard fallback
     const allDeliveryCharges = await prisma.deliveryCharge.findMany({ where: { isActive: true } });
     
-    // Find matching delivery rule based on type and location
-    const matchedRule = allDeliveryCharges.find(rule => {
-      // Must match the requested type (Standard, Express, etc)
-      if (rule.type !== deliveryType) return false;
-      
-      // If rule has no regions, it applies to everywhere
-      if (!rule.regions || rule.regions.trim() === '') return true;
+    // Find highest priority matching rule for the requested delivery type
+    let bestRule = null;
+    let highestPriority = 0;
 
-      // If rule has regions, check if user's location is in the regions list
-      if (addressDetails) {
+    for (const rule of allDeliveryCharges) {
+      if (rule.type.toLowerCase() !== deliveryType.toLowerCase()) continue;
+
+      let priority = 0;
+      // If rule has no regions, it's a global fallback
+      if (!rule.regions || rule.regions.trim() === '') {
+        priority = 1;
+      } else if (addressDetails) {
         const targetRegions = rule.regions.split(',').map(r => r.trim().toLowerCase());
         const { state, city, pincode } = addressDetails;
-        
-        if (state && targetRegions.includes(state.toLowerCase())) return true;
-        if (city && targetRegions.includes(city.toLowerCase())) return true;
-        if (pincode && targetRegions.includes(pincode.toLowerCase())) return true;
-      }
-      
-      return false;
-    });
 
-    if (matchedRule) {
-      if (matchedRule.freeAbove && subtotal >= matchedRule.freeAbove) {
+        if (pincode && targetRegions.includes(pincode.trim().toLowerCase())) {
+          priority = 4; // Pincode match is most specific
+        } else if (city && targetRegions.includes(city.trim().toLowerCase())) {
+          priority = 3; // City match
+        } else if (state && targetRegions.includes(state.trim().toLowerCase())) {
+          priority = 2; // State match
+        }
+      }
+
+      if (priority > highestPriority) {
+        highestPriority = priority;
+        bestRule = rule;
+      }
+    }
+
+    if (bestRule) {
+      if (bestRule.freeAbove && subtotal >= bestRule.freeAbove) {
         deliveryCharge = 0;
       } else {
-        deliveryCharge = matchedRule.charge;
+        deliveryCharge = bestRule.charge;
       }
     }
 

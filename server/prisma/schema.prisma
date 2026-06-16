@@ -312,7 +312,7 @@ model Refund {
 
 model DeliveryCharge {
   id                Int      @id @default(autoincrement())
-  type              String   @unique // e.g., "Standard", "Express"
+  type              String   // e.g., "Standard", "Express"
   charge            Float
   freeAbove         Float?   // Threshold for free delivery (e.g., 999)
   estimatedDays     String   // e.g., "3-5 Business Days"

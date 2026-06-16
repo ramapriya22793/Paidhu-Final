@@ -54,23 +54,38 @@ const deleteDeliveryCharge = async (req, res) => {
 const checkPincode = async (req, res) => {
   try {
     const { pincode } = req.params;
+    const { city, state } = req.query;
+    
     const allDeliveryCharges = await prisma.deliveryCharge.findMany({ where: { isActive: true } });
     
-    const availableMethods = [];
+    const bestRulesMap = {}; // { [type]: { rule, priority } }
     
     for (const rule of allDeliveryCharges) {
-      // If rule has no regions, it applies everywhere
+      let priority = 0;
+      
       if (!rule.regions || rule.regions.trim() === '') {
-        availableMethods.push(rule);
-        continue;
+        priority = 1; // Global fallback
+      } else {
+        const targetRegions = rule.regions.split(',').map(r => r.trim().toLowerCase());
+        
+        if (pincode && targetRegions.includes(pincode.trim().toLowerCase())) {
+          priority = 4; // Pincode match is highest specificity
+        } else if (city && targetRegions.includes(city.trim().toLowerCase())) {
+          priority = 3; // City match
+        } else if (state && targetRegions.includes(state.trim().toLowerCase())) {
+          priority = 2; // State match
+        }
       }
       
-      const targetRegions = rule.regions.split(',').map(r => r.trim().toLowerCase());
-      if (targetRegions.includes(pincode.toLowerCase())) {
-        availableMethods.push(rule);
+      if (priority > 0) {
+        const existing = bestRulesMap[rule.type];
+        if (!existing || priority > existing.priority) {
+          bestRulesMap[rule.type] = { rule, priority };
+        }
       }
     }
     
+    const availableMethods = Object.values(bestRulesMap).map(item => item.rule);
     res.json(availableMethods);
   } catch (error) {
     console.error("Error checking pincode:", error);
