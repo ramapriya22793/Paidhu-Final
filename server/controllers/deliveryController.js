@@ -59,6 +59,7 @@ const checkPincode = async (req, res) => {
     const allDeliveryCharges = await prisma.deliveryCharge.findMany({ where: { isActive: true } });
     
     const bestRulesMap = {}; // { [type]: { rule, priority } }
+    const cleanStr = str => str ? str.replace(/[^a-zA-Z0-9]/g, '').toLowerCase() : '';
     
     for (const rule of allDeliveryCharges) {
       let priority = 0;
@@ -66,13 +67,13 @@ const checkPincode = async (req, res) => {
       if (!rule.regions || rule.regions.trim() === '') {
         priority = 1; // Global fallback
       } else {
-        const targetRegions = rule.regions.split(',').map(r => r.trim().toLowerCase());
+        const targetRegions = rule.regions.split(',').map(r => cleanStr(r));
         
-        if (pincode && targetRegions.includes(pincode.trim().toLowerCase())) {
+        if (pincode && targetRegions.includes(cleanStr(pincode))) {
           priority = 4; // Pincode match is highest specificity
-        } else if (city && targetRegions.includes(city.trim().toLowerCase())) {
+        } else if (city && targetRegions.includes(cleanStr(city))) {
           priority = 3; // City match
-        } else if (state && targetRegions.includes(state.trim().toLowerCase())) {
+        } else if (state && targetRegions.includes(cleanStr(state))) {
           priority = 2; // State match
         }
       }

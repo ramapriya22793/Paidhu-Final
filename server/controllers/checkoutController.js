@@ -47,6 +47,8 @@ const calculateSummary = async (req, res) => {
     let bestRule = null;
     let highestPriority = 0;
 
+    const cleanStr = str => str ? str.replace(/[^a-zA-Z0-9]/g, '').toLowerCase() : '';
+
     for (const rule of allDeliveryCharges) {
       if (rule.type.toLowerCase() !== deliveryType.toLowerCase()) continue;
 
@@ -55,14 +57,14 @@ const calculateSummary = async (req, res) => {
       if (!rule.regions || rule.regions.trim() === '') {
         priority = 1;
       } else if (addressDetails) {
-        const targetRegions = rule.regions.split(',').map(r => r.trim().toLowerCase());
+        const targetRegions = rule.regions.split(',').map(r => cleanStr(r));
         const { state, city, pincode } = addressDetails;
 
-        if (pincode && targetRegions.includes(pincode.trim().toLowerCase())) {
+        if (pincode && targetRegions.includes(cleanStr(pincode))) {
           priority = 4; // Pincode match is most specific
-        } else if (city && targetRegions.includes(city.trim().toLowerCase())) {
+        } else if (city && targetRegions.includes(cleanStr(city))) {
           priority = 3; // City match
-        } else if (state && targetRegions.includes(state.trim().toLowerCase())) {
+        } else if (state && targetRegions.includes(cleanStr(state))) {
           priority = 2; // State match
         }
       }
