@@ -47,7 +47,19 @@ const calculateSummary = async (req, res) => {
     let bestRule = null;
     let highestPriority = 0;
 
+    const cleanTargetRegion = str => str ? str.replace(/[^a-zA-Z0-9*]/g, '').toLowerCase() : '';
     const cleanStr = str => str ? str.replace(/[^a-zA-Z0-9]/g, '').toLowerCase() : '';
+
+    const matchRegion = (input, target) => {
+      if (!input || !target) return false;
+      const cleanInput = cleanStr(input);
+      const cleanTarget = cleanTargetRegion(target);
+      if (cleanTarget.endsWith('*')) {
+        const prefix = cleanTarget.slice(0, -1);
+        return cleanInput.startsWith(prefix);
+      }
+      return cleanInput === cleanTarget;
+    };
 
     for (const rule of allDeliveryCharges) {
       if (rule.type.toLowerCase() !== deliveryType.toLowerCase()) continue;
@@ -57,14 +69,24 @@ const calculateSummary = async (req, res) => {
       if (!rule.regions || rule.regions.trim() === '') {
         priority = 1;
       } else if (addressDetails) {
-        const targetRegions = rule.regions.split(',').map(r => cleanStr(r));
+        const targetRegions = rule.regions.split(',');
         const { state, city, pincode } = addressDetails;
 
-        if (pincode && targetRegions.includes(cleanStr(pincode))) {
-          priority = 4; // Pincode match is most specific
-        } else if (city && targetRegions.includes(cleanStr(city))) {
+        let pincodeMatched = false;
+        let cityMatched = false;
+        let stateMatched = false;
+
+        for (const target of targetRegions) {
+          if (pincode && matchRegion(pincode, target)) pincodeMatched = true;
+          if (city && matchRegion(city, target)) cityMatched = true;
+          if (state && matchRegion(state, target)) stateMatched = true;
+        }
+
+        if (pincodeMatched) {
+          priority = 4; // Pincode / Wildcard Pincode match is most specific
+        } else if (cityMatched) {
           priority = 3; // City match
-        } else if (state && targetRegions.includes(cleanStr(state))) {
+        } else if (stateMatched) {
           priority = 2; // State match
         }
       }
