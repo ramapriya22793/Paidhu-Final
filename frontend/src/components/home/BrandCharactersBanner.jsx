@@ -49,6 +49,9 @@ const BrandCharactersBanner = () => {
             <img 
               src={char.src}
               alt={`Paidhu Character ${idx + 1}`}
+              width={200}
+              height={244}
+              loading="lazy"
               className={`
                 w-[80px] sm:w-[120px] md:w-[150px] lg:w-[200px] object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,0.15)] 
                 transform transition-all duration-500 origin-bottom

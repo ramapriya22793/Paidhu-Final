@@ -91,6 +91,8 @@ const Footer = () => {
               <img 
                 src="/Paidhulogo.png" 
                 alt="Paidhu Logo" 
+                width={128}
+                height={85}
                 className="w-32 h-auto object-contain brightness-0 invert mb-2"
                 onError={(e) => { e.target.style.display = 'none'; }}
               />
@@ -105,6 +107,8 @@ const Footer = () => {
             <img 
               src="/mascot.png" 
               alt="Paidhu Mascot" 
+              width={64}
+              height={64}
               className="w-full h-full object-contain"
             />
           </div>

@@ -30,7 +30,12 @@ const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [slides, setSlides] = useState(FALLBACK_SLIDES);
   const [isMobile, setIsMobile] = useState(false);
-  const [aspectRatios, setAspectRatios] = useState({});
+  const [aspectRatios, setAspectRatios] = useState({
+    'fallback-1-web': 1,
+    'fallback-1-mobile': 1,
+    'fallback-2-web': 1,
+    'fallback-2-mobile': 1
+  });
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
