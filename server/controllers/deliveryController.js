@@ -62,15 +62,21 @@ const checkPincode = async (req, res) => {
     const cleanTargetRegion = str => str ? str.replace(/[^a-zA-Z0-9*]/g, '').toLowerCase() : '';
     const cleanStr = str => str ? str.replace(/[^a-zA-Z0-9]/g, '').toLowerCase() : '';
 
-    const matchRegion = (input, target) => {
-      if (!input || !target) return false;
+    const getMatchPriority = (input, target, basePriority) => {
+      if (!input || !target) return 0;
       const cleanInput = cleanStr(input);
       const cleanTarget = cleanTargetRegion(target);
       if (cleanTarget.endsWith('*')) {
         const prefix = cleanTarget.slice(0, -1);
-        return cleanInput.startsWith(prefix);
+        if (cleanInput.startsWith(prefix)) {
+          return basePriority + (prefix.length / 10);
+        }
+        return 0;
       }
-      return cleanInput === cleanTarget;
+      if (cleanInput === cleanTarget) {
+        return basePriority + 0.9;
+      }
+      return 0;
     };
 
     for (const rule of allDeliveryCharges) {
@@ -80,23 +86,20 @@ const checkPincode = async (req, res) => {
         priority = 1; // Global fallback
       } else {
         const targetRegions = rule.regions.split(',');
-        
-        let pincodeMatched = false;
-        let cityMatched = false;
-        let stateMatched = false;
 
         for (const target of targetRegions) {
-          if (pincode && matchRegion(pincode, target)) pincodeMatched = true;
-          if (city && matchRegion(city, target)) cityMatched = true;
-          if (state && matchRegion(state, target)) stateMatched = true;
-        }
-
-        if (pincodeMatched) {
-          priority = 4; // Pincode match is highest specificity
-        } else if (cityMatched) {
-          priority = 3; // City match
-        } else if (stateMatched) {
-          priority = 2; // State match
+          if (pincode) {
+            const p = getMatchPriority(pincode, target, 4);
+            if (p > priority) priority = p;
+          }
+          if (city) {
+            const p = getMatchPriority(city, target, 3);
+            if (p > priority) priority = p;
+          }
+          if (state) {
+            const p = getMatchPriority(state, target, 2);
+            if (p > priority) priority = p;
+          }
         }
       }
       
