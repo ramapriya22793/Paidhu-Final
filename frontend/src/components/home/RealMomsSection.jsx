@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import paidhuCommunityImg from '../../assets/paidhu_community.png';
+import paidhuMomsImg from '../../assets/paidhu_moms.png';
 
 const RealMomsSection = () => {
   return (
@@ -23,10 +23,10 @@ const RealMomsSection = () => {
           className="w-full md:w-1/2 text-left mb-12 md:mb-0 pr-6 md:pr-12"
         >
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#522742] font-serif mb-4 tracking-tight">
-            Join the Paidhu Family
+            Paidhu Moms Community
           </h2>
           <p className="text-lg md:text-xl font-bold text-[#522742]/85 mb-6 max-w-md leading-snug">
-            Connecting health enthusiasts, culinary lovers, and advocates of clean, floral living.
+            A supportive space for moms to share tips on clean eating, child nutrition, and organic family wellness.
           </p>
           
           <div className="w-full h-px bg-[#522742]/20 mb-6"></div>
@@ -34,29 +34,29 @@ const RealMomsSection = () => {
           <ul className="space-y-3 mb-8">
             <li className="flex items-start">
               <span className="text-[#fbc225] mr-3 mt-1 text-xl leading-none">•</span>
-              <span className="text-[#4b3c43] font-medium text-base md:text-lg">Discover unique ways to incorporate edible flowers into your daily recipes</span>
+              <span className="text-[#4b3c43] font-medium text-base md:text-lg">Connect with health-conscious moms in your city</span>
             </li>
             <li className="flex items-start">
               <span className="text-[#fbc225] mr-3 mt-1 text-xl leading-none">•</span>
-              <span className="text-[#4b3c43] font-medium text-base md:text-lg">Get exclusive floral-infused tips from culinary experts and nutritionists</span>
+              <span className="text-[#4b3c43] font-medium text-base md:text-lg">Get expert advice on child nutrition, healthy growth, and natural remedies</span>
             </li>
             <li className="flex items-start">
               <span className="text-[#fbc225] mr-3 mt-1 text-xl leading-none">•</span>
-              <span className="text-[#4b3c43] font-medium text-base md:text-lg">Receive members-only invitations to farm tours, tastings, and wellness meet-ups</span>
+              <span className="text-[#4b3c43] font-medium text-base md:text-lg">Share unique, kids-friendly recipes using floral petal jams and organic ingredients</span>
             </li>
             <li className="flex items-start">
               <span className="text-[#fbc225] mr-3 mt-1 text-xl leading-none">•</span>
-              <span className="text-[#4b3c43] font-medium text-base md:text-lg">Connect with a passionate community advocating for clean, natural, and ethical foods</span>
+              <span className="text-[#4b3c43] font-medium text-base md:text-lg">Receive invitations to exclusive local meetups, wellness workshops, and product tastings</span>
             </li>
           </ul>
 
           <a 
-            href="https://wa.me/918754787774" 
+            href="https://chat.whatsapp.com/EDlauzE5x1B6U23RamfCej?s=sh&p=a&ilr=0" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="bg-[#522742] text-white text-sm font-black py-2.5 px-6 rounded-full hover:bg-[#662654] transition-colors flex items-center shadow-md w-fit"
           >
-            Join Our WhatsApp Community 
+            Join Our Moms Community 
             <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
             </svg>
@@ -80,8 +80,8 @@ const RealMomsSection = () => {
             }}
           >
             <img 
-              src={paidhuCommunityImg} 
-              alt="Paidhu Community" 
+              src={paidhuMomsImg} 
+              alt="Paidhu Moms Community" 
               className="w-full h-full object-cover"
             />
           </div>
