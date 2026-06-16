@@ -338,6 +338,27 @@ const CheckoutPage = () => {
         theme: {
           color: "#662654"
         },
+        method: {
+          card: false,
+          wallet: false,
+          emi: false,
+          paylater: false,
+          upi: true,
+          netbanking: true
+        },
+        config: {
+          display: {
+            hide: [
+              { method: 'card' },
+              { method: 'wallet' },
+              { method: 'emi' },
+              { method: 'paylater' }
+            ],
+            preferences: {
+              show_default_blocks: true
+            }
+          }
+        },
         handler: async function (res) {
           try {
             const verifyRes = await fetch(`${API_BASE}/api/checkout/verify`, {
