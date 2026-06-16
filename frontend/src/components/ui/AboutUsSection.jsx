@@ -262,6 +262,7 @@ const AboutUsSection = () => {
                     src={founder.image}
                     alt={founder.name}
                     className="absolute inset-0 w-full h-full object-cover"
+                    style={founder.name.includes("Vikram") ? { transform: 'scale(1.85)', transformOrigin: '50% 12%' } : {}}
                     onError={(e) => {
                       e.target.src = 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop';
                     }}
