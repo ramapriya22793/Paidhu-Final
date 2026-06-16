@@ -139,6 +139,19 @@ const CheckoutPage = () => {
     }
   }, [cart]);
 
+  const [calculatedAddress, setCalculatedAddress] = useState({
+    pincode: '',
+    state: '',
+    city: ''
+  });
+
+  const isPincodeEntered = formData.pincode && formData.pincode.trim().length === 6;
+  const isSummaryOutdated = isPincodeEntered && (
+    formData.pincode !== calculatedAddress.pincode ||
+    formData.state !== calculatedAddress.state ||
+    formData.city !== calculatedAddress.city
+  );
+
   const [loadingSummary, setLoadingSummary] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -166,6 +179,7 @@ const CheckoutPage = () => {
         deliveryCharge: 0,
         totalPrice: (cartTotal || 0) - prev.discountAmount - prev.rewardPointsUsed
       }));
+      setCalculatedAddress({ pincode: '', state: '', city: '' });
       return;
     }
 
@@ -202,6 +216,11 @@ const CheckoutPage = () => {
           rewardPointsUsed: data.rewardPointsUsed,
           totalPrice: data.totalPrice,
           couponId: data.couponId
+        });
+        setCalculatedAddress({
+          pincode: formData.pincode,
+          state: formData.state,
+          city: formData.city
         });
       }
     } catch (err) {
@@ -241,7 +260,12 @@ const CheckoutPage = () => {
           userId,
           items: checkoutItems,
           deliveryType: 'Standard',
-          couponCode: couponCode.trim()
+          couponCode: couponCode.trim(),
+          addressDetails: isPincodeEntered ? {
+            city: formData.city,
+            state: formData.state,
+            pincode: formData.pincode
+          } : undefined
         })
       });
 
@@ -250,12 +274,21 @@ const CheckoutPage = () => {
         if (data.discountAmount > 0) {
           setAppliedCoupon(couponCode.trim());
           setCouponSuccess(`Saved ₹${data.discountAmount} with "${couponCode.trim()}"!`);
-          setSummary(prev => ({
-            ...prev,
+          setSummary({
+            subtotal: data.subtotal,
+            deliveryCharge: data.deliveryCharge,
             discountAmount: data.discountAmount,
+            rewardPointsUsed: data.rewardPointsUsed,
             totalPrice: data.totalPrice,
             couponId: data.couponId
-          }));
+          });
+          if (isPincodeEntered) {
+            setCalculatedAddress({
+              pincode: formData.pincode,
+              state: formData.state,
+              city: formData.city
+            });
+          }
         } else {
           setCouponError("Coupon code is not applicable for this cart total.");
         }
@@ -831,6 +864,8 @@ const CheckoutPage = () => {
                   <span>
                     {(!formData.pincode || formData.pincode.trim().length < 6) ? (
                       <span className="text-white/40 text-[10px] font-bold italic">Enter Pincode to calculate</span>
+                    ) : (loadingSummary || isSummaryOutdated) ? (
+                      <span className="text-white/40 text-[10px] font-bold italic">Calculating...</span>
                     ) : (
                       (summary?.deliveryCharge ?? 0) === 0 ? <span className="text-emerald-400 font-extrabold">FREE</span> : `₹${summary?.deliveryCharge ?? 0}`
                     )}
@@ -847,7 +882,11 @@ const CheckoutPage = () => {
                 <div className="flex justify-between items-center border-t border-white/10 pt-4 mt-1">
                   <span className="text-sm font-black text-white">Grand Total</span>
                   <span className="text-2xl font-black text-[#d4af37]">
-                    ₹{(summary?.totalPrice ?? 0).toLocaleString()}
+                    {(loadingSummary || isSummaryOutdated) ? (
+                      <span className="text-sm font-bold text-white/40 italic">Calculating...</span>
+                    ) : (
+                      `₹${(summary?.totalPrice ?? 0).toLocaleString()}`
+                    )}
                   </span>
                 </div>
               </div>
@@ -857,12 +896,22 @@ const CheckoutPage = () => {
                 <motion.button
                   type="button"
                   onClick={handlePlaceOrder}
-                  disabled={submitting}
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full bg-gradient-to-r from-[#662654] to-[#7f3069] text-white py-4 rounded-full flex items-center justify-center gap-2 font-bold text-sm shadow-[0_8px_30px_rgba(102,38,84,0.3)] hover:shadow-[0_8px_35px_rgba(102,38,84,0.5)] transition-all duration-300 group/btn cursor-pointer"
+                  disabled={submitting || loadingSummary || isSummaryOutdated}
+                  whileHover={{ scale: (submitting || loadingSummary || isSummaryOutdated) ? 1 : 1.01 }}
+                  whileTap={{ scale: (submitting || loadingSummary || isSummaryOutdated) ? 1 : 0.98 }}
+                  className={`w-full text-white py-4 rounded-full flex items-center justify-center gap-2 font-bold text-sm transition-all duration-300 group/btn ${
+                    (submitting || loadingSummary || isSummaryOutdated)
+                      ? 'bg-gray-600 cursor-not-allowed opacity-50 shadow-none'
+                      : 'bg-gradient-to-r from-[#662654] to-[#7f3069] shadow-[0_8px_30px_rgba(102,38,84,0.3)] hover:shadow-[0_8px_35px_rgba(102,38,84,0.5)] cursor-pointer'
+                  }`}
                 >
-                  <span>{submitting ? 'PROCESSING...' : 'CONFIRM ORDER & PAY'}</span>
+                  <span>
+                    {submitting 
+                      ? 'PROCESSING...' 
+                      : (loadingSummary || isSummaryOutdated) 
+                        ? 'CALCULATING FEES...' 
+                        : 'CONFIRM ORDER & PAY'}
+                  </span>
                   <ChevronRight size={16} className="transform group-hover/btn:translate-x-1 transition-transform" />
                 </motion.button>
               </div>
