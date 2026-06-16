@@ -130,6 +130,23 @@ const initiateCheckout = async (req, res) => {
       items, paymentMethod, summary 
     } = req.body;
 
+    // Validation
+    if (!customerName || !customerName.trim()) {
+      return res.status(400).json({ error: 'Customer name is required' });
+    }
+    if (!customerEmail || !customerEmail.trim()) {
+      return res.status(400).json({ error: 'Customer email is required' });
+    }
+    if (!shippingAddress || !shippingAddress.trim()) {
+      return res.status(400).json({ error: 'Shipping address is required' });
+    }
+    
+    // Ensure pincode exists in address (6-digit check)
+    const pincodeMatch = shippingAddress.match(/\b\d{6}\b/);
+    if (!pincodeMatch) {
+      return res.status(400).json({ error: 'A valid 6-digit Pincode is mandatory' });
+    }
+
     // Verify if userId exists in database to prevent foreign key constraint violations (e.g. stale/deleted tokens)
     let finalUserId = null;
     if (userId) {

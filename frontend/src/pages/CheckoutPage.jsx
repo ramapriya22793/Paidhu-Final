@@ -145,7 +145,12 @@ const CheckoutPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    if (name === 'pincode' || name === 'phone') {
+      const numericValue = value.replace(/\D/g, '');
+      setFormData(prev => ({ ...prev, [name]: numericValue }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   // Trigger backend calculation when coupon or address changes
@@ -276,7 +281,8 @@ const CheckoutPage = () => {
     if (!formData.addressLine1.trim()) return "Shipping address is required";
     if (!formData.city.trim()) return "City is required";
     if (!formData.state.trim()) return "State is required";
-    if (!formData.pincode.trim() || formData.pincode.length < 6) return "Enter a valid 6-digit Pincode";
+    if (!formData.pincode.trim()) return "Pincode is mandatory";
+    if (formData.pincode.trim().length !== 6) return "Pincode must be exactly 6 digits";
     return null;
   };
 
@@ -529,11 +535,12 @@ const CheckoutPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div className="md:col-span-2 relative">
                   <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 flex items-center gap-1">
-                    <User size={10} className="text-[#662654]" /> Full Name
+                    <User size={10} className="text-[#662654]" /> Full Name *
                   </label>
                   <input 
                     type="text" 
                     name="fullName"
+                    required
                     value={formData.fullName}
                     onChange={handleInputChange}
                     onFocus={() => setActiveInput('fullName')}
@@ -549,11 +556,12 @@ const CheckoutPage = () => {
 
                 <div className="relative">
                   <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 flex items-center gap-1">
-                    <Mail size={10} className="text-[#662654]" /> Email Address
+                    <Mail size={10} className="text-[#662654]" /> Email Address *
                   </label>
                   <input 
                     type="email" 
                     name="email"
+                    required
                     value={formData.email}
                     onChange={handleInputChange}
                     onFocus={() => setActiveInput('email')}
@@ -569,11 +577,13 @@ const CheckoutPage = () => {
 
                 <div className="relative">
                   <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 flex items-center gap-1">
-                    <Phone size={10} className="text-[#662654]" /> Phone Number
+                    <Phone size={10} className="text-[#662654]" /> Phone Number *
                   </label>
                   <input 
                     type="tel" 
                     name="phone"
+                    required
+                    maxLength={10}
                     value={formData.phone}
                     onChange={handleInputChange}
                     onFocus={() => setActiveInput('phone')}
@@ -599,11 +609,12 @@ const CheckoutPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 <div className="md:col-span-3 relative">
                   <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 flex items-center gap-1">
-                    <MapPin size={10} className="text-[#662654]" /> Address Line 1
+                    <MapPin size={10} className="text-[#662654]" /> Address Line 1 *
                   </label>
                   <input 
                     type="text" 
                     name="addressLine1"
+                    required
                     value={formData.addressLine1}
                     onChange={handleInputChange}
                     onFocus={() => setActiveInput('addressLine1')}
@@ -636,10 +647,11 @@ const CheckoutPage = () => {
                 </div>
 
                 <div className="relative">
-                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5">City</label>
+                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5">City *</label>
                   <input 
                     type="text" 
                     name="city"
+                    required
                     value={formData.city}
                     onChange={handleInputChange}
                     onFocus={() => setActiveInput('city')}
@@ -654,10 +666,11 @@ const CheckoutPage = () => {
                 </div>
 
                 <div className="relative">
-                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5">State</label>
+                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5">State *</label>
                   <input 
                     type="text" 
                     name="state"
+                    required
                     value={formData.state}
                     onChange={handleInputChange}
                     onFocus={() => setActiveInput('state')}
@@ -672,10 +685,11 @@ const CheckoutPage = () => {
                 </div>
 
                 <div className="relative">
-                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5">Pincode</label>
+                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5">Pincode *</label>
                   <input 
                     type="text" 
                     name="pincode"
+                    required
                     value={formData.pincode}
                     onChange={handleInputChange}
                     onFocus={() => setActiveInput('pincode')}
