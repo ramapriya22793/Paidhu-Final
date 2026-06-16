@@ -14,7 +14,7 @@ const defaultData = {
     ]
   },
   formSection: {
-    disclaimer: 'Disclaimer: We do not accept international bulk orders. For Further Queries Contact us at +91 7042018256 or help@paidhu.com',
+    disclaimer: 'Disclaimer: We do not accept international bulk orders. For Further Queries Contact us at +91 8754787774 or help@paidhu.com',
     formTitle: 'Fill in Your Details',
     buttonText: 'Send Request'
   },
@@ -37,7 +37,7 @@ const defaultData = {
   contactAssistance: {
     title: 'Need help with your order? Contact us!',
     text: 'Ready to place a bulk order? Contact us today for a special discount and dedicated assistance.',
-    phone: '+91 70420 18256',
+    phone: '+91 87547 87774',
     email: 'help@paidhu.com',
     buttonText: 'Chat with us'
   }
