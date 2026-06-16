@@ -81,6 +81,7 @@ const defaultEmoji = '🌼';
 
 // Maps navbar display name → route slug
 const navSlugMap = {
+  'Home':                        '/',
   'Shop All':                    'shop-all',
   'Deal of the Day':             'deal-of-the-day',
   'Shop by Category':            'shop-by-category',
@@ -221,7 +222,13 @@ const Navbar = () => {
 
   const handleNavClick = (name) => {
     const slug = navSlugMap[name];
-    if (slug) navigate(`/shop/${slug}`);
+    if (slug) {
+      if (slug === '/') {
+        navigate('/');
+      } else {
+        navigate(`/shop/${slug}`);
+      }
+    }
     setIsMobileMenuOpen(false);
   };
 
@@ -240,6 +247,7 @@ const Navbar = () => {
   };
 
   const navColumns = [
+    { top: { name: 'Home' } },
     { top: { name: 'Shop All' } },
     { top: { name: 'Deal of the Day' } },
     { top: { name: 'Shop by Category' } },
