@@ -158,19 +158,30 @@ const CheckoutPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    let numericValue = value;
     if (name === 'pincode' || name === 'phone') {
-      const numericValue = value.replace(/\D/g, '');
-      setFormData(prev => ({ ...prev, [name]: numericValue }));
-    } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
+      numericValue = value.replace(/\D/g, '');
+    }
+    
+    const updatedData = { ...formData, [name]: numericValue };
+    setFormData(updatedData);
+
+    // If pincode just became exactly 6 digits, fetch summary immediately (no debounce delay).
+    // If pincode is shortened from 6 digits, immediately clear/reset the delivery charge.
+    if (name === 'pincode') {
+      if (numericValue.trim().length === 6) {
+        fetchSummary(appliedCoupon, updatedData);
+      } else if (calculatedAddress.pincode !== '') {
+        fetchSummary(appliedCoupon, updatedData);
+      }
     }
   };
 
   // Trigger backend calculation when coupon or address changes
-  const fetchSummary = async (couponToApply = appliedCoupon) => {
+  const fetchSummary = async (couponToApply = appliedCoupon, customData = formData) => {
     if (cart.length === 0) return;
 
-    const isPincodeEntered = formData.pincode && formData.pincode.trim().length === 6;
+    const isPincodeEntered = customData.pincode && customData.pincode.trim().length === 6;
 
     if (!isPincodeEntered) {
       setSummary(prev => ({
@@ -200,9 +211,9 @@ const CheckoutPage = () => {
           deliveryType: 'Standard',
           couponCode: couponToApply || undefined,
           addressDetails: {
-            city: formData.city,
-            state: formData.state,
-            pincode: formData.pincode
+            city: customData.city,
+            state: customData.state,
+            pincode: customData.pincode
           }
         })
       });
@@ -218,9 +229,9 @@ const CheckoutPage = () => {
           couponId: data.couponId
         });
         setCalculatedAddress({
-          pincode: formData.pincode,
-          state: formData.state,
-          city: formData.city
+          pincode: customData.pincode,
+          state: customData.state,
+          city: customData.city
         });
       }
     } catch (err) {
@@ -229,16 +240,6 @@ const CheckoutPage = () => {
       setLoadingSummary(false);
     }
   };
-
-  // Fetch summary when address values that affect shipping charge (state, city, pincode) change
-  useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      if (formData.state || formData.city || formData.pincode) {
-        fetchSummary();
-      }
-    }, 600);
-    return () => clearTimeout(delayDebounce);
-  }, [formData.state, formData.city, formData.pincode]);
 
   const handleApplyCoupon = async (e) => {
     e.preventDefault();
@@ -688,7 +689,12 @@ const CheckoutPage = () => {
                     value={formData.city}
                     onChange={handleInputChange}
                     onFocus={() => setActiveInput('city')}
-                    onBlur={() => setActiveInput('')}
+                    onBlur={() => {
+                      setActiveInput('');
+                      if (formData.city.trim() !== calculatedAddress.city) {
+                        fetchSummary(appliedCoupon, formData);
+                      }
+                    }}
                     placeholder="City" 
                     className={`w-full px-4 py-3 rounded-xl border bg-[#faf9f6]/40 focus:bg-white text-sm text-gray-800 placeholder-gray-400 font-semibold transition-all duration-300 ${
                       activeInput === 'city' 
@@ -707,7 +713,12 @@ const CheckoutPage = () => {
                     value={formData.state}
                     onChange={handleInputChange}
                     onFocus={() => setActiveInput('state')}
-                    onBlur={() => setActiveInput('')}
+                    onBlur={() => {
+                      setActiveInput('');
+                      if (formData.state.trim() !== calculatedAddress.state) {
+                        fetchSummary(appliedCoupon, formData);
+                      }
+                    }}
                     placeholder="State" 
                     className={`w-full px-4 py-3 rounded-xl border bg-[#faf9f6]/40 focus:bg-white text-sm text-gray-800 placeholder-gray-400 font-semibold transition-all duration-300 ${
                       activeInput === 'state' 
@@ -726,7 +737,12 @@ const CheckoutPage = () => {
                     value={formData.pincode}
                     onChange={handleInputChange}
                     onFocus={() => setActiveInput('pincode')}
-                    onBlur={() => setActiveInput('')}
+                    onBlur={() => {
+                      setActiveInput('');
+                      if (formData.pincode.trim().length === 6 && formData.pincode !== calculatedAddress.pincode) {
+                        fetchSummary(appliedCoupon, formData);
+                      }
+                    }}
                     placeholder="6-digits" 
                     maxLength={6}
                     className={`w-full px-4 py-3 rounded-xl border bg-[#faf9f6]/40 focus:bg-white text-sm text-gray-800 placeholder-gray-400 font-semibold transition-all duration-300 ${

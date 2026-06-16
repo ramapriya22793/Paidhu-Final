@@ -1,11 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const FacebookIcon = ({ size = 20 }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-  </svg>
-);
 
 const InstagramIcon = ({ size = 20 }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -72,16 +67,31 @@ const Footer = () => {
             <div>
               <h4 className="font-bold text-xl mb-4 font-serif text-[#fbc225]">Follow Us</h4>
               <div className="flex space-x-4 lg:justify-end">
-                <motion.a whileHover={{ scale: 1.1, color: "#fbc225" }} href="#" className="text-[#fdfaf6] hover:text-[#fbc225] transition-colors">
+                <motion.a 
+                  whileHover={{ scale: 1.1, color: "#fbc225" }} 
+                  href="https://www.instagram.com/paidhu_edibleflower/" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-[#fdfaf6] hover:text-[#fbc225] transition-colors"
+                >
                   <InstagramIcon size={24} />
                 </motion.a>
-                <motion.a whileHover={{ scale: 1.1, color: "#fbc225" }} href="#" className="text-[#fdfaf6] hover:text-[#fbc225] transition-colors">
-                  <FacebookIcon size={24} />
-                </motion.a>
-                <motion.a whileHover={{ scale: 1.1, color: "#fbc225" }} href="#" className="text-[#fdfaf6] hover:text-[#fbc225] transition-colors">
+                <motion.a 
+                  whileHover={{ scale: 1.1, color: "#fbc225" }} 
+                  href="https://www.youtube.com/@Paidhu" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-[#fdfaf6] hover:text-[#fbc225] transition-colors"
+                >
                   <YoutubeIcon size={24} />
                 </motion.a>
-                <motion.a whileHover={{ scale: 1.1, color: "#fbc225" }} href="#" className="text-[#fdfaf6] hover:text-[#fbc225] transition-colors">
+                <motion.a 
+                  whileHover={{ scale: 1.1, color: "#fbc225" }} 
+                  href="https://wa.me/918754787774" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-[#fdfaf6] hover:text-[#fbc225] transition-colors"
+                >
                   <MessageCircleIcon size={24} />
                 </motion.a>
               </div>
