@@ -4,7 +4,7 @@ import paidhuCommunityImg from '../../assets/paidhu_community.png';
 
 const RealMomsSection = () => {
   return (
-    <section className="relative w-full bg-[#522742] pt-12 pb-0 overflow-hidden">
+    <section className="relative w-full bg-[#faf7f3] pt-12 pb-0 overflow-hidden">
       {/* Wavy Top SVG Divider (matching the storytelling section above) */}
       <div className="absolute top-0 left-0 w-full overflow-hidden leading-[0] transform rotate-180">
         <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-[calc(100%+1.3px)] h-[40px] md:h-[60px]">
@@ -22,31 +22,31 @@ const RealMomsSection = () => {
           transition={{ duration: 0.6, ease: 'easeOut' }}
           className="w-full md:w-1/2 text-left mb-12 md:mb-0 pr-6 md:pr-12"
         >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#fbc225] font-serif mb-4 tracking-tight">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#522742] font-serif mb-4 tracking-tight">
             Join the Paidhu Family
           </h2>
-          <p className="text-lg md:text-xl font-bold text-[#fdfaf6] mb-6 max-w-md leading-snug">
+          <p className="text-lg md:text-xl font-bold text-[#522742]/85 mb-6 max-w-md leading-snug">
             Connecting health enthusiasts, culinary lovers, and advocates of clean, floral living.
           </p>
           
-          <div className="w-full h-px bg-[#fbc225]/30 mb-6"></div>
+          <div className="w-full h-px bg-[#522742]/20 mb-6"></div>
           
           <ul className="space-y-3 mb-8">
             <li className="flex items-start">
               <span className="text-[#fbc225] mr-3 mt-1 text-xl leading-none">•</span>
-              <span className="text-[#fdfaf6] font-medium text-base md:text-lg">Discover unique ways to incorporate edible flowers into your daily recipes</span>
+              <span className="text-[#4b3c43] font-medium text-base md:text-lg">Discover unique ways to incorporate edible flowers into your daily recipes</span>
             </li>
             <li className="flex items-start">
               <span className="text-[#fbc225] mr-3 mt-1 text-xl leading-none">•</span>
-              <span className="text-[#fdfaf6] font-medium text-base md:text-lg">Get exclusive floral-infused tips from culinary experts and nutritionists</span>
+              <span className="text-[#4b3c43] font-medium text-base md:text-lg">Get exclusive floral-infused tips from culinary experts and nutritionists</span>
             </li>
             <li className="flex items-start">
               <span className="text-[#fbc225] mr-3 mt-1 text-xl leading-none">•</span>
-              <span className="text-[#fdfaf6] font-medium text-base md:text-lg">Receive members-only invitations to farm tours, tastings, and wellness meet-ups</span>
+              <span className="text-[#4b3c43] font-medium text-base md:text-lg">Receive members-only invitations to farm tours, tastings, and wellness meet-ups</span>
             </li>
             <li className="flex items-start">
               <span className="text-[#fbc225] mr-3 mt-1 text-xl leading-none">•</span>
-              <span className="text-[#fdfaf6] font-medium text-base md:text-lg">Connect with a passionate community advocating for clean, natural, and ethical foods</span>
+              <span className="text-[#4b3c43] font-medium text-base md:text-lg">Connect with a passionate community advocating for clean, natural, and ethical foods</span>
             </li>
           </ul>
 
@@ -54,7 +54,7 @@ const RealMomsSection = () => {
             href="https://wa.me/918754787774" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="bg-[#fbc225] text-[#522742] text-sm font-black py-2.5 px-6 rounded-full hover:bg-[#e0ad20] transition-colors flex items-center shadow-md w-fit"
+            className="bg-[#522742] text-white text-sm font-black py-2.5 px-6 rounded-full hover:bg-[#662654] transition-colors flex items-center shadow-md w-fit"
           >
             Join Our WhatsApp Community 
             <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
