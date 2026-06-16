@@ -8,13 +8,19 @@ const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 const FALLBACK_SLIDES = [
   {
     id: 'fallback-1',
-    image: '/hero_banner_paidhu.png',
+    image: '/banner_tea.jpeg',
     bgColor: '#faf5eb',
     isBackendBanner: false
   },
   {
     id: 'fallback-2',
-    image: '/hero_banner_full.png',
+    image: '/banner_jam.jpeg',
+    bgColor: '#faf5eb',
+    isBackendBanner: false
+  },
+  {
+    id: 'fallback-3',
+    image: '/banner_cookies.jpeg',
     bgColor: '#faf5eb',
     isBackendBanner: false
   }
@@ -31,10 +37,12 @@ const Hero = () => {
   const [slides, setSlides] = useState(FALLBACK_SLIDES);
   const [isMobile, setIsMobile] = useState(false);
   const [aspectRatios, setAspectRatios] = useState({
-    'fallback-1-web': 1,
-    'fallback-1-mobile': 1,
-    'fallback-2-web': 1,
-    'fallback-2-mobile': 1
+    'fallback-1-web': 2,
+    'fallback-1-mobile': 2,
+    'fallback-2-web': 2,
+    'fallback-2-mobile': 2,
+    'fallback-3-web': 2.4,
+    'fallback-3-mobile': 2.4
   });
 
   useEffect(() => {
