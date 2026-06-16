@@ -112,23 +112,25 @@ const CheckoutPage = () => {
   // Cost Summary State (Calculated by backend)
   const [summary, setSummary] = useState({
     subtotal: cartTotal || 0,
-    deliveryCharge: (cartTotal || 0) >= 500 ? 0 : 50,
+    deliveryCharge: 0,
     discountAmount: 0,
     rewardPointsUsed: 0,
-    totalPrice: (cartTotal || 0) >= 500 ? (cartTotal || 0) : (cartTotal || 0) + 50,
+    totalPrice: cartTotal || 0,
     couponId: null
   });
 
   // Update summary when cartTotal changes
   useEffect(() => {
-    setSummary(prev => ({
-      ...prev,
-      subtotal: cartTotal || 0,
-      totalPrice: (cartTotal || 0) >= 500 
-        ? (cartTotal || 0) - prev.discountAmount - prev.rewardPointsUsed 
-        : (cartTotal || 0) + 50 - prev.discountAmount - prev.rewardPointsUsed
-    }));
-  }, [cartTotal]);
+    const isPincodeEntered = formData.pincode && formData.pincode.trim().length === 6;
+    setSummary(prev => {
+      const charge = isPincodeEntered ? prev.deliveryCharge : 0;
+      return {
+        ...prev,
+        subtotal: cartTotal || 0,
+        totalPrice: (cartTotal || 0) + charge - prev.discountAmount - prev.rewardPointsUsed
+      };
+    });
+  }, [cartTotal, formData.pincode]);
 
   // Fetch summary when cart changes
   useEffect(() => {
@@ -149,6 +151,19 @@ const CheckoutPage = () => {
   // Trigger backend calculation when coupon or address changes
   const fetchSummary = async (couponToApply = appliedCoupon) => {
     if (cart.length === 0) return;
+
+    const isPincodeEntered = formData.pincode && formData.pincode.trim().length === 6;
+
+    if (!isPincodeEntered) {
+      setSummary(prev => ({
+        ...prev,
+        subtotal: cartTotal || 0,
+        deliveryCharge: 0,
+        totalPrice: (cartTotal || 0) - prev.discountAmount - prev.rewardPointsUsed
+      }));
+      return;
+    }
+
     setLoadingSummary(true);
     try {
       const checkoutItems = cart.map(item => ({
@@ -800,7 +815,11 @@ const CheckoutPage = () => {
                 <div className="flex justify-between items-center text-xs text-white/70 font-bold">
                   <span>Shipping & Handling</span>
                   <span>
-                    {(summary?.deliveryCharge ?? 0) === 0 ? <span className="text-emerald-400 font-extrabold">FREE</span> : `₹${summary?.deliveryCharge ?? 0}`}
+                    {(!formData.pincode || formData.pincode.trim().length < 6) ? (
+                      <span className="text-white/40 text-[10px] font-bold italic">Enter Pincode to calculate</span>
+                    ) : (
+                      (summary?.deliveryCharge ?? 0) === 0 ? <span className="text-emerald-400 font-extrabold">FREE</span> : `₹${summary?.deliveryCharge ?? 0}`
+                    )}
                   </span>
                 </div>
 
