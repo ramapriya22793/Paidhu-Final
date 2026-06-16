@@ -5,12 +5,38 @@ const CartContext = createContext();
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
+// Safe localStorage wrappers to prevent exceptions when disk is full or storage is disabled
+const safeGetItem = (key) => {
+  try {
+    return localStorage.getItem(key);
+  } catch (e) {
+    console.error("Failed to read localStorage", e);
+    return null;
+  }
+};
+
+const safeSetItem = (key, val) => {
+  try {
+    localStorage.setItem(key, val);
+  } catch (e) {
+    console.error("Failed to write to localStorage", e);
+  }
+};
+
+const safeRemoveItem = (key) => {
+  try {
+    localStorage.removeItem(key);
+  } catch (e) {
+    console.error("Failed to remove from localStorage", e);
+  }
+};
+
 // Helper to generate or load persistent guest client UUID
 const getGuestId = () => {
-  let guestId = localStorage.getItem('paidhu_guest_id');
+  let guestId = safeGetItem('paidhu_guest_id');
   if (!guestId) {
     guestId = 'guest_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    localStorage.setItem('paidhu_guest_id', guestId);
+    safeSetItem('paidhu_guest_id', guestId);
   }
   return guestId;
 };
@@ -70,7 +96,8 @@ export const CartProvider = ({ children }) => {
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [cartBadgeAnimate, setCartBadgeAnimate] = useState(false);
   const [toasts, setToasts] = useState([]);
-  const [token, setToken] = useState(localStorage.getItem('paidhu_token') || '');
+  const [token, setToken] = useState(safeGetItem('paidhu_token') || '');
+  const [isCartLoaded, setIsCartLoaded] = useState(false);
 
   // Toast notifier helper
   const showToast = (message, type = 'success') => {
@@ -96,11 +123,14 @@ export const CartProvider = ({ children }) => {
           if (res.ok) {
             const data = await res.json();
             activeToken = data.token;
-            localStorage.setItem('paidhu_token', activeToken);
+            safeSetItem('paidhu_token', activeToken);
             setToken(activeToken);
+          } else {
+            setIsCartLoaded(true);
           }
         } catch (err) {
           console.error('Auth initialization failed:', err);
+          setIsCartLoaded(true);
         }
       }
     };
@@ -109,7 +139,10 @@ export const CartProvider = ({ children }) => {
 
   // Fetch Cart and Wishlist from Database on startup/token refresh
   useEffect(() => {
-    if (!token) return;
+    if (!token) {
+      setIsCartLoaded(true);
+      return;
+    }
 
     const fetchInitialData = async () => {
       try {
@@ -117,8 +150,9 @@ export const CartProvider = ({ children }) => {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (cartRes.status === 401) {
-          localStorage.removeItem('paidhu_token');
+          safeRemoveItem('paidhu_token');
           setToken('');
+          setIsCartLoaded(true);
           return;
         }
         if (cartRes.ok) {
@@ -130,8 +164,9 @@ export const CartProvider = ({ children }) => {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (wishlistRes.status === 401) {
-          localStorage.removeItem('paidhu_token');
+          safeRemoveItem('paidhu_token');
           setToken('');
+          setIsCartLoaded(true);
           return;
         }
         if (wishlistRes.ok) {
@@ -140,6 +175,8 @@ export const CartProvider = ({ children }) => {
         }
       } catch (err) {
         console.error('Error fetching initial cart/wishlist:', err);
+      } finally {
+        setIsCartLoaded(true);
       }
     };
 
@@ -200,7 +237,7 @@ export const CartProvider = ({ children }) => {
       });
 
       if (res.status === 401) {
-        localStorage.removeItem('paidhu_token');
+        safeRemoveItem('paidhu_token');
         setToken('');
         setCart(previousCart);
         return;
@@ -241,7 +278,7 @@ export const CartProvider = ({ children }) => {
       });
 
       if (res.status === 401) {
-        localStorage.removeItem('paidhu_token');
+        safeRemoveItem('paidhu_token');
         setToken('');
         setCart(previousCart);
         return;
@@ -297,7 +334,7 @@ export const CartProvider = ({ children }) => {
       });
 
       if (res.status === 401) {
-        localStorage.removeItem('paidhu_token');
+        safeRemoveItem('paidhu_token');
         setToken('');
         setCart(previousCart);
         return;
@@ -332,7 +369,7 @@ export const CartProvider = ({ children }) => {
       });
 
       if (res.status === 401) {
-        localStorage.removeItem('paidhu_token');
+        safeRemoveItem('paidhu_token');
         setToken('');
         setCart(previousCart);
         return;
@@ -356,7 +393,7 @@ export const CartProvider = ({ children }) => {
         body: JSON.stringify({ productId: product.id })
       });
       if (res.status === 401) {
-        localStorage.removeItem('paidhu_token');
+        safeRemoveItem('paidhu_token');
         setToken('');
         return;
       }
@@ -389,7 +426,7 @@ export const CartProvider = ({ children }) => {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.status === 401) {
-        localStorage.removeItem('paidhu_token');
+        safeRemoveItem('paidhu_token');
         setToken('');
         return;
       }
@@ -426,6 +463,7 @@ export const CartProvider = ({ children }) => {
       clearCart,
       cartCount,
       cartTotal,
+      isCartLoaded,
       cartBadgeAnimate,
       setCartBadgeAnimate,
       // Wishlist

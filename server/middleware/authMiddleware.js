@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
+const prisma = require('../prismaClient');
 
-const verifyToken = (req, res, next) => {
+const verifyToken = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization || req.headers.Authorization;
     console.log("verifyToken authHeader:", authHeader);
@@ -12,7 +13,15 @@ const verifyToken = (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret_key');
-    req.user = decoded; // { userId, isAdmin }
+    
+    // Verify user exists in database to prevent foreign key issues on stale/deleted users
+    const userExists = await prisma.user.findUnique({ where: { id: decoded.id } });
+    if (!userExists) {
+      console.log("Token points to a user that does not exist in database");
+      return res.status(401).json({ message: 'Invalid token: user not found' });
+    }
+
+    req.user = decoded; // { id, isAdmin }
     next();
   } catch (error) {
     console.log("JWT Verification Error:", error.message);

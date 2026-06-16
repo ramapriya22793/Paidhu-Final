@@ -162,8 +162,14 @@ const Navbar = () => {
 
   // Fetch categories and their images from backend with 24h caching
   useEffect(() => {
-    const cachedCats = localStorage.getItem('paidhu_categories');
-    const cachedTime = localStorage.getItem('paidhu_categories_time');
+    let cachedCats = null;
+    let cachedTime = null;
+    try {
+      cachedCats = localStorage.getItem('paidhu_categories');
+      cachedTime = localStorage.getItem('paidhu_categories_time');
+    } catch (e) {
+      console.error("Failed to read categories from localStorage", e);
+    }
     const oneDay = 24 * 60 * 60 * 1000;
 
     if (cachedCats && cachedTime && (Date.now() - Number(cachedTime) < oneDay)) {
@@ -192,8 +198,12 @@ const Navbar = () => {
         }));
         
         setCategories(cats);
-        localStorage.setItem('paidhu_categories', JSON.stringify(cats));
-        localStorage.setItem('paidhu_categories_time', String(Date.now()));
+        try {
+          localStorage.setItem('paidhu_categories', JSON.stringify(cats));
+          localStorage.setItem('paidhu_categories_time', String(Date.now()));
+        } catch (e) {
+          console.error("Failed to write categories to localStorage", e);
+        }
       })
       .catch(() => {});
   }, []);

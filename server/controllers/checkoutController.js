@@ -119,20 +119,36 @@ const initiateCheckout = async (req, res) => {
       items, paymentMethod, summary 
     } = req.body;
 
+    // Verify if userId exists in database to prevent foreign key constraint violations (e.g. stale/deleted tokens)
+    let finalUserId = null;
+    if (userId) {
+      try {
+        const parsedUserId = parseInt(userId);
+        if (!isNaN(parsedUserId)) {
+          const userExists = await prisma.user.findUnique({ where: { id: parsedUserId } });
+          if (userExists) {
+            finalUserId = userExists.id;
+          }
+        }
+      } catch (userCheckErr) {
+        console.error("Error verifying userId in database:", userCheckErr);
+      }
+    }
+
     // summary should have { subtotal, deliveryCharge, discountAmount, rewardPointsUsed, totalPrice, couponId }
 
     // 1. Create Order Record
     let order = await prisma.order.create({
       data: {
-        userId: userId || null,
+        userId: finalUserId,
         customerName,
         customerEmail,
         shippingAddress,
-        subtotal: summary.subtotal,
-        deliveryCharge: summary.deliveryCharge,
-        discountAmount: summary.discountAmount,
-        rewardPointsUsed: summary.rewardPointsUsed,
-        totalPrice: summary.totalPrice,
+        subtotal: summary.subtotal || 0,
+        deliveryCharge: summary.deliveryCharge || 0,
+        discountAmount: summary.discountAmount || 0,
+        rewardPointsUsed: summary.rewardPointsUsed || 0,
+        totalPrice: summary.totalPrice || 0,
         paymentMethod,
         couponId: summary.couponId || null,
         items: {

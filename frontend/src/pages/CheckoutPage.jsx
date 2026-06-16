@@ -70,17 +70,25 @@ const loadRazorpayScript = () => {
 };
 
 const CheckoutPage = () => {
-  const { cart, cartTotal, clearCart } = useCart();
-  const token = localStorage.getItem('paidhu_token') || '';
+  const { cart, cartTotal, clearCart, isCartLoaded } = useCart();
+  
+  // Safe localStorage read
+  let token = '';
+  try {
+    token = localStorage.getItem('paidhu_token') || '';
+  } catch (e) {
+    console.error("Failed to read token from localStorage", e);
+  }
+  
   const userId = getUserIdFromToken(token);
   const navigate = useNavigate();
 
-  // Redirect if cart is empty
+  // Redirect if cart is empty, but only after context has loaded
   useEffect(() => {
-    if (cart.length === 0) {
+    if (isCartLoaded && cart.length === 0) {
       navigate('/shop');
     }
-  }, [cart, navigate]);
+  }, [cart, isCartLoaded, navigate]);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -103,13 +111,31 @@ const CheckoutPage = () => {
 
   // Cost Summary State (Calculated by backend)
   const [summary, setSummary] = useState({
-    subtotal: cartTotal,
-    deliveryCharge: cartTotal >= 500 ? 0 : 50,
+    subtotal: cartTotal || 0,
+    deliveryCharge: (cartTotal || 0) >= 500 ? 0 : 50,
     discountAmount: 0,
     rewardPointsUsed: 0,
-    totalPrice: cartTotal >= 500 ? cartTotal : cartTotal + 50,
+    totalPrice: (cartTotal || 0) >= 500 ? (cartTotal || 0) : (cartTotal || 0) + 50,
     couponId: null
   });
+
+  // Update summary when cartTotal changes
+  useEffect(() => {
+    setSummary(prev => ({
+      ...prev,
+      subtotal: cartTotal || 0,
+      totalPrice: (cartTotal || 0) >= 500 
+        ? (cartTotal || 0) - prev.discountAmount - prev.rewardPointsUsed 
+        : (cartTotal || 0) + 50 - prev.discountAmount - prev.rewardPointsUsed
+    }));
+  }, [cartTotal]);
+
+  // Fetch summary when cart changes
+  useEffect(() => {
+    if (cart.length > 0) {
+      fetchSummary();
+    }
+  }, [cart]);
 
   const [loadingSummary, setLoadingSummary] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -355,12 +381,21 @@ const CheckoutPage = () => {
     }
   };
 
+  if (!isCartLoaded) {
+    return (
+      <div className="w-full min-h-screen bg-gradient-to-b from-[#fcfbfa] via-[#faf7f3] to-[#f4f0ea] flex flex-col items-center justify-center font-sans">
+        <div className="w-10 h-10 border-4 border-[#662654] border-t-transparent rounded-full animate-spin mb-3"></div>
+        <p className="text-sm font-semibold tracking-wide uppercase text-[#662654]">Loading Checkout...</p>
+      </div>
+    );
+  }
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.55, ease: 'easeOut' }}
-      className="w-full min-h-screen bg-gradient-to-b from-[#fcfbfa] via-[#faf7f3] to-[#f4f0ea] py-12 px-4 md:px-6 relative overflow-hidden font-sans"
+      className="w-full min-h-screen bg-gradient-to-b from-[#fcfbfa] via-[#faf7f3] to-[#f4f0ea] py-12 px-4 md:px-6 relative overflow-x-hidden font-sans"
     >
       
       {/* Background Decorative Rings */}
@@ -685,7 +720,7 @@ const CheckoutPage = () => {
                         </p>
                       </div>
                       <span className="text-[12.5px] font-black text-[#d4af37]">
-                        ₹{((item.offerPrice || item.price) * item.quantity).toLocaleString()}
+                        ₹{(((item.offerPrice || item.price || 0)) * item.quantity).toLocaleString()}
                       </span>
                     </div>
                   );
@@ -738,27 +773,27 @@ const CheckoutPage = () => {
               <div className="border-t border-white/10 pt-5 mt-5 space-y-3 relative z-10">
                 <div className="flex justify-between items-center text-xs text-white/70 font-bold">
                   <span>Cart Subtotal</span>
-                  <span className="text-white">₹{summary.subtotal.toLocaleString()}</span>
+                  <span className="text-white">₹{(summary?.subtotal ?? 0).toLocaleString()}</span>
                 </div>
                 
                 <div className="flex justify-between items-center text-xs text-white/70 font-bold">
                   <span>Shipping & Handling</span>
                   <span>
-                    {summary.deliveryCharge === 0 ? <span className="text-emerald-400 font-extrabold">FREE</span> : `₹${summary.deliveryCharge}`}
+                    {(summary?.deliveryCharge ?? 0) === 0 ? <span className="text-emerald-400 font-extrabold">FREE</span> : `₹${summary?.deliveryCharge ?? 0}`}
                   </span>
                 </div>
 
-                {summary.discountAmount > 0 && (
+                {(summary?.discountAmount ?? 0) > 0 && (
                   <div className="flex justify-between items-center text-xs text-emerald-400 font-bold">
                     <span>Promo Discount</span>
-                    <span className="font-extrabold">- ₹{summary.discountAmount.toLocaleString()}</span>
+                    <span className="font-extrabold">- ₹{(summary?.discountAmount ?? 0).toLocaleString()}</span>
                   </div>
                 )}
 
                 <div className="flex justify-between items-center border-t border-white/10 pt-4 mt-1">
                   <span className="text-sm font-black text-white">Grand Total</span>
                   <span className="text-2xl font-black text-[#d4af37]">
-                    ₹{summary.totalPrice.toLocaleString()}
+                    ₹{(summary?.totalPrice ?? 0).toLocaleString()}
                   </span>
                 </div>
               </div>
