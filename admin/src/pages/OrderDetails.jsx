@@ -342,15 +342,17 @@ const OrderDetails = () => {
       {/* Print-only Invoice Layout */}
       <div className="hidden print:block text-black bg-white p-8 w-full min-h-screen text-[12px] leading-relaxed font-sans">
         {/* Header */}
-        <div className="flex justify-between items-start border-b border-gray-300 pb-6 mb-6">
+        <div className="flex justify-between items-start mb-8">
           <div>
             <h1 className="text-3xl font-black uppercase tracking-wider text-gray-900 mb-4">INVOICE</h1>
             <div className="flex flex-col items-start">
               {/* Paidhu Logo in Black */}
-              <div className="w-80 h-auto flex items-center justify-start mb-2">
-                <img src="/Paidhulogo.png" alt="Paidhu Logo" className="w-80 h-auto object-contain brightness-0" />
+              <div className="w-44 h-auto flex items-center justify-start mb-2">
+                <img src="/Paidhulogo.png" alt="Paidhu Logo" className="w-44 h-auto object-contain brightness-0" />
               </div>
-              <span className="mt-2 text-md font-bold text-gray-800">Paidhu Ethical Foods Pvt Ltd</span>
+              <div className="mt-2 text-sm font-semibold text-gray-800 leading-tight">
+                Paidhu Ethical Foods<br />Pvt Ltd
+              </div>
             </div>
           </div>
           
@@ -407,16 +409,15 @@ const OrderDetails = () => {
         {/* Billing Details & Invoice info */}
         <div className="grid grid-cols-2 gap-10 mb-8">
           <div>
-            <h3 className="font-bold text-gray-900 uppercase border-b border-gray-200 pb-1 mb-2 text-[11px] tracking-wider">Bill to</h3>
+            <h3 className="font-bold text-gray-900 mb-2 text-[12px]">Bill to</h3>
             <p className="font-bold text-gray-800 mb-1">{order.customerName}</p>
             <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">{order.shippingAddress}</p>
             <p className="text-gray-600 mt-2">{order.customerEmail}</p>
             {order.user?.phone && <p className="text-gray-600 font-medium">{order.user.phone}</p>}
           </div>
           
-          <div>
-            <h3 className="font-bold text-gray-900 uppercase border-b border-gray-200 pb-1 mb-2 text-[11px] tracking-wider">Invoice details</h3>
-            <div className="space-y-1 text-gray-700">
+          <div className="flex flex-col justify-end text-right">
+            <div className="space-y-1 text-gray-700 inline-block text-left ml-auto">
               <p><span className="font-bold text-gray-900">Invoice no:</span> {order.orderNumber || `#${order.id.toString().padStart(5, '0')}`}</p>
               <p><span className="font-bold text-gray-900">Order date:</span> {new Date(order.createdAt).toLocaleDateString('en-GB')}</p>
               <p><span className="font-bold text-gray-900">Payment method:</span> {order.paymentMethod === 'COD' ? 'Cash On Delivery' : order.paymentMethod}</p>
@@ -427,7 +428,7 @@ const OrderDetails = () => {
         {/* Items Table */}
         <table className="w-full text-left mb-6 border-collapse text-[11px]">
           <thead>
-            <tr className="border-b-2 border-gray-300 text-gray-700 font-bold bg-gray-50">
+            <tr className="border-t border-b border-gray-300 text-gray-700 font-bold">
               <th className="py-2 px-3 w-12">S.No</th>
               <th className="py-2 px-3">Product</th>
               <th className="py-2 px-3 text-center w-24">Quantity</th>
@@ -436,29 +437,34 @@ const OrderDetails = () => {
             </tr>
           </thead>
           <tbody>
-            {order.items?.map((item, idx) => (
-              <tr key={item.id} className="border-b border-gray-200 text-gray-800">
-                <td className="py-3 px-3">{idx + 1}</td>
-                <td className="py-3 px-3">
-                  <span className="font-bold text-gray-900">{item.product?.name || 'Unknown Product'}</span>
-                  {/* Parse or show variant size in subtitle if product name has it, or show variant details */}
-                  {item.product?.name?.toLowerCase().includes('gram') && (
-                    <span className="block text-gray-500 text-[10px] mt-0.5">
-                      Grams: {item.product.name.split('-').pop()?.trim()}
-                    </span>
-                  )}
-                </td>
-                <td className="py-3 px-3 text-center font-medium">{item.quantity}</td>
-                <td className="py-3 px-3 text-right font-medium">₹{item.price?.toFixed(2)}</td>
-                <td className="py-3 px-3 text-right font-bold">₹{(item.price * item.quantity).toFixed(2)}</td>
-              </tr>
-            ))}
+            {order.items?.map((item, idx) => {
+              const nameParts = item.product?.name ? item.product.name.split('-') : [];
+              const displayName = nameParts[0]?.trim() || item.product?.name || 'Unknown Product';
+              const displayGrams = nameParts[1]?.trim();
+              
+              return (
+                <tr key={item.id} className="border-b border-gray-200 text-gray-800">
+                  <td className="py-3 px-3">{idx + 1}</td>
+                  <td className="py-3 px-3">
+                    <span className="font-bold text-gray-900">{displayName}</span>
+                    {displayGrams && (
+                      <span className="block text-gray-500 text-[10px] mt-0.5 font-medium">
+                        Grams : {displayGrams}
+                      </span>
+                    )}
+                  </td>
+                  <td className="py-3 px-3 text-center font-medium">{item.quantity}</td>
+                  <td className="py-3 px-3 text-right font-medium">₹{item.price?.toFixed(2)}</td>
+                  <td className="py-3 px-3 text-right font-bold">₹{(item.price * item.quantity).toFixed(2)}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
 
         {/* Totals Summary */}
         <div className="flex justify-end">
-          <div className="w-72 space-y-1.5 border-t border-gray-200 pt-4 text-[11px]">
+          <div className="w-72 space-y-1.5 pt-4 text-[11px]">
             <div className="flex justify-between text-gray-600">
               <span>Subtotal</span>
               <span className="font-semibold text-gray-800">₹{order.subtotal?.toFixed(2)}</span>
