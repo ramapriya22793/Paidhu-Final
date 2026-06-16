@@ -27,11 +27,11 @@ const toSlide = (b) => ({
 const LOCAL_FALLBACK = '/shop_all_banner.jpg';
 
 const PageBanner = ({ pageSlug }) => {
-  const [slides, setSlides]             = useState([]);
+  const [slides, setSlides]             = useState([{ id: 'fallback-init', image: LOCAL_FALLBACK, bgColor: '#f8f4ef' }]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isMobile, setIsMobile]         = useState(false);
   const [aspectRatios, setAspectRatios] = useState({});
-  const [ready, setReady]               = useState(false);
+  const [ready, setReady]               = useState(true);
 
   // ── Responsive detection ─────────────────────────────────────────────────
   useEffect(() => {
@@ -45,7 +45,6 @@ const PageBanner = ({ pageSlug }) => {
   useEffect(() => {
     if (!pageSlug) return;
     setCurrentSlide(0);
-    setReady(false);
 
     const fetchSlug = (slug) =>
       fetch(`${API_BASE}/api/banners/active/${slug}`)

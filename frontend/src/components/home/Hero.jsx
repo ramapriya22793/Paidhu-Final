@@ -5,7 +5,20 @@ import { Link } from 'react-router-dom';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-const FALLBACK_SLIDES = [];
+const FALLBACK_SLIDES = [
+  {
+    id: 'fallback-1',
+    image: '/hero_banner_paidhu.png',
+    bgColor: '#faf5eb',
+    isBackendBanner: false
+  },
+  {
+    id: 'fallback-2',
+    image: '/hero_banner_full.png',
+    bgColor: '#faf5eb',
+    isBackendBanner: false
+  }
+];
 
 const resolveUrl = (path) => {
   if (!path) return null;
@@ -130,6 +143,8 @@ const Hero = () => {
                   alt={current.headline || 'Paidhu Banner'}
                   className="md:hidden w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.015]"
                   onLoad={handleImageLoad}
+                  loading="eager"
+                  fetchPriority="high"
                 />
               )}
 
@@ -139,6 +154,8 @@ const Hero = () => {
                 alt={current.headline || 'Paidhu Banner'}
                 className={`${current.mobileImage ? 'hidden md:block' : 'block'} w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.015]`}
                 onLoad={handleImageLoad}
+                loading="eager"
+                fetchPriority="high"
               />
 
               {/* Gradient overlay */}

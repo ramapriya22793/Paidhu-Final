@@ -224,6 +224,8 @@ const ProductCard = ({ product, index, navSection }) => {
               alt={product.name}
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
               onError={e => { e.currentTarget.style.display = 'none'; }}
+              loading={index < 4 ? "eager" : "lazy"}
+              fetchPriority={index < 4 ? "high" : "low"}
             />
           </>
         ) : (
@@ -350,15 +352,26 @@ const ShopPage = () => {
   // Build page meta — if a specific category is active, show its name
   const baseMeta = NAV_META[navSection] || NAV_META['shop-all'];
 
-  const [products, setProducts]     = useState(() => {
-    return allFallbackProducts;
-  });
-  const [loading, setLoading]       = useState(() => {
-    return allFallbackProducts.length === 0;
-  });
-  const [total, setTotal]           = useState(() => {
-    return allFallbackProducts.length;
-  });
+  const getInitialFallbackProducts = () => {
+    let list = allFallbackProducts;
+    if (activeCategory) {
+      list = list.filter(p => p.category?.name === activeCategory || p.category === activeCategory);
+    }
+    if (navSection === 'deal-of-the-day') {
+      list = list.filter(p => p.tags && p.tags.toLowerCase().includes("deal"));
+    }
+    const initialSearch = searchParams.get('q') || '';
+    if (initialSearch) {
+      list = list.filter(p => p.name.toLowerCase().includes(initialSearch.toLowerCase()));
+    }
+    return list.slice(0, 24);
+  };
+
+  const initialList = getInitialFallbackProducts();
+
+  const [products, setProducts]     = useState(initialList);
+  const [loading, setLoading]       = useState(initialList.length === 0);
+  const [total, setTotal]           = useState(initialList.length);
   const [pages, setPages]           = useState(1);
 
   // Page synchronization with URL
@@ -480,8 +493,11 @@ const ShopPage = () => {
       setPages(shopCache[cacheKey].pages);
       setLoading(false);
     } else {
-      // If no cache but we are on default shop-all page 1, keep showing fallbacks without loader
-      if (cacheKey === 'shop-all-1-newest----' && allFallbackProducts.length > 0) {
+      // If no cache but we have matching fallback products, keep showing them and loading = false to prevent showing skeletons
+      const matchingFallbacks = getInitialFallbackProducts();
+      if (matchingFallbacks.length > 0) {
+        setProducts(matchingFallbacks);
+        setTotal(matchingFallbacks.length);
         setLoading(false);
       } else {
         setLoading(true);

@@ -23,7 +23,11 @@ const PaidhuSpotlight = () => {
       image: p.image
     }));
   });
-  const [loading, setLoading] = useState(() => !spotlightCache.current);
+  const [loading, setLoading] = useState(() => {
+    if (spotlightCache.current) return false;
+    const initialList = fallbacks["Bestsellers"] || [];
+    return initialList.length === 0;
+  });
 
   useEffect(() => {
     let isMounted = true;
