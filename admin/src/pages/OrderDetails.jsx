@@ -62,7 +62,8 @@ const OrderDetails = () => {
   if (!order) return <div className="p-8 text-red-500 font-bold">Order Not Found.</div>;
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto pb-12">
+    <>
+      <div className="space-y-6 max-w-7xl mx-auto pb-12 print:hidden">
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 print:hidden">
         <div>
@@ -337,6 +338,161 @@ const OrderDetails = () => {
         </div>
       </div>
     </div>
+      
+      {/* Print-only Invoice Layout */}
+      <div className="hidden print:block text-black bg-white p-8 w-full min-h-screen text-[12px] leading-relaxed font-sans">
+        {/* Header */}
+        <div className="flex justify-between items-start border-b border-gray-300 pb-6 mb-6">
+          <div>
+            <h1 className="text-3xl font-black uppercase tracking-wider text-gray-900 mb-4">INVOICE</h1>
+            <div className="flex flex-col items-start">
+              {/* SVG Logo Placeholder */}
+              <div className="w-24 h-24 border border-gray-400 flex items-center justify-center relative bg-gray-50">
+                <span className="text-gray-400 text-[10px] font-bold z-10 bg-gray-50 px-1">LOGO</span>
+                <div className="absolute inset-0">
+                  <svg className="w-full h-full text-gray-300" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <line x1="0" y1="0" x2="100" y2="100" stroke="currentColor" stroke-width="0.75" />
+                    <line x1="100" y1="0" x2="0" y2="100" stroke="currentColor" stroke-width="0.75" />
+                  </svg>
+                </div>
+              </div>
+              <span className="mt-2 text-md font-bold text-gray-800">Paidhu Ethical Foods Pvt Ltd</span>
+            </div>
+          </div>
+          
+          <div className="text-right">
+            {/* SVG Barcode Visualizer */}
+            <div className="inline-block mb-3 bg-white p-1">
+              <svg className="w-44 h-10" viewBox="0 0 100 20">
+                <rect x="0" y="0" width="2" height="20" fill="black" />
+                <rect x="3" y="0" width="1" height="20" fill="black" />
+                <rect x="5" y="0" width="3" height="20" fill="black" />
+                <rect x="9" y="0" width="1" height="20" fill="black" />
+                <rect x="11" y="0" width="2" height="20" fill="black" />
+                <rect x="15" y="0" width="4" height="20" fill="black" />
+                <rect x="20" y="0" width="1" height="20" fill="black" />
+                <rect x="22" y="0" width="2" height="20" fill="black" />
+                <rect x="25" y="0" width="1" height="20" fill="black" />
+                <rect x="27" y="0" width="3" height="20" fill="black" />
+                <rect x="31" y="0" width="2" height="20" fill="black" />
+                <rect x="34" y="0" width="1" height="20" fill="black" />
+                <rect x="36" y="0" width="4" height="20" fill="black" />
+                <rect x="41" y="0" width="1" height="20" fill="black" />
+                <rect x="43" y="0" width="2" height="20" fill="black" />
+                <rect x="46" y="0" width="1" height="20" fill="black" />
+                <rect x="48" y="0" width="3" height="20" fill="black" />
+                <rect x="52" y="0" width="2" height="20" fill="black" />
+                <rect x="55" y="0" width="1" height="20" fill="black" />
+                <rect x="57" y="0" width="4" height="20" fill="black" />
+                <rect x="62" y="0" width="2" height="20" fill="black" />
+                <rect x="65" y="0" width="1" height="20" fill="black" />
+                <rect x="67" y="0" width="3" height="20" fill="black" />
+                <rect x="71" y="0" width="1" height="20" fill="black" />
+                <rect x="73" y="0" width="2" height="20" fill="black" />
+                <rect x="76" y="0" width="4" height="20" fill="black" />
+                <rect x="81" y="0" width="1" height="20" fill="black" />
+                <rect x="83" y="0" width="2" height="20" fill="black" />
+                <rect x="86" y="0" width="1" height="20" fill="black" />
+                <rect x="88" y="0" width="3" height="20" fill="black" />
+                <rect x="92" y="0" width="2" height="20" fill="black" />
+                <rect x="95" y="0" width="1" height="20" fill="black" />
+                <rect x="97" y="0" width="3" height="20" fill="black" />
+              </svg>
+            </div>
+            <div className="text-gray-700 text-[11px] leading-snug">
+              <p className="font-bold text-gray-900 mb-0.5 text-xs">From</p>
+              <p className="font-bold text-gray-800">Paidhu</p>
+              <p>1/87-1, Cheran Nagar, Kovilpalayam,</p>
+              <p>Pollachi</p>
+              <p>Coimbatore 642110</p>
+              <p>Tamil Nadu</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Billing Details & Invoice info */}
+        <div className="grid grid-cols-2 gap-10 mb-8">
+          <div>
+            <h3 className="font-bold text-gray-900 uppercase border-b border-gray-200 pb-1 mb-2 text-[11px] tracking-wider">Bill to</h3>
+            <p className="font-bold text-gray-800 mb-1">{order.customerName}</p>
+            <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">{order.shippingAddress}</p>
+            <p className="text-gray-600 mt-2">{order.customerEmail}</p>
+            {order.user?.phone && <p className="text-gray-600 font-medium">{order.user.phone}</p>}
+          </div>
+          
+          <div>
+            <h3 className="font-bold text-gray-900 uppercase border-b border-gray-200 pb-1 mb-2 text-[11px] tracking-wider">Invoice details</h3>
+            <div className="space-y-1 text-gray-700">
+              <p><span className="font-bold text-gray-900">Invoice no:</span> {order.orderNumber || `#${order.id.toString().padStart(5, '0')}`}</p>
+              <p><span className="font-bold text-gray-900">Order date:</span> {new Date(order.createdAt).toLocaleDateString('en-GB')}</p>
+              <p><span className="font-bold text-gray-900">Payment method:</span> {order.paymentMethod === 'COD' ? 'Cash On Delivery' : order.paymentMethod}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Items Table */}
+        <table className="w-full text-left mb-6 border-collapse text-[11px]">
+          <thead>
+            <tr className="border-b-2 border-gray-300 text-gray-700 font-bold bg-gray-50">
+              <th className="py-2 px-3 w-12">S.No</th>
+              <th className="py-2 px-3">Product</th>
+              <th className="py-2 px-3 text-center w-24">Quantity</th>
+              <th className="py-2 px-3 text-right w-32">Unit price</th>
+              <th className="py-2 px-3 text-right w-32">Total price</th>
+            </tr>
+          </thead>
+          <tbody>
+            {order.items?.map((item, idx) => (
+              <tr key={item.id} className="border-b border-gray-200 text-gray-800">
+                <td className="py-3 px-3">{idx + 1}</td>
+                <td className="py-3 px-3">
+                  <span className="font-bold text-gray-900">{item.product?.name || 'Unknown Product'}</span>
+                  {/* Parse or show variant size in subtitle if product name has it, or show variant details */}
+                  {item.product?.name?.toLowerCase().includes('gram') && (
+                    <span className="block text-gray-500 text-[10px] mt-0.5">
+                      Grams: {item.product.name.split('-').pop()?.trim()}
+                    </span>
+                  )}
+                </td>
+                <td className="py-3 px-3 text-center font-medium">{item.quantity}</td>
+                <td className="py-3 px-3 text-right font-medium">₹{item.price?.toFixed(2)}</td>
+                <td className="py-3 px-3 text-right font-bold">₹{(item.price * item.quantity).toFixed(2)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {/* Totals Summary */}
+        <div className="flex justify-end">
+          <div className="w-72 space-y-1.5 border-t border-gray-200 pt-4 text-[11px]">
+            <div className="flex justify-between text-gray-600">
+              <span>Subtotal</span>
+              <span className="font-semibold text-gray-800">₹{order.subtotal?.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between text-gray-600">
+              <span>Delivery Charges</span>
+              <span className="font-semibold text-gray-800">₹{order.deliveryCharge?.toFixed(2)} via Delivery</span>
+            </div>
+            {order.discountAmount > 0 && (
+              <div className="flex justify-between text-green-600 font-medium">
+                <span>Coupon Discount {order.coupon ? `(${order.coupon.code})` : ''}</span>
+                <span>-₹{order.discountAmount?.toFixed(2)}</span>
+              </div>
+            )}
+            {order.rewardPointsUsed > 0 && (
+              <div className="flex justify-between text-[#662654] font-medium">
+                <span>Reward Discount</span>
+                <span>-₹{order.rewardPointsUsed?.toFixed(2)}</span>
+              </div>
+            )}
+            <div className="flex justify-between border-t border-gray-300 pt-2 text-sm font-black text-gray-900">
+              <span>Total</span>
+              <span className="text-md font-black">₹{order.totalPrice?.toFixed(2)}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 

@@ -4,11 +4,13 @@ import { FiBell, FiSearch } from 'react-icons/fi';
 
 const AdminLayout = () => {
   return (
-    <div className="flex h-screen bg-brand-gray overflow-hidden">
-      <Sidebar />
-      <div className="flex-1 ml-64 flex flex-col h-screen overflow-hidden">
+    <div className="flex h-screen bg-brand-gray overflow-hidden print:block print:h-auto print:bg-white print:overflow-visible">
+      <div className="print:hidden">
+        <Sidebar />
+      </div>
+      <div className="flex-1 ml-64 flex flex-col h-screen overflow-hidden print:ml-0 print:block print:h-auto print:overflow-visible">
         {/* Topbar */}
-        <header className="h-20 bg-white border-b border-gray-100 flex items-center justify-between px-8 shadow-sm shrink-0 z-40">
+        <header className="h-20 bg-white border-b border-gray-100 flex items-center justify-between px-8 shadow-sm shrink-0 z-40 print:hidden">
           <div className="flex items-center w-96 bg-gray-50 rounded-lg px-4 py-2 border border-gray-200">
             <FiSearch className="text-gray-400 mr-2" />
             <input 
@@ -37,7 +39,7 @@ const AdminLayout = () => {
         </header>
         
         {/* Main Content Area */}
-        <main className="flex-1 overflow-y-auto p-8 relative">
+        <main className="flex-1 overflow-y-auto p-8 relative print:p-0 print:overflow-visible">
           <Outlet />
         </main>
       </div>
