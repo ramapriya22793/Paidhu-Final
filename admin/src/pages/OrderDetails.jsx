@@ -346,15 +346,9 @@ const OrderDetails = () => {
           <div>
             <h1 className="text-3xl font-black uppercase tracking-wider text-gray-900 mb-4">INVOICE</h1>
             <div className="flex flex-col items-start">
-              {/* SVG Logo Placeholder */}
-              <div className="w-24 h-24 border border-gray-400 flex items-center justify-center relative bg-gray-50">
-                <span className="text-gray-400 text-[10px] font-bold z-10 bg-gray-50 px-1">LOGO</span>
-                <div className="absolute inset-0">
-                  <svg className="w-full h-full text-gray-300" viewBox="0 0 100 100" preserveAspectRatio="none">
-                    <line x1="0" y1="0" x2="100" y2="100" stroke="currentColor" stroke-width="0.75" />
-                    <line x1="100" y1="0" x2="0" y2="100" stroke="currentColor" stroke-width="0.75" />
-                  </svg>
-                </div>
+              {/* Paidhu Logo in Black */}
+              <div className="w-32 h-16 flex items-center justify-start mb-2">
+                <img src="/Paidhulogo.png" alt="Paidhu Logo" className="w-full h-full object-contain brightness-0" />
               </div>
               <span className="mt-2 text-md font-bold text-gray-800">Paidhu Ethical Foods Pvt Ltd</span>
             </div>
