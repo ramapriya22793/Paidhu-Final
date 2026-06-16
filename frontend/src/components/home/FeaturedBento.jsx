@@ -139,6 +139,9 @@ const FeaturedBento = () => {
                 key={`${activeIndex}-${currentImageIndex}`}
                 src={features[activeIndex].images[currentImageIndex]}
                 alt={features[activeIndex].title}
+                width={600}
+                height={600}
+                loading="lazy"
                 initial={{ opacity: 0, scale: 1.05 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}

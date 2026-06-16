@@ -207,6 +207,9 @@ const ExploreCategory = () => {
               <img
                 src={cat.img}
                 alt={cat.title}
+                width={600}
+                height={320}
+                loading="lazy"
                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 onError={e => { e.target.src = cat.fallback; }}
               />
@@ -261,6 +264,9 @@ const ExploreCategory = () => {
                 <img
                   src={cat.img}
                   alt={cat.title}
+                  width={600}
+                  height={320}
+                  loading="lazy"
                   className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ${isHovered ? 'scale-110 brightness-90' : 'scale-100 grayscale-[15%] brightness-75'}`}
                   onError={e => { e.target.src = cat.fallback; }}
                 />

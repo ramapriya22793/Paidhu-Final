@@ -121,6 +121,9 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
         <img 
           src={product.image} 
           alt={product.title} 
+          width={280}
+          height={280}
+          loading="lazy"
           className="max-w-full max-h-full object-contain transition-transform duration-500 ease-out group-hover:scale-105"
         />
       </Link>

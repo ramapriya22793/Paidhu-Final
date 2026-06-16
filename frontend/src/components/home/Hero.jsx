@@ -110,6 +110,8 @@ const Hero = () => {
                 <img
                   src={current.mobileImage}
                   alt={current.headline || 'Paidhu Banner'}
+                  width={600}
+                  height={300}
                   className="md:hidden w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.015]"
                   loading="eager"
                   fetchPriority="high"
@@ -120,6 +122,8 @@ const Hero = () => {
               <img
                 src={current.image}
                 alt={current.headline || 'Paidhu Banner'}
+                width={1440}
+                height={600}
                 className={`${current.mobileImage ? 'hidden md:block' : 'block'} w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.015]`}
                 loading="eager"
                 fetchPriority="high"
