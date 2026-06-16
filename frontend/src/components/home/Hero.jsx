@@ -35,15 +35,7 @@ const resolveUrl = (path) => {
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [slides, setSlides] = useState(FALLBACK_SLIDES);
-  const [isMobile, setIsMobile] = useState(false);
-  const [aspectRatios, setAspectRatios] = useState({
-    'fallback-1-web': 2,
-    'fallback-1-mobile': 2,
-    'fallback-2-web': 2,
-    'fallback-2-mobile': 2,
-    'fallback-3-web': 2.4,
-    'fallback-3-mobile': 2.4
-  });
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth < 768 : false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -76,26 +68,6 @@ const Hero = () => {
       });
   }, []);
 
-  // Pre-load slide images and compute aspect ratios
-  useEffect(() => {
-    slides.forEach(slide => {
-      const imgUrl = (isMobile && slide.mobileImage) ? slide.mobileImage : slide.image;
-      if (imgUrl) {
-        const cacheKey = `${slide.id}-${isMobile ? 'mobile' : 'web'}`;
-        if (!aspectRatios[cacheKey]) {
-          const img = new Image();
-          img.onload = () => {
-            setAspectRatios(prev => ({
-              ...prev,
-              [cacheKey]: img.naturalWidth / img.naturalHeight
-            }));
-          };
-          img.src = imgUrl;
-        }
-      }
-    });
-  }, [slides, isMobile]);
-
   // Auto-slide every 6 seconds
   useEffect(() => {
     if (slides.length <= 1) return;
@@ -110,22 +82,6 @@ const Hero = () => {
 
   const current = slides[currentSlide];
   if (!current) return null;
-  const currentKey = `${current.id}-${(isMobile && current.mobileImage) ? 'mobile' : 'web'}`;
-  const currentAspect = aspectRatios[currentKey] || 2;
-
-  // Function to handle image load to update aspect ratio immediately
-  const handleImageLoad = (e) => {
-    const { naturalWidth, naturalHeight } = e.target;
-    if (naturalWidth && naturalHeight) {
-      const cacheKey = `${current.id}-${(isMobile && current.mobileImage) ? 'mobile' : 'web'}`;
-      if (aspectRatios[cacheKey] !== naturalWidth / naturalHeight) {
-        setAspectRatios(prev => ({
-          ...prev,
-          [cacheKey]: naturalWidth / naturalHeight
-        }));
-      }
-    }
-  };
 
   return (
     <div className="w-full bg-[#f8f4ef] py-3 md:py-4 px-3 sm:px-4 lg:px-6">
@@ -133,7 +89,7 @@ const Hero = () => {
       <div 
         className="relative w-full overflow-hidden rounded-[28px] md:rounded-[36px] shadow-[0_8px_40px_rgba(0,0,0,0.10)] hover:shadow-[0_14px_50px_rgba(212,175,55,0.20)] transition-all duration-500 group"
         style={{ 
-          aspectRatio: currentAspect,
+          aspectRatio: isMobile ? '2 / 1' : '2.4 / 1',
           background: current.bgColor?.replace('bg-', '') || '#f8f4ef'
         }}
       >
@@ -155,7 +111,6 @@ const Hero = () => {
                   src={current.mobileImage}
                   alt={current.headline || 'Paidhu Banner'}
                   className="md:hidden w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.015]"
-                  onLoad={handleImageLoad}
                   loading="eager"
                   fetchPriority="high"
                 />
@@ -166,7 +121,6 @@ const Hero = () => {
                 src={current.image}
                 alt={current.headline || 'Paidhu Banner'}
                 className={`${current.mobileImage ? 'hidden md:block' : 'block'} w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.015]`}
-                onLoad={handleImageLoad}
                 loading="eager"
                 fetchPriority="high"
               />

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import paidhuMomsImg from '../../assets/paidhu_moms.png';
+import paidhuMomsImg from '../../assets/paidhu_moms.jpg';
 
 const RealMomsSection = () => {
   return (
@@ -82,6 +82,8 @@ const RealMomsSection = () => {
             <img 
               src={paidhuMomsImg} 
               alt="Paidhu Moms Community" 
+              width={600}
+              height={600}
               className="w-full h-full object-cover"
             />
           </div>

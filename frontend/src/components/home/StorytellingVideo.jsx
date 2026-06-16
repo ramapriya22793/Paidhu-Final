@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
-import videoThumbnail from '../../assets/video_thumbnail.png';
+import videoThumbnail from '../../assets/video_thumbnail.jpg';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 const FALLBACK_VIDEO_URL = "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/WhatsApp%20Video%202026-06-13%20at%209.33.29%20AM.mp4";
@@ -42,6 +42,8 @@ const StorytellingVideo = () => {
           <img 
             src="/video_frame_bg.png" 
             alt="Paidhu Video Frame" 
+            width={1024}
+            height={554}
             className="w-full h-auto block"
           />
 
