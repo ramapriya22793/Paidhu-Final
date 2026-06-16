@@ -347,8 +347,8 @@ const OrderDetails = () => {
             <h1 className="text-3xl font-black uppercase tracking-wider text-gray-900 mb-4">INVOICE</h1>
             <div className="flex flex-col items-start">
               {/* Paidhu Logo in Black */}
-              <div className="w-44 h-auto flex items-center justify-start mb-2">
-                <img src="/Paidhulogo.png" alt="Paidhu Logo" className="w-44 h-auto object-contain brightness-0" />
+              <div className="w-64 h-auto flex items-center justify-start mb-2">
+                <img src="/Paidhulogo.png" alt="Paidhu Logo" className="w-64 h-auto object-contain brightness-0" />
               </div>
               <div className="mt-2 text-sm font-semibold text-gray-800 leading-tight">
                 Paidhu Ethical Foods<br />Pvt Ltd
