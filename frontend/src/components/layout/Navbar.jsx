@@ -314,7 +314,7 @@ const Navbar = () => {
                   alt="Paidhu The Edible Flower Co."
                   width={142}
                   height={64}
-                  className="h-14 md:h-20 lg:h-24 w-auto object-contain"
+                  className="h-10 md:h-12 lg:h-14 w-auto object-contain"
                   style={{ filter: 'brightness(0) saturate(100%) invert(92%) sepia(12%) saturate(308%) hue-rotate(34deg) brightness(96%) contrast(93%)' }}
                 />
               </Link>
