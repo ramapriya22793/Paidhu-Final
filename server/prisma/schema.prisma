@@ -340,3 +340,15 @@ model TiffinRegistration {
   consent   Boolean  @default(true)
   createdAt DateTime @default(now())
 }
+
+model SaffronGuidance {
+  id              String   @id @default(uuid())
+  yourName        String
+  spouseName      String
+  phone           String
+  purpose         String
+  pregnancyMonth  Int
+  doctorPermission String  // "Yes" or "No"
+  status          String   @default("Pending") // Pending, Contacted, Resolved
+  createdAt       DateTime @default(now())
+}

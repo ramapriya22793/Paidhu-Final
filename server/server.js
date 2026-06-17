@@ -34,6 +34,8 @@ app.use("/api/delivery-charges", require("./routes/deliveryRoutes"));
 app.use("/api/payments", require("./routes/paymentRoutes"));
 app.use("/api/tracking", require("./routes/trackingRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes"));
+app.use("/api/saffron-guidance", require("./routes/saffronGuidanceRoutes"));
+
 
 const initializeAdmin = async () => {
   try {

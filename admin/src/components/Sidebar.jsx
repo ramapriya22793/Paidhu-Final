@@ -34,6 +34,7 @@ const menuItems = [
   { name: 'Bulk Orders Content', path: '/bulk-orders-management', icon: <FiLayout /> },
   { name: 'Bulk Inquiries', path: '/bulk-order-inquiries', icon: <FiFileText /> },
   { name: 'About Us', path: '/about-us-management', icon: <FiUsers /> },
+  { name: 'Saffron Guidance Leads', path: '/saffron-guidance-leads', icon: <FiFileText /> },
 ];
 
 const Sidebar = () => {

@@ -93,6 +93,7 @@ const navSlugMap = {
   'Bulk Orders':                 'bulk-orders',
   'Blogs':                       'blogs',
   'About Us':                    'about-us',
+  'Saffron Guidance':            '__direct__/saffron-guidance',
 };
 
 const Navbar = () => {
@@ -225,6 +226,8 @@ const Navbar = () => {
     if (slug) {
       if (slug === '/') {
         navigate('/');
+      } else if (slug.startsWith('__direct__')) {
+        navigate(slug.replace('__direct__', ''));
       } else {
         navigate(`/shop/${slug}`);
       }
@@ -256,6 +259,7 @@ const Navbar = () => {
     { top: { name: 'BYOC' }, bottom: { name: 'About Us' } },
     { top: { name: 'Our Own Community' } },
     { top: { name: 'Our Philosophy' } },
+    { top: { name: 'Saffron Guidance' } },
   ];
 
   return (

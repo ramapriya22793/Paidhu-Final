@@ -21,6 +21,7 @@ const ShopPage = lazy(() => import('./pages/ShopPage'));
 const ProductDetailPage = lazy(() => import('./pages/ProductDetailPage'));
 const CheckoutPage = lazy(() => import('./pages/CheckoutPage'));
 const OrderSuccessPage = lazy(() => import('./pages/OrderSuccessPage'));
+const SaffronGuidancePage = lazy(() => import('./pages/SaffronGuidancePage'));
 
 // ---------- HOME PAGE ----------
 const HomePage = () => (
@@ -75,6 +76,7 @@ function App() {
             <Route path="/product/:id" element={<ProductDetailPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/order-success/:orderNumber" element={<OrderSuccessPage />} />
+            <Route path="/saffron-guidance" element={<SaffronGuidancePage />} />
           </Routes>
         </Suspense>
 
