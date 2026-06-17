@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, CheckCircle2, Loader2, User, Users, Phone, Heart, Calendar, Stethoscope } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import saffronIcon from '../assets/saffron_icon.png';
+import pregnancyBanner from '../assets/pregnancy_saffron_banner.png';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -80,7 +82,14 @@ const SaffronGuidancePage = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
-      const data = await res.json();
+      let data;
+      try {
+        const text = await res.text();
+        data = text ? JSON.parse(text) : {};
+      } catch (e) {
+        throw new Error('Server returned an invalid response. Please try again later.');
+      }
+
       if (!res.ok) throw new Error(data.error || 'Submission failed');
       setSubmitted(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -99,7 +108,13 @@ const SaffronGuidancePage = () => {
       className="w-full min-h-screen bg-[#fcfbfa] font-sans"
     >
       {/* ── Hero Banner ── */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-[#662654] via-[#7a2e64] to-[#3b1030] py-16 px-4">
+      <div className="relative overflow-hidden bg-[#3b1030] py-20 px-4">
+        <div 
+          className="absolute inset-0 w-full h-full bg-cover bg-center opacity-100"
+          style={{ backgroundImage: `url(${pregnancyBanner})` }}
+        />
+        <div className="absolute inset-0 bg-[#662654]/50" />
+        
         {/* Decorative petals */}
         <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
           {['🌸','🌺','✨','🌼','🌸','🌺'].map((p, i) => (
@@ -128,7 +143,9 @@ const SaffronGuidancePage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <span className="inline-block text-5xl mb-4">🌸</span>
+            <div className="flex justify-center mb-6">
+              <img src={saffronIcon} alt="Saffron Guidance" className="w-24 h-24 object-cover rounded-full shadow-[0_0_40px_rgba(255,255,255,0.2)] border-4 border-white/20" />
+            </div>
             <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
               Saffron Guidance
             </h1>
