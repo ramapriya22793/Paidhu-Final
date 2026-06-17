@@ -31,6 +31,7 @@ const menuItems = [
   { name: 'Our Philosophy', path: '/philosophy-management', icon: <FiBookOpen /> },
   { name: 'Bulk Orders Content', path: '/bulk-orders-management', icon: <FiLayout /> },
   { name: 'Bulk Inquiries', path: '/bulk-order-inquiries', icon: <FiFileText /> },
+  { name: 'Tiffin Leads', path: '/tiffin-leads', icon: <FiUsers /> },
   { name: 'About Us', path: '/about-us-management', icon: <FiUsers /> },
 ];
 

@@ -141,3 +141,15 @@ exports.getDashboardStats = async (req, res) => {
     res.status(500).json({ message: 'Server error fetching stats' });
   }
 };
+
+exports.getTiffinRegistrations = async (req, res) => {
+  try {
+    const registrations = await prisma.tiffinRegistration.findMany({
+      orderBy: { createdAt: 'desc' }
+    });
+    res.json(registrations);
+  } catch (error) {
+    console.error("Error fetching tiffin registrations:", error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};

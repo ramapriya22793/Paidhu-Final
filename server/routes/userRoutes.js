@@ -10,6 +10,7 @@ router.post('/guest-login', userController.guestLogin);
 router.get('/profile', authMiddleware, userController.getProfile);
 router.put('/profile', authMiddleware, userController.updateProfile);
 router.put('/preferences', authMiddleware, userController.updatePreferences);
+router.post('/tiffin-register', userController.registerTiffin);
 
 // Admin Routes
 const { verifyAdmin, verifyToken } = require('../middleware/authMiddleware');

@@ -333,3 +333,10 @@ model TrackingScript {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model TiffinRegistration {
+  id        Int      @id @default(autoincrement())
+  phone     String   @unique
+  consent   Boolean  @default(true)
+  createdAt DateTime @default(now())
+}

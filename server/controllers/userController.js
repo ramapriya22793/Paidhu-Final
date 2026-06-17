@@ -273,6 +273,38 @@ const guestLogin = async (req, res) => {
   }
 };
 
+const registerTiffin = async (req, res) => {
+  try {
+    const { phone, consent } = req.body;
+    if (!phone) {
+      return res.status(400).json({ message: 'Phone number is required' });
+    }
+    
+    const existing = await prisma.tiffinRegistration.findUnique({
+      where: { phone }
+    });
+    
+    if (existing) {
+      return res.status(400).json({ message: 'This mobile number is already registered!' });
+    }
+    
+    const registration = await prisma.tiffinRegistration.create({
+      data: {
+        phone,
+        consent: consent !== undefined ? consent : true
+      }
+    });
+    
+    res.status(201).json({
+      message: 'Registration successful!',
+      registration
+    });
+  } catch (error) {
+    console.error("Tiffin registration error:", error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 module.exports = {
   adminLogin,
   register,
@@ -284,5 +316,6 @@ module.exports = {
   adminUpdateUser,
   deleteUser,
   blockUser,
-  guestLogin
+  guestLogin,
+  registerTiffin
 };

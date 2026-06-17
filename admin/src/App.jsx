@@ -37,6 +37,7 @@ import AboutUsManagement from './pages/AboutUsManagement';
 import ActiveCarts from './pages/ActiveCarts';
 import WishlistInsights from './pages/WishlistInsights';
 import CategoryGridManagement from './pages/CategoryGridManagement';
+import TiffinLeads from './pages/TiffinLeads';
 
 const App = () => {
   return (
@@ -78,6 +79,7 @@ const App = () => {
           <Route path="about-us-management" element={<AboutUsManagement />} />
           <Route path="active-carts" element={<ActiveCarts />} />
           <Route path="wishlists" element={<WishlistInsights />} />
+          <Route path="tiffin-leads" element={<TiffinLeads />} />
           <Route path="settings" element={<Settings />} />
           <Route path="tracking" element={<TrackingScripts />} />
           <Route path="pages" element={<PagesList />} />

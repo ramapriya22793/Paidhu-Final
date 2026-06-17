@@ -12,6 +12,7 @@ import StorytellingVideo from './components/home/StorytellingVideo';
 import RealMomsSection from './components/home/RealMomsSection';
 import BrandCharactersBanner from './components/home/BrandCharactersBanner';
 import WhatsAppButton from './components/ui/WhatsAppButton';
+import TiffinModal from './components/home/TiffinModal';
 import { CartProvider } from './context/CartContext';
 import { motion } from 'framer-motion';
 
@@ -38,6 +39,7 @@ const HomePage = () => (
     <StorytellingVideo />
     <RealMomsSection />
     <BrandCharactersBanner />
+    <TiffinModal />
   </motion.main>
 );
 
