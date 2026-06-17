@@ -57,14 +57,15 @@ const StorytellingVideo = () => {
               onClick={() => setIsModalOpen(true)}
               className="absolute top-[18%] left-[15%] w-[70%] h-[55%] rounded-[10px] md:rounded-[18px] overflow-hidden pointer-events-auto cursor-pointer group shadow-[0_8px_30px_rgba(0,0,0,0.15)] border border-[#662554]/10"
             >
-              {/* Image preview instead of autoplaying video to save 7MB payload */}
-              <img 
-                src={videoData.videoThumbnail} 
-                alt={videoData.videoTitle}
-                width={716}
-                height={388}
-                loading="lazy"
+              {/* Autoplay preview video */}
+              <video 
+                src={videoData.videoUrl} 
+                poster={videoData.videoThumbnail}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90"
+                muted
+                loop
+                autoPlay
+                playsInline
               />
               
               {/* Dark overlay on hover */}
