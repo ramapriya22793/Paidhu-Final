@@ -39,7 +39,6 @@ const HomePage = () => (
     <StorytellingVideo />
     <RealMomsSection />
     <BrandCharactersBanner />
-    <TiffinModal />
   </motion.main>
 );
 

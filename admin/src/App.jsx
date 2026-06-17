@@ -80,6 +80,7 @@ const App = () => {
           <Route path="active-carts" element={<ActiveCarts />} />
           <Route path="wishlists" element={<WishlistInsights />} />
           <Route path="tiffin-leads" element={<TiffinLeads />} />
+          <Route path="whatsapp-leads" element={<TiffinLeads />} />
           <Route path="settings" element={<Settings />} />
           <Route path="tracking" element={<TrackingScripts />} />
           <Route path="pages" element={<PagesList />} />

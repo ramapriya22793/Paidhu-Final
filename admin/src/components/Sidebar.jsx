@@ -5,6 +5,7 @@ import {
   FiTag, FiStar, FiFileText, FiSearch, 
   FiSettings, FiLogOut, FiImage, FiLayout, FiFeather, FiGrid, FiBookOpen, FiHeart, FiActivity
 } from 'react-icons/fi';
+import { FaWhatsapp } from 'react-icons/fa';
 
 const menuItems = [
   { name: 'Dashboard', path: '/', icon: <FiHome /> },
@@ -13,6 +14,7 @@ const menuItems = [
   { name: 'Active Carts', path: '/active-carts', icon: <FiShoppingCart /> },
   { name: 'Wishlists', path: '/wishlists', icon: <FiHeart /> },
   { name: 'Customers', path: '/customers', icon: <FiUsers /> },
+  { name: 'WhatsApp Leads', path: '/whatsapp-leads', icon: <FaWhatsapp /> },
   { name: 'Payments', path: '/payments', icon: <FiShoppingCart /> },
   { name: 'Coupons', path: '/coupons', icon: <FiTag /> },
   { name: 'Delivery Rules', path: '/delivery-charges', icon: <FiShoppingCart /> },
@@ -31,7 +33,6 @@ const menuItems = [
   { name: 'Our Philosophy', path: '/philosophy-management', icon: <FiBookOpen /> },
   { name: 'Bulk Orders Content', path: '/bulk-orders-management', icon: <FiLayout /> },
   { name: 'Bulk Inquiries', path: '/bulk-order-inquiries', icon: <FiFileText /> },
-  { name: 'Tiffin Leads', path: '/tiffin-leads', icon: <FiUsers /> },
   { name: 'About Us', path: '/about-us-management', icon: <FiUsers /> },
 ];
 
@@ -49,7 +50,7 @@ const Sidebar = () => {
         <img src="/logo.png" alt="Paidhu Logo" className="h-10 object-contain" />
       </div>
       
-      <div className="flex-1 overflow-y-auto py-4">
+      <div className="flex-1 overflow-y-auto py-4 custom-scrollbar">
         <nav className="px-4 space-y-1">
           {menuItems.map((item) => (
             <NavLink

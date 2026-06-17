@@ -4,28 +4,41 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-const TiffinModal = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const TiffinModal = ({ 
+  isOpen: propIsOpen, 
+  onClose: propOnClose,
+  title = "Register for school tiffin ideas for kids",
+  subtitle = "Get daily recipe guides and clean eating tips sent straight to your phone."
+}) => {
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
   const [phone, setPhone] = useState('');
   const [consent, setConsent] = useState(true);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
+  const isControlled = propIsOpen !== undefined;
+  const isOpen = isControlled ? propIsOpen : internalIsOpen;
+
   useEffect(() => {
+    if (isControlled) return;
     // Show modal after 2.5 seconds on home page load if not seen in current session
     const hasSeen = localStorage.getItem('hasSeenTiffinPopup');
     if (!hasSeen) {
       const timer = setTimeout(() => {
-        setIsOpen(true);
+        setInternalIsOpen(true);
       }, 2500);
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [isControlled]);
 
   const handleClose = () => {
-    setIsOpen(false);
-    localStorage.setItem('hasSeenTiffinPopup', 'true');
+    if (isControlled) {
+      if (propOnClose) propOnClose();
+    } else {
+      setInternalIsOpen(false);
+      localStorage.setItem('hasSeenTiffinPopup', 'true');
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -60,12 +73,15 @@ const TiffinModal = () => {
       }
 
       setSuccess(true);
-      localStorage.setItem('hasSeenTiffinPopup', 'true');
+      if (!isControlled) {
+        localStorage.setItem('hasSeenTiffinPopup', 'true');
+      }
       
-      // Auto close after 2 seconds
+      // Auto close and redirect to WhatsApp group after 1.5 seconds
       setTimeout(() => {
-        setIsOpen(false);
-      }, 2000);
+        window.open("https://chat.whatsapp.com/EDlauzE5x1B6U23RamfCej?s=sh&p=a&ilr=0", '_blank', 'noopener,noreferrer');
+        handleClose();
+      }, 1500);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -150,10 +166,10 @@ const TiffinModal = () => {
                 </div>
                 
                 <h4 className="font-serif text-xl md:text-2xl font-black text-gray-800 leading-tight mb-1.5">
-                  Register for school tiffin ideas for kids
+                  {title}
                 </h4>
                 <p className="text-gray-500 text-xs md:text-sm font-medium mb-6">
-                  Get daily recipe guides and clean eating tips sent straight to your phone.
+                  {subtitle}
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-4">

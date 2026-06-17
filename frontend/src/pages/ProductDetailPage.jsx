@@ -24,7 +24,7 @@ const ProductDetailPage = () => {
   const [loading, setLoading] = useState(() => !stateProduct);
   const [error, setError] = useState(null);
   
-  // Gallery states
+  // Single product image state
   const [activeImage, setActiveImage] = useState(() => {
     if (stateProduct) {
       const mainImg = stateProduct.image || (stateProduct.images && stateProduct.images.length > 0 ? (typeof stateProduct.images[0] === 'string' ? stateProduct.images[0] : stateProduct.images[0].imageUrl) : '');
@@ -240,19 +240,19 @@ const ProductDetailPage = () => {
           <div className="absolute top-[-10%] right-[-10%] w-[35%] aspect-square rounded-full bg-gradient-to-br from-[#662654]/5 to-transparent blur-[80px] pointer-events-none" />
           <div className="absolute bottom-[-10%] left-[-10%] w-[35%] aspect-square rounded-full bg-gradient-to-tr from-[#d4af37]/5 to-transparent blur-[80px] pointer-events-none" />
 
-          {/* 1. Left Column: Rich Gallery */}
-          <div className="space-y-6">
-            <div 
+          {/* 1. Left Column: Product Image with Zoom */}
+          <div>
+            <div
               onMouseMove={handleMouseMove}
               onMouseEnter={() => setIsZooming(true)}
               onMouseLeave={() => setIsZooming(false)}
-              className="relative aspect-square bg-[#faf9f7] rounded-[2rem] overflow-hidden border border-gray-100 flex items-center justify-center shadow-inner group cursor-zoom-in"
+              className="relative aspect-square bg-[#faf9f7] rounded-[2rem] overflow-hidden border border-gray-100 flex items-center justify-center shadow-inner cursor-zoom-in"
             >
               <motion.img 
                 key={activeImage}
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ 
-                  opacity: 1, 
+                  opacity: 1,
                   scale: isZooming ? 1.75 : 1,
                   transformOrigin: isZooming ? `${zoomPos.x}% ${zoomPos.y}%` : 'center'
                 }}
@@ -276,27 +276,6 @@ const ProductDetailPage = () => {
                 </div>
               )}
             </div>
-            
-            {/* Gallery Thumbnails */}
-            {galleryImages.length > 1 && (
-              <div className="flex gap-4 overflow-x-auto hide-scrollbar py-2">
-                {galleryImages.map((img, idx) => (
-                  <motion.button
-                    key={idx}
-                    onClick={() => setActiveImage(img)}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className={`relative w-20 h-20 rounded-2xl overflow-hidden border-2 transition-all flex-shrink-0 ${
-                      activeImage === img 
-                        ? 'border-[#662654] scale-105 shadow-lg shadow-[#662654]/10' 
-                        : 'border-gray-100 opacity-70 hover:opacity-100 hover:border-gray-300'
-                    }`}
-                  >
-                    <img src={img} alt={`${product.name} thumbnail ${idx}`} className="w-full h-full object-cover" />
-                  </motion.button>
-                ))}
-              </div>
-            )}
           </div>
 
           {/* 2. Right Column: Rich Info Panel */}

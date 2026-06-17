@@ -67,7 +67,7 @@ const TiffinLeads = () => {
       {/* Header section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-playfair font-bold text-gray-800">Tiffin WhatsApp Leads</h1>
+          <h1 className="text-3xl font-playfair font-bold text-gray-800">WhatsApp Leads</h1>
           <p className="text-gray-500 mt-1">View and export subscribers who signed up for kids' school tiffin updates.</p>
         </div>
         <div className="flex gap-3">

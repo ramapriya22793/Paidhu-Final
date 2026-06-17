@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare, Users, BookOpen, Heart, ArrowRight, Play } from 'lucide-react';
+import TiffinModal from '../home/TiffinModal';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/EDlauzE5x1B6U23RamfCej?s=sh&p=a&ilr=0";
@@ -38,6 +39,7 @@ const defaultData = {
 const OurCommunitySection = () => {
   const [data, setData] = useState(defaultData);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     fetch(`${API_BASE}/api/settings`)
@@ -104,18 +106,16 @@ const OurCommunitySection = () => {
             {data.hero.subtitle}
           </motion.p>
           
-          <motion.a 
+          <motion.button 
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            href={WHATSAPP_GROUP_LINK}
-            target="_blank"
-            rel="noopener noreferrer"
+            onClick={() => setIsModalOpen(true)}
             className="inline-flex items-center gap-2 bg-[#fbc225] hover:bg-[#e0ad20] text-[#522742] font-black text-sm md:text-base uppercase tracking-wider py-4 px-8 rounded-full shadow-lg transition-transform hover:scale-105 active:scale-95 cursor-pointer"
           >
             <MessageSquare size={18} strokeWidth={2.5} />
             Join Our WhatsApp Community
-          </motion.a>
+          </motion.button>
         </div>
       </section>
 
@@ -146,16 +146,14 @@ const OurCommunitySection = () => {
           </div>
 
           <div className="w-full md:w-auto shrink-0 z-10 text-center">
-            <a 
-              href={WHATSAPP_GROUP_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button 
+              onClick={() => setIsModalOpen(true)}
               className="w-full md:w-auto inline-flex items-center justify-center gap-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm uppercase tracking-wider py-4 px-8 rounded-xl transition-all shadow-md shadow-emerald-600/10 hover:shadow-lg active:scale-[0.98] cursor-pointer"
             >
               <MessageSquare size={16} strokeWidth={2.5} />
               Join WhatsApp Group
               <ArrowRight size={16} />
-            </a>
+            </button>
           </div>
         </motion.div>
       </section>
@@ -308,15 +306,13 @@ const OurCommunitySection = () => {
               Witness how mothers across major cities connect, learn, and nourish their families through Paidhu workshops, group meets, and collaborative recipe sharing.
             </p>
             <div className="pt-2">
-              <a
-                href={WHATSAPP_GROUP_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => setIsModalOpen(true)}
                 className="inline-flex items-center gap-2 bg-[#662654] hover:bg-[#7e3068] text-white font-bold text-sm uppercase tracking-wider py-3.5 px-7 rounded-xl shadow-md cursor-pointer"
               >
                 Join India's Moms Tribe
                 <ArrowRight size={16} />
-              </a>
+              </button>
             </div>
           </div>
 
@@ -355,17 +351,22 @@ const OurCommunitySection = () => {
             Follow this link to join my WhatsApp group: Connect with elegant living and natural floral wellness with thousands of health-conscious mothers.
           </p>
           <div className="pt-4">
-            <a
-              href={WHATSAPP_GROUP_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => setIsModalOpen(true)}
               className="inline-flex items-center gap-2 bg-[#fbc225] hover:bg-[#e0ad20] text-[#522742] font-black text-base uppercase tracking-widest py-4 px-10 rounded-full shadow-lg transition-transform hover:scale-105 active:scale-95 cursor-pointer"
             >
               Join Group Now
-            </a>
+            </button>
           </div>
         </div>
       </section>
+
+      <TiffinModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        title="Join the Paidhu WhatsApp Community" 
+        subtitle="Get healthy recipe ideas, expert wellness advice, and connect with other moms." 
+      />
     </div>
   );
 };
