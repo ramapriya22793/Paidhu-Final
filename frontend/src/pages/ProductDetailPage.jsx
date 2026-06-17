@@ -24,14 +24,6 @@ const ProductDetailPage = () => {
   const [loading, setLoading] = useState(() => !stateProduct);
   const [error, setError] = useState(null);
   
-  // Single product image state
-  const [activeImage, setActiveImage] = useState(() => {
-    if (stateProduct) {
-      const mainImg = stateProduct.image || (stateProduct.images && stateProduct.images.length > 0 ? (typeof stateProduct.images[0] === 'string' ? stateProduct.images[0] : stateProduct.images[0].imageUrl) : '');
-      return resolveImage(mainImg);
-    }
-    return '';
-  });
   const [mainImgLoading, setMainImgLoading] = useState(true);
 
   // Image Hover Zoom Magnifier state
@@ -90,10 +82,6 @@ const ProductDetailPage = () => {
         const data = await res.json();
         setProduct(data);
         
-        // Set image if active image is not set
-        const mainImg = data.image || (data.images && data.images.length > 0 ? (typeof data.images[0] === 'string' ? data.images[0] : data.images[0].imageUrl) : '');
-        setActiveImage(prev => prev || resolveImage(mainImg));
-        
         // Set variant if not set
         if (data.variants) {
           const parsed = typeof data.variants === 'string' ? JSON.parse(data.variants) : data.variants;
@@ -115,12 +103,6 @@ const ProductDetailPage = () => {
     // Scroll to top on mount
     window.scrollTo(0, 0);
   }, [id]);
-
-  useEffect(() => {
-    if (activeImage) {
-      setMainImgLoading(true);
-    }
-  }, [activeImage]);
 
   // Handler for variant change
   const handleVariantSelect = (v) => {
@@ -210,11 +192,8 @@ const ProductDetailPage = () => {
     ? Math.round(((price - offerPrice) / price) * 100)
     : 0;
 
-  // Build product image list for gallery
-  const galleryImages = [
-    product.image || '',
-    ...(product.images ? product.images.map(img => img.imageUrl) : [])
-  ].filter(Boolean).map(resolveImage);
+  // Single product image
+  const productImage = resolveImage(product.image || '');
 
   return (
     <motion.div 
@@ -249,7 +228,6 @@ const ProductDetailPage = () => {
               className="relative aspect-square bg-[#faf9f7] rounded-[2rem] overflow-hidden border border-gray-100 flex items-center justify-center shadow-inner cursor-zoom-in"
             >
               <motion.img 
-                key={activeImage}
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ 
                   opacity: 1,
@@ -257,7 +235,7 @@ const ProductDetailPage = () => {
                   transformOrigin: isZooming ? `${zoomPos.x}% ${zoomPos.y}%` : 'center'
                 }}
                 transition={isZooming ? { type: 'tween', duration: 0.1 } : { type: 'spring', damping: 25, stiffness: 120 }}
-                src={activeImage} 
+                src={productImage} 
                 alt={product.name} 
                 className="w-full h-full object-cover pointer-events-none"
                 onLoad={() => setMainImgLoading(false)}
