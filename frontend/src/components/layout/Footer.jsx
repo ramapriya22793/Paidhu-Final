@@ -102,7 +102,7 @@ const Footer = () => {
                 src="/Paidhulogo.png" 
                 alt="Paidhu Logo" 
                 width={128}
-                height={85}
+                height={58}
                 className="w-32 h-auto object-contain brightness-0 invert mb-2"
                 onError={(e) => { e.target.style.display = 'none'; }}
               />
