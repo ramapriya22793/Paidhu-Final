@@ -4,7 +4,7 @@ import { X } from 'lucide-react';
 import videoThumbnail from '../../assets/video_thumbnail.jpg';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-const FALLBACK_VIDEO_URL = "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/WhatsApp%20Video%202026-06-13%20at%209.33.29%20AM.mp4";
+const FALLBACK_VIDEO_URL = "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/PAIDHU%20CHARACTER%20VIDEO/WhatsApp%20Video%202026-06-13%20at%209.33.09%20AM.mp4";
 
 const StorytellingVideo = () => {
   const [videoData, setVideoData] = useState({
