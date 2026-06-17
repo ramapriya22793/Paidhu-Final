@@ -46,6 +46,8 @@ const PageBanner = ({ pageSlug }) => {
     if (!pageSlug) return;
     setCurrentSlide(0);
 
+    const resolvedSlug = pageSlug === 'shop-all' ? 'shop' : pageSlug;
+
     const fetchSlug = (slug) =>
       fetch(`${API_BASE}/api/banners/active/${slug}`)
         .then(r => (r.ok ? r.json() : []))
@@ -53,9 +55,14 @@ const PageBanner = ({ pageSlug }) => {
 
     (async () => {
       // 1. Slug-specific banners
-      let data = await fetchSlug(pageSlug);
+      let data = await fetchSlug(resolvedSlug);
 
-      // 2. Fallback to home banners (same carousel as the homepage)
+      // 2. Fallback to main shop banners (if not already on main shop)
+      if ((!data || data.length === 0) && resolvedSlug !== 'shop') {
+        data = await fetchSlug('shop');
+      }
+
+      // 3. Fallback to home banners (same carousel as the homepage)
       if (!data || data.length === 0) {
         data = await fetchSlug('home');
       }
@@ -63,7 +70,7 @@ const PageBanner = ({ pageSlug }) => {
       if (data && data.length > 0) {
         setSlides(data.map(toSlide).filter(s => s.image));
       } else {
-        // 3. Last resort — local image
+        // 4. Last resort — local image
         setSlides([{ id: 'local-1', image: LOCAL_FALLBACK, bgColor: '#f0ede6' }]);
       }
       setReady(true);
