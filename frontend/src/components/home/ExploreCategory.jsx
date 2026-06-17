@@ -46,14 +46,6 @@ const CATEGORY_CONFIG = [
     badge: "Signature Brew",
     img: "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780937334667-WhatsAppImage20251113at233026a02aaf431600x800jpg.jpg",
     fallback: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&q=90&w=1200"
-  },
-  {
-    title: "Bloom Powder",
-    subtitle: "Edible Floral Dust",
-    accent: "#2d6a9f",
-    badge: "100% Natural",
-    img: "https://images.unsplash.com/photo-1506368249639-73a05d6f6488?auto=format&fit=crop&q=90&w=1200",
-    fallback: "https://images.unsplash.com/photo-1506368249639-73a05d6f6488?auto=format&fit=crop&q=90&w=1200"
   }
 ];
 
@@ -63,8 +55,7 @@ const getMobileGridClasses = (index) => {
     case 1: return "col-span-1 row-span-1";
     case 2: return "col-span-1 row-span-2";
     case 3: return "col-span-1 row-span-1";
-    case 4: return "col-span-1 row-span-1";
-    case 5: return "col-span-1 row-span-1";
+    case 4: return "col-span-2 row-span-1";
     default: return "col-span-1 row-span-1";
   }
 };
@@ -83,8 +74,7 @@ const DEFAULT_COUNTS = {
   "Petal Jam": 4,
   "Saffron": 1,
   "Medley Teas": 3,
-  "Brew Flora": 3,
-  "Bloom Powder": 0
+  "Brew Flora": 3
 };
 
 const ExploreCategory = () => {
