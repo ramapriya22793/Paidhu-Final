@@ -97,7 +97,15 @@ const BulkOrdersSection = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
-      const resData = await res.json();
+
+      let resData = {};
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        resData = await res.json();
+      } else {
+        throw new Error('Inquiry server is currently offline or unreachable. Please try again later.');
+      }
+
       if (res.ok) {
         setIsSuccess(true);
         setSubmitMessage(resData.message || 'Inquiry submitted successfully!');
@@ -116,7 +124,7 @@ const BulkOrdersSection = () => {
     } catch (err) {
       console.error(err);
       setIsSuccess(false);
-      setSubmitMessage('Something went wrong. Please try again.');
+      setSubmitMessage(err.message || 'Something went wrong. Please try again.');
     } finally {
       setSubmitting(false);
     }

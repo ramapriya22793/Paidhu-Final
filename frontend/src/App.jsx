@@ -1,5 +1,5 @@
-import React, { lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { lazy, Suspense, useEffect } from 'react';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Hero from './components/home/Hero';
@@ -44,6 +44,17 @@ const HomePage = () => (
 );
 
 function App() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // If the path is not '/' when the app first loads (which happens on browser refresh/reload),
+    // redirect to '/'
+    if (location.pathname !== '/') {
+      navigate('/', { replace: true });
+    }
+  }, []); // Run once on initial mount
+
   return (
     <CartProvider>
       <div className="w-full min-h-screen relative font-sans text-gray-800 bg-white flex flex-col">

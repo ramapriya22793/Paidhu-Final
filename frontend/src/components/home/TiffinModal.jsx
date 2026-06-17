@@ -47,7 +47,14 @@ const TiffinModal = () => {
         body: JSON.stringify({ phone: `+91${cleanPhone}`, consent })
       });
 
-      const data = await response.json();
+      let data = {};
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        data = await response.json();
+      } else {
+        throw new Error('Registration server is currently offline or unreachable. Please try again later.');
+      }
+
       if (!response.ok) {
         throw new Error(data.message || 'Something went wrong. Please try again.');
       }

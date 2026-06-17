@@ -12,6 +12,7 @@ import BulkOrdersSection from '../components/ui/BulkOrdersSection';
 import AboutUsSection from '../components/ui/AboutUsSection';
 import BlogsSection from '../components/ui/BlogsSection';
 import FloralHabitatSection from '../components/ui/FloralHabitatSection';
+import OurCommunitySection from '../components/ui/OurCommunitySection';
 import fallbacks from '../components/home/fallbacks.json';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
@@ -606,6 +607,19 @@ const ShopPage = () => {
         className="min-h-screen bg-[#faf9f7]"
       >
         <AboutUsSection />
+      </motion.div>
+    );
+  }
+
+  if (navSection === 'our-own-community') {
+    return (
+      <motion.div 
+        initial={{ opacity: 0, y: 12 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.55, ease: 'easeOut' }}
+        className="min-h-screen bg-[#faf9f7]"
+      >
+        <OurCommunitySection />
       </motion.div>
     );
   }
