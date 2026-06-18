@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FiTrash2, FiRefreshCw } from 'react-icons/fi';
+import { FiTrash2, FiRefreshCw, FiDownload } from 'react-icons/fi';
 import axios from 'axios';
 import authService from '../services/authService';
 
@@ -60,6 +60,36 @@ const SaffronGuidanceLeads = () => {
     }
   };
 
+  const exportToCSV = () => {
+    if (leads.length === 0) return;
+
+    const headers = ['Date', 'Your Name', 'Spouse Name', 'Phone', 'Purpose', 'Pregnancy Month', 'Doctor Permission', 'Status'];
+    const csvRows = [
+      headers.join(','),
+      ...leads.map(lead => {
+        return [
+          new Date(lead.createdAt).toLocaleString('en-IN').replace(/,/g, ' '),
+          `"${(lead.yourName || '').replace(/"/g, '""')}"`,
+          `"${(lead.spouseName || '').replace(/"/g, '""')}"`,
+          `"${lead.phone || ''}"`,
+          `"${(lead.purpose || '').replace(/"/g, '""')}"`,
+          lead.pregnancyMonth || '',
+          `"${lead.doctorPermission || ''}"`,
+          `"${lead.status || ''}"`
+        ].join(',');
+      })
+    ];
+
+    const csvString = csvRows.join('\n');
+    const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Saffron_Guidance_Leads_${new Date().toLocaleDateString('en-IN').replace(/\//g, '-')}.csv`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
+
   if (loading) return (
     <div className="p-8 text-center text-gray-500 flex items-center justify-center gap-3">
       <FiRefreshCw className="animate-spin" /> Loading Saffron Guidance Leads...
@@ -79,12 +109,20 @@ const SaffronGuidanceLeads = () => {
             All form submissions from the Saffron Guidance page on the website.
           </p>
         </div>
-        <button
-          onClick={fetchLeads}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 text-sm font-semibold transition-colors"
-        >
-          <FiRefreshCw size={14} /> Refresh
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={exportToCSV}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-sm font-semibold transition-colors"
+          >
+            <FiDownload size={14} /> Export to Excel
+          </button>
+          <button
+            onClick={fetchLeads}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 text-sm font-semibold transition-colors border border-transparent"
+          >
+            <FiRefreshCw size={14} /> Refresh
+          </button>
+        </div>
       </div>
 
       {/* Summary Cards */}
