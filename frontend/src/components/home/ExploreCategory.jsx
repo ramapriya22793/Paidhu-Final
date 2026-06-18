@@ -257,7 +257,7 @@ const ExploreCategory = () => {
                   width={600}
                   height={320}
                   loading="lazy"
-                  className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ${isHovered ? 'scale-110 brightness-90' : 'scale-100 grayscale-[15%] brightness-75'}`}
+                  className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ${isHovered ? 'scale-110' : 'scale-100'}`}
                   onError={e => { e.target.src = cat.fallback; }}
                 />
 
