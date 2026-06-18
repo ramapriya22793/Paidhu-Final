@@ -34,6 +34,23 @@ const defaultBlogs = [
   }
 ];
 
+const BlogImage = ({ src, alt }) => {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <>
+      {!loaded && (
+        <div className="absolute inset-0 bg-gray-200 animate-pulse" />
+      )}
+      <img
+        src={src}
+        alt={alt}
+        onLoad={() => setLoaded(true)}
+        className={`w-full h-full object-cover transition-all duration-500 ${loaded ? 'opacity-100 group-hover:scale-105' : 'opacity-0'}`}
+      />
+    </>
+  );
+};
+
 const BlogsSection = () => {
   const [blogs, setBlogs] = useState(defaultBlogs);
   const [selectedBlog, setSelectedBlog] = useState(null);
@@ -210,11 +227,7 @@ const BlogsSection = () => {
               >
                 {/* Featured Image */}
                 <div className="relative aspect-[16/10] overflow-hidden bg-gray-100">
-                  <img
-                    src={getBlogImageSrc(blog.image)}
-                    alt={blog.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
+                  <BlogImage src={getBlogImageSrc(blog.image)} alt={blog.title} />
                   {blog.category && (
                     <span className="absolute top-4 left-4 bg-[#662654] text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-md flex items-center gap-1">
                       <Tag size={9} />
