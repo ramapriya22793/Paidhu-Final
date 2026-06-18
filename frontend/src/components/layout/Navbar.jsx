@@ -266,8 +266,7 @@ const Navbar = () => {
     <motion.header
       className={`w-full z-50 bg-[#662654] transition-all duration-300 font-sans ${isScrolled ? 'shadow-md' : ''}`}
     >
-      {/* Top Plum Bar */}
-      <div className="w-full h-1.5 bg-[#1a2b3c]" />
+
 
       {/* Top Row */}
       <div className="w-full bg-[#662654] py-1 md:py-1.5 px-4 md:px-8">
