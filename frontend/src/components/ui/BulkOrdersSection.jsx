@@ -442,7 +442,7 @@ const BulkOrdersSection = () => {
             <h3 className="text-2xl md:text-3xl font-black text-[#5a2141] uppercase tracking-tight">
               {data.foundersNote.title}
             </h3>
-            <p className="text-gray-600 text-sm md:text-base font-medium leading-relaxed italic border-l-2 border-[#662654]/30 pl-4">
+            <p className="text-gray-600 text-sm md:text-base font-medium leading-relaxed italic">
               "{data.foundersNote.text}"
             </p>
           </div>
