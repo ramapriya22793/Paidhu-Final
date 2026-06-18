@@ -66,14 +66,6 @@ const BlogsSection = () => {
     }
   }
 
-  if (loading) {
-    return (
-      <div className="w-full min-h-[60vh] flex flex-col items-center justify-center bg-[#faf9f7]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-[#662654]"></div>
-        <p className="mt-4 text-sm font-semibold text-[#662654] uppercase tracking-widest animate-pulse">Loading Blogs...</p>
-      </div>
-    );
-  }
 
   return (
     <div className="w-full bg-[#faf9f7] min-h-screen font-sans pb-20">
@@ -154,7 +146,12 @@ const BlogsSection = () => {
 
       {/* Articles Grid */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 mt-8">
-        {filteredBlogs.length === 0 ? (
+        {loading ? (
+          <div className="w-full flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
+            <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-b-4 border-[#662654]"></div>
+            <p className="mt-4 text-xs font-semibold text-[#662654] uppercase tracking-widest animate-pulse">Loading Blogs...</p>
+          </div>
+        ) : filteredBlogs.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
             <span className="text-6xl">📖</span>
             <h3 className="text-lg font-bold text-gray-700 mt-4">No articles found</h3>
