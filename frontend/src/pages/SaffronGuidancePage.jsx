@@ -110,9 +110,9 @@ const SaffronGuidancePage = () => {
       className="w-full min-h-screen bg-[#fcfbfa] font-sans"
     >
       {/* ── Hero Banner ── */}
-      <div className="relative overflow-hidden bg-[#3b1030] py-20 px-4">
+      <div className="relative overflow-hidden bg-[#3b1030] py-10 px-4">
         <div 
-          className="absolute inset-0 w-full h-full bg-contain bg-no-repeat bg-center opacity-100"
+          className="absolute inset-0 w-full h-full bg-cover bg-center opacity-100"
           style={{ backgroundImage: `url(${pregnancyBanner})` }}
         />
         <div className="absolute inset-0 bg-[#662654]/50" />
@@ -135,7 +135,7 @@ const SaffronGuidancePage = () => {
         <div className="max-w-3xl mx-auto text-center relative z-10">
           <Link
             to="/"
-            className="group inline-flex items-center gap-2 text-white/60 hover:text-white font-semibold text-sm mb-8 transition-colors"
+            className="group inline-flex items-center gap-2 text-white/60 hover:text-white font-semibold text-sm mb-4 transition-colors"
           >
             <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
             Back to Home
@@ -145,10 +145,10 @@ const SaffronGuidancePage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <div className="flex justify-center mb-6">
-              <img src={saffronIcon} alt="Saffron Guidance" className="w-24 h-24 object-cover rounded-full shadow-[0_0_40px_rgba(255,255,255,0.2)] border-4 border-white/20" />
+            <div className="flex justify-center mb-3">
+              <img src={saffronIcon} alt="Saffron Guidance" className="w-16 h-16 object-cover rounded-full shadow-[0_0_40px_rgba(255,255,255,0.2)] border-4 border-white/20" />
             </div>
-            <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
+            <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight leading-tight">
               Saffron Guidance
             </h1>
             <p className="mt-4 text-white/70 text-base md:text-lg font-medium max-w-xl mx-auto leading-relaxed">
@@ -157,7 +157,7 @@ const SaffronGuidancePage = () => {
           </motion.div>
 
           {/* Trust badges */}
-          <div className="flex flex-wrap justify-center gap-4 mt-8">
+          <div className="flex flex-wrap justify-center gap-4 mt-5">
             {[
               { icon: '🏥', text: 'Doctor Approved Protocol' },
               { icon: '🔒', text: '100% Private & Confidential' },
