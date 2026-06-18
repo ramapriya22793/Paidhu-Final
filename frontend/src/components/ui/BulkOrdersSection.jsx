@@ -34,9 +34,7 @@ const defaultData = {
     text: 'Choose wellness which is good for you. At Paidhu, we love using a diverse range of premium superfoods! Our products are made with a variety of nutrient-dense ingredients such as Kashmiri Saffron, Dried Rose Petals, and pure honey combined with natural sweetness.',
     logosTitle: 'ALSO AVAILABLE ON',
     logos: [
-      { id: 1, image: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg' },
-      { id: 2, image: 'https://cdn.worldvectorlogo.com/logos/flipkart.svg' },
-      { id: 3, image: 'https://upload.wikimedia.org/wikipedia/commons/7/75/Zomato_logo.png' }
+      { id: 1, image: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg' }
     ]
   },
   contactAssistance: {
