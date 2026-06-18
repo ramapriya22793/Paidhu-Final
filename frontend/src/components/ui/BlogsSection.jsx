@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, User, ArrowRight, Search, X, BookOpen, Tag } from 'lucide-react';
 
@@ -36,15 +36,25 @@ const defaultBlogs = [
 
 const BlogImage = ({ src, alt }) => {
   const [loaded, setLoaded] = useState(false);
+  const imgRef = useRef(null);
+
+  useEffect(() => {
+    if (imgRef.current && imgRef.current.complete) {
+      setLoaded(true);
+    }
+  }, [src]);
+
   return (
     <>
       {!loaded && (
         <div className="absolute inset-0 bg-gray-200 animate-pulse" />
       )}
       <img
+        ref={imgRef}
         src={src}
         alt={alt}
         onLoad={() => setLoaded(true)}
+        onError={() => setLoaded(true)}
         className={`w-full h-full object-cover transition-all duration-500 ${loaded ? 'opacity-100 group-hover:scale-105' : 'opacity-0'}`}
       />
     </>
