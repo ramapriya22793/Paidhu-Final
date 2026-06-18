@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, CheckCircle2, Loader2, User, Users, Phone, Heart, Calendar, Stethoscope } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import saffronIcon from '../assets/saffron_icon.png';
-import pregnancyBanner from '../assets/paidhu_moms.jpg';
+import pregnancyBanner from '../assets/pregnant_saffron_banner_new.png';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
