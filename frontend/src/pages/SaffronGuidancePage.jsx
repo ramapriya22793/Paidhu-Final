@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, CheckCircle2, Loader2, User, Users, Phone, Heart, Calendar, Stethoscope } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import saffronIcon from '../assets/saffron_icon.png';
-import pregnancyBanner from '../assets/pregnancy_saffron_banner.png';
+import pregnancyBanner from '../assets/paidhu_moms.jpg';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -112,7 +112,7 @@ const SaffronGuidancePage = () => {
       {/* ── Hero Banner ── */}
       <div className="relative overflow-hidden bg-[#3b1030] py-10 px-4">
         <div 
-          className="absolute inset-0 w-full h-full bg-cover bg-top opacity-100"
+          className="absolute inset-0 w-full h-full bg-cover bg-center opacity-100"
           style={{ backgroundImage: `url(${pregnancyBanner})` }}
         />
         <div className="absolute inset-0 bg-[#662654]/50" />
