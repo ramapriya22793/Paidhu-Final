@@ -2,6 +2,10 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, User, ArrowRight, Search, X, BookOpen, Tag } from 'lucide-react';
 
+import hibiscusImg from '../assets/hibiscus_tea.png';
+import saffronImg from '../assets/saffron_threads.png';
+import edibleFlowersImg from '../assets/edible_flowers.png';
+
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const defaultBlogs = [
@@ -11,7 +15,7 @@ const defaultBlogs = [
     category: 'Wellness',
     author: 'Dr. Bhavya',
     createdAt: new Date().toISOString(),
-    image: 'https://images.unsplash.com/photo-1577003833811-0949d2dd913c?q=80&w=800&auto=format&fit=crop',
+    image: hibiscusImg,
     content: 'Discover how adding hibiscus to your daily routine can boost your immunity, improve heart health, and add a refreshing zest to your day.'
   },
   {
@@ -20,7 +24,7 @@ const defaultBlogs = [
     category: 'Nutrition',
     author: 'Zainab Ginwala',
     createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
-    image: 'https://images.unsplash.com/photo-1596431980829-5775cb560413?q=80&w=800&auto=format&fit=crop',
+    image: saffronImg,
     content: 'Learn why saffron is considered the most precious spice in the world, its potent antioxidant properties, and easy ways to incorporate it into your diet.'
   },
   {
@@ -29,7 +33,7 @@ const defaultBlogs = [
     category: 'Lifestyle',
     author: 'Dr. Vidya Taneja',
     createdAt: new Date(Date.now() - 86400000 * 5).toISOString(),
-    image: 'https://images.unsplash.com/photo-1490818387583-1b0570f550ce?q=80&w=800&auto=format&fit=crop',
+    image: edibleFlowersImg,
     content: 'From aesthetic garnishes to nutrient-packed ingredients, edible flowers are making a comeback. Find out which blooms are safe and beneficial to eat.'
   }
 ];
@@ -93,7 +97,7 @@ const BlogsSection = () => {
 
   const getBlogImageSrc = (img) => {
     if (!img) return 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=800&auto=format&fit=crop';
-    if (img.startsWith('data:image') || img.startsWith('http')) return img;
+    if (img.startsWith('data:image') || img.startsWith('http') || img.startsWith('/src') || img.startsWith('/assets')) return img;
     return `${API_BASE}${img.startsWith('/') ? '' : '/'}${img}`;
   };
 
