@@ -206,8 +206,8 @@ const ExploreCategory = () => {
 
               {/* Gradient overlay */}
               <div
-                className="absolute inset-0 opacity-80 transition-opacity duration-500 group-hover:opacity-90"
-                style={{ background: `linear-gradient(to top, ${cat.accent}ee 0%, ${cat.accent}55 50%, transparent 100%)` }}
+                className="absolute inset-0 transition-opacity duration-500"
+                style={{ background: `linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 40%, transparent 80%)` }}
               />
 
               {/* Badge */}
@@ -261,13 +261,13 @@ const ExploreCategory = () => {
                   onError={e => { e.target.src = cat.fallback; }}
                 />
 
-                {/* Dynamic gradient overlay using accent color */}
+                {/* Dynamic gradient overlay for text contrast */}
                 <div
                   className="absolute inset-0 transition-all duration-500"
                   style={{
                     background: isHovered
-                      ? `linear-gradient(to top, ${cat.accent}f0 0%, ${cat.accent}60 35%, transparent 70%)`
-                      : 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.25) 60%, transparent 100%)'
+                      ? `linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 30%, transparent 60%)`
+                      : 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 40%, transparent 100%)'
                   }}
                 />
 
