@@ -4,22 +4,51 @@ import { Calendar, User, ArrowRight, Search, X, BookOpen, Tag } from 'lucide-rea
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
+const defaultBlogs = [
+  {
+    id: 'default-1',
+    title: 'The Magic of Hibiscus in Your Daily Tea',
+    category: 'Wellness',
+    author: 'Dr. Bhavya',
+    createdAt: new Date().toISOString(),
+    image: 'https://images.unsplash.com/photo-1577003833811-0949d2dd913c?q=80&w=800&auto=format&fit=crop',
+    content: 'Discover how adding hibiscus to your daily routine can boost your immunity, improve heart health, and add a refreshing zest to your day.'
+  },
+  {
+    id: 'default-2',
+    title: 'Saffron: The Golden Thread of Health',
+    category: 'Nutrition',
+    author: 'Zainab Ginwala',
+    createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
+    image: 'https://images.unsplash.com/photo-1596431980829-5775cb560413?q=80&w=800&auto=format&fit=crop',
+    content: 'Learn why saffron is considered the most precious spice in the world, its potent antioxidant properties, and easy ways to incorporate it into your diet.'
+  },
+  {
+    id: 'default-3',
+    title: 'Edible Flowers: A Feast for the Eyes and Body',
+    category: 'Lifestyle',
+    author: 'Dr. Vidya Taneja',
+    createdAt: new Date(Date.now() - 86400000 * 5).toISOString(),
+    image: 'https://images.unsplash.com/photo-1490818387583-1b0570f550ce?q=80&w=800&auto=format&fit=crop',
+    content: 'From aesthetic garnishes to nutrient-packed ingredients, edible flowers are making a comeback. Find out which blooms are safe and beneficial to eat.'
+  }
+];
+
 const BlogsSection = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [blogs, setBlogs] = useState(defaultBlogs);
   const [selectedBlog, setSelectedBlog] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   useEffect(() => {
-    setLoading(true);
     fetch(`${API_BASE}/api/blogs`)
       .then((res) => (res.ok ? res.json() : []))
       .then((data) => {
-        setBlogs(data);
+        if (data && data.length > 0) {
+          setBlogs(data);
+        }
       })
-      .catch((err) => console.error('Failed to fetch blogs:', err))
-      .finally(() => setLoading(false));
+      .catch((err) => console.error('Failed to fetch blogs:', err));
   }, []);
 
   const getBlogImageSrc = (img) => {
@@ -146,12 +175,7 @@ const BlogsSection = () => {
 
       {/* Articles Grid */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 mt-8">
-        {loading ? (
-          <div className="w-full flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
-            <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-b-4 border-[#662654]"></div>
-            <p className="mt-4 text-xs font-semibold text-[#662654] uppercase tracking-widest animate-pulse">Loading Blogs...</p>
-          </div>
-        ) : filteredBlogs.length === 0 ? (
+        {filteredBlogs.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
             <span className="text-6xl">📖</span>
             <h3 className="text-lg font-bold text-gray-700 mt-4">No articles found</h3>
