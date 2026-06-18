@@ -33,7 +33,7 @@ const FIELD_CONFIGS = [
     placeholder: 'Enter spouse full name',
     type: 'text',
     icon: Users,
-    required: true,
+    required: false,
   },
   {
     key: 'phone',
@@ -69,11 +69,13 @@ const SaffronGuidancePage = () => {
 
     // Validation
     if (!form.yourName.trim()) return setError('Please enter your name.');
-    if (!form.spouseName.trim()) return setError('Please enter spouse name.');
     if (!form.phone.trim() || form.phone.length < 10) return setError('Please enter a valid phone number.');
     if (!form.purpose) return setError('Please select your purpose.');
-    if (!form.pregnancyMonth) return setError('Please select the pregnancy month.');
-    if (!form.doctorPermission) return setError('Please indicate if you have doctor permission.');
+    
+    if (form.purpose === 'Pregnancy Support') {
+      if (!form.pregnancyMonth) return setError('Please select the pregnancy month.');
+      if (!form.doctorPermission) return setError('Please indicate if you have doctor permission.');
+    }
 
     setSubmitting(true);
     try {
@@ -222,10 +224,10 @@ const SaffronGuidancePage = () => {
               <form onSubmit={handleSubmit} className="p-8 space-y-6">
 
                 {/* Text fields */}
-                {FIELD_CONFIGS.map(({ key, label, placeholder, type, icon: Icon }) => (
+                {FIELD_CONFIGS.map(({ key, label, placeholder, type, icon: Icon, required }) => (
                   <div key={key} className="space-y-2">
                     <label className="block text-xs font-black text-gray-500 uppercase tracking-wider">
-                      {label} <span className="text-red-400">*</span>
+                      {label} {required !== false && <span className="text-red-400">*</span>}
                     </label>
                     <div className="relative">
                       <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#662654]/50">
@@ -264,62 +266,73 @@ const SaffronGuidancePage = () => {
                   </div>
                 </div>
 
-                {/* Pregnancy Month */}
-                <div className="space-y-2">
-                  <label className="block text-xs font-black text-gray-500 uppercase tracking-wider">
-                    Pregnancy Month <span className="text-red-400">*</span>
-                  </label>
-                  <div className="relative">
-                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#662654]/50">
-                      <Calendar size={18} />
-                    </div>
-                    <select
-                      value={form.pregnancyMonth}
-                      onChange={e => handleChange('pregnancyMonth', e.target.value)}
-                      className="w-full pl-12 pr-4 py-3.5 bg-[#faf9f7] border border-gray-200 rounded-xl text-sm font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#662654]/20 focus:border-[#662654] transition-all appearance-none cursor-pointer"
+                <AnimatePresence>
+                  {form.purpose === 'Pregnancy Support' && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="space-y-6 overflow-hidden"
                     >
-                      <option value="">Select month of pregnancy</option>
-                      {PREGNANCY_MONTHS.map(m => (
-                        <option key={m} value={m}>Month {m}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
+                      {/* Pregnancy Month */}
+                      <div className="space-y-2">
+                        <label className="block text-xs font-black text-gray-500 uppercase tracking-wider">
+                          Pregnancy Month <span className="text-red-400">*</span>
+                        </label>
+                        <div className="relative">
+                          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#662654]/50">
+                            <Calendar size={18} />
+                          </div>
+                          <select
+                            value={form.pregnancyMonth}
+                            onChange={e => handleChange('pregnancyMonth', e.target.value)}
+                            className="w-full pl-12 pr-4 py-3.5 bg-[#faf9f7] border border-gray-200 rounded-xl text-sm font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#662654]/20 focus:border-[#662654] transition-all appearance-none cursor-pointer"
+                          >
+                            <option value="">Select month of pregnancy</option>
+                            {PREGNANCY_MONTHS.map(m => (
+                              <option key={m} value={m}>Month {m}</option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
 
-                {/* Doctor Permission */}
-                <div className="space-y-3">
-                  <label className="block text-xs font-black text-gray-500 uppercase tracking-wider">
-                    Do you have Doctor's Permission? <span className="text-red-400">*</span>
-                  </label>
-                  <div className="flex gap-3">
-                    {['Yes', 'No'].map(opt => (
-                      <button
-                        key={opt}
-                        type="button"
-                        onClick={() => handleChange('doctorPermission', opt)}
-                        className={`flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl border-2 font-black text-sm transition-all ${
-                          form.doctorPermission === opt
-                            ? opt === 'Yes'
-                              ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
-                              : 'border-rose-400 bg-rose-50 text-rose-700'
-                            : 'border-gray-200 bg-[#faf9f7] text-gray-500 hover:border-[#662654]/30'
-                        }`}
-                      >
-                        <Stethoscope size={16} />
-                        {opt === 'Yes' ? '✅ Yes, I have permission' : '❌ No, not yet'}
-                      </button>
-                    ))}
-                  </div>
-                  {form.doctorPermission === 'No' && (
-                    <motion.p
-                      initial={{ opacity: 0, y: -5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="text-xs text-amber-600 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 font-medium"
-                    >
-                      ⚠️ We strongly recommend consulting your doctor before using saffron during pregnancy. Our expert will help guide you.
-                    </motion.p>
+                      {/* Doctor Permission */}
+                      <div className="space-y-3">
+                        <label className="block text-xs font-black text-gray-500 uppercase tracking-wider">
+                          Do you have Doctor's Permission? <span className="text-red-400">*</span>
+                        </label>
+                        <div className="flex gap-3">
+                          {['Yes', 'No'].map(opt => (
+                            <button
+                              key={opt}
+                              type="button"
+                              onClick={() => handleChange('doctorPermission', opt)}
+                              className={`flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl border-2 font-black text-sm transition-all ${
+                                form.doctorPermission === opt
+                                  ? opt === 'Yes'
+                                    ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
+                                    : 'border-rose-400 bg-rose-50 text-rose-700'
+                                  : 'border-gray-200 bg-[#faf9f7] text-gray-500 hover:border-[#662654]/30'
+                              }`}
+                            >
+                              <Stethoscope size={16} />
+                              {opt === 'Yes' ? '✅ Yes, I have permission' : '❌ No, not yet'}
+                            </button>
+                          ))}
+                        </div>
+                        {form.doctorPermission === 'No' && (
+                          <motion.p
+                            initial={{ opacity: 0, y: -5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="text-xs text-amber-600 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 font-medium"
+                          >
+                            ⚠️ We strongly recommend consulting your doctor before using saffron during pregnancy. Our expert will help guide you.
+                          </motion.p>
+                        )}
+                      </div>
+                    </motion.div>
                   )}
-                </div>
+                </AnimatePresence>
 
                 {/* Error */}
                 {error && (
