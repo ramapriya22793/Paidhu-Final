@@ -36,13 +36,26 @@ const defaultBlogs = [
 
 const BlogImage = ({ src, alt }) => {
   const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState(false);
   const imgRef = useRef(null);
 
   useEffect(() => {
     if (imgRef.current && imgRef.current.complete) {
-      setLoaded(true);
+      if (imgRef.current.naturalWidth === 0) {
+        setError(true);
+      } else {
+        setLoaded(true);
+      }
     }
   }, [src]);
+
+  if (error) {
+    return (
+      <div className="w-full h-full bg-[#ede7d7] flex items-center justify-center text-[#662654]/40">
+        <BookOpen size={48} strokeWidth={1.5} />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -54,7 +67,7 @@ const BlogImage = ({ src, alt }) => {
         src={src}
         alt={alt}
         onLoad={() => setLoaded(true)}
-        onError={() => setLoaded(true)}
+        onError={() => setError(true)}
         className={`w-full h-full object-cover transition-all duration-500 ${loaded ? 'opacity-100 group-hover:scale-105' : 'opacity-0'}`}
       />
     </>
