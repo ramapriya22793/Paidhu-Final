@@ -376,7 +376,7 @@ const Navbar = () => {
       </div>
 
       {/* Second Row — Desktop Navigation */}
-      <div className="hidden lg:block w-full bg-[#662654] border-b border-[#ede7d7]/10 pb-1.5">
+      <div className="hidden lg:block w-full bg-[#ede7d7] border-b border-[#662654]/10 py-2">
         <nav className="max-w-[1400px] mx-auto px-4 xl:px-8">
           <div className="flex justify-center gap-x-6 xl:gap-x-8 w-full mt-0">
             {navColumns.map((col, i) => (
@@ -388,14 +388,14 @@ const Navbar = () => {
                     <button
                       onMouseEnter={() => setShowCatDropdown(true)}
                       onClick={() => setShowCatDropdown(v => !v)}
-                      className="relative flex items-center gap-1 text-[#ede7d7] font-semibold text-[13px] xl:text-[14px] hover:text-white transition-colors cursor-pointer whitespace-nowrap group"
+                      className="relative flex items-center gap-1 text-[#662654] font-semibold text-[13px] xl:text-[14px] hover:text-[#4a1c3d] transition-colors cursor-pointer whitespace-nowrap group"
                     >
                       {col.top.name}
                       <ChevronDown
                         size={13}
                         className={`transition-transform duration-200 ${showCatDropdown ? 'rotate-180' : ''}`}
                       />
-                      <span className="absolute -bottom-0.5 left-0 w-0 h-[2px] bg-[#ede7d7] group-hover:w-full transition-all duration-300 rounded-full" />
+                      <span className="absolute -bottom-0.5 left-0 w-0 h-[2px] bg-[#662654] group-hover:w-full transition-all duration-300 rounded-full" />
                     </button>
 
                     {/* ── Category Dropdown ── */}
@@ -933,10 +933,10 @@ const Navbar = () => {
 const NavItem = ({ name, onClick }) => (
   <button
     onClick={onClick}
-    className="relative text-[#ede7d7] font-semibold text-[13px] xl:text-[14px] hover:text-white transition-colors cursor-pointer whitespace-nowrap text-center group"
+    className="relative text-[#662654] font-semibold text-[13px] xl:text-[14px] hover:text-[#4a1c3d] transition-colors cursor-pointer whitespace-nowrap text-center group"
   >
     {name}
-    <span className="absolute -bottom-0.5 left-0 w-0 h-[2px] bg-[#ede7d7] group-hover:w-full transition-all duration-300 rounded-full" />
+    <span className="absolute -bottom-0.5 left-0 w-0 h-[2px] bg-[#662654] group-hover:w-full transition-all duration-300 rounded-full" />
   </button>
 );
 
