@@ -31,32 +31,32 @@ const Footer = () => {
           
           {/* Quick Links */}
           <div className="flex flex-col space-y-4">
-            <h4 className="font-bold text-xl mb-4 font-serif text-[#fbc225]">Quick Links</h4>
-            <a href="#" className="text-sm hover:text-[#fbc225] transition-colors relative group w-fit">About Us</a>
-            <a href="#" className="text-sm hover:text-[#fbc225] transition-colors relative group w-fit">Shop</a>
-            <a href="#" className="text-sm hover:text-[#fbc225] transition-colors relative group w-fit">Contact</a>
-            <a href="#" className="text-sm hover:text-[#fbc225] transition-colors relative group w-fit">FAQs</a>
+            <h4 className="font-bold text-xl mb-4 font-serif text-[#ede7d7]">Quick Links</h4>
+            <a href="#" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">About Us</a>
+            <a href="#" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Shop</a>
+            <a href="#" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Contact</a>
+            <a href="#" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">FAQs</a>
           </div>
 
           {/* Legal */}
           <div className="flex flex-col space-y-4">
-            <h4 className="font-bold text-xl mb-4 font-serif text-[#fbc225]">Legal</h4>
-            <a href="#" className="text-sm hover:text-[#fbc225] transition-colors relative group w-fit">Terms & Conditions</a>
-            <a href="#" className="text-sm hover:text-[#fbc225] transition-colors relative group w-fit">Privacy Policy</a>
-            <a href="#" className="text-sm hover:text-[#fbc225] transition-colors relative group w-fit">Shipping Policy</a>
+            <h4 className="font-bold text-xl mb-4 font-serif text-[#ede7d7]">Legal</h4>
+            <a href="#" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Terms & Conditions</a>
+            <a href="#" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Privacy Policy</a>
+            <a href="#" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Shipping Policy</a>
           </div>
 
           {/* Newsletter */}
           <div className="flex flex-col space-y-4">
-            <h4 className="font-bold text-xl mb-4 font-serif text-[#fbc225]">Subscribe to our newsletter</h4>
+            <h4 className="font-bold text-xl mb-4 font-serif text-[#ede7d7]">Subscribe to our newsletter</h4>
             <p className="text-sm opacity-90 mb-2">Get updates, tips, and exclusive offers straight to your inbox.</p>
             <div className="relative flex flex-col space-y-3 mt-2">
               <input 
                 type="email" 
                 placeholder="Enter your email" 
-                className="w-full bg-transparent border-b border-[#fdfaf6]/50 py-2 text-sm focus:outline-none focus:border-[#fbc225] text-white placeholder-white/60 transition-colors"
+                className="w-full bg-transparent border-b border-[#fdfaf6]/50 py-2 text-sm focus:outline-none focus:border-[#ede7d7] text-white placeholder-white/60 transition-colors"
               />
-              <button className="bg-[#fbc225] hover:bg-[#e0ad20] text-[#522742] font-bold py-2 px-6 rounded-full w-max text-sm transition-transform hover:scale-105 active:scale-95">
+              <button className="bg-[#ede7d7] hover:bg-white text-[#522742] font-bold py-2 px-6 rounded-full w-max text-sm transition-transform hover:scale-105 active:scale-95">
                 Subscribe
               </button>
             </div>
@@ -65,32 +65,32 @@ const Footer = () => {
           {/* Follow Us / Branding */}
           <div className="flex flex-col space-y-6 lg:items-end text-left lg:text-right">
             <div>
-              <h4 className="font-bold text-xl mb-4 font-serif text-[#fbc225]">Follow Us</h4>
+              <h4 className="font-bold text-xl mb-4 font-serif text-[#ede7d7]">Follow Us</h4>
               <div className="flex space-x-4 lg:justify-end">
                 <motion.a 
-                  whileHover={{ scale: 1.1, color: "#fbc225" }} 
+                  whileHover={{ scale: 1.1, color: "#ede7d7" }} 
                   href="https://www.instagram.com/paidhu_edibleflower/" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="text-[#fdfaf6] hover:text-[#fbc225] transition-colors"
+                  className="text-[#fdfaf6] hover:text-[#ede7d7] transition-colors"
                 >
                   <InstagramIcon size={24} />
                 </motion.a>
                 <motion.a 
-                  whileHover={{ scale: 1.1, color: "#fbc225" }} 
+                  whileHover={{ scale: 1.1, color: "#ede7d7" }} 
                   href="https://www.youtube.com/@Paidhu" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="text-[#fdfaf6] hover:text-[#fbc225] transition-colors"
+                  className="text-[#fdfaf6] hover:text-[#ede7d7] transition-colors"
                 >
                   <YoutubeIcon size={24} />
                 </motion.a>
                 <motion.a 
-                  whileHover={{ scale: 1.1, color: "#fbc225" }} 
+                  whileHover={{ scale: 1.1, color: "#ede7d7" }} 
                   href="https://wa.me/918754787774" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="text-[#fdfaf6] hover:text-[#fbc225] transition-colors"
+                  className="text-[#fdfaf6] hover:text-[#ede7d7] transition-colors"
                 >
                   <MessageCircleIcon size={24} />
                 </motion.a>
@@ -106,14 +106,14 @@ const Footer = () => {
                 className="w-32 h-auto object-contain brightness-0 invert mb-2"
                 onError={(e) => { e.target.style.display = 'none'; }}
               />
-              <p className="text-sm font-serif italic text-[#fbc225]">Pure. Simple. Good.</p>
+              <p className="text-sm font-serif italic text-[#ede7d7]">Pure. Simple. Good.</p>
             </div>
           </div>
         </div>
 
         {/* Bottom Copyright */}
         <div className="mt-16 border-t border-[#fdfaf6]/20 pt-8 flex flex-col items-center justify-center text-center space-y-4">
-          <div className="w-16 h-16 rounded-full overflow-hidden bg-white p-1 border border-[#fbc225]/30 shadow-lg transition-transform hover:scale-110 duration-300">
+          <div className="w-16 h-16 rounded-full overflow-hidden bg-white p-1 border border-[#ede7d7]/30 shadow-lg transition-transform hover:scale-110 duration-300">
             <img 
               src="/mascot.png" 
               alt="Paidhu Mascot" 
