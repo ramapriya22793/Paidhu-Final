@@ -236,6 +236,7 @@ const ProductCarousel = () => {
                       alt={product.name} 
                       loading="lazy"
                       className="w-full h-full object-cover transition-all duration-700 ease-out group-hover/card:opacity-0 group-hover/card:scale-110"
+                      style={{ imageRendering: 'high-quality', WebkitBackfaceVisibility: 'hidden', WebkitTransform: 'translateZ(0)' }}
                     />
                     {product.image2 && (
                       <img 
@@ -243,6 +244,7 @@ const ProductCarousel = () => {
                         alt={product.name} 
                         loading="lazy"
                         className="absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out opacity-0 scale-95 group-hover/card:opacity-100 group-hover/card:scale-110"
+                        style={{ imageRendering: 'high-quality', WebkitBackfaceVisibility: 'hidden', WebkitTransform: 'translateZ(0)' }}
                       />
                     )}
                     {/* Subtle gradient overlay */}

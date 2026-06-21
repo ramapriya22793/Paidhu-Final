@@ -238,6 +238,7 @@ const ProductDetailPage = () => {
                 src={productImage} 
                 alt={product.name} 
                 className="w-full h-full object-cover pointer-events-none"
+                style={{ imageRendering: 'high-quality', WebkitBackfaceVisibility: 'hidden', WebkitTransform: 'translateZ(0)' }}
                 onLoad={() => setMainImgLoading(false)}
               />
               {mainImgLoading && (
