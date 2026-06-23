@@ -103,7 +103,7 @@ const BYOCPage = () => {
   return (
     <div className="min-h-screen bg-[#faf8f6]">
       {/* Top Promotional Banner */}
-      <div className="w-full bg-[#e51d38] text-white text-center py-2.5 font-extrabold tracking-wide text-xs md:text-sm uppercase shadow-sm sticky top-0 z-40">
+      <div className="w-full bg-[#662654] text-white text-center py-2.5 font-extrabold tracking-wide text-xs md:text-sm uppercase shadow-sm sticky top-0 z-40">
         BUY 3 FOR ₹799 | 4 FOR ₹1049 | 5 FOR ₹1399 — BUY NOW!
       </div>
 
@@ -147,7 +147,7 @@ const BYOCPage = () => {
                   <button 
                     onClick={() => handleAddToBundle(product)}
                     disabled={bundle.length >= MAX_ITEMS}
-                    className="w-full bg-[#cc1a32] hover:bg-[#b0162a] disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold text-xs py-2.5 rounded-lg flex items-center justify-between px-4 transition-colors"
+                    className="w-full bg-[#662654] hover:bg-[#4d1c3f] disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold text-xs py-2.5 rounded-lg flex items-center justify-between px-4 transition-colors"
                   >
                     <span>Add to Bundle</span>
                     <Plus size={14} strokeWidth={3} />
@@ -164,7 +164,7 @@ const BYOCPage = () => {
             
             {/* Sidebar Header */}
             <div className="p-5 border-b border-gray-100 flex items-center justify-between">
-              <h2 className="text-xl font-extrabold text-[#cc1a32] uppercase tracking-wider font-serif">My Bundle</h2>
+              <h2 className="text-xl font-extrabold text-[#662654] uppercase tracking-wider font-serif">My Bundle</h2>
               <div className="bg-[#f0f4f8] w-12 h-12 rounded-full flex items-center justify-center relative shadow-inner">
                 <span className="text-xl">🌸</span>
                 <div className="absolute -bottom-1 -right-1 bg-green-500 w-5 h-5 rounded-full border-2 border-white flex items-center justify-center text-[10px] font-bold text-white shadow-sm">
@@ -177,7 +177,7 @@ const BYOCPage = () => {
             <div className="bg-[#faf9f7] p-5 border-b border-gray-100 flex justify-between relative">
               <div className="absolute top-1/2 left-8 right-8 h-0.5 bg-gray-200 -translate-y-1/2 z-0" />
               <div 
-                className="absolute top-1/2 left-8 h-0.5 bg-[#cc1a32] -translate-y-1/2 z-0 transition-all duration-500" 
+                className="absolute top-1/2 left-8 h-0.5 bg-[#662654] -translate-y-1/2 z-0 transition-all duration-500" 
                 style={{ width: `${bundle.length >= 5 ? 100 : bundle.length >= 4 ? 50 : bundle.length >= 3 ? 0 : 0}%` }}
               />
               
@@ -185,8 +185,8 @@ const BYOCPage = () => {
                 const isReached = bundle.length >= tier.items;
                 return (
                   <div key={idx} className="flex flex-col items-center relative z-10">
-                    <div className={`w-4 h-4 rounded-full mb-1.5 border-2 transition-colors ${isReached ? 'bg-[#cc1a32] border-[#cc1a32]' : 'bg-white border-gray-300'}`} />
-                    <span className={`text-[10px] font-bold uppercase ${isReached ? 'text-[#cc1a32]' : 'text-gray-400'}`}>{tier.items} items</span>
+                    <div className={`w-4 h-4 rounded-full mb-1.5 border-2 transition-colors ${isReached ? 'bg-[#662654] border-[#662654]' : 'bg-white border-gray-300'}`} />
+                    <span className={`text-[10px] font-bold uppercase ${isReached ? 'text-[#662654]' : 'text-gray-400'}`}>{tier.items} items</span>
                     <span className={`text-[11px] font-extrabold ${isReached ? 'text-gray-900' : 'text-gray-400'}`}>₹{tier.price}</span>
                   </div>
                 );
@@ -220,7 +220,7 @@ const BYOCPage = () => {
                       </div>
                       <button 
                         onClick={() => handleRemoveFromBundle(idx)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-100 transition-colors"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-purple-50 text-[#662654] flex items-center justify-center hover:bg-purple-100 transition-colors"
                       >
                         <Minus size={12} strokeWidth={3} />
                       </button>
@@ -243,7 +243,7 @@ const BYOCPage = () => {
                 <div>
                   <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider mb-1">Bundle Total</p>
                   {bundle.length < 3 ? (
-                    <p className="text-[11px] font-bold text-[#cc1a32]">{3 - bundle.length} more item{3 - bundle.length > 1 ? 's' : ''} to unlock ₹799 tier!</p>
+                    <p className="text-[11px] font-bold text-[#662654]">{3 - bundle.length} more item{3 - bundle.length > 1 ? 's' : ''} to unlock ₹799 tier!</p>
                   ) : (
                     <p className="text-[11px] font-bold text-green-600 flex items-center gap-1">
                       <Check size={12} strokeWidth={3} /> Tier Unlocked!
@@ -258,8 +258,8 @@ const BYOCPage = () => {
               <button
                 onClick={handleAddBundleToCart}
                 disabled={bundle.length < 3 || isAddingToCart}
-                className="w-full bg-[#f898a3] disabled:bg-[#fbdde1] disabled:text-white/70 hover:bg-[#f6828e] text-white font-extrabold uppercase tracking-widest text-sm py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm"
-                style={{ backgroundColor: bundle.length >= 3 ? '#e51d38' : '#fbdde1' }}
+                className="w-full bg-[#913b7e] disabled:bg-[#e2cbe0] disabled:text-[#662654]/60 hover:bg-[#7a2e64] text-white font-extrabold uppercase tracking-widest text-sm py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm"
+                style={{ backgroundColor: bundle.length >= 3 ? '#662654' : '#e2cbe0' }}
               >
                 {isAddingToCart ? (
                   <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }}>
