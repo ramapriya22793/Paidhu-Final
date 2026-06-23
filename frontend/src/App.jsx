@@ -22,6 +22,7 @@ const ProductDetailPage = lazy(() => import('./pages/ProductDetailPage'));
 const CheckoutPage = lazy(() => import('./pages/CheckoutPage'));
 const OrderSuccessPage = lazy(() => import('./pages/OrderSuccessPage'));
 const SaffronGuidancePage = lazy(() => import('./pages/SaffronGuidancePage'));
+const BYOCPage = lazy(() => import('./pages/BYOCPage'));
 
 // ---------- HOME PAGE ----------
 const HomePage = () => (
@@ -72,6 +73,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/shop" element={<ShopPage />} />
+            <Route path="/shop/byoc" element={<BYOCPage />} />
             <Route path="/shop/:navSection" element={<ShopPage />} />
             <Route path="/product/:id" element={<ProductDetailPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
