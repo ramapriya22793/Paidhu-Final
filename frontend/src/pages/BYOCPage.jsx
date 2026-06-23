@@ -186,8 +186,7 @@ const BYOCPage = () => {
                 return (
                   <div key={idx} className="flex flex-col items-center relative z-10">
                     <div className={`w-4 h-4 rounded-full mb-1.5 border-2 transition-colors ${isReached ? 'bg-[#662654] border-[#662654]' : 'bg-white border-gray-300'}`} />
-                    <span className={`text-[10px] font-bold uppercase ${isReached ? 'text-[#662654]' : 'text-gray-400'}`}>{tier.items} items</span>
-                    <span className={`text-[11px] font-extrabold ${isReached ? 'text-gray-900' : 'text-gray-400'}`}>₹{tier.price}</span>
+                    <span className={`text-[12px] font-extrabold ${isReached ? 'text-gray-900' : 'text-gray-400'}`}>₹{tier.price}</span>
                   </div>
                 );
               })}
