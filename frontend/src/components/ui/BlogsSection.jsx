@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, User, ArrowRight, Search, X, BookOpen, Tag } from 'lucide-react';
 
-import hibiscusImg from '../assets/hibiscus_tea.png';
-import saffronImg from '../assets/saffron_threads.png';
-import edibleFlowersImg from '../assets/edible_flowers.png';
+import hibiscusImg from '../../assets/hibiscus_tea.png';
+import saffronImg from '../../assets/saffron_threads.png';
+import edibleFlowersImg from '../../assets/edible_flowers.png';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 

@@ -250,8 +250,8 @@ const AddProduct = () => {
               <div className="border border-gray-200 rounded-xl p-6 bg-gray-50/50">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <h3 className="text-sm font-bold text-gray-900">Product Variants (Sizes / Weights)</h3>
-                    <p className="text-xs text-gray-500">Optional. Add different sizes with independent pricing.</p>
+                    <h3 className="text-sm font-bold text-gray-900">Product Options / Variations</h3>
+                    <p className="text-xs text-gray-500">Optional. Add different options (Combos, Sizes, Weights) with independent pricing.</p>
                   </div>
                   <button type="button" onClick={handleVariantAdd} className="text-sm bg-white border border-gray-200 px-3 py-1.5 rounded-lg text-brand-plum font-medium flex items-center hover:bg-gray-50">
                     <FiPlus className="mr-1"/> Add Variant
@@ -262,8 +262,8 @@ const AddProduct = () => {
                   {formData.variants.map((v, idx) => (
                     <div key={idx} className="flex flex-wrap md:flex-nowrap items-center gap-3 bg-white p-3 border border-gray-200 rounded-lg">
                       <div className="flex-1 min-w-[120px]">
-                        <label className="text-[10px] uppercase font-bold text-gray-500 mb-1 block">Size (e.g. 30g)</label>
-                        <input type="text" value={v.size} onChange={(e) => handleVariantChange(idx, 'size', e.target.value)} className="w-full border border-gray-200 rounded px-3 py-1.5 text-sm" placeholder="Size" />
+                        <label className="text-[10px] uppercase font-bold text-gray-500 mb-1 block">Option Name (e.g. 30g, Combo 1)</label>
+                        <input type="text" value={v.size} onChange={(e) => handleVariantChange(idx, 'size', e.target.value)} className="w-full border border-gray-200 rounded px-3 py-1.5 text-sm" placeholder="Enter Option Name (e.g. 1G Super Negin)" />
                       </div>
                       <div className="flex-1 min-w-[100px]">
                         <label className="text-[10px] uppercase font-bold text-gray-500 mb-1 block">Price</label>

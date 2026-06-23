@@ -311,7 +311,7 @@ const ProductDetailPage = () => {
             {/* Variants Selector */}
             {variants.length > 0 && (
               <div className="space-y-3">
-                <span className="block text-xs font-black text-gray-400 uppercase tracking-wider">Select Size / Pack</span>
+                <span className="block text-xs font-black text-gray-400 uppercase tracking-wider">Select Option / Size</span>
                 <div className="flex flex-wrap gap-2.5">
                   {variants.map((v, i) => {
                     const isSelected = selectedVariant?.size === v.size;
