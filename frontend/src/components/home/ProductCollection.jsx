@@ -139,29 +139,34 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
           {product.description}
         </p>
 
-        {/* Size Selector */}
+        {/* Option Selector */}
         {hasVariants && (
-          <div className="flex flex-wrap gap-1.5 mb-3">
-            {variants.map((v, i) => {
-              const isSelected = selectedVariant && selectedVariant.size === v.size;
-              return (
-                <button
-                  key={i}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setSelectedVariant(v);
-                  }}
-                  className={`text-[10px] md:text-[11px] font-bold px-2.5 py-1 rounded-full border transition-all duration-200 cursor-pointer ${
-                    isSelected
-                      ? 'bg-[#662654] text-white border-[#662654] shadow-sm'
-                      : 'bg-[#faf9f7] text-[#662654] border-gray-200 hover:border-[#662654]/50'
-                  }`}
-                >
+          <div className="mb-3 w-full relative">
+            <select
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              onChange={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const selected = variants.find(v => v.size === e.target.value);
+                if (selected) setSelectedVariant(selected);
+              }}
+              value={selectedVariant?.size || ''}
+              className="w-full text-[11px] md:text-[12px] font-bold px-3 py-2 rounded-lg border border-gray-200 text-[#662654] bg-[#faf9f7] hover:border-[#662654]/50 focus:outline-none focus:border-[#662654] appearance-none cursor-pointer pr-8 text-ellipsis overflow-hidden"
+            >
+              {variants.map((v, i) => (
+                <option key={i} value={v.size}>
                   {v.size}
-                </button>
-              );
-            })}
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-[#662654]">
+              <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+              </svg>
+            </div>
           </div>
         )}
 

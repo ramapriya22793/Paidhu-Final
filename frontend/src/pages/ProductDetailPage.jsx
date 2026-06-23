@@ -312,25 +312,26 @@ const ProductDetailPage = () => {
             {variants.length > 0 && (
               <div className="space-y-3">
                 <span className="block text-xs font-black text-gray-400 uppercase tracking-wider">Select Option / Size</span>
-                <div className="flex flex-wrap gap-2.5">
-                  {variants.map((v, i) => {
-                    const isSelected = selectedVariant?.size === v.size;
-                    return (
-                      <motion.button
-                        key={i}
-                        onClick={() => handleVariantSelect(v)}
-                        whileHover={{ scale: 1.03 }}
-                        whileTap={{ scale: 0.97 }}
-                        className={`px-5 py-2.5 rounded-full text-xs font-extrabold transition-all border ${
-                          isSelected
-                            ? 'border-[#662654] bg-[#662654] text-white shadow-md shadow-[#662654]/10'
-                            : 'border-gray-200 bg-white text-gray-600 hover:border-[#662654]'
-                        }`}
-                      >
+                <div className="relative w-full max-w-md">
+                  <select
+                    value={selectedVariant?.size || ''}
+                    onChange={(e) => {
+                      const selected = variants.find(v => v.size === e.target.value);
+                      if (selected) handleVariantSelect(selected);
+                    }}
+                    className="w-full text-sm font-bold px-4 py-3 rounded-xl border border-gray-200 text-[#662654] bg-white hover:border-[#662654]/50 focus:outline-none focus:ring-2 focus:ring-[#662654]/20 focus:border-[#662654] appearance-none cursor-pointer pr-10 shadow-sm"
+                  >
+                    {variants.map((v, i) => (
+                      <option key={i} value={v.size}>
                         {v.size}
-                      </motion.button>
-                    );
-                  })}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-[#662654]">
+                    <svg className="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                    </svg>
+                  </div>
                 </div>
               </div>
             )}
