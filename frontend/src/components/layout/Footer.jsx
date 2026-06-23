@@ -98,13 +98,19 @@ const Footer = () => {
             </div>
 
             <div className="pt-4 flex flex-col lg:items-end">
-              <img 
-                src="/Paidhulogo.png" 
-                alt="Paidhu Logo" 
-                width={128}
-                height={58}
-                className="w-32 h-auto object-contain brightness-0 invert mb-2"
-                onError={(e) => { e.target.style.display = 'none'; }}
+              <div 
+                className="w-32 h-[58px] mb-2 bg-[#ede7d7]"
+                style={{
+                  WebkitMaskImage: 'url(/Paidhulogo.png)',
+                  WebkitMaskSize: 'contain',
+                  WebkitMaskRepeat: 'no-repeat',
+                  WebkitMaskPosition: 'center',
+                  maskImage: 'url(/Paidhulogo.png)',
+                  maskSize: 'contain',
+                  maskRepeat: 'no-repeat',
+                  maskPosition: 'center'
+                }}
+                title="Paidhu Logo"
               />
               <p className="text-sm font-serif italic text-[#ede7d7]">Pure. Simple. Good.</p>
             </div>
