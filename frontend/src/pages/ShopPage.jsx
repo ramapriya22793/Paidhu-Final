@@ -526,15 +526,25 @@ const ShopPage = () => {
         const res = await fetch(`${API_BASE}/api/products?${params}`);
         const data = await res.json();
         if (active) {
-          const fetchedList = data.products || [];
+          let fetchedList = data.products || [];
+          let fetchedTotal = data.total || 0;
+          let fetchedPages = data.pages || 1;
+
+          // Fallback to all products if the section is empty to avoid a blank page
+          if (fetchedList.length === 0 && !debouncedSearch && !appliedMinPrice && !appliedMaxPrice && !activeCategory && navSection !== 'deal-of-the-day') {
+            fetchedList = allFallbackProducts.slice(0, LIMIT);
+            fetchedTotal = allFallbackProducts.length;
+            fetchedPages = Math.ceil(fetchedTotal / LIMIT);
+          }
+
           setProducts(fetchedList);
-          setTotal(data.total || 0);
-          setPages(data.pages || 1);
+          setTotal(fetchedTotal);
+          setPages(fetchedPages);
           
           shopCache[cacheKey] = {
             products: fetchedList,
-            total: data.total || 0,
-            pages: data.pages || 1
+            total: fetchedTotal,
+            pages: fetchedPages
           };
         }
       } catch (e) {
