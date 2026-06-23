@@ -391,7 +391,7 @@ const ProductCollection = () => {
           initial="hidden"
           animate="show"
           key={activeCategory}
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-6 md:gap-8 pb-4"
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 pb-4"
         >
           {loading ? (
             Array.from({ length: 5 }).map((_, idx) => (
