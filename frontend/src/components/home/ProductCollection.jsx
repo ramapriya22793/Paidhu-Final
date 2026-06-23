@@ -139,7 +139,36 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
           {product.description}
         </p>
 
-        {/* Variants are now selected on the Product Detail Page */}
+        {/* Option Selector */}
+        {hasVariants && (
+          <div className="mb-3 w-full relative">
+            <select
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              onChange={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const selected = variants.find(v => v.size === e.target.value);
+                if (selected) setSelectedVariant(selected);
+              }}
+              value={selectedVariant?.size || ''}
+              className="w-full text-[11px] md:text-[12px] font-bold px-3 py-2 rounded-lg border border-gray-200 text-[#662654] bg-[#faf9f7] hover:border-[#662654]/50 focus:outline-none focus:border-[#662654] appearance-none cursor-pointer pr-8 text-ellipsis overflow-hidden"
+            >
+              {variants.map((v, i) => (
+                <option key={i} value={v.size}>
+                  {v.size}
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-[#662654]">
+              <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+              </svg>
+            </div>
+          </div>
+        )}
 
         {/* Price Section */}
         <div className="mt-auto flex items-center mb-4 flex-wrap gap-y-1">
@@ -158,37 +187,26 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
           )}
         </div>
 
-        {/* Add to Cart / Choose Options Button */}
-        {hasVariants ? (
-          <Link
-            to={`/product/${product.id}`}
-            state={{ product: product.raw }}
-            className="w-full bg-gradient-to-r from-[#662654] to-[#7f2d68] hover:from-[#7a2e64] hover:to-[#913b7e] text-white rounded-full py-2.5 flex items-center justify-center gap-2 font-bold text-[11px] uppercase tracking-wider shadow-[0_4px_12px_rgba(102,38,84,0.12)] hover:shadow-[0_6px_20px_rgba(102,38,84,0.22)] transition-all duration-300 group/btn cursor-pointer"
-          >
-            <span>Choose Options</span>
-            <ChevronRight size={13} strokeWidth={2.5} className="transform group-hover/btn:translate-x-1 transition-transform" />
-          </Link>
-        ) : (
-          <motion.button 
-            onClick={handleAddToCartClick}
-            disabled={addingId === product.id}
-            whileHover={{ scale: 1.02, y: -1 }}
-            whileTap={{ scale: 0.98 }}
-            className="w-full bg-gradient-to-r from-[#662654] to-[#7f2d68] hover:from-[#7a2e64] hover:to-[#913b7e] disabled:from-emerald-600 disabled:to-teal-500 text-white rounded-full py-2.5 flex items-center justify-center gap-2 font-bold text-[11px] uppercase tracking-wider shadow-[0_4px_12px_rgba(102,38,84,0.12)] hover:shadow-[0_6px_20px_rgba(102,38,84,0.22)] transition-all duration-300 group/btn cursor-pointer"
-          >
-            {addingId === product.id ? (
-              <>
-                <Check size={14} strokeWidth={3} className="text-white animate-bounce" />
-                <span>Added!</span>
-              </>
-            ) : (
-              <>
-                <ShoppingCart size={13} strokeWidth={2.5} className="transform group-hover/btn:scale-110 transition-transform" />
-                <span>Add to Cart</span>
-              </>
-            )}
-          </motion.button>
-        )}
+        {/* Add to Cart Button */}
+        <motion.button 
+          onClick={handleAddToCartClick}
+          disabled={addingId === product.id}
+          whileHover={{ scale: 1.02, y: -1 }}
+          whileTap={{ scale: 0.98 }}
+          className="w-full bg-gradient-to-r from-[#662654] to-[#7f2d68] hover:from-[#7a2e64] hover:to-[#913b7e] disabled:from-emerald-600 disabled:to-teal-500 text-white rounded-full py-2.5 flex items-center justify-center gap-2 font-bold text-xs uppercase tracking-wider shadow-[0_4px_12px_rgba(102,38,84,0.12)] hover:shadow-[0_6px_20px_rgba(102,38,84,0.22)] transition-all duration-300 group/btn cursor-pointer"
+        >
+          {addingId === product.id ? (
+            <>
+              <Check size={14} strokeWidth={3} className="text-white animate-bounce" />
+              <span>Added!</span>
+            </>
+          ) : (
+            <>
+              <ShoppingCart size={13} strokeWidth={2.5} className="transform group-hover/btn:scale-110 transition-transform" />
+              <span>Add to Cart</span>
+            </>
+          )}
+        </motion.button>
       </div>
     </motion.div>
   );
