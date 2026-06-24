@@ -178,7 +178,7 @@ const getAllActiveCarts = async (req, res) => {
     const allCarts = await prisma.cartItem.findMany({
       include: {
         user: {
-          select: { id: true, name: true, email: true, avatar: true }
+          select: { id: true, name: true, email: true, phone: true, avatar: true }
         },
         product: true
       },

@@ -41,13 +41,38 @@ const adminLogin = async (req, res) => {
 
 const register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    const existingUser = await prisma.user.findUnique({ where: { email } });
-    if (existingUser) return res.status(400).json({ message: 'Email already exists' });
+    const { phone, name, email, addressLine1, city, state, pincode, password } = req.body;
+    
+    const existingUser = await prisma.user.findFirst({ 
+      where: { OR: [{ email }, { phone }] } 
+    });
+    if (existingUser) {
+      if (existingUser.phone === phone) {
+        return res.status(400).json({ message: 'Phone number already exists' });
+      }
+      return res.status(400).json({ message: 'Email already exists' });
+    }
     
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
-      data: { name, email, password: hashedPassword, isAdmin: false }
+      data: { 
+        name, 
+        email, 
+        phone,
+        password: hashedPassword, 
+        isAdmin: false,
+        addresses: {
+          create: {
+            fullName: name,
+            phone,
+            addressLine1,
+            city,
+            state,
+            pincode,
+            addressType: 'Home'
+          }
+        }
+      }
     });
 
     const token = jwt.sign(
@@ -56,7 +81,7 @@ const register = async (req, res) => {
       { expiresIn: '7d' }
     );
 
-    res.status(201).json({ token, user: { id: user.id, name: user.name, email: user.email, isAdmin: user.isAdmin } });
+    res.status(201).json({ token, user: { id: user.id, name: user.name, phone: user.phone, email: user.email, isAdmin: user.isAdmin } });
   } catch (error) {
     console.error("Register error:", error);
     res.status(500).json({ message: 'Server error' });
@@ -65,12 +90,25 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const user = await prisma.user.findUnique({ where: { email } });
+    const { phone, password } = req.body;
+    const user = await prisma.user.findUnique({ where: { phone } });
+    
+    const ipAddress = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'Unknown';
+    const userAgent = req.headers['user-agent'] || 'Unknown';
+
     if (!user) return res.status(401).json({ message: 'Invalid credentials' });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
+    if (!isMatch) {
+      await prisma.loginHistory.create({
+        data: { userId: user.id, ipAddress, userAgent, status: 'FAILED' }
+      });
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    await prisma.loginHistory.create({
+      data: { userId: user.id, ipAddress, userAgent, status: 'SUCCESS' }
+    });
 
     const token = jwt.sign(
       { id: user.id, isAdmin: user.isAdmin },
@@ -78,9 +116,64 @@ const login = async (req, res) => {
       { expiresIn: '7d' }
     );
 
-    res.json({ token, user: { id: user.id, name: user.name, email: user.email, isAdmin: user.isAdmin } });
+    res.json({ token, user: { id: user.id, name: user.name, phone: user.phone, email: user.email, isAdmin: user.isAdmin } });
   } catch (error) {
     console.error("Login error:", error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+const crypto = require('crypto');
+
+const forgotPassword = async (req, res) => {
+  try {
+    const { phone } = req.body;
+    const user = await prisma.user.findUnique({ where: { phone } });
+    if (!user) return res.status(404).json({ message: 'User with this phone number not found' });
+
+    const token = crypto.randomBytes(4).toString('hex').toUpperCase(); // Simple 8-char OTP
+    
+    await prisma.passwordResetToken.deleteMany({ where: { phone } });
+    
+    await prisma.passwordResetToken.create({
+      data: {
+        phone,
+        token,
+        expiresAt: new Date(Date.now() + 15 * 60 * 1000)
+      }
+    });
+
+    res.json({ message: 'Reset token sent successfully', resetToken: token });
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  try {
+    const { phone, token, newPassword } = req.body;
+    const resetToken = await prisma.passwordResetToken.findUnique({ where: { token } });
+    
+    if (!resetToken || resetToken.phone !== phone) {
+      return res.status(400).json({ message: 'Invalid or expired token' });
+    }
+    
+    if (new Date() > resetToken.expiresAt) {
+      return res.status(400).json({ message: 'Token has expired' });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await prisma.user.update({
+      where: { phone },
+      data: { password: hashedPassword }
+    });
+
+    await prisma.passwordResetToken.deleteMany({ where: { phone } });
+
+    res.json({ message: 'Password reset successful' });
+  } catch (error) {
+    console.error("Reset password error:", error);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -317,5 +410,7 @@ module.exports = {
   deleteUser,
   blockUser,
   guestLogin,
-  registerTiffin
+  registerTiffin,
+  forgotPassword,
+  resetPassword
 };

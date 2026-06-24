@@ -39,6 +39,7 @@ import WishlistInsights from './pages/WishlistInsights';
 import CategoryGridManagement from './pages/CategoryGridManagement';
 import TiffinLeads from './pages/TiffinLeads';
 import SaffronGuidanceLeads from './pages/SaffronGuidanceLeads';
+import LoginHistory from './pages/LoginHistory';
 
 const App = () => {
   return (
@@ -83,6 +84,7 @@ const App = () => {
           <Route path="tiffin-leads" element={<TiffinLeads />} />
           <Route path="whatsapp-leads" element={<TiffinLeads />} />
           <Route path="saffron-guidance-leads" element={<SaffronGuidanceLeads />} />
+          <Route path="login-history" element={<LoginHistory />} />
           <Route path="settings" element={<Settings />} />
           <Route path="tracking" element={<TrackingScripts />} />
           <Route path="pages" element={<PagesList />} />

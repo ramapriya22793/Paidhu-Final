@@ -153,3 +153,19 @@ exports.getTiffinRegistrations = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+exports.getLoginHistory = async (req, res) => {
+  try {
+    const history = await prisma.loginHistory.findMany({
+      include: {
+        user: { select: { name: true, email: true, phone: true } }
+      },
+      orderBy: { loginTime: 'desc' },
+      take: 200 // Limit to latest 200 for performance
+    });
+    res.json(history);
+  } catch (error) {
+    console.error("Error fetching login history:", error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};

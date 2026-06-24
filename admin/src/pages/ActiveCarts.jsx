@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FiShoppingCart, FiUser, FiClock } from 'react-icons/fi';
+import { FiShoppingCart, FiUser, FiClock, FiPhone } from 'react-icons/fi';
 
 const ActiveCarts = () => {
   const [carts, setCarts] = useState([]);
@@ -65,6 +65,12 @@ const ActiveCarts = () => {
                         {cart.user.name}
                       </h3>
                       <p className="text-sm text-gray-500">{cart.user.email}</p>
+                      {cart.user.phone && (
+                        <p className="text-sm text-gray-500 flex items-center mt-1">
+                          <FiPhone className="mr-1 text-gray-400" size={14} />
+                          {cart.user.phone}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="text-right">

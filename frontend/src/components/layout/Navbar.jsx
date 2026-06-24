@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import paidhuLogo from '../../assets/paidhulogo.png';
 import { useCart } from '../../context/CartContext';
+import AuthModal from './AuthModal';
 
 // Helper to match categories to relevant icons based on the product category type
 const getCategoryIcon = (categoryName) => {
@@ -106,6 +107,7 @@ const Navbar = () => {
   const [categories, setCategories]           = useState([]);
   const [showCatDropdown, setShowCatDropdown] = useState(false);
   const [mobileCatOpen, setMobileCatOpen]     = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const catRef = useRef(null);
   const navigate = useNavigate();
 
@@ -327,8 +329,9 @@ const Navbar = () => {
           {/* Right: Icons */}
           <div className="flex w-1/4 lg:w-1/3 justify-end items-center space-x-5 text-[#ede7d7]">
             <motion.button
+              onClick={() => setIsAuthModalOpen(true)}
               whileHover={{ scale: 1.1 }}
-              className="hover:text-white transition-colors hidden lg:flex items-center"
+              className="hover:text-white transition-colors hidden lg:flex items-center cursor-pointer"
             >
               <User size={24} strokeWidth={1.5} />
             </motion.button>
@@ -925,6 +928,15 @@ const Navbar = () => {
           </>
         )}
       </AnimatePresence>
+
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
+        onLoginSuccess={(user) => {
+          console.log('User logged in successfully:', user);
+          // additional logic if you have an auth context
+        }}
+      />
     </motion.header>
   );
 };

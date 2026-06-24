@@ -12,7 +12,7 @@ model User {
   id                 Int       @id @default(autoincrement())
   name               String
   email              String    @unique
-  phone              String?
+  phone              String?   @unique
   password           String
   avatar             String?
   gender             String?
@@ -30,6 +30,8 @@ model User {
   cartItems          CartItem[]
   orders             Order[]
   payments           Payment[]
+  loginHistory       LoginHistory[]
+  resetTokens        PasswordResetToken[]
 }
 
 model Address {
@@ -352,3 +354,23 @@ model SaffronGuidance {
   status          String   @default("Pending") // Pending, Contacted, Resolved
   createdAt       DateTime @default(now())
 }
+
+model LoginHistory {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ipAddress String?
+  userAgent String?
+  loginTime DateTime @default(now())
+  status    String   @default("SUCCESS") // SUCCESS, FAILED
+}
+
+model PasswordResetToken {
+  id        Int      @id @default(autoincrement())
+  phone     String
+  token     String   @unique
+  expiresAt DateTime
+  user      User     @relation(fields: [phone], references: [phone], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+

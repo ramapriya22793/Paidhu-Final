@@ -14,6 +14,7 @@ const menuItems = [
   { name: 'Active Carts', path: '/active-carts', icon: <FiShoppingCart /> },
   { name: 'Wishlists', path: '/wishlists', icon: <FiHeart /> },
   { name: 'Customers', path: '/customers', icon: <FiUsers /> },
+  { name: 'Login History', path: '/login-history', icon: <FiActivity /> },
   { name: 'WhatsApp Leads', path: '/whatsapp-leads', icon: <FaWhatsapp /> },
   { name: 'Payments', path: '/payments', icon: <FiShoppingCart /> },
   { name: 'Coupons', path: '/coupons', icon: <FiTag /> },
