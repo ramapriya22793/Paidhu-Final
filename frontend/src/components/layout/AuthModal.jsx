@@ -4,7 +4,7 @@ import { X, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-const AuthModal = ({ isOpen, onClose, onLoginSuccess }) => {
+const AuthModal = ({ isOpen, onClose, onLoginSuccess, user, onLogout }) => {
   const [view, setView] = useState('login'); // 'login', 'register', 'forgot', 'reset'
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -165,10 +165,12 @@ const AuthModal = ({ isOpen, onClose, onLoginSuccess }) => {
                   </button>
                 )}
                 <h2 className="text-xl font-black text-gray-800 tracking-tight">
-                  {view === 'login' && 'Welcome Back'}
-                  {view === 'register' && 'Create Account'}
-                  {view === 'forgot' && 'Reset Password'}
-                  {view === 'reset' && 'New Password'}
+                  {user ? 'My Account' : (
+                    view === 'login' ? 'Welcome Back' :
+                    view === 'register' ? 'Create Account' :
+                    view === 'forgot' ? 'Reset Password' :
+                    'New Password'
+                  )}
                 </h2>
               </div>
               <button
@@ -180,14 +182,41 @@ const AuthModal = ({ isOpen, onClose, onLoginSuccess }) => {
             </div>
 
             <div className="p-6 overflow-y-auto custom-scrollbar">
-              {error && (
+              {error && !user && (
                 <div className="mb-4 p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100">
                   {error}
                 </div>
               )}
 
+              {/* PROFILE VIEW */}
+              {user && (
+                <div className="space-y-4">
+                  <div className="flex flex-col items-center justify-center py-4 border-b border-gray-100 mb-4">
+                    <div className="w-20 h-20 rounded-full bg-[#662654]/10 text-[#662654] flex items-center justify-center text-3xl font-black mb-3">
+                      {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                    </div>
+                    <h3 className="text-xl font-black text-gray-800">{user.name}</h3>
+                    <p className="text-sm text-gray-500 font-medium">{user.email}</p>
+                    <p className="text-sm text-gray-500 font-medium">{user.phone}</p>
+                  </div>
+                  
+                  {user.isAdmin && (
+                    <a href="/admin" className="block text-center w-full py-3 bg-[#662654]/10 hover:bg-[#662654]/20 text-[#662654] font-bold rounded-xl transition-colors mb-2">
+                      Go to Admin Panel
+                    </a>
+                  )}
+
+                  <button
+                    onClick={onLogout}
+                    className="w-full py-3.5 bg-red-50 hover:bg-red-100 text-red-600 font-bold rounded-xl transition-colors active:scale-[0.98]"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+
               {/* LOGIN FORM */}
-              {view === 'login' && (
+              {!user && view === 'login' && (
                 <form onSubmit={handleLogin} className="space-y-4">
                   <div>
                     <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">Phone Number</label>
@@ -238,7 +267,7 @@ const AuthModal = ({ isOpen, onClose, onLoginSuccess }) => {
               )}
 
               {/* REGISTER FORM */}
-              {view === 'register' && (
+              {!user && view === 'register' && (
                 <form onSubmit={handleRegister} className="space-y-4">
                   <div>
                     <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">Full Name</label>
@@ -291,7 +320,7 @@ const AuthModal = ({ isOpen, onClose, onLoginSuccess }) => {
               )}
 
               {/* FORGOT PASSWORD FORM */}
-              {view === 'forgot' && (
+              {!user && view === 'forgot' && (
                 <form onSubmit={handleForgotRequest} className="space-y-4">
                   <p className="text-sm text-gray-600 mb-4">Enter your registered phone number to receive a password reset token.</p>
                   <div>
@@ -316,7 +345,7 @@ const AuthModal = ({ isOpen, onClose, onLoginSuccess }) => {
               )}
 
               {/* RESET PASSWORD FORM */}
-              {view === 'reset' && (
+              {!user && view === 'reset' && (
                 <form onSubmit={handleResetPassword} className="space-y-4">
                   <p className="text-sm text-gray-600 mb-4">Enter the token sent to your phone and your new password.</p>
                   <div>

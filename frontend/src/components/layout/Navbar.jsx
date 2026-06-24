@@ -108,8 +108,24 @@ const Navbar = () => {
   const [showCatDropdown, setShowCatDropdown] = useState(false);
   const [mobileCatOpen, setMobileCatOpen]     = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [user, setUser]                       = useState(null);
   const catRef = useRef(null);
   const navigate = useNavigate();
+
+  // Fetch user profile on mount if token exists
+  useEffect(() => {
+    const token = localStorage.getItem('paidhu_token');
+    if (token) {
+      fetch(`${API_BASE}/api/users/profile`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.id) setUser(data);
+      })
+      .catch(err => console.error('Failed to fetch user', err));
+    }
+  }, []);
 
   const { 
     cart, 
@@ -932,9 +948,15 @@ const Navbar = () => {
       <AuthModal 
         isOpen={isAuthModalOpen} 
         onClose={() => setIsAuthModalOpen(false)} 
-        onLoginSuccess={(user) => {
-          console.log('User logged in successfully:', user);
-          // additional logic if you have an auth context
+        user={user}
+        onLoginSuccess={(loggedInUser) => {
+          console.log('User logged in successfully:', loggedInUser);
+          setUser(loggedInUser);
+        }}
+        onLogout={() => {
+          localStorage.removeItem('paidhu_token');
+          setUser(null);
+          setIsAuthModalOpen(false);
         }}
       />
     </motion.header>
