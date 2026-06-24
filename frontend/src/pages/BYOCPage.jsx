@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus, ShoppingCart, Check, X, AlertCircle } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import fallbacks from '../components/home/fallbacks.json';
+import SEO from '../components/seo/SEO';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -102,6 +103,11 @@ const BYOCPage = () => {
 
   return (
     <div className="min-h-screen bg-[#faf8f6]">
+      <SEO 
+        title="Build Your Own Cart"
+        description="Mix and match your favorite Paidhu products. Choose at least 3 items to unlock special bundle pricing!"
+        keywords="BYOC, build your own cart, custom box, bundle pricing, edible flowers, Paidhu"
+      />
       {/* Top Promotional Banner */}
       <div className="w-full bg-[#662654] text-white text-center py-2.5 font-extrabold tracking-wide text-xs md:text-sm uppercase shadow-sm sticky top-0 z-40">
         BUY 3 FOR ₹799 | 4 FOR ₹1049 | 5 FOR ₹1399 — BUY NOW!

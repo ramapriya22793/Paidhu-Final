@@ -48,13 +48,7 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    // If the path is not '/' when the app first loads (which happens on browser refresh/reload),
-    // redirect to '/'
-    if (location.pathname !== '/') {
-      navigate('/', { replace: true });
-    }
-  }, []); // Run once on initial mount
+  // Removed redirect logic as it breaks deep links and SEO
 
   return (
     <CartProvider>

@@ -6,6 +6,7 @@ import {
   ShieldCheck, CheckCircle2, Heart, Info, HelpCircle, ArrowLeft, Check
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import SEO from '../components/seo/SEO';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -202,6 +203,18 @@ const ProductDetailPage = () => {
       transition={{ duration: 0.55, ease: 'easeOut' }}
       className="w-full min-h-screen bg-[#fcfbfa] py-8 font-sans"
     >
+      <SEO 
+        title={product.name}
+        description={product.shortDescription || (product.description ? product.description.substring(0, 160) : '')}
+        image={productImage}
+        productData={{
+          name: product.name,
+          image: productImage,
+          description: product.shortDescription || (product.description ? product.description.substring(0, 160) : ''),
+          price: offerPrice || price,
+          inStock: product.stock > 0
+        }}
+      />
       <div className="max-w-[1400px] mx-auto px-4 md:px-8">
         
         {/* Breadcrumb / Back Link */}

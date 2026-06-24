@@ -4,6 +4,7 @@ import { ArrowLeft, CheckCircle2, Loader2, User, Users, Phone, Heart, Calendar, 
 import { Link } from 'react-router-dom';
 import saffronIcon from '../assets/saffron_icon.png';
 import pregnancyBanner from '../assets/pregnant_saffron_banner_new.png';
+import SEO from '../components/seo/SEO';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -109,6 +110,11 @@ const SaffronGuidancePage = () => {
       transition={{ duration: 0.55, ease: 'easeOut' }}
       className="w-full min-h-screen bg-[#fcfbfa] font-sans"
     >
+      <SEO 
+        title="Saffron Quality Guidance & Expert Advice"
+        description="Let our experts guide you on the right way to use saffron during pregnancy. Personal guidance aligned with doctor protocols."
+        keywords="saffron guidance, pregnancy saffron, saffron expert, pure saffron, Paidhu"
+      />
       {/* ── Hero Banner ── */}
       <div className="relative overflow-hidden bg-[#3b1030] py-10 px-4">
         <div 

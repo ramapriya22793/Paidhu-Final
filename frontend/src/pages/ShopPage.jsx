@@ -14,6 +14,7 @@ import BlogsSection from '../components/ui/BlogsSection';
 import FloralHabitatSection from '../components/ui/FloralHabitatSection';
 import OurCommunitySection from '../components/ui/OurCommunitySection';
 import fallbacks from '../components/home/fallbacks.json';
+import SEO from '../components/seo/SEO';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -672,6 +673,12 @@ const ShopPage = () => {
       transition={{ duration: 0.55, ease: 'easeOut' }}
       className="min-h-screen bg-[#faf9f7]"
     >
+      <SEO 
+        title={meta.label} 
+        description={meta.desc} 
+        keywords={`Paidhu, ${meta.label}, edible flowers, natural products`} 
+      />
+
       {/* Ticking countdown for deals page */}
       {navSection === 'deal-of-the-day' && <DealCountdown />}
 
