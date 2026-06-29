@@ -443,13 +443,7 @@ const ProductDetailPage = () => {
                 <span className="text-[10px] font-black uppercase tracking-wider text-gray-700">Zero Sugar</span>
               </motion.div>
             </div>
-
           </div>
-        </div>
-
-        {/* ── Related Products ── */}
-        <div className="mt-12 md:mt-16">
-          <ProductCarousel title="You Might Also Like" bgClass="bg-transparent" pyClass="py-4" />
         </div>
 
         {/* ── Detailed Tabs Section (Below the fold) ── */}
