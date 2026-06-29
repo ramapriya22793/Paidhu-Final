@@ -4,8 +4,6 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -109,6 +107,7 @@ model Product {
   tags             String?   // Added for landing page sections (e.g., "bestseller", "new_launch")
   seoTitle         String?
   seoDescription   String?
+  seoKeywords      String?
   variants         Json?     // e.g. [{ size: '30g', price: 70, offerPrice: 65, stock: 10 }]
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt @default(now())

@@ -76,7 +76,8 @@ const SeoManagement = () => {
   const startEditProduct = (product) => {
     setProductFormData({ 
       seoTitle: product.seoTitle || '', 
-      seoDescription: product.seoDescription || '' 
+      seoDescription: product.seoDescription || '',
+      seoKeywords: product.seoKeywords || ''
     });
     setEditingProduct(product.id);
   };
@@ -89,7 +90,8 @@ const SeoManagement = () => {
       await productService.updateProduct(productId, {
         ...product, // Need full product data for the update API, but we just override SEO fields
         seoTitle: productFormData.seoTitle,
-        seoDescription: productFormData.seoDescription
+        seoDescription: productFormData.seoDescription,
+        seoKeywords: productFormData.seoKeywords
       });
       setEditingProduct(null);
       fetchData();
@@ -239,9 +241,15 @@ const SeoManagement = () => {
 
                       <td className="px-6 py-4">
                         {isEditing ? (
-                          <textarea rows="2" className="w-full px-3 py-2 border border-brand-plum/30 rounded focus:outline-none focus:ring-1 focus:ring-brand-plum bg-white text-xs" placeholder="SEO Description" value={productFormData.seoDescription} onChange={e => setProductFormData({...productFormData, seoDescription: e.target.value})}></textarea>
+                          <>
+                            <textarea rows="2" className="w-full px-3 py-2 border border-brand-plum/30 rounded focus:outline-none focus:ring-1 focus:ring-brand-plum bg-white text-xs" placeholder="SEO Description" value={productFormData.seoDescription} onChange={e => setProductFormData({...productFormData, seoDescription: e.target.value})}></textarea>
+                            <input type="text" className="w-full px-3 py-2 mt-2 border border-brand-plum/30 rounded focus:outline-none focus:ring-1 focus:ring-brand-plum bg-white text-xs" placeholder="Keywords (comma separated)" value={productFormData.seoKeywords} onChange={e => setProductFormData({...productFormData, seoKeywords: e.target.value})} />
+                          </>
                         ) : (
-                          <div className="text-gray-500 text-xs line-clamp-2" title={product.seoDescription}>{product.seoDescription || <span className="text-red-400 italic">Not set</span>}</div>
+                          <>
+                            <div className="text-gray-500 text-xs line-clamp-2" title={product.seoDescription}>{product.seoDescription || <span className="text-red-400 italic">Not set</span>}</div>
+                            {product.seoKeywords && <div className="text-gray-400 text-[10px] mt-1 truncate" title={product.seoKeywords}>Keywords: {product.seoKeywords}</div>}
+                          </>
                         )}
                       </td>
 

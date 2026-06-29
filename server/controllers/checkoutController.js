@@ -343,8 +343,94 @@ const verifyPayment = async (req, res) => {
   }
 };
 
+// Razorpay Webhook
+const razorpayWebhook = async (req, res) => {
+  try {
+    const secret = process.env.RAZORPAY_WEBHOOK_SECRET || 'dummy_webhook_secret';
+    const signature = req.headers['x-razorpay-signature'];
+    const body = JSON.stringify(req.body);
+
+    const expectedSignature = crypto
+      .createHmac('sha256', secret)
+      .update(body)
+      .digest('hex');
+
+    if (expectedSignature === signature) {
+      const event = req.body.event;
+
+      if (event === 'order.paid') {
+        const orderEntity = req.body.payload.order.entity;
+        const paymentEntity = req.body.payload.payment.entity;
+
+        const receipt = orderEntity.receipt;
+        if (receipt && receipt.startsWith('receipt_order_')) {
+          const dbOrderId = parseInt(receipt.split('_')[2]);
+          
+          if (!isNaN(dbOrderId)) {
+            const existingOrder = await prisma.order.findUnique({
+              where: { id: dbOrderId },
+              include: { payments: true }
+            });
+
+            if (existingOrder && existingOrder.orderStatus === 'PENDING') {
+              // Update order to CONFIRMED
+              const updatedOrder = await prisma.order.update({
+                where: { id: dbOrderId },
+                data: {
+                  orderStatus: 'CONFIRMED',
+                  payments: {
+                    create: {
+                      razorpayOrderId: orderEntity.id,
+                      razorpayPaymentId: paymentEntity.id,
+                      amount: paymentEntity.amount / 100, // stored in rupees in DB usually, amount in payload is paise
+                      method: paymentEntity.method || 'Online',
+                      status: 'SUCCESS'
+                    }
+                  }
+                },
+                include: { items: { include: { product: true } } }
+              });
+
+              // Deduct reward points if used
+              if (updatedOrder.rewardPointsUsed > 0 && updatedOrder.userId) {
+                await prisma.user.update({
+                  where: { id: updatedOrder.userId },
+                  data: { rewardPoints: { decrement: updatedOrder.rewardPointsUsed } }
+                });
+              }
+
+              // Increment coupon usage count if used
+              if (updatedOrder.couponId) {
+                await prisma.coupon.update({
+                  where: { id: updatedOrder.couponId },
+                  data: { usageCount: { increment: 1 } }
+                });
+              }
+
+              // Generate invoice
+              await generateInvoice(updatedOrder);
+
+              // Send email
+              await sendOrderConfirmationEmail(updatedOrder, updatedOrder.customerEmail);
+              
+              console.log(`Webhook processed successfully for Order ID: ${dbOrderId}`);
+            }
+          }
+        }
+      }
+      res.status(200).json({ status: 'ok' });
+    } else {
+      res.status(400).json({ error: 'Invalid signature' });
+    }
+  } catch (error) {
+    console.error('Webhook error:', error);
+    res.status(500).json({ error: 'Webhook processing failed' });
+  }
+};
+
 module.exports = {
   calculateSummary,
   initiateCheckout,
-  verifyPayment
+  verifyPayment,
+  razorpayWebhook
 };

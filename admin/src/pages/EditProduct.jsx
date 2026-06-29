@@ -38,6 +38,7 @@ const EditProduct = () => {
     tags: '',
     seoTitle: '',
     seoDescription: '',
+    seoKeywords: '',
     ingredients: '',
     benefits: [],
     highlights: [],
@@ -67,6 +68,7 @@ const EditProduct = () => {
           tags: product.tags || '',
           seoTitle: product.seoTitle || '',
           seoDescription: product.seoDescription || '',
+          seoKeywords: product.seoKeywords || '',
           ingredients: product.ingredients || '',
           benefits: product.benefits || [],
           highlights: product.highlights || [],
@@ -573,6 +575,10 @@ const EditProduct = () => {
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">SEO Description</label>
                   <input type="text" name="seoDescription" value={formData.seoDescription} onChange={handleChange} className="w-full border border-gray-200 rounded-lg px-4 py-2 outline-none" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">Keywords</label>
+                  <input type="text" name="seoKeywords" value={formData.seoKeywords} onChange={handleChange} placeholder="Comma separated keywords" className="w-full border border-gray-200 rounded-lg px-4 py-2 outline-none" />
                 </div>
               </div>
             </div>

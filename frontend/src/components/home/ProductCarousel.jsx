@@ -289,12 +289,12 @@ const ProductCarousel = () => {
                       {addingId === product.id ? (
                         <>
                           <Check size={14} strokeWidth={3} className="text-white animate-bounce" />
-                          <span>Added!</span>
+                          <span>{product.status === 'PREORDER' ? 'Pre-ordered!' : 'Added!'}</span>
                         </>
                       ) : (
                         <>
                           <ShoppingCart size={13} strokeWidth={2.5} className="transform group-hover/btn:scale-110 transition-transform" />
-                          <span>Add to Cart</span>
+                          <span>{product.status === 'PREORDER' ? 'Pre-order' : 'Add to Cart'}</span>
                         </>
                       )}
                     </motion.button>

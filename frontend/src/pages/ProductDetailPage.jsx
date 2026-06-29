@@ -204,8 +204,9 @@ const ProductDetailPage = () => {
       className="w-full min-h-screen bg-[#fcfbfa] py-8 font-sans"
     >
       <SEO 
-        title={product.name}
-        description={product.shortDescription || (product.description ? product.description.substring(0, 160) : '')}
+        title={product.seoTitle || product.name}
+        description={product.seoDescription || product.shortDescription || (product.description ? product.description.substring(0, 160) : '')}
+        keywords={product.seoKeywords}
         image={productImage}
         productData={{
           name: product.name,
@@ -397,12 +398,12 @@ const ProductDetailPage = () => {
                 {isAdding ? (
                   <>
                     <Check size={18} strokeWidth={3} className="text-white animate-bounce" />
-                    <span>ADDED TO CART!</span>
+                    <span>{product.status === 'PREORDER' ? 'PRE-ORDERED!' : 'ADDED TO CART!'}</span>
                   </>
                 ) : (
                   <>
                     <ShoppingCart size={18} strokeWidth={2.5} className="group-hover:scale-110 transition-transform" />
-                    <span>ADD TO CART — ₹{((offerPrice || price) * quantity).toLocaleString()}</span>
+                    <span>{product.status === 'PREORDER' ? 'PRE-ORDER NOW' : 'ADD TO CART'} — ₹{((offerPrice || price) * quantity).toLocaleString()}</span>
                   </>
                 )}
               </motion.button>

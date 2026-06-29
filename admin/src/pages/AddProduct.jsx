@@ -32,6 +32,7 @@ const AddProduct = () => {
     tags: '',
     seoTitle: '',
     seoDescription: '',
+    seoKeywords: '',
     ingredients: '',
     benefits: [],
     highlights: [],
@@ -236,6 +237,7 @@ const AddProduct = () => {
                   <label className="text-sm font-medium text-gray-700">Product Status</label>
                   <select name="status" value={formData.status} onChange={handleChange} className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-plum/20 outline-none bg-white">
                     <option value="ACTIVE">Active</option>
+                    <option value="PREORDER">Pre-order</option>
                     <option value="DRAFT">Draft</option>
                     <option value="OUT_OF_STOCK">Out of Stock</option>
                   </select>
@@ -484,6 +486,10 @@ const AddProduct = () => {
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">SEO Description</label>
                   <input type="text" name="seoDescription" value={formData.seoDescription} onChange={handleChange} className="w-full border border-gray-200 rounded-lg px-4 py-2 outline-none" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">Keywords</label>
+                  <input type="text" name="seoKeywords" value={formData.seoKeywords} onChange={handleChange} placeholder="Comma separated keywords" className="w-full border border-gray-200 rounded-lg px-4 py-2 outline-none" />
                 </div>
               </div>
             </div>
