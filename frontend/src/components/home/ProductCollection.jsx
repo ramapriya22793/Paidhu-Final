@@ -317,7 +317,10 @@ const ProductCollection = () => {
 
           let badge = "";
           let badgeColor = "";
-          if (p.tags && p.tags.toLowerCase().includes("bestseller")) {
+          if (p.status === 'PREORDER') {
+            badge = "Pre-order";
+            badgeColor = "bg-[#662654] text-white";
+          } else if (p.tags && p.tags.toLowerCase().includes("bestseller")) {
             badge = "Bestseller";
             badgeColor = "bg-[#fde047] text-black";
           } else if (discountPercent > 0) {

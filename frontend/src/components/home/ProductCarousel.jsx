@@ -218,6 +218,12 @@ const ProductCarousel = () => {
                   
                   {/* Image Container (Vertical Reel style) */}
                   <div className="relative w-full aspect-[4/5] rounded-[1.5rem] overflow-hidden mb-5 bg-[#f8f5f0]">
+                    {/* Badge */}
+                    {product.rawProduct?.status === 'PREORDER' && (
+                      <div className="absolute top-3 left-3 z-30 bg-[#662654] text-white text-[10px] font-black px-2.5 py-1 rounded-full shadow-md uppercase tracking-wider">
+                        PRE-ORDER
+                      </div>
+                    )}
                     {/* Wishlist Button */}
                     <motion.button
                       onClick={(e) => handleToggleWishlist(e, product)}
