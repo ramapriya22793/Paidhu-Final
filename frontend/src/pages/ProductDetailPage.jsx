@@ -447,6 +447,11 @@ const ProductDetailPage = () => {
           </div>
         </div>
 
+        {/* ── Related Products ── */}
+        <div className="mt-12 md:mt-16">
+          <ProductCarousel title="You Might Also Like" bgClass="bg-transparent" pyClass="py-4" />
+        </div>
+
         {/* ── Detailed Tabs Section (Below the fold) ── */}
         <div className="mt-12 md:mt-16 bg-white rounded-[2.5rem] shadow-[0_10px_35px_rgba(0,0,0,0.01)] border border-gray-100/60 overflow-hidden">
           
@@ -618,8 +623,6 @@ const ProductDetailPage = () => {
 
       </div>
 
-      {/* Related Products Section */}
-      <ProductCarousel title="You Might Also Like" bgClass="bg-[#fcfbfa]" />
     </motion.div>
   );
 };

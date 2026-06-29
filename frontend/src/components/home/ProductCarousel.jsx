@@ -80,7 +80,8 @@ const initialProducts = [
 
 const ProductCarousel = ({ 
   title = "Indulge in the Authentic Taste of PAIDHU", 
-  bgClass = "bg-[#ede7d7]" 
+  bgClass = "bg-[#ede7d7]",
+  pyClass = "py-24"
 }) => {
   const { addToCart, wishlist, toggleWishlist } = useCart();
   const [products, setProducts] = React.useState(initialProducts);
@@ -97,7 +98,6 @@ const ProductCarousel = ({
         const mapped = CAROUSEL_SLUGS.map(slug => {
           const prod = fetchedList.find(p => p.slug === slug);
           if (!prod) return null;
-          
           return {
             id: prod.id,
             name: prod.name,
@@ -158,7 +158,7 @@ const ProductCarousel = ({
   };
 
   return (
-    <section className={`w-full py-24 ${bgClass} overflow-hidden relative`}>
+    <section className={`w-full ${pyClass} ${bgClass} overflow-hidden relative`}>
       
       {/* Header Section */}
       <div className="max-w-[1400px] mx-auto px-4 md:px-6 relative z-10 flex flex-col items-center justify-center mb-16">
