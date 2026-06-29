@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import SEO from '../components/seo/SEO';
+import ProductCarousel from '../components/home/ProductCarousel';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -616,6 +617,9 @@ const ProductDetailPage = () => {
         </div>
 
       </div>
+
+      {/* Related Products Section */}
+      <ProductCarousel title="You Might Also Like" bgClass="bg-[#fcfbfa]" />
     </motion.div>
   );
 };

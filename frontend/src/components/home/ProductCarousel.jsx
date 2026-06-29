@@ -78,7 +78,10 @@ const initialProducts = [
   }
 ];
 
-const ProductCarousel = () => {
+const ProductCarousel = ({ 
+  title = "Indulge in the Authentic Taste of PAIDHU", 
+  bgClass = "bg-[#ede7d7]" 
+}) => {
   const { addToCart, wishlist, toggleWishlist } = useCart();
   const [products, setProducts] = React.useState(initialProducts);
   const [addingId, setAddingId] = React.useState(null);
@@ -155,7 +158,7 @@ const ProductCarousel = () => {
   };
 
   return (
-    <section className="w-full py-24 bg-[#ede7d7] overflow-hidden relative">
+    <section className={`w-full py-24 ${bgClass} overflow-hidden relative`}>
       
       {/* Header Section */}
       <div className="max-w-[1400px] mx-auto px-4 md:px-6 relative z-10 flex flex-col items-center justify-center mb-16">
@@ -166,7 +169,7 @@ const ProductCarousel = () => {
             transition={{ duration: 0.8 }}
             className="font-serif text-3xl md:text-5xl font-bold text-[#662654] text-center tracking-tight mb-4"
           >
-            Indulge in the Authentic Taste of PAIDHU
+            {title}
           </motion.h2>
           <motion.div 
             initial={{ opacity: 0, width: 0 }}
