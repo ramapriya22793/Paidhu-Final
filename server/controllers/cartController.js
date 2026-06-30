@@ -82,9 +82,9 @@ const updateCartItem = async (req, res) => {
 const removeFromCart = async (req, res) => {
   try {
     const userId = req.user.id;
-    // Handle both POST (body) and DELETE (params + query) formats
-    const variantQuery = req.body.variant || req.query.variant || 'default';
-    const prodId = parseInt(req.body.productId || req.params.productId);
+    // Handle both POST (body) and DELETE (params + query) formats safely
+    const variantQuery = (req.body && req.body.variant) || req.query.variant || 'default';
+    const prodId = parseInt((req.body && req.body.productId) || req.params.productId);
 
     if (isNaN(prodId)) {
       return res.status(400).json({ message: 'Invalid product ID' });
