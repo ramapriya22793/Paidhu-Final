@@ -167,14 +167,16 @@ const ProductCard = ({ product, index, navSection }) => {
 
   const isInWishlist = wishlist && wishlist.some(item => item.id === product.id);
 
-  const handleAddToCart = (e) => {
+  const handleAddToCart = async (e) => {
     e.preventDefault();
     e.stopPropagation();
+    if (isAdding) return;
     setIsAdding(true);
-    addToCart(product, 1, selectedVariant);
-    setTimeout(() => {
+    try {
+      await addToCart(product, 1, selectedVariant);
+    } finally {
       setIsAdding(false);
-    }, 800);
+    }
   };
 
   return (

@@ -29,33 +29,22 @@ const addToCart = async (req, res) => {
     const product = await prisma.product.findUnique({ where: { id: productId } });
     if (!product) return res.status(404).json({ message: 'Product not found' });
 
-    // Check if item already exists in cart with same variant
-    const existingItem = await prisma.cartItem.findUnique({
+    // Atomic upsert to prevent duplicate rows and race conditions
+    const cartItem = await prisma.cartItem.upsert({
       where: {
         userId_productId_variant: { userId, productId, variant }
-      }
+      },
+      update: {
+        quantity: { increment: quantity }
+      },
+      create: {
+        userId,
+        productId,
+        quantity,
+        variant
+      },
+      include: { product: true }
     });
-
-    let cartItem;
-    if (existingItem) {
-      // Update quantity
-      cartItem = await prisma.cartItem.update({
-        where: { id: existingItem.id },
-        data: { quantity: existingItem.quantity + quantity },
-        include: { product: true }
-      });
-    } else {
-      // Add new item
-      cartItem = await prisma.cartItem.create({
-        data: {
-          userId,
-          productId,
-          quantity,
-          variant
-        },
-        include: { product: true }
-      });
-    }
 
     res.status(201).json(cartItem);
   } catch (error) {

@@ -137,24 +137,26 @@ const ProductCarousel = ({
     return wishlist && wishlist.some(item => item.id === productId);
   };
 
-  const handleAddToCart = (e, product) => {
+  const handleAddToCart = async (e, product) => {
     e.preventDefault();
     e.stopPropagation();
     
+    if (addingId === product.id) return;
+    
     setAddingId(product.id);
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: product.rawProduct.price,
-      discountPrice: product.rawProduct.discountPrice,
-      image: product.image,
-      category: product.rawProduct.category || "Snacks",
-      shortDescription: product.weight
-    }, 1);
-
-    setTimeout(() => {
+    try {
+      await addToCart({
+        id: product.id,
+        name: product.name,
+        price: product.rawProduct.price,
+        discountPrice: product.rawProduct.discountPrice,
+        image: product.image,
+        category: product.rawProduct.category || "Snacks",
+        shortDescription: product.weight
+      }, 1);
+    } finally {
       setAddingId(null);
-    }, 800);
+    }
   };
 
   return (

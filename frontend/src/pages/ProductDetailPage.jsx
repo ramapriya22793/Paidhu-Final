@@ -52,21 +52,22 @@ const ProductDetailPage = () => {
   const isInWishlist = product && wishlist && wishlist.some(item => item.id === product.id);
   const [isAdding, setIsAdding] = useState(false);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
+    if (isAdding) return;
     setIsAdding(true);
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      discountPrice: product.discountPrice || null,
-      image: product.image,
-      category: product.category,
-      shortDescription: product.shortDescription
-    }, quantity, selectedVariant);
-
-    setTimeout(() => {
+    try {
+      await addToCart({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        discountPrice: product.discountPrice || null,
+        image: product.image,
+        category: product.category,
+        shortDescription: product.shortDescription
+      }, quantity, selectedVariant);
+    } finally {
       setIsAdding(false);
-    }, 800);
+    }
   };
 
   useEffect(() => {

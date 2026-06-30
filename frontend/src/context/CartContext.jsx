@@ -183,11 +183,18 @@ export const CartProvider = ({ children }) => {
     fetchInitialData();
   }, [token]);
 
+  const isAddingRef = useRef(new Set());
+
   // Cart Operations
   const addToCart = async (product, quantity = 1, selectedVariant = null) => {
     if (!token) return;
     const previousCart = [...cart];
     const variantSize = selectedVariant?.size || 'default';
+    
+    // Prevent duplicate concurrent requests for the same product+variant
+    const itemKey = `${product.id}-${variantSize}`;
+    if (isAddingRef.current.has(itemKey)) return;
+    isAddingRef.current.add(itemKey);
 
     // Optimistically update React cart state
     setCart(prevCart => {
@@ -257,6 +264,8 @@ export const CartProvider = ({ children }) => {
       console.error('Add to cart failed:', err);
       setCart(previousCart);
       showToast('Failed to add product', 'error');
+    } finally {
+      isAddingRef.current.delete(itemKey);
     }
   };
 

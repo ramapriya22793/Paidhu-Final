@@ -69,26 +69,28 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
         : null)
     : product.discountPercent;
 
-  const handleAddToCartClick = (e) => {
+  const handleAddToCartClick = async (e) => {
     e.preventDefault();
     e.stopPropagation();
     
+    if (addingId === product.id) return;
+    
     setAddingId(product.id);
-    addToCart({
-      id: product.id,
-      name: product.title,
-      price: selectedVariant ? Number(selectedVariant.price) : product.originalPrice,
-      discountPrice: selectedVariant 
-        ? (selectedVariant.offerPrice && selectedVariant.offerPrice !== '' ? Number(selectedVariant.offerPrice) : null)
-        : (product.originalPrice > product.discountedPrice ? product.discountedPrice : null),
-      image: product.image,
-      category: activeCategory,
-      shortDescription: product.description
-    }, 1, selectedVariant);
-
-    setTimeout(() => {
+    try {
+      await addToCart({
+        id: product.id,
+        name: product.title,
+        price: selectedVariant ? Number(selectedVariant.price) : product.originalPrice,
+        discountPrice: selectedVariant 
+          ? (selectedVariant.offerPrice && selectedVariant.offerPrice !== '' ? Number(selectedVariant.offerPrice) : null)
+          : (product.originalPrice > product.discountedPrice ? product.discountedPrice : null),
+        image: product.image,
+        category: activeCategory,
+        shortDescription: product.description
+      }, 1, selectedVariant);
+    } finally {
       setAddingId(null);
-    }, 800);
+    }
   };
 
   return (
@@ -241,25 +243,27 @@ const ProductCollection = () => {
     return wishlist && wishlist.some(item => item.id === productId);
   };
 
-  const handleAddToCart = (e, product) => {
+  const handleAddToCart = async (e, product) => {
     e.preventDefault();
     e.stopPropagation();
     
+    if (addingId === product.id) return;
+    
     setAddingId(product.id);
-    // Convert product UI format to backend/cart format
-    addToCart({
-      id: product.id,
-      name: product.title,
-      price: product.originalPrice,
-      discountPrice: product.discountedPrice !== product.originalPrice ? product.discountedPrice : null,
-      image: product.image,
-      category: activeCategory,
-      shortDescription: product.description
-    }, 1);
-
-    setTimeout(() => {
+    try {
+      // Convert product UI format to backend/cart format
+      await addToCart({
+        id: product.id,
+        name: product.title,
+        price: product.originalPrice,
+        discountPrice: product.discountedPrice !== product.originalPrice ? product.discountedPrice : null,
+        image: product.image,
+        category: activeCategory,
+        shortDescription: product.description
+      }, 1);
+    } finally {
       setAddingId(null);
-    }, 800);
+    }
   };
 
   useEffect(() => {
