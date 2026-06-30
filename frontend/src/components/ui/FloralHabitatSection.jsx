@@ -5,7 +5,7 @@ import {
   ShoppingBag, ChevronLeft, ChevronRight, Loader2
 } from 'lucide-react';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE = 'https://paidhu-final-anm2.vercel.app';
 
 const VideoCard = ({ video, index, onClick }) => {
   const videoRef = useRef(null);

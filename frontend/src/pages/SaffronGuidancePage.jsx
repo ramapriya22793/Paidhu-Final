@@ -6,7 +6,7 @@ import saffronIcon from '../assets/saffron_icon.png';
 import pregnancyBanner from '../assets/pregnant_saffron_banner_new.png';
 import SEO from '../components/seo/SEO';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE = 'https://paidhu-final-anm2.vercel.app';
 
 const PURPOSES = [
   'General Wellness',

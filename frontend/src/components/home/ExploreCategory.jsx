@@ -3,7 +3,7 @@ import { ChevronDown, ArrowRight, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE = 'https://paidhu-final-anm2.vercel.app';
 
 // Categories in the specified order with accent colors & fallback images
 const CATEGORY_CONFIG = [

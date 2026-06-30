@@ -16,7 +16,7 @@ import OurCommunitySection from '../components/ui/OurCommunitySection';
 import fallbacks from '../components/home/fallbacks.json';
 import SEO from '../components/seo/SEO';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE = 'https://paidhu-final-anm2.vercel.app';
 
 const allFallbackProducts = (() => {
   const seen = new Set();

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { X, Check, MessageSquare } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE = 'https://paidhu-final-anm2.vercel.app';
 
 const TiffinModal = ({ 
   isOpen: propIsOpen, 

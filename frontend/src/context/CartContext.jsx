@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const CartContext = createContext();
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE = 'https://paidhu-final-anm2.vercel.app';
 
 // Safe localStorage wrappers to prevent exceptions when disk is full or storage is disabled
 const safeGetItem = (key) => {

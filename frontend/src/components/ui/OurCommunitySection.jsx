@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { MessageSquare, Users, BookOpen, Heart, ArrowRight, Play } from 'lucide-react';
 import TiffinModal from '../home/TiffinModal';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE = 'https://paidhu-final-anm2.vercel.app';
 const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/EDlauzE5x1B6U23RamfCej?s=sh&p=a&ilr=0";
 
 const defaultData = {

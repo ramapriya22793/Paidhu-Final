@@ -6,7 +6,7 @@ import hibiscusImg from '../../assets/hibiscus_tea.png';
 import saffronImg from '../../assets/saffron_threads.png';
 import edibleFlowersImg from '../../assets/edible_flowers.png';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE = 'https://paidhu-final-anm2.vercel.app';
 
 const defaultBlogs = [
   {

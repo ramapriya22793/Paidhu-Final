@@ -9,7 +9,7 @@ import { useCart } from '../context/CartContext';
 import SEO from '../components/seo/SEO';
 import ProductCarousel from '../components/home/ProductCarousel';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE = 'https://paidhu-final-anm2.vercel.app';
 
 const resolveImage = (img) => {
   if (!img) return null;

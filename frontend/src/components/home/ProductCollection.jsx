@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import fallbacks from './fallbacks.json';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE = 'https://paidhu-final-anm2.vercel.app';
 
 const productsCache = {};
 
