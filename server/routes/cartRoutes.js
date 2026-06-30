@@ -16,7 +16,7 @@ const {
 router.get('/', authMiddleware, getCart);
 router.post('/add', authMiddleware, addToCart);
 router.put('/update', authMiddleware, updateCartItem);
-router.delete('/remove/:productId', authMiddleware, removeFromCart);
+router.post('/remove', authMiddleware, removeFromCart);
 router.delete('/clear', authMiddleware, clearCart);
 router.post('/sync', authMiddleware, syncCart);
 

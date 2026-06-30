@@ -272,13 +272,13 @@ export const CartProvider = ({ children }) => {
     showToast('Removed from cart', 'success');
 
     try {
-      const res = await fetch(`${API_BASE}/api/cart/remove/${productId}`, {
-        method: 'DELETE',
+      const res = await fetch(`${API_BASE}/api/cart/remove`, {
+        method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}` 
         },
-        body: JSON.stringify({ variant: targetVariant })
+        body: JSON.stringify({ productId, variant: targetVariant })
       });
 
       if (res.status === 401) {

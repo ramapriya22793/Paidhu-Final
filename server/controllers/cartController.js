@@ -93,8 +93,8 @@ const updateCartItem = async (req, res) => {
 const removeFromCart = async (req, res) => {
   try {
     const userId = req.user.id;
-    const variantQuery = req.query.variant || req.body.variant || 'default';
-    const prodId = parseInt(req.params.productId);
+    const variantQuery = req.body.variant || 'default';
+    const prodId = parseInt(req.body.productId);
 
     if (isNaN(prodId)) {
       return res.status(400).json({ message: 'Invalid product ID' });
