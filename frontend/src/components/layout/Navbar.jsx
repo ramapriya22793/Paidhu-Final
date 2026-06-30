@@ -788,11 +788,15 @@ const Navbar = () => {
                 <div className="p-6 border-t border-gray-100 bg-gray-50 rounded-t-3xl shadow-[0_-8px_30px_rgba(0,0,0,0.02)]">
                   <div className="space-y-3 mb-6">
                     <div className="flex items-center justify-between text-gray-500 text-xs font-semibold">
+                      <span>Subtotal</span>
+                      <span className="font-bold">₹{cartTotal.toLocaleString()}</span>
+                    </div>
+                    <div className="flex items-center justify-between text-gray-500 text-xs font-semibold">
                       <span>Shipping</span>
                       <span className="font-bold">{cartTotal >= 500 ? 'FREE' : '₹50'}</span>
                     </div>
                     <div className="flex items-center justify-between border-t border-gray-100 pt-3">
-                      <span className="text-sm font-bold text-gray-800">Subtotal</span>
+                      <span className="text-sm font-bold text-gray-800">Total</span>
                       <span className="text-lg font-black text-gray-900">
                         ₹{(cartTotal + (cartTotal >= 500 ? 0 : 50)).toLocaleString()}
                       </span>
