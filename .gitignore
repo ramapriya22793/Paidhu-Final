@@ -25,3 +25,4 @@ lerna-debug.log*
 
 # Scratch files
 **/scratch/
+node_modules_old 
