@@ -17,6 +17,7 @@ router.get('/', authMiddleware, getCart);
 router.post('/add', authMiddleware, addToCart);
 router.put('/update', authMiddleware, updateCartItem);
 router.post('/remove', authMiddleware, removeFromCart);
+router.delete('/remove/:productId', authMiddleware, removeFromCart); // For backward compatibility with cached frontend clients
 router.delete('/clear', authMiddleware, clearCart);
 router.post('/sync', authMiddleware, syncCart);
 
