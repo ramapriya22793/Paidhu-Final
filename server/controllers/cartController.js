@@ -93,13 +93,18 @@ const updateCartItem = async (req, res) => {
 const removeFromCart = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { productId, variant = 'default' } = req.body; // use body for delete to pass variant, but req.params was used previously.
-    // Wait, the route might be DELETE /cart/:productId. We need variant. Let's get it from req.query or body.
-    const variantQuery = req.query.variant || 'default';
+    const variantQuery = req.query.variant || req.body.variant || 'default';
+    const prodId = parseInt(req.params.productId);
 
-    await prisma.cartItem.delete({
+    if (isNaN(prodId)) {
+      return res.status(400).json({ message: 'Invalid product ID' });
+    }
+
+    await prisma.cartItem.deleteMany({
       where: {
-        userId_productId_variant: { userId, productId: parseInt(req.params.productId), variant: variantQuery }
+        userId,
+        productId: prodId,
+        variant: variantQuery
       }
     });
 

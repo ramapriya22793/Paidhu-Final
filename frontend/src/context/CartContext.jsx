@@ -272,9 +272,13 @@ export const CartProvider = ({ children }) => {
     showToast('Removed from cart', 'success');
 
     try {
-      const res = await fetch(`${API_BASE}/api/cart/remove/${productId}?variant=${encodeURIComponent(targetVariant)}`, {
+      const res = await fetch(`${API_BASE}/api/cart/remove/${productId}`, {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` 
+        },
+        body: JSON.stringify({ variant: targetVariant })
       });
 
       if (res.status === 401) {
@@ -293,6 +297,9 @@ export const CartProvider = ({ children }) => {
           const data = await cartRes.json();
           setCart(data.map(formatBackendCartItem).filter(Boolean));
         }
+      } else {
+        setCart(previousCart);
+        showToast('Failed to remove product from server', 'error');
       }
     } catch (err) {
       console.error('Remove from cart failed:', err);
@@ -445,7 +452,7 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+  const cartCount = cart.length;
 
   const cartTotal = cart.reduce((acc, item) => {
     const itemPrice = item.offerPrice || item.price;
