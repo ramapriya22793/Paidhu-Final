@@ -23,7 +23,12 @@ const getCart = async (req, res) => {
 const addToCart = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { productId, quantity = 1, variant = 'default' } = req.body;
+    const { quantity = 1, variant = 'default' } = req.body;
+    const productId = parseInt(req.body.productId);
+
+    if (isNaN(productId)) {
+      return res.status(400).json({ message: 'Invalid product ID' });
+    }
 
     // Check if product exists
     const product = await prisma.product.findUnique({ where: { id: productId } });
@@ -57,7 +62,12 @@ const addToCart = async (req, res) => {
 const updateCartItem = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { productId, quantity, variant = 'default' } = req.body;
+    const { quantity, variant = 'default' } = req.body;
+    const productId = parseInt(req.body.productId);
+
+    if (isNaN(productId)) {
+      return res.status(400).json({ message: 'Invalid product ID' });
+    }
 
     if (quantity < 1) {
       return res.status(400).json({ message: 'Quantity must be at least 1' });
@@ -132,8 +142,11 @@ const syncCart = async (req, res) => {
     // Merge logic
     for (const item of localCart) {
       const variant = item.variant || 'default';
+      const productId = parseInt(item.productId);
+      if (isNaN(productId)) continue;
+
       const existing = await prisma.cartItem.findUnique({
-        where: { userId_productId_variant: { userId, productId: item.productId, variant } }
+        where: { userId_productId_variant: { userId, productId, variant } }
       });
 
       if (existing) {
@@ -145,7 +158,7 @@ const syncCart = async (req, res) => {
         await prisma.cartItem.create({
           data: {
             userId,
-            productId: item.productId,
+            productId,
             quantity: item.quantity,
             variant
           }

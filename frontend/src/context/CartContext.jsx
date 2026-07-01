@@ -62,7 +62,7 @@ const formatBackendCartItem = (item) => {
     : (p.discountPrice ? Number(p.discountPrice) : null);
 
   return {
-    id: p.id,
+    id: Number(p.id),
     name: p.name,
     price: basePrice,
     offerPrice: discountPrice,
@@ -79,7 +79,7 @@ const formatBackendWishlistItem = (item) => {
   const p = item.product;
   if (!p) return null;
   return {
-    id: p.id,
+    id: Number(p.id),
     name: p.name,
     price: p.price,
     offerPrice: p.discountPrice,
@@ -157,7 +157,9 @@ export const CartProvider = ({ children }) => {
         }
         if (cartRes.ok) {
           const data = await cartRes.json();
-          setCart(data.map(formatBackendCartItem).filter(Boolean));
+          if (isMutatingRef.current === 0) {
+            setCart(data.map(formatBackendCartItem).filter(Boolean));
+          }
         }
 
         const wishlistRes = await fetch(`${API_BASE}/api/wishlist`, {
@@ -184,6 +186,7 @@ export const CartProvider = ({ children }) => {
   }, [token]);
 
   const isAddingRef = useRef(new Set());
+  const isMutatingRef = useRef(0);
 
   // Cart Operations
   const addToCart = async (product, quantity = 1, selectedVariant = null) => {
@@ -192,14 +195,15 @@ export const CartProvider = ({ children }) => {
     const variantSize = selectedVariant?.size || 'default';
     
     // Prevent duplicate concurrent requests for the same product+variant
-    const itemKey = `${product.id}-${variantSize}`;
+    const itemKey = `${Number(product.id)}-${variantSize}`;
     if (isAddingRef.current.has(itemKey)) return;
     isAddingRef.current.add(itemKey);
+    isMutatingRef.current += 1;
 
     // Optimistically update React cart state
     setCart(prevCart => {
       const existingItemIndex = prevCart.findIndex(
-        item => item.id === product.id && (item.selectedVariant?.size || 'default') === variantSize
+        item => Number(item.id) === Number(product.id) && (item.selectedVariant?.size || 'default') === variantSize
       );
       if (existingItemIndex > -1) {
         const newCart = [...prevCart];
@@ -210,7 +214,7 @@ export const CartProvider = ({ children }) => {
         return newCart;
       } else {
         const newItem = {
-          id: product.id,
+          id: Number(product.id),
           name: product.name,
           price: selectedVariant ? Number(selectedVariant.price) : Number(product.price),
           offerPrice: selectedVariant 
@@ -237,7 +241,7 @@ export const CartProvider = ({ children }) => {
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-          productId: product.id,
+          productId: Number(product.id),
           quantity,
           variant: variantSize
         })
@@ -257,8 +261,13 @@ export const CartProvider = ({ children }) => {
         });
         if (cartRes.ok) {
           const data = await cartRes.json();
-          setCart(data.map(formatBackendCartItem).filter(Boolean));
+          if (isMutatingRef.current === 1) {
+            setCart(data.map(formatBackendCartItem).filter(Boolean));
+          }
         }
+      } else {
+        setCart(previousCart);
+        showToast('Failed to add product to database', 'error');
       }
     } catch (err) {
       console.error('Add to cart failed:', err);
@@ -266,6 +275,7 @@ export const CartProvider = ({ children }) => {
       showToast('Failed to add product', 'error');
     } finally {
       isAddingRef.current.delete(itemKey);
+      isMutatingRef.current = Math.max(0, isMutatingRef.current - 1);
     }
   };
 
@@ -273,10 +283,11 @@ export const CartProvider = ({ children }) => {
     if (!token) return;
     const previousCart = [...cart];
     const targetVariant = variantSize || 'default';
+    isMutatingRef.current += 1;
 
     // Optimistically remove item from React cart state
     setCart(prevCart => prevCart.filter(
-      item => !(item.id === productId && (item.selectedVariant?.size || 'default') === targetVariant)
+      item => !(Number(item.id) === Number(productId) && (item.selectedVariant?.size || 'default') === targetVariant)
     ));
     showToast('Removed from cart', 'success');
 
@@ -288,7 +299,7 @@ export const CartProvider = ({ children }) => {
           'Authorization': `Bearer ${token}` 
         },
         body: JSON.stringify({
-          productId,
+          productId: Number(productId),
           variant: targetVariant
         })
       });
@@ -307,7 +318,9 @@ export const CartProvider = ({ children }) => {
         });
         if (cartRes.ok) {
           const data = await cartRes.json();
-          setCart(data.map(formatBackendCartItem).filter(Boolean));
+          if (isMutatingRef.current === 1) {
+            setCart(data.map(formatBackendCartItem).filter(Boolean));
+          }
         }
       } else {
         setCart(previousCart);
@@ -317,6 +330,8 @@ export const CartProvider = ({ children }) => {
       console.error('Remove from cart failed:', err);
       setCart(previousCart);
       showToast('Failed to remove product', 'error');
+    } finally {
+      isMutatingRef.current = Math.max(0, isMutatingRef.current - 1);
     }
   };
 
@@ -329,10 +344,11 @@ export const CartProvider = ({ children }) => {
 
     const previousCart = [...cart];
     const targetVariant = variantSize || 'default';
+    isMutatingRef.current += 1;
 
     // Optimistically update item quantity in React cart state
     setCart(prevCart => prevCart.map(item => {
-      if (item.id === productId && (item.selectedVariant?.size || 'default') === targetVariant) {
+      if (Number(item.id) === Number(productId) && (item.selectedVariant?.size || 'default') === targetVariant) {
         return { ...item, quantity };
       }
       return item;
@@ -346,7 +362,7 @@ export const CartProvider = ({ children }) => {
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-          productId,
+          productId: Number(productId),
           quantity,
           variant: targetVariant
         })
@@ -366,12 +382,19 @@ export const CartProvider = ({ children }) => {
         });
         if (cartRes.ok) {
           const data = await cartRes.json();
-          setCart(data.map(formatBackendCartItem).filter(Boolean));
+          if (isMutatingRef.current === 1) {
+            setCart(data.map(formatBackendCartItem).filter(Boolean));
+          }
         }
+      } else {
+        setCart(previousCart);
+        showToast('Failed to update quantity', 'error');
       }
     } catch (err) {
       console.error('Update quantity failed:', err);
       setCart(previousCart);
+    } finally {
+      isMutatingRef.current = Math.max(0, isMutatingRef.current - 1);
     }
   };
 
@@ -380,6 +403,7 @@ export const CartProvider = ({ children }) => {
     const previousCart = [...cart];
     setCart([]);
     showToast('Cart cleared', 'success');
+    isMutatingRef.current += 1;
 
     try {
       const res = await fetch(`${API_BASE}/api/cart/clear`, {
@@ -396,6 +420,8 @@ export const CartProvider = ({ children }) => {
     } catch (err) {
       console.error('Clear cart failed:', err);
       setCart(previousCart);
+    } finally {
+      isMutatingRef.current = Math.max(0, isMutatingRef.current - 1);
     }
   };
 
@@ -409,7 +435,7 @@ export const CartProvider = ({ children }) => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ productId: product.id })
+        body: JSON.stringify({ productId: Number(product.id) })
       });
       if (res.status === 401) {
         safeRemoveItem('paidhu_token');
@@ -440,7 +466,7 @@ export const CartProvider = ({ children }) => {
   const removeFromWishlist = async (productId) => {
     if (!token) return;
     try {
-      const res = await fetch(`${API_BASE}/api/wishlist/${productId}`, {
+      const res = await fetch(`${API_BASE}/api/wishlist/${Number(productId)}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -464,7 +490,7 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  const cartCount = cart.length;
+  const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   const cartTotal = cart.reduce((acc, item) => {
     const itemPrice = item.offerPrice || item.price;
