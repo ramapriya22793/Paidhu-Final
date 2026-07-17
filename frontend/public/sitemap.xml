@@ -25,4 +25,54 @@
     <priority>0.7</priority>
     <changefreq>weekly</changefreq>
   </url>
+  <url>
+    <loc>https://paidhu.com/product/super-negin-saffron</loc>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://paidhu.com/product/neem-petal-jams</loc>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://paidhu.com/product/hibiscus-petal-jam</loc>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://paidhu.com/product/bloom-cookies-white-lotus</loc>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://paidhu.com/product/sinensis-syrup-petal-jam</loc>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://paidhu.com/product/petal-jam-combo</loc>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://paidhu.com/product/tanner-s-jam</loc>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://paidhu.com/product/rose-gulkhand-jam</loc>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://paidhu.com/product/saffron-powder</loc>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://paidhu.com/product/kashmiri-mongra</loc>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
 </urlset>
