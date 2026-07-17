@@ -267,6 +267,24 @@ const ProductDetailPage = () => {
           content="product"
         />
 
+        {/* Twitter Tags */}
+        <meta
+          name="twitter:card"
+          content="summary_large_image"
+        />
+        <meta
+          name="twitter:title"
+          content={product.seoTitle || product.name}
+        />
+        <meta
+          name="twitter:description"
+          content={product.seoDescription || product.shortDescription || (product.description ? product.description.substring(0, 160) : '')}
+        />
+        <meta
+          name="twitter:image"
+          content={productImage}
+        />
+
         {/* Product Schema (JSON-LD) */}
         <script type="application/ld+json">
           {JSON.stringify({
