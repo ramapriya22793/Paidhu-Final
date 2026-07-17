@@ -1,0 +1,377 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id                 Int       @id @default(autoincrement())
+  name               String
+  email              String    @unique
+  phone              String?   @unique
+  password           String
+  avatar             String?
+  gender             String?
+  dateOfBirth        DateTime?
+  preferredLanguage  String?   @default("English")
+  rewardPoints       Int       @default(0)
+  membershipLevel    String    @default("Silver")
+  referralCode       String?   @unique
+  communicationPrefs Json?
+  isAdmin            Boolean   @default(false)
+  createdAt          DateTime  @default(now())
+  
+  addresses          Address[]
+  wishlist           WishlistItem[]
+  cartItems          CartItem[]
+  orders             Order[]
+  payments           Payment[]
+  loginHistory       LoginHistory[]
+  resetTokens        PasswordResetToken[]
+}
+
+model Address {
+  id            Int       @id @default(autoincrement())
+  userId        Int
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName      String
+  phone         String
+  addressLine1  String
+  addressLine2  String?
+  landmark      String?
+  city          String
+  state         String
+  country       String    @default("India")
+  pincode       String
+  addressType   String    @default("Home") // Home, Work, Other
+  isDefault     Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+}
+
+model WishlistItem {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  productId   Int
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  
+  @@unique([userId, productId])
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  products    Product[]
+  createdAt   DateTime  @default(now())
+}
+
+model ProductImage {
+  id          Int       @id @default(autoincrement())
+  imageUrl    String
+  imagePath   String
+  productId   Int
+  product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+}
+
+model Product {
+  id               Int       @id @default(autoincrement())
+  name             String
+  slug             String    @unique
+  description      String
+  
+  categoryId       Int
+  category         Category  @relation(fields: [categoryId], references: [id])
+  
+  price            Float
+  discountPrice    Float?
+  stock            Int       @default(0)
+  
+  image            String?
+  imagePath        String?
+  
+  featured         Boolean   @default(false)
+  status           String    @default("ACTIVE") // ACTIVE, DRAFT, OUT_OF_STOCK
+  
+  productImages    ProductImage[]
+  
+  shortDescription String?
+  ingredients      String?
+  benefits         Json?
+  highlights       Json?
+  nutritionInfo    Json?
+  faqData          Json?
+  tags             String?   // Added for landing page sections (e.g., "bestseller", "new_launch")
+  seoTitle         String?
+  seoDescription   String?
+  seoKeywords      String?
+  variants         Json?     // e.g. [{ size: '30g', price: 70, offerPrice: 65, stock: 10 }]
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt @default(now())
+  
+  orderItems       OrderItem[]
+  reviews          Review[]
+  wishlistItems    WishlistItem[]
+  cartItems        CartItem[]
+}
+
+model Order {
+  id               Int          @id @default(autoincrement())
+  orderNumber      String?      @unique @default(uuid()) // PDH-YYYY-XXXX generated later or default
+  userId           Int?
+  user             User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+  customerName     String
+  customerEmail    String
+  shippingAddress  String
+  subtotal         Float        @default(0)
+  deliveryCharge   Float        @default(0)
+  discountAmount   Float        @default(0)
+  rewardPointsUsed Int          @default(0)
+  tax              Float        @default(0)
+  totalPrice       Float
+  paymentMethod    String
+  paymentStatus    String       @default("PENDING") // PENDING, PAID, REFUNDED, FAILED
+  orderStatus      String       @default("PENDING") // PENDING, CONFIRMED, PACKED, SHIPPED, OUT_FOR_DELIVERY, DELIVERED, CANCELLED
+  
+  trackingNumber   String?
+  courierPartner   String?
+  estimatedDeliveryDate DateTime?
+  timeline         Json?
+  
+  // Relations
+  couponId         Int?
+  coupon           Coupon?      @relation(fields: [couponId], references: [id], onDelete: SetNull)
+  payments         Payment[]
+  refunds          Refund[]
+  items            OrderItem[]
+  
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt @default(now())
+}
+
+model OrderItem {
+  id          Int      @id @default(autoincrement())
+  orderId     Int
+  productId   Int
+  quantity    Int
+  price       Float
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model SiteSettings {
+  id                Int       @id @default(autoincrement())
+  heroTitle         String?
+  heroSubtitle      String?
+  heroImage         String?
+  communityTitle    String?
+  communitySubtitle String?
+  communityImage    String?
+  faqList           Json?
+  promoText         Json?
+  videoTitle        String?
+  videoSubtitle     String?
+  videoUrl          String?
+  videoThumbnail    String?
+  productTabs       Json?
+  navbarLinks       Json?
+  dealCategories    Json?
+  familyTitle       String?
+  familyTabs        Json?
+  floralHabitatData Json?
+  byocData          Json?
+  ourCommunityData  Json?
+  ourPhilosophyData Json?
+  bulkOrdersData    Json?
+  aboutUsData       Json?
+  categoryGridData  Json?
+  updatedAt         DateTime  @updatedAt
+}
+
+model BulkOrderInquiry {
+  id        String   @id @default(uuid())
+  fullName  String
+  email     String
+  mobile    String
+  region    String
+  country   String
+  purpose   String
+  status    String   @default("Pending") // Pending, Contacted, Resolved
+  createdAt DateTime @default(now())
+}
+
+model Coupon {
+  id              Int       @id @default(autoincrement())
+  code            String    @unique
+  discountType    String    // "PERCENTAGE" or "FLAT"
+  discountValue   Float
+  minOrderValue   Float?
+  expiryDate      DateTime?
+  isActive        Boolean   @default(true)
+  usageLimit      Int?
+  usageCount      Int       @default(0)
+  orders          Order[]
+  createdAt       DateTime  @default(now())
+}
+
+model Review {
+  id              Int       @id @default(autoincrement())
+  rating          Int       // 1 to 5
+  comment         String
+  reviewerName    String
+  image           String?
+  isApproved      Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  
+  product         Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId       Int
+}
+
+model Blog {
+  id              Int       @id @default(autoincrement())
+  title           String
+  content         String
+  category        String
+  image           String?
+  author          String    @default("Paidhu Team")
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model SeoData {
+  id              Int       @id @default(autoincrement())
+  pageSlug        String    @unique
+  title           String
+  description     String
+  keywords        String?
+  updatedAt       DateTime  @updatedAt
+}
+
+model Banner {
+  id              Int       @id @default(autoincrement())
+  pageSlug        String    // e.g., 'home', 'shop', 'about', 'blogs'
+  webImage        String    // Desktop banner image
+  webImagePath    String?   // Supabase storage path
+  mobileImage     String?   // Mobile banner image
+  mobileImagePath String?   // Supabase storage path
+  size            String    @default("medium") // 'small', 'medium', 'large', 'fullscreen'
+  isActive        Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model CartItem {
+  id          Int       @id @default(autoincrement())
+  userId      Int?      // Nullable because guests won't have an ID.
+  productId   Int
+  quantity    Int       @default(1)
+  variant     String?   @default("default") // Stores the selected size variant
+    
+  user        User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+    
+  // We include variant in the unique constraint so users can add different variants of the same product.
+  @@unique([userId, productId, variant])
+}
+
+model Payment {
+  id                Int      @id @default(autoincrement())
+  orderId           Int
+  userId            Int?
+  user              User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  order             Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  gateway           String?  @default("Razorpay")
+  razorpayOrderId   String?  @unique
+  razorpayPaymentId String?  @unique
+  razorpaySignature String?
+  amount            Float
+  method            String   // e.g., "UPI", "Credit Card", "Wallet", "COD"
+  status            String   @default("PENDING") // PENDING, SUCCESS, FAILED, REFUNDED
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt @default(now())
+  
+  refunds           Refund[]
+}
+
+model Refund {
+  id            Int      @id @default(autoincrement())
+  paymentId     Int
+  payment       Payment  @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  orderId       Int
+  order         Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  refundAmount  Float
+  reason        String
+  status        String   @default("PENDING") // PENDING, APPROVED, REJECTED, PROCESSED
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt @default(now())
+}
+
+model DeliveryCharge {
+  id                Int      @id @default(autoincrement())
+  type              String   // e.g., "Standard", "Express"
+  charge            Float
+  freeAbove         Float?   // Threshold for free delivery (e.g., 999)
+  estimatedDays     String   // e.g., "3-5 Business Days"
+  regions           String?  // Comma-separated list of applicable locations
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt @default(now())
+}
+
+model TrackingScript {
+  id          Int      @id @default(autoincrement())
+  name        String
+  provider    String   // 'GA4', 'GTM', 'META_PIXEL', 'GOOGLE_ADS', 'VERIFICATION', 'CUSTOM'
+  placement   String   // 'HEAD', 'BODY_START', 'BODY_END'
+  code        String?
+  settings    Json?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model TiffinRegistration {
+  id        Int      @id @default(autoincrement())
+  phone     String   @unique
+  consent   Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model SaffronGuidance {
+  id              String   @id @default(uuid())
+  yourName        String
+  spouseName      String
+  phone           String
+  purpose         String
+  pregnancyMonth  Int
+  doctorPermission String  // "Yes" or "No"
+  status          String   @default("Pending") // Pending, Contacted, Resolved
+  createdAt       DateTime @default(now())
+}
+
+model LoginHistory {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ipAddress String?
+  userAgent String?
+  loginTime DateTime @default(now())
+  status    String   @default("SUCCESS") // SUCCESS, FAILED
+}
+
+model PasswordResetToken {
+  id        Int      @id @default(autoincrement())
+  phone     String
+  token     String   @unique
+  expiresAt DateTime
+  user      User     @relation(fields: [phone], references: [phone], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+

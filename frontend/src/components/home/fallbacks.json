@@ -1,0 +1,1961 @@
+{
+  "Bestsellers": [
+    {
+      "id": 3,
+      "badge": "Bestseller",
+      "badgeColor": "bg-[#fde047] text-black",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780855888156-WhatsAppImage20260403at111337AM1300x300jpeg.jpeg",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780855888156-WhatsAppImage20260403at111337AM1300x300jpeg.jpeg"
+      ],
+      "title": "Neem petal jams",
+      "description": "Buy Neem Petal Jam made from natural neem flowers. Supports digestion, detox, and overall wellness. 100% natural, chemical-free herbal jam from Paidhu.",
+      "originalPrice": 70,
+      "discountedPrice": 70,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 3,
+        "name": "Neem petal jams",
+        "slug": "neem-petal-jams",
+        "description": "Neem Petal Jam is a natural and healthy product made from fresh neem flowers, known for their powerful medicinal properties. This herbal neem jam is carefully prepared using traditional methods to preserve its natural nutrients and health benefits. This natural jam supports digestion, helps detoxify the body, and promotes overall wellness. It is an excellent addition to your daily routine for maintaining a balanced and healthy lifestyle.",
+        "categoryId": 3,
+        "price": 70,
+        "discountPrice": null,
+        "stock": 100,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780855888156-WhatsAppImage20260403at111337AM1300x300jpeg.jpeg",
+        "imagePath": "products/1780855888156-WhatsAppImage20260403at111337AM1300x300jpeg.jpeg",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Buy Neem Petal Jam made from natural neem flowers. Supports digestion, detox, and overall wellness. 100% natural, chemical-free herbal jam from Paidhu.",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "bestseller, shop_all",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "250g",
+            "price": "350",
+            "stock": "98",
+            "offerPrice": ""
+          },
+          {
+            "size": "30g",
+            "price": "70",
+            "stock": "100",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-07T18:11:29.539Z",
+        "updatedAt": "2026-06-15T04:48:13.725Z"
+      }
+    },
+    {
+      "id": 4,
+      "badge": "Bestseller",
+      "badgeColor": "bg-[#fde047] text-black",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg"
+      ],
+      "title": "Hibiscus Petal Jam ",
+      "description": "Hibiscus Petal Jam is a natural antioxidant-rich herbal jam made from fresh hibiscus flowers. It helps support heart health, digestion, and overall wellness with every spoon",
+      "originalPrice": 70,
+      "discountedPrice": 70,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 4,
+        "name": "Hibiscus Petal Jam ",
+        "slug": "hibiscus-petal-jam",
+        "description": "Hibiscus Petal Jam is a naturally prepared herbal spread made from fresh hibiscus flowers, known for their rich nutritional and medicinal properties. This vibrant and flavorful jam combines taste with health, offering a simple way to include natural wellness in your daily routine. Carefully crafted using traditional methods, this product retains its natural antioxidants, vitamins, and essential nutrients.",
+        "categoryId": 3,
+        "price": 70,
+        "discountPrice": null,
+        "stock": 100,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg",
+        "imagePath": "products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Hibiscus Petal Jam is a natural antioxidant-rich herbal jam made from fresh hibiscus flowers. It helps support heart health, digestion, and overall wellness with every spoon",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "bestseller, shop_all",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "250g",
+            "price": "350",
+            "stock": "98",
+            "offerPrice": ""
+          },
+          {
+            "size": "30g",
+            "price": "70",
+            "stock": "100",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-07T18:25:24.844Z",
+        "updatedAt": "2026-06-15T04:48:48.069Z"
+      }
+    },
+    {
+      "id": 8,
+      "badge": "Bestseller",
+      "badgeColor": "bg-[#fde047] text-black",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936736170-whitelotuscookie300x300jpeg.jpeg",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936736170-whitelotuscookie300x300jpeg.jpeg"
+      ],
+      "title": "Bloom Cookies – White lotus",
+      "description": "Bloom Cookies White Lotus are a delicate and soothing snack crafted for those who appreciate subtle floral flavors combined with a soft and melt-in-the-mouth texture. Made using carefully selected ingredients and infused with natural white lotus petals, these cookies offer a unique and calming taste that stands out from ordinary snacks. They are an ideal choice for anyone looking for a light, aromatic, and enjoyable treat for daily snacking.\n\n",
+      "originalPrice": 66,
+      "discountedPrice": 66,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 8,
+        "name": "Bloom Cookies – White lotus",
+        "slug": "bloom-cookies-white-lotus",
+        "description": "Bloom Cookies White Lotus are not just regular cookies; they are a refined and mindful snacking choice. Prepared with attention to quality and purity, they ensure a consistent and enjoyable experience.\n\nMade with real white lotus petals\nSoft, crumbly, and melt-in-the-mouth texture\nSuitable for all age groups\nPerfect for tea-time and coffee breaks\nA calming and unique alternative to regular cookies",
+        "categoryId": 2,
+        "price": 66,
+        "discountPrice": null,
+        "stock": 103,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936736170-whitelotuscookie300x300jpeg.jpeg",
+        "imagePath": "products/1780936736170-whitelotuscookie300x300jpeg.jpeg",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Bloom Cookies White Lotus are a delicate and soothing snack crafted for those who appreciate subtle floral flavors combined with a soft and melt-in-the-mouth texture. Made using carefully selected ingredients and infused with natural white lotus petals, these cookies offer a unique and calming taste that stands out from ordinary snacks. They are an ideal choice for anyone looking for a light, aromatic, and enjoyable treat for daily snacking.\n\n",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "shop_all, bestseller",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [],
+        "createdAt": "2026-06-08T16:38:57.641Z",
+        "updatedAt": "2026-06-08T16:39:31.911Z"
+      }
+    },
+    {
+      "id": 6,
+      "badge": "",
+      "badgeColor": "",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png"
+      ],
+      "title": "Sinensis Syrup – Petal Jam",
+      "description": "Sinensis Petal Jam is a premium artisanal floral preserve made from hand-picked fresh edible petals, carefully crafted to deliver both rich taste and natural wellness benefits. This luxurious herbal jam is prepared using traditional slow-cooking methods that help retain the natural aroma, vibrant color, and essential nutrients of the flowers.",
+      "originalPrice": 70,
+      "discountedPrice": 70,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 6,
+        "name": "Sinensis Syrup – Petal Jam",
+        "slug": "sinensis-syrup-petal-jam",
+        "description": "Sinensis Petal Jam is a luxurious, all-natural floral preserve crafted from carefully selected edible flower petals, gently infused in a slow-cooked syrup to lock in their natural aroma, colour, and therapeutic properties. With a smooth jam-like texture and rich floral flavour, it is a gourmet indulgence perfect for desserts, bakery applications, beverages, and health-focused consumption.\n\nThis artisanal product combines traditional preservation methods with modern food science to ensure high quality, nutritional value, and a clean label formula — free from artificial colours, flavours, and harmful additives",
+        "categoryId": 3,
+        "price": 70,
+        "discountPrice": null,
+        "stock": 100,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png",
+        "imagePath": "products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Sinensis Petal Jam is a premium artisanal floral preserve made from hand-picked fresh edible petals, carefully crafted to deliver both rich taste and natural wellness benefits. This luxurious herbal jam is prepared using traditional slow-cooking methods that help retain the natural aroma, vibrant color, and essential nutrients of the flowers.",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "shop_all",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "250g",
+            "price": "350",
+            "stock": "97",
+            "offerPrice": ""
+          },
+          {
+            "size": "30g",
+            "price": "70",
+            "stock": "100",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-08T05:35:16.224Z",
+        "updatedAt": "2026-06-15T04:47:39.707Z"
+      }
+    },
+    {
+      "id": 7,
+      "badge": "",
+      "badgeColor": "",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780897222396-IMG20250917121311600x404png.png",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780897222396-IMG20250917121311600x404png.png"
+      ],
+      "title": "Petal Jam Combo",
+      "description": "A delightful floral duo in one pack – Golden Shower Flower Jam (30g) & Rose Gulkhand Jam (30g).\n\nEnjoy the unique taste yourself or share it as a thoughtful festive gift.",
+      "originalPrice": 130,
+      "discountedPrice": 130,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 7,
+        "name": "Petal Jam Combo",
+        "slug": "petal-jam-combo",
+        "description": "Experience two timeless floral delicacies in one pack. This combo brings together:\n\nAavaram Flower Jam (30g) : Made from the seasonal Aavarampoo blossoms, slow-cooked to capture their delicate sweetness and festive charm.\nRose Gulkhand Jam (30g) : A fragrant delight prepared from fresh rose petals, offering a naturally rich floral taste.\nTogether, they create a unique duo of flavors – one bright and delicate, the other sweet and aromatic. Perfect for gifting, celebrations, or simply indulging yourself in a touch of tradition.\n\nWhy you’ll love this combo:\n\n100% natural & preservative-free\n\n Easy trial-size (30g each)\n\n Perfect gift for yourself or loved ones",
+        "categoryId": 3,
+        "price": 130,
+        "discountPrice": null,
+        "stock": 97,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780897222396-IMG20250917121311600x404png.png",
+        "imagePath": "products/1780897222396-IMG20250917121311600x404png.png",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "A delightful floral duo in one pack – Golden Shower Flower Jam (30g) & Rose Gulkhand Jam (30g).\n\nEnjoy the unique taste yourself or share it as a thoughtful festive gift.",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "shop_all, family_combos",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "30g",
+            "price": "130",
+            "stock": "",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-08T05:40:23.638Z",
+        "updatedAt": "2026-06-08T05:40:53.492Z"
+      }
+    }
+  ],
+  "Super Value Packs": [
+    {
+      "id": 7,
+      "badge": "",
+      "badgeColor": "",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780897222396-IMG20250917121311600x404png.png",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780897222396-IMG20250917121311600x404png.png"
+      ],
+      "title": "Petal Jam Combo",
+      "description": "A delightful floral duo in one pack – Golden Shower Flower Jam (30g) & Rose Gulkhand Jam (30g).\n\nEnjoy the unique taste yourself or share it as a thoughtful festive gift.",
+      "originalPrice": 130,
+      "discountedPrice": 130,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 7,
+        "name": "Petal Jam Combo",
+        "slug": "petal-jam-combo",
+        "description": "Experience two timeless floral delicacies in one pack. This combo brings together:\n\nAavaram Flower Jam (30g) : Made from the seasonal Aavarampoo blossoms, slow-cooked to capture their delicate sweetness and festive charm.\nRose Gulkhand Jam (30g) : A fragrant delight prepared from fresh rose petals, offering a naturally rich floral taste.\nTogether, they create a unique duo of flavors – one bright and delicate, the other sweet and aromatic. Perfect for gifting, celebrations, or simply indulging yourself in a touch of tradition.\n\nWhy you’ll love this combo:\n\n100% natural & preservative-free\n\n Easy trial-size (30g each)\n\n Perfect gift for yourself or loved ones",
+        "categoryId": 3,
+        "price": 130,
+        "discountPrice": null,
+        "stock": 97,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780897222396-IMG20250917121311600x404png.png",
+        "imagePath": "products/1780897222396-IMG20250917121311600x404png.png",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "A delightful floral duo in one pack – Golden Shower Flower Jam (30g) & Rose Gulkhand Jam (30g).\n\nEnjoy the unique taste yourself or share it as a thoughtful festive gift.",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "shop_all, family_combos",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "30g",
+            "price": "130",
+            "stock": "",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-08T05:40:23.638Z",
+        "updatedAt": "2026-06-08T05:40:53.492Z"
+      }
+    },
+    {
+      "id": 3,
+      "badge": "Bestseller",
+      "badgeColor": "bg-[#fde047] text-black",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780855888156-WhatsAppImage20260403at111337AM1300x300jpeg.jpeg",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780855888156-WhatsAppImage20260403at111337AM1300x300jpeg.jpeg"
+      ],
+      "title": "Neem petal jams",
+      "description": "Buy Neem Petal Jam made from natural neem flowers. Supports digestion, detox, and overall wellness. 100% natural, chemical-free herbal jam from Paidhu.",
+      "originalPrice": 70,
+      "discountedPrice": 70,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 3,
+        "name": "Neem petal jams",
+        "slug": "neem-petal-jams",
+        "description": "Neem Petal Jam is a natural and healthy product made from fresh neem flowers, known for their powerful medicinal properties. This herbal neem jam is carefully prepared using traditional methods to preserve its natural nutrients and health benefits. This natural jam supports digestion, helps detoxify the body, and promotes overall wellness. It is an excellent addition to your daily routine for maintaining a balanced and healthy lifestyle.",
+        "categoryId": 3,
+        "price": 70,
+        "discountPrice": null,
+        "stock": 100,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780855888156-WhatsAppImage20260403at111337AM1300x300jpeg.jpeg",
+        "imagePath": "products/1780855888156-WhatsAppImage20260403at111337AM1300x300jpeg.jpeg",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Buy Neem Petal Jam made from natural neem flowers. Supports digestion, detox, and overall wellness. 100% natural, chemical-free herbal jam from Paidhu.",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "bestseller, shop_all",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "250g",
+            "price": "350",
+            "stock": "98",
+            "offerPrice": ""
+          },
+          {
+            "size": "30g",
+            "price": "70",
+            "stock": "100",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-07T18:11:29.539Z",
+        "updatedAt": "2026-06-15T04:48:13.725Z"
+      }
+    },
+    {
+      "id": 4,
+      "badge": "Bestseller",
+      "badgeColor": "bg-[#fde047] text-black",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg"
+      ],
+      "title": "Hibiscus Petal Jam ",
+      "description": "Hibiscus Petal Jam is a natural antioxidant-rich herbal jam made from fresh hibiscus flowers. It helps support heart health, digestion, and overall wellness with every spoon",
+      "originalPrice": 70,
+      "discountedPrice": 70,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 4,
+        "name": "Hibiscus Petal Jam ",
+        "slug": "hibiscus-petal-jam",
+        "description": "Hibiscus Petal Jam is a naturally prepared herbal spread made from fresh hibiscus flowers, known for their rich nutritional and medicinal properties. This vibrant and flavorful jam combines taste with health, offering a simple way to include natural wellness in your daily routine. Carefully crafted using traditional methods, this product retains its natural antioxidants, vitamins, and essential nutrients.",
+        "categoryId": 3,
+        "price": 70,
+        "discountPrice": null,
+        "stock": 100,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg",
+        "imagePath": "products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Hibiscus Petal Jam is a natural antioxidant-rich herbal jam made from fresh hibiscus flowers. It helps support heart health, digestion, and overall wellness with every spoon",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "bestseller, shop_all",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "250g",
+            "price": "350",
+            "stock": "98",
+            "offerPrice": ""
+          },
+          {
+            "size": "30g",
+            "price": "70",
+            "stock": "100",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-07T18:25:24.844Z",
+        "updatedAt": "2026-06-15T04:48:48.069Z"
+      }
+    },
+    {
+      "id": 6,
+      "badge": "",
+      "badgeColor": "",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png"
+      ],
+      "title": "Sinensis Syrup – Petal Jam",
+      "description": "Sinensis Petal Jam is a premium artisanal floral preserve made from hand-picked fresh edible petals, carefully crafted to deliver both rich taste and natural wellness benefits. This luxurious herbal jam is prepared using traditional slow-cooking methods that help retain the natural aroma, vibrant color, and essential nutrients of the flowers.",
+      "originalPrice": 70,
+      "discountedPrice": 70,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 6,
+        "name": "Sinensis Syrup – Petal Jam",
+        "slug": "sinensis-syrup-petal-jam",
+        "description": "Sinensis Petal Jam is a luxurious, all-natural floral preserve crafted from carefully selected edible flower petals, gently infused in a slow-cooked syrup to lock in their natural aroma, colour, and therapeutic properties. With a smooth jam-like texture and rich floral flavour, it is a gourmet indulgence perfect for desserts, bakery applications, beverages, and health-focused consumption.\n\nThis artisanal product combines traditional preservation methods with modern food science to ensure high quality, nutritional value, and a clean label formula — free from artificial colours, flavours, and harmful additives",
+        "categoryId": 3,
+        "price": 70,
+        "discountPrice": null,
+        "stock": 100,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png",
+        "imagePath": "products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Sinensis Petal Jam is a premium artisanal floral preserve made from hand-picked fresh edible petals, carefully crafted to deliver both rich taste and natural wellness benefits. This luxurious herbal jam is prepared using traditional slow-cooking methods that help retain the natural aroma, vibrant color, and essential nutrients of the flowers.",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "shop_all",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "250g",
+            "price": "350",
+            "stock": "97",
+            "offerPrice": ""
+          },
+          {
+            "size": "30g",
+            "price": "70",
+            "stock": "100",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-08T05:35:16.224Z",
+        "updatedAt": "2026-06-15T04:47:39.707Z"
+      }
+    },
+    {
+      "id": 8,
+      "badge": "Bestseller",
+      "badgeColor": "bg-[#fde047] text-black",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936736170-whitelotuscookie300x300jpeg.jpeg",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936736170-whitelotuscookie300x300jpeg.jpeg"
+      ],
+      "title": "Bloom Cookies – White lotus",
+      "description": "Bloom Cookies White Lotus are a delicate and soothing snack crafted for those who appreciate subtle floral flavors combined with a soft and melt-in-the-mouth texture. Made using carefully selected ingredients and infused with natural white lotus petals, these cookies offer a unique and calming taste that stands out from ordinary snacks. They are an ideal choice for anyone looking for a light, aromatic, and enjoyable treat for daily snacking.\n\n",
+      "originalPrice": 66,
+      "discountedPrice": 66,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 8,
+        "name": "Bloom Cookies – White lotus",
+        "slug": "bloom-cookies-white-lotus",
+        "description": "Bloom Cookies White Lotus are not just regular cookies; they are a refined and mindful snacking choice. Prepared with attention to quality and purity, they ensure a consistent and enjoyable experience.\n\nMade with real white lotus petals\nSoft, crumbly, and melt-in-the-mouth texture\nSuitable for all age groups\nPerfect for tea-time and coffee breaks\nA calming and unique alternative to regular cookies",
+        "categoryId": 2,
+        "price": 66,
+        "discountPrice": null,
+        "stock": 103,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936736170-whitelotuscookie300x300jpeg.jpeg",
+        "imagePath": "products/1780936736170-whitelotuscookie300x300jpeg.jpeg",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Bloom Cookies White Lotus are a delicate and soothing snack crafted for those who appreciate subtle floral flavors combined with a soft and melt-in-the-mouth texture. Made using carefully selected ingredients and infused with natural white lotus petals, these cookies offer a unique and calming taste that stands out from ordinary snacks. They are an ideal choice for anyone looking for a light, aromatic, and enjoyable treat for daily snacking.\n\n",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "shop_all, bestseller",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [],
+        "createdAt": "2026-06-08T16:38:57.641Z",
+        "updatedAt": "2026-06-08T16:39:31.911Z"
+      }
+    }
+  ],
+  "New Launches": [
+    {
+      "id": 29,
+      "badge": "",
+      "badgeColor": "",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1781536016759-ChatGPTImageApr242026105405AM180x180png.png",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1781536016759-ChatGPTImageApr242026105405AM180x180png.png"
+      ],
+      "title": "Tanner's  Jam",
+      "description": "Made from the vibrant blossoms of the Avaram Poo (Cassia Auriculata) flower, this jam captures the delicate floral essence and natural goodness of this traditionally cherished medicinal flower. A unique treat inspired by nature’s golden bloom and timeless wellness.",
+      "originalPrice": 70,
+      "discountedPrice": 70,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 29,
+        "name": "Tanner's  Jam",
+        "slug": "tanner-s-jam",
+        "description": "Tanner’s Jam is a premium natural herbal spread made from carefully selected Avaram Poo (Cassia Auriculata) flowers, known for their traditional wellness benefits and delicate floral taste. Crafted with a focus on purity and authenticity, this unique jam offers a refreshing alternative to regular fruit-based spreads.\n\nPrepared using fresh flower petals and natural ingredients, Tanner’s Jam delivers a smooth texture and mild floral sweetness that enhances everyday meals. It is made without added artificial preservatives, synthetic colors, or flavors, ensuring a clean and natural product suitable for modern, health-conscious consumers.",
+        "categoryId": 3,
+        "price": 70,
+        "discountPrice": null,
+        "stock": 96,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1781536016759-ChatGPTImageApr242026105405AM180x180png.png",
+        "imagePath": "products/1781536016759-ChatGPTImageApr242026105405AM180x180png.png",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Made from the vibrant blossoms of the Avaram Poo (Cassia Auriculata) flower, this jam captures the delicate floral essence and natural goodness of this traditionally cherished medicinal flower. A unique treat inspired by nature’s golden bloom and timeless wellness.",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "shop_all",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "250g",
+            "price": "350",
+            "stock": "97",
+            "offerPrice": ""
+          },
+          {
+            "size": "30g",
+            "price": "70",
+            "stock": "100",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-15T15:07:00.531Z",
+        "updatedAt": "2026-06-15T15:07:00.531Z"
+      }
+    },
+    {
+      "id": 28,
+      "badge": "",
+      "badgeColor": "",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1781535450213-Gulkandfinaljpg.jpg",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1781535450213-Gulkandfinaljpg.jpg"
+      ],
+      "title": "Rose Gulkhand Jam",
+      "description": "Discover the sweet floral taste of Rose Gulkhand Jam, made from handpicked Damask rose petals. A natural, digestive-friendly spread with traditional Ayurvedic benefits.",
+      "originalPrice": 70,
+      "discountedPrice": 70,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 28,
+        "name": "Rose Gulkhand Jam",
+        "slug": "rose-gulkhand-jam",
+        "description": "Rose Gulkhand Jam – A Floral Indulgence in Every Spoon!\n\nCrafted from handpicked Damask rose petals and slow-cooked to perfection, our Rose Gulkhand Jam is a fragrant, rich fusion of tradition and taste. Blending the timeless Ayurvedic goodness of Gulkhand with the smooth, spreadable texture of a fruit jam, this delightful preserve is both a treat for the senses and a boost for your well-being.\n\nNaturally sweetened and free from artificial additives, it’s perfect as a spread on toast, a swirl in desserts, or a soothing spoonful straight from the jar.\n\nBenefits:\n✨ Cooling and refreshing\n✨ Supports digestion\n✨ Uplifts mood with every floral bite",
+        "categoryId": 3,
+        "price": 70,
+        "discountPrice": null,
+        "stock": 100,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1781535450213-Gulkandfinaljpg.jpg",
+        "imagePath": "products/1781535450213-Gulkandfinaljpg.jpg",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Discover the sweet floral taste of Rose Gulkhand Jam, made from handpicked Damask rose petals. A natural, digestive-friendly spread with traditional Ayurvedic benefits.",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "shop_all",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "250g",
+            "price": "350",
+            "stock": "98",
+            "offerPrice": ""
+          },
+          {
+            "size": "30g",
+            "price": "70",
+            "stock": "100",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-15T14:57:34.017Z",
+        "updatedAt": "2026-06-15T14:57:34.017Z"
+      }
+    },
+    {
+      "id": 22,
+      "badge": "",
+      "badgeColor": "",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780939517153-saffronneign600x600jpg.jpg",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780939517153-saffronneign600x600jpg.jpg"
+      ],
+      "title": "Super Negin Saffron",
+      "description": "Indulge in the ultimate luxury with our Super Neigin saffron, known for its exquisite golden strands, exceptional potency, and rich aromatic profile.",
+      "originalPrice": 380,
+      "discountedPrice": 380,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 22,
+        "name": "Super Negin Saffron",
+        "slug": "super-negin-saffron",
+        "description": "Experience the finest grade of saffron with our Super Negin Saffron – handpicked, vividly red, and powerfully fragrant. Known for its long, thick stigmas and unmatched potency, Super Negin saffron offers intense color strength, deep flavor, and high crocin content, making it the most premium cut of saffron available.\n\nWe select only the boldest strands from the saffron flower, ensuring every thread you receive is pure, unbroken, and rich in essential oils. Ideal for gourmet cooking, traditional sweets, luxury beverages, or wellness blends.\n\n✔ Extra-long stigmas\n✔ No yellow styles, no fillers\n✔ Highest coloring and flavoring power",
+        "categoryId": 6,
+        "price": 380,
+        "discountPrice": null,
+        "stock": 96,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780939517153-saffronneign600x600jpg.jpg",
+        "imagePath": "products/1780939517153-saffronneign600x600jpg.jpg",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Indulge in the ultimate luxury with our Super Neigin saffron, known for its exquisite golden strands, exceptional potency, and rich aromatic profile.",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "shop_all",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "1g",
+            "price": "380",
+            "stock": "100",
+            "offerPrice": ""
+          },
+          {
+            "size": "5g",
+            "price": "1173",
+            "stock": "96",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-08T17:25:18.319Z",
+        "updatedAt": "2026-06-08T17:25:18.319Z"
+      }
+    },
+    {
+      "id": 21,
+      "badge": "",
+      "badgeColor": "",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1783510735061-saffronmothersdayjpg.jpg",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1783510735061-saffronmothersdayjpg.jpg"
+      ],
+      "title": " Saffron Powder",
+      "description": "Premium saffron powder from Paidhu is carefully sourced to ensure purity and superior quality. Known for its rich aroma and vibrant color, saffron is widely used in cooking, wellness, and traditional applications.",
+      "originalPrice": 1600,
+      "discountedPrice": 1600,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 21,
+        "name": " Saffron Powder",
+        "slug": "saffron-powder",
+        "description": "Our saffron is 100% natural and free from additives, making it a perfect choice for enhancing flavor and supporting a healthy lifestyle. It is commonly used in herbal preparations, pregnancy care, and daily nutrition.\n\nAt Paidhu, we focus on delivering authentic and high-quality products. This natural saffron offers excellent taste, aroma, and health benefits. Choose Paidhu for trusted and premium-quality saffron products.",
+        "categoryId": 6,
+        "price": 1600,
+        "discountPrice": null,
+        "stock": 100,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1783510735061-saffronmothersdayjpg.jpg",
+        "imagePath": "products/1783510735061-saffronmothersdayjpg.jpg",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Premium saffron powder from Paidhu is carefully sourced to ensure purity and superior quality. Known for its rich aroma and vibrant color, saffron is widely used in cooking, wellness, and traditional applications.",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "shop_all",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "5g",
+            "price": "1600",
+            "stock": "97",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-08T17:21:58.170Z",
+        "updatedAt": "2026-06-08T17:22:23.152Z"
+      }
+    },
+    {
+      "id": 20,
+      "badge": "",
+      "badgeColor": "",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780938979730-SuperNeiginbig1600x600jpg.jpg",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780938979730-SuperNeiginbig1600x600jpg.jpg"
+      ],
+      "title": "Kashmiri Mongra",
+      "description": "Experience the essence of Kashmir with our prized Kashmiri Mongra saffron, renowned for its deep red threads, distinct flavor, and unparalleled fragrance.",
+      "originalPrice": 580,
+      "discountedPrice": 580,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 20,
+        "name": "Kashmiri Mongra",
+        "slug": "kashmiri-mongra",
+        "description": "Kashmiri Mongra Saffron – Bold, Aromatic & Authentic\nDiscover the essence of Kashmir with our premium Mongra Saffron, hand-harvested from the pristine valleys of Pampore. Renowned for its deep crimson threads, strong aroma, and rich flavor, Kashmiri Mongra saffron contains high levels of crocin, safranal, and picrocrocin, delivering vibrant color, therapeutic benefits, and exquisite taste.\n\nWe sun-dry the stigmas to preserve their natural oils and potency. With thick, short strands and unmatched purity, this saffron is perfect for traditional Indian sweets, kesar milk, biryani, wellness drinks, and Ayurvedic use.\n\n✔ 100% pure and unadulterated\n✔ Naturally dried, handpicked threads\n✔ Authentic GI-tagged Kashmiri origin\n\n",
+        "categoryId": 6,
+        "price": 580,
+        "discountPrice": null,
+        "stock": 97,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780938979730-SuperNeiginbig1600x600jpg.jpg",
+        "imagePath": "products/1780938979730-SuperNeiginbig1600x600jpg.jpg",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Experience the essence of Kashmir with our prized Kashmiri Mongra saffron, renowned for its deep red threads, distinct flavor, and unparalleled fragrance.",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "shop_all",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "1g",
+            "price": "580",
+            "stock": "100",
+            "offerPrice": ""
+          },
+          {
+            "size": "3g",
+            "price": "1700",
+            "stock": "97",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-08T17:16:21.406Z",
+        "updatedAt": "2026-06-08T17:16:21.406Z"
+      }
+    }
+  ],
+  "Deals of the Day": [
+    {
+      "id": 3,
+      "badge": "Bestseller",
+      "badgeColor": "bg-[#fde047] text-black",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780855888156-WhatsAppImage20260403at111337AM1300x300jpeg.jpeg",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780855888156-WhatsAppImage20260403at111337AM1300x300jpeg.jpeg"
+      ],
+      "title": "Neem petal jams",
+      "description": "Buy Neem Petal Jam made from natural neem flowers. Supports digestion, detox, and overall wellness. 100% natural, chemical-free herbal jam from Paidhu.",
+      "originalPrice": 70,
+      "discountedPrice": 70,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 3,
+        "name": "Neem petal jams",
+        "slug": "neem-petal-jams",
+        "description": "Neem Petal Jam is a natural and healthy product made from fresh neem flowers, known for their powerful medicinal properties. This herbal neem jam is carefully prepared using traditional methods to preserve its natural nutrients and health benefits. This natural jam supports digestion, helps detoxify the body, and promotes overall wellness. It is an excellent addition to your daily routine for maintaining a balanced and healthy lifestyle.",
+        "categoryId": 3,
+        "price": 70,
+        "discountPrice": null,
+        "stock": 100,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780855888156-WhatsAppImage20260403at111337AM1300x300jpeg.jpeg",
+        "imagePath": "products/1780855888156-WhatsAppImage20260403at111337AM1300x300jpeg.jpeg",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Buy Neem Petal Jam made from natural neem flowers. Supports digestion, detox, and overall wellness. 100% natural, chemical-free herbal jam from Paidhu.",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "bestseller, shop_all",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "250g",
+            "price": "350",
+            "stock": "98",
+            "offerPrice": ""
+          },
+          {
+            "size": "30g",
+            "price": "70",
+            "stock": "100",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-07T18:11:29.539Z",
+        "updatedAt": "2026-06-15T04:48:13.725Z"
+      }
+    },
+    {
+      "id": 4,
+      "badge": "Bestseller",
+      "badgeColor": "bg-[#fde047] text-black",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg"
+      ],
+      "title": "Hibiscus Petal Jam ",
+      "description": "Hibiscus Petal Jam is a natural antioxidant-rich herbal jam made from fresh hibiscus flowers. It helps support heart health, digestion, and overall wellness with every spoon",
+      "originalPrice": 70,
+      "discountedPrice": 70,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 4,
+        "name": "Hibiscus Petal Jam ",
+        "slug": "hibiscus-petal-jam",
+        "description": "Hibiscus Petal Jam is a naturally prepared herbal spread made from fresh hibiscus flowers, known for their rich nutritional and medicinal properties. This vibrant and flavorful jam combines taste with health, offering a simple way to include natural wellness in your daily routine. Carefully crafted using traditional methods, this product retains its natural antioxidants, vitamins, and essential nutrients.",
+        "categoryId": 3,
+        "price": 70,
+        "discountPrice": null,
+        "stock": 100,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg",
+        "imagePath": "products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Hibiscus Petal Jam is a natural antioxidant-rich herbal jam made from fresh hibiscus flowers. It helps support heart health, digestion, and overall wellness with every spoon",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "bestseller, shop_all",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "250g",
+            "price": "350",
+            "stock": "98",
+            "offerPrice": ""
+          },
+          {
+            "size": "30g",
+            "price": "70",
+            "stock": "100",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-07T18:25:24.844Z",
+        "updatedAt": "2026-06-15T04:48:48.069Z"
+      }
+    },
+    {
+      "id": 6,
+      "badge": "",
+      "badgeColor": "",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png"
+      ],
+      "title": "Sinensis Syrup – Petal Jam",
+      "description": "Sinensis Petal Jam is a premium artisanal floral preserve made from hand-picked fresh edible petals, carefully crafted to deliver both rich taste and natural wellness benefits. This luxurious herbal jam is prepared using traditional slow-cooking methods that help retain the natural aroma, vibrant color, and essential nutrients of the flowers.",
+      "originalPrice": 70,
+      "discountedPrice": 70,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 6,
+        "name": "Sinensis Syrup – Petal Jam",
+        "slug": "sinensis-syrup-petal-jam",
+        "description": "Sinensis Petal Jam is a luxurious, all-natural floral preserve crafted from carefully selected edible flower petals, gently infused in a slow-cooked syrup to lock in their natural aroma, colour, and therapeutic properties. With a smooth jam-like texture and rich floral flavour, it is a gourmet indulgence perfect for desserts, bakery applications, beverages, and health-focused consumption.\n\nThis artisanal product combines traditional preservation methods with modern food science to ensure high quality, nutritional value, and a clean label formula — free from artificial colours, flavours, and harmful additives",
+        "categoryId": 3,
+        "price": 70,
+        "discountPrice": null,
+        "stock": 100,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png",
+        "imagePath": "products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Sinensis Petal Jam is a premium artisanal floral preserve made from hand-picked fresh edible petals, carefully crafted to deliver both rich taste and natural wellness benefits. This luxurious herbal jam is prepared using traditional slow-cooking methods that help retain the natural aroma, vibrant color, and essential nutrients of the flowers.",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "shop_all",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "250g",
+            "price": "350",
+            "stock": "97",
+            "offerPrice": ""
+          },
+          {
+            "size": "30g",
+            "price": "70",
+            "stock": "100",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-08T05:35:16.224Z",
+        "updatedAt": "2026-06-15T04:47:39.707Z"
+      }
+    },
+    {
+      "id": 7,
+      "badge": "",
+      "badgeColor": "",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780897222396-IMG20250917121311600x404png.png",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780897222396-IMG20250917121311600x404png.png"
+      ],
+      "title": "Petal Jam Combo",
+      "description": "A delightful floral duo in one pack – Golden Shower Flower Jam (30g) & Rose Gulkhand Jam (30g).\n\nEnjoy the unique taste yourself or share it as a thoughtful festive gift.",
+      "originalPrice": 130,
+      "discountedPrice": 130,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 7,
+        "name": "Petal Jam Combo",
+        "slug": "petal-jam-combo",
+        "description": "Experience two timeless floral delicacies in one pack. This combo brings together:\n\nAavaram Flower Jam (30g) : Made from the seasonal Aavarampoo blossoms, slow-cooked to capture their delicate sweetness and festive charm.\nRose Gulkhand Jam (30g) : A fragrant delight prepared from fresh rose petals, offering a naturally rich floral taste.\nTogether, they create a unique duo of flavors – one bright and delicate, the other sweet and aromatic. Perfect for gifting, celebrations, or simply indulging yourself in a touch of tradition.\n\nWhy you’ll love this combo:\n\n100% natural & preservative-free\n\n Easy trial-size (30g each)\n\n Perfect gift for yourself or loved ones",
+        "categoryId": 3,
+        "price": 130,
+        "discountPrice": null,
+        "stock": 97,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780897222396-IMG20250917121311600x404png.png",
+        "imagePath": "products/1780897222396-IMG20250917121311600x404png.png",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "A delightful floral duo in one pack – Golden Shower Flower Jam (30g) & Rose Gulkhand Jam (30g).\n\nEnjoy the unique taste yourself or share it as a thoughtful festive gift.",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "shop_all, family_combos",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "30g",
+            "price": "130",
+            "stock": "",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-08T05:40:23.638Z",
+        "updatedAt": "2026-06-08T05:40:53.492Z"
+      }
+    },
+    {
+      "id": 8,
+      "badge": "Bestseller",
+      "badgeColor": "bg-[#fde047] text-black",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936736170-whitelotuscookie300x300jpeg.jpeg",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936736170-whitelotuscookie300x300jpeg.jpeg"
+      ],
+      "title": "Bloom Cookies – White lotus",
+      "description": "Bloom Cookies White Lotus are a delicate and soothing snack crafted for those who appreciate subtle floral flavors combined with a soft and melt-in-the-mouth texture. Made using carefully selected ingredients and infused with natural white lotus petals, these cookies offer a unique and calming taste that stands out from ordinary snacks. They are an ideal choice for anyone looking for a light, aromatic, and enjoyable treat for daily snacking.\n\n",
+      "originalPrice": 66,
+      "discountedPrice": 66,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 8,
+        "name": "Bloom Cookies – White lotus",
+        "slug": "bloom-cookies-white-lotus",
+        "description": "Bloom Cookies White Lotus are not just regular cookies; they are a refined and mindful snacking choice. Prepared with attention to quality and purity, they ensure a consistent and enjoyable experience.\n\nMade with real white lotus petals\nSoft, crumbly, and melt-in-the-mouth texture\nSuitable for all age groups\nPerfect for tea-time and coffee breaks\nA calming and unique alternative to regular cookies",
+        "categoryId": 2,
+        "price": 66,
+        "discountPrice": null,
+        "stock": 103,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936736170-whitelotuscookie300x300jpeg.jpeg",
+        "imagePath": "products/1780936736170-whitelotuscookie300x300jpeg.jpeg",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Bloom Cookies White Lotus are a delicate and soothing snack crafted for those who appreciate subtle floral flavors combined with a soft and melt-in-the-mouth texture. Made using carefully selected ingredients and infused with natural white lotus petals, these cookies offer a unique and calming taste that stands out from ordinary snacks. They are an ideal choice for anyone looking for a light, aromatic, and enjoyable treat for daily snacking.\n\n",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "shop_all, bestseller",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [],
+        "createdAt": "2026-06-08T16:38:57.641Z",
+        "updatedAt": "2026-06-08T16:39:31.911Z"
+      }
+    }
+  ],
+  "Traditional Snacks": [
+    {
+      "id": 3,
+      "badge": "Bestseller",
+      "badgeColor": "bg-[#fde047] text-black",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780855888156-WhatsAppImage20260403at111337AM1300x300jpeg.jpeg",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780855888156-WhatsAppImage20260403at111337AM1300x300jpeg.jpeg"
+      ],
+      "title": "Neem petal jams",
+      "description": "Buy Neem Petal Jam made from natural neem flowers. Supports digestion, detox, and overall wellness. 100% natural, chemical-free herbal jam from Paidhu.",
+      "originalPrice": 70,
+      "discountedPrice": 70,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 3,
+        "name": "Neem petal jams",
+        "slug": "neem-petal-jams",
+        "description": "Neem Petal Jam is a natural and healthy product made from fresh neem flowers, known for their powerful medicinal properties. This herbal neem jam is carefully prepared using traditional methods to preserve its natural nutrients and health benefits. This natural jam supports digestion, helps detoxify the body, and promotes overall wellness. It is an excellent addition to your daily routine for maintaining a balanced and healthy lifestyle.",
+        "categoryId": 3,
+        "price": 70,
+        "discountPrice": null,
+        "stock": 100,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780855888156-WhatsAppImage20260403at111337AM1300x300jpeg.jpeg",
+        "imagePath": "products/1780855888156-WhatsAppImage20260403at111337AM1300x300jpeg.jpeg",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Buy Neem Petal Jam made from natural neem flowers. Supports digestion, detox, and overall wellness. 100% natural, chemical-free herbal jam from Paidhu.",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "bestseller, shop_all",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "250g",
+            "price": "350",
+            "stock": "98",
+            "offerPrice": ""
+          },
+          {
+            "size": "30g",
+            "price": "70",
+            "stock": "100",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-07T18:11:29.539Z",
+        "updatedAt": "2026-06-15T04:48:13.725Z"
+      }
+    },
+    {
+      "id": 4,
+      "badge": "Bestseller",
+      "badgeColor": "bg-[#fde047] text-black",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg"
+      ],
+      "title": "Hibiscus Petal Jam ",
+      "description": "Hibiscus Petal Jam is a natural antioxidant-rich herbal jam made from fresh hibiscus flowers. It helps support heart health, digestion, and overall wellness with every spoon",
+      "originalPrice": 70,
+      "discountedPrice": 70,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 4,
+        "name": "Hibiscus Petal Jam ",
+        "slug": "hibiscus-petal-jam",
+        "description": "Hibiscus Petal Jam is a naturally prepared herbal spread made from fresh hibiscus flowers, known for their rich nutritional and medicinal properties. This vibrant and flavorful jam combines taste with health, offering a simple way to include natural wellness in your daily routine. Carefully crafted using traditional methods, this product retains its natural antioxidants, vitamins, and essential nutrients.",
+        "categoryId": 3,
+        "price": 70,
+        "discountPrice": null,
+        "stock": 100,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg",
+        "imagePath": "products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Hibiscus Petal Jam is a natural antioxidant-rich herbal jam made from fresh hibiscus flowers. It helps support heart health, digestion, and overall wellness with every spoon",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "bestseller, shop_all",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "250g",
+            "price": "350",
+            "stock": "98",
+            "offerPrice": ""
+          },
+          {
+            "size": "30g",
+            "price": "70",
+            "stock": "100",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-07T18:25:24.844Z",
+        "updatedAt": "2026-06-15T04:48:48.069Z"
+      }
+    },
+    {
+      "id": 6,
+      "badge": "",
+      "badgeColor": "",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png"
+      ],
+      "title": "Sinensis Syrup – Petal Jam",
+      "description": "Sinensis Petal Jam is a premium artisanal floral preserve made from hand-picked fresh edible petals, carefully crafted to deliver both rich taste and natural wellness benefits. This luxurious herbal jam is prepared using traditional slow-cooking methods that help retain the natural aroma, vibrant color, and essential nutrients of the flowers.",
+      "originalPrice": 70,
+      "discountedPrice": 70,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 6,
+        "name": "Sinensis Syrup – Petal Jam",
+        "slug": "sinensis-syrup-petal-jam",
+        "description": "Sinensis Petal Jam is a luxurious, all-natural floral preserve crafted from carefully selected edible flower petals, gently infused in a slow-cooked syrup to lock in their natural aroma, colour, and therapeutic properties. With a smooth jam-like texture and rich floral flavour, it is a gourmet indulgence perfect for desserts, bakery applications, beverages, and health-focused consumption.\n\nThis artisanal product combines traditional preservation methods with modern food science to ensure high quality, nutritional value, and a clean label formula — free from artificial colours, flavours, and harmful additives",
+        "categoryId": 3,
+        "price": 70,
+        "discountPrice": null,
+        "stock": 100,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png",
+        "imagePath": "products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Sinensis Petal Jam is a premium artisanal floral preserve made from hand-picked fresh edible petals, carefully crafted to deliver both rich taste and natural wellness benefits. This luxurious herbal jam is prepared using traditional slow-cooking methods that help retain the natural aroma, vibrant color, and essential nutrients of the flowers.",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "shop_all",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "250g",
+            "price": "350",
+            "stock": "97",
+            "offerPrice": ""
+          },
+          {
+            "size": "30g",
+            "price": "70",
+            "stock": "100",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-08T05:35:16.224Z",
+        "updatedAt": "2026-06-15T04:47:39.707Z"
+      }
+    },
+    {
+      "id": 7,
+      "badge": "",
+      "badgeColor": "",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780897222396-IMG20250917121311600x404png.png",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780897222396-IMG20250917121311600x404png.png"
+      ],
+      "title": "Petal Jam Combo",
+      "description": "A delightful floral duo in one pack – Golden Shower Flower Jam (30g) & Rose Gulkhand Jam (30g).\n\nEnjoy the unique taste yourself or share it as a thoughtful festive gift.",
+      "originalPrice": 130,
+      "discountedPrice": 130,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 7,
+        "name": "Petal Jam Combo",
+        "slug": "petal-jam-combo",
+        "description": "Experience two timeless floral delicacies in one pack. This combo brings together:\n\nAavaram Flower Jam (30g) : Made from the seasonal Aavarampoo blossoms, slow-cooked to capture their delicate sweetness and festive charm.\nRose Gulkhand Jam (30g) : A fragrant delight prepared from fresh rose petals, offering a naturally rich floral taste.\nTogether, they create a unique duo of flavors – one bright and delicate, the other sweet and aromatic. Perfect for gifting, celebrations, or simply indulging yourself in a touch of tradition.\n\nWhy you’ll love this combo:\n\n100% natural & preservative-free\n\n Easy trial-size (30g each)\n\n Perfect gift for yourself or loved ones",
+        "categoryId": 3,
+        "price": 130,
+        "discountPrice": null,
+        "stock": 97,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780897222396-IMG20250917121311600x404png.png",
+        "imagePath": "products/1780897222396-IMG20250917121311600x404png.png",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "A delightful floral duo in one pack – Golden Shower Flower Jam (30g) & Rose Gulkhand Jam (30g).\n\nEnjoy the unique taste yourself or share it as a thoughtful festive gift.",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "shop_all, family_combos",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "30g",
+            "price": "130",
+            "stock": "",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-08T05:40:23.638Z",
+        "updatedAt": "2026-06-08T05:40:53.492Z"
+      }
+    },
+    {
+      "id": 8,
+      "badge": "Bestseller",
+      "badgeColor": "bg-[#fde047] text-black",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936736170-whitelotuscookie300x300jpeg.jpeg",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936736170-whitelotuscookie300x300jpeg.jpeg"
+      ],
+      "title": "Bloom Cookies – White lotus",
+      "description": "Bloom Cookies White Lotus are a delicate and soothing snack crafted for those who appreciate subtle floral flavors combined with a soft and melt-in-the-mouth texture. Made using carefully selected ingredients and infused with natural white lotus petals, these cookies offer a unique and calming taste that stands out from ordinary snacks. They are an ideal choice for anyone looking for a light, aromatic, and enjoyable treat for daily snacking.\n\n",
+      "originalPrice": 66,
+      "discountedPrice": 66,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 8,
+        "name": "Bloom Cookies – White lotus",
+        "slug": "bloom-cookies-white-lotus",
+        "description": "Bloom Cookies White Lotus are not just regular cookies; they are a refined and mindful snacking choice. Prepared with attention to quality and purity, they ensure a consistent and enjoyable experience.\n\nMade with real white lotus petals\nSoft, crumbly, and melt-in-the-mouth texture\nSuitable for all age groups\nPerfect for tea-time and coffee breaks\nA calming and unique alternative to regular cookies",
+        "categoryId": 2,
+        "price": 66,
+        "discountPrice": null,
+        "stock": 103,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936736170-whitelotuscookie300x300jpeg.jpeg",
+        "imagePath": "products/1780936736170-whitelotuscookie300x300jpeg.jpeg",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Bloom Cookies White Lotus are a delicate and soothing snack crafted for those who appreciate subtle floral flavors combined with a soft and melt-in-the-mouth texture. Made using carefully selected ingredients and infused with natural white lotus petals, these cookies offer a unique and calming taste that stands out from ordinary snacks. They are an ideal choice for anyone looking for a light, aromatic, and enjoyable treat for daily snacking.\n\n",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "shop_all, bestseller",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [],
+        "createdAt": "2026-06-08T16:38:57.641Z",
+        "updatedAt": "2026-06-08T16:39:31.911Z"
+      }
+    }
+  ],
+  "Cookies & Cakes": [
+    {
+      "id": 3,
+      "badge": "Bestseller",
+      "badgeColor": "bg-[#fde047] text-black",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780855888156-WhatsAppImage20260403at111337AM1300x300jpeg.jpeg",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780855888156-WhatsAppImage20260403at111337AM1300x300jpeg.jpeg"
+      ],
+      "title": "Neem petal jams",
+      "description": "Buy Neem Petal Jam made from natural neem flowers. Supports digestion, detox, and overall wellness. 100% natural, chemical-free herbal jam from Paidhu.",
+      "originalPrice": 70,
+      "discountedPrice": 70,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 3,
+        "name": "Neem petal jams",
+        "slug": "neem-petal-jams",
+        "description": "Neem Petal Jam is a natural and healthy product made from fresh neem flowers, known for their powerful medicinal properties. This herbal neem jam is carefully prepared using traditional methods to preserve its natural nutrients and health benefits. This natural jam supports digestion, helps detoxify the body, and promotes overall wellness. It is an excellent addition to your daily routine for maintaining a balanced and healthy lifestyle.",
+        "categoryId": 3,
+        "price": 70,
+        "discountPrice": null,
+        "stock": 100,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780855888156-WhatsAppImage20260403at111337AM1300x300jpeg.jpeg",
+        "imagePath": "products/1780855888156-WhatsAppImage20260403at111337AM1300x300jpeg.jpeg",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Buy Neem Petal Jam made from natural neem flowers. Supports digestion, detox, and overall wellness. 100% natural, chemical-free herbal jam from Paidhu.",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "bestseller, shop_all",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "250g",
+            "price": "350",
+            "stock": "98",
+            "offerPrice": ""
+          },
+          {
+            "size": "30g",
+            "price": "70",
+            "stock": "100",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-07T18:11:29.539Z",
+        "updatedAt": "2026-06-15T04:48:13.725Z"
+      }
+    },
+    {
+      "id": 4,
+      "badge": "Bestseller",
+      "badgeColor": "bg-[#fde047] text-black",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg"
+      ],
+      "title": "Hibiscus Petal Jam ",
+      "description": "Hibiscus Petal Jam is a natural antioxidant-rich herbal jam made from fresh hibiscus flowers. It helps support heart health, digestion, and overall wellness with every spoon",
+      "originalPrice": 70,
+      "discountedPrice": 70,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 4,
+        "name": "Hibiscus Petal Jam ",
+        "slug": "hibiscus-petal-jam",
+        "description": "Hibiscus Petal Jam is a naturally prepared herbal spread made from fresh hibiscus flowers, known for their rich nutritional and medicinal properties. This vibrant and flavorful jam combines taste with health, offering a simple way to include natural wellness in your daily routine. Carefully crafted using traditional methods, this product retains its natural antioxidants, vitamins, and essential nutrients.",
+        "categoryId": 3,
+        "price": 70,
+        "discountPrice": null,
+        "stock": 100,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg",
+        "imagePath": "products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Hibiscus Petal Jam is a natural antioxidant-rich herbal jam made from fresh hibiscus flowers. It helps support heart health, digestion, and overall wellness with every spoon",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "bestseller, shop_all",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "250g",
+            "price": "350",
+            "stock": "98",
+            "offerPrice": ""
+          },
+          {
+            "size": "30g",
+            "price": "70",
+            "stock": "100",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-07T18:25:24.844Z",
+        "updatedAt": "2026-06-15T04:48:48.069Z"
+      }
+    },
+    {
+      "id": 6,
+      "badge": "",
+      "badgeColor": "",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png"
+      ],
+      "title": "Sinensis Syrup – Petal Jam",
+      "description": "Sinensis Petal Jam is a premium artisanal floral preserve made from hand-picked fresh edible petals, carefully crafted to deliver both rich taste and natural wellness benefits. This luxurious herbal jam is prepared using traditional slow-cooking methods that help retain the natural aroma, vibrant color, and essential nutrients of the flowers.",
+      "originalPrice": 70,
+      "discountedPrice": 70,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 6,
+        "name": "Sinensis Syrup – Petal Jam",
+        "slug": "sinensis-syrup-petal-jam",
+        "description": "Sinensis Petal Jam is a luxurious, all-natural floral preserve crafted from carefully selected edible flower petals, gently infused in a slow-cooked syrup to lock in their natural aroma, colour, and therapeutic properties. With a smooth jam-like texture and rich floral flavour, it is a gourmet indulgence perfect for desserts, bakery applications, beverages, and health-focused consumption.\n\nThis artisanal product combines traditional preservation methods with modern food science to ensure high quality, nutritional value, and a clean label formula — free from artificial colours, flavours, and harmful additives",
+        "categoryId": 3,
+        "price": 70,
+        "discountPrice": null,
+        "stock": 100,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png",
+        "imagePath": "products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Sinensis Petal Jam is a premium artisanal floral preserve made from hand-picked fresh edible petals, carefully crafted to deliver both rich taste and natural wellness benefits. This luxurious herbal jam is prepared using traditional slow-cooking methods that help retain the natural aroma, vibrant color, and essential nutrients of the flowers.",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "shop_all",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "250g",
+            "price": "350",
+            "stock": "97",
+            "offerPrice": ""
+          },
+          {
+            "size": "30g",
+            "price": "70",
+            "stock": "100",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-08T05:35:16.224Z",
+        "updatedAt": "2026-06-15T04:47:39.707Z"
+      }
+    },
+    {
+      "id": 7,
+      "badge": "",
+      "badgeColor": "",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780897222396-IMG20250917121311600x404png.png",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780897222396-IMG20250917121311600x404png.png"
+      ],
+      "title": "Petal Jam Combo",
+      "description": "A delightful floral duo in one pack – Golden Shower Flower Jam (30g) & Rose Gulkhand Jam (30g).\n\nEnjoy the unique taste yourself or share it as a thoughtful festive gift.",
+      "originalPrice": 130,
+      "discountedPrice": 130,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 7,
+        "name": "Petal Jam Combo",
+        "slug": "petal-jam-combo",
+        "description": "Experience two timeless floral delicacies in one pack. This combo brings together:\n\nAavaram Flower Jam (30g) : Made from the seasonal Aavarampoo blossoms, slow-cooked to capture their delicate sweetness and festive charm.\nRose Gulkhand Jam (30g) : A fragrant delight prepared from fresh rose petals, offering a naturally rich floral taste.\nTogether, they create a unique duo of flavors – one bright and delicate, the other sweet and aromatic. Perfect for gifting, celebrations, or simply indulging yourself in a touch of tradition.\n\nWhy you’ll love this combo:\n\n100% natural & preservative-free\n\n Easy trial-size (30g each)\n\n Perfect gift for yourself or loved ones",
+        "categoryId": 3,
+        "price": 130,
+        "discountPrice": null,
+        "stock": 97,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780897222396-IMG20250917121311600x404png.png",
+        "imagePath": "products/1780897222396-IMG20250917121311600x404png.png",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "A delightful floral duo in one pack – Golden Shower Flower Jam (30g) & Rose Gulkhand Jam (30g).\n\nEnjoy the unique taste yourself or share it as a thoughtful festive gift.",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "shop_all, family_combos",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "30g",
+            "price": "130",
+            "stock": "",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-08T05:40:23.638Z",
+        "updatedAt": "2026-06-08T05:40:53.492Z"
+      }
+    },
+    {
+      "id": 8,
+      "badge": "Bestseller",
+      "badgeColor": "bg-[#fde047] text-black",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936736170-whitelotuscookie300x300jpeg.jpeg",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936736170-whitelotuscookie300x300jpeg.jpeg"
+      ],
+      "title": "Bloom Cookies – White lotus",
+      "description": "Bloom Cookies White Lotus are a delicate and soothing snack crafted for those who appreciate subtle floral flavors combined with a soft and melt-in-the-mouth texture. Made using carefully selected ingredients and infused with natural white lotus petals, these cookies offer a unique and calming taste that stands out from ordinary snacks. They are an ideal choice for anyone looking for a light, aromatic, and enjoyable treat for daily snacking.\n\n",
+      "originalPrice": 66,
+      "discountedPrice": 66,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 8,
+        "name": "Bloom Cookies – White lotus",
+        "slug": "bloom-cookies-white-lotus",
+        "description": "Bloom Cookies White Lotus are not just regular cookies; they are a refined and mindful snacking choice. Prepared with attention to quality and purity, they ensure a consistent and enjoyable experience.\n\nMade with real white lotus petals\nSoft, crumbly, and melt-in-the-mouth texture\nSuitable for all age groups\nPerfect for tea-time and coffee breaks\nA calming and unique alternative to regular cookies",
+        "categoryId": 2,
+        "price": 66,
+        "discountPrice": null,
+        "stock": 103,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936736170-whitelotuscookie300x300jpeg.jpeg",
+        "imagePath": "products/1780936736170-whitelotuscookie300x300jpeg.jpeg",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Bloom Cookies White Lotus are a delicate and soothing snack crafted for those who appreciate subtle floral flavors combined with a soft and melt-in-the-mouth texture. Made using carefully selected ingredients and infused with natural white lotus petals, these cookies offer a unique and calming taste that stands out from ordinary snacks. They are an ideal choice for anyone looking for a light, aromatic, and enjoyable treat for daily snacking.\n\n",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "shop_all, bestseller",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [],
+        "createdAt": "2026-06-08T16:38:57.641Z",
+        "updatedAt": "2026-06-08T16:39:31.911Z"
+      }
+    }
+  ],
+  "Crunchy Snacks": [
+    {
+      "id": 3,
+      "badge": "Bestseller",
+      "badgeColor": "bg-[#fde047] text-black",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780855888156-WhatsAppImage20260403at111337AM1300x300jpeg.jpeg",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780855888156-WhatsAppImage20260403at111337AM1300x300jpeg.jpeg"
+      ],
+      "title": "Neem petal jams",
+      "description": "Buy Neem Petal Jam made from natural neem flowers. Supports digestion, detox, and overall wellness. 100% natural, chemical-free herbal jam from Paidhu.",
+      "originalPrice": 70,
+      "discountedPrice": 70,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 3,
+        "name": "Neem petal jams",
+        "slug": "neem-petal-jams",
+        "description": "Neem Petal Jam is a natural and healthy product made from fresh neem flowers, known for their powerful medicinal properties. This herbal neem jam is carefully prepared using traditional methods to preserve its natural nutrients and health benefits. This natural jam supports digestion, helps detoxify the body, and promotes overall wellness. It is an excellent addition to your daily routine for maintaining a balanced and healthy lifestyle.",
+        "categoryId": 3,
+        "price": 70,
+        "discountPrice": null,
+        "stock": 100,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780855888156-WhatsAppImage20260403at111337AM1300x300jpeg.jpeg",
+        "imagePath": "products/1780855888156-WhatsAppImage20260403at111337AM1300x300jpeg.jpeg",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Buy Neem Petal Jam made from natural neem flowers. Supports digestion, detox, and overall wellness. 100% natural, chemical-free herbal jam from Paidhu.",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "bestseller, shop_all",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "250g",
+            "price": "350",
+            "stock": "98",
+            "offerPrice": ""
+          },
+          {
+            "size": "30g",
+            "price": "70",
+            "stock": "100",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-07T18:11:29.539Z",
+        "updatedAt": "2026-06-15T04:48:13.725Z"
+      }
+    },
+    {
+      "id": 4,
+      "badge": "Bestseller",
+      "badgeColor": "bg-[#fde047] text-black",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg"
+      ],
+      "title": "Hibiscus Petal Jam ",
+      "description": "Hibiscus Petal Jam is a natural antioxidant-rich herbal jam made from fresh hibiscus flowers. It helps support heart health, digestion, and overall wellness with every spoon",
+      "originalPrice": 70,
+      "discountedPrice": 70,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 4,
+        "name": "Hibiscus Petal Jam ",
+        "slug": "hibiscus-petal-jam",
+        "description": "Hibiscus Petal Jam is a naturally prepared herbal spread made from fresh hibiscus flowers, known for their rich nutritional and medicinal properties. This vibrant and flavorful jam combines taste with health, offering a simple way to include natural wellness in your daily routine. Carefully crafted using traditional methods, this product retains its natural antioxidants, vitamins, and essential nutrients.",
+        "categoryId": 3,
+        "price": 70,
+        "discountPrice": null,
+        "stock": 100,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg",
+        "imagePath": "products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Hibiscus Petal Jam is a natural antioxidant-rich herbal jam made from fresh hibiscus flowers. It helps support heart health, digestion, and overall wellness with every spoon",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "bestseller, shop_all",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "250g",
+            "price": "350",
+            "stock": "98",
+            "offerPrice": ""
+          },
+          {
+            "size": "30g",
+            "price": "70",
+            "stock": "100",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-07T18:25:24.844Z",
+        "updatedAt": "2026-06-15T04:48:48.069Z"
+      }
+    },
+    {
+      "id": 6,
+      "badge": "",
+      "badgeColor": "",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png"
+      ],
+      "title": "Sinensis Syrup – Petal Jam",
+      "description": "Sinensis Petal Jam is a premium artisanal floral preserve made from hand-picked fresh edible petals, carefully crafted to deliver both rich taste and natural wellness benefits. This luxurious herbal jam is prepared using traditional slow-cooking methods that help retain the natural aroma, vibrant color, and essential nutrients of the flowers.",
+      "originalPrice": 70,
+      "discountedPrice": 70,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 6,
+        "name": "Sinensis Syrup – Petal Jam",
+        "slug": "sinensis-syrup-petal-jam",
+        "description": "Sinensis Petal Jam is a luxurious, all-natural floral preserve crafted from carefully selected edible flower petals, gently infused in a slow-cooked syrup to lock in their natural aroma, colour, and therapeutic properties. With a smooth jam-like texture and rich floral flavour, it is a gourmet indulgence perfect for desserts, bakery applications, beverages, and health-focused consumption.\n\nThis artisanal product combines traditional preservation methods with modern food science to ensure high quality, nutritional value, and a clean label formula — free from artificial colours, flavours, and harmful additives",
+        "categoryId": 3,
+        "price": 70,
+        "discountPrice": null,
+        "stock": 100,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png",
+        "imagePath": "products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Sinensis Petal Jam is a premium artisanal floral preserve made from hand-picked fresh edible petals, carefully crafted to deliver both rich taste and natural wellness benefits. This luxurious herbal jam is prepared using traditional slow-cooking methods that help retain the natural aroma, vibrant color, and essential nutrients of the flowers.",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "shop_all",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "250g",
+            "price": "350",
+            "stock": "97",
+            "offerPrice": ""
+          },
+          {
+            "size": "30g",
+            "price": "70",
+            "stock": "100",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-08T05:35:16.224Z",
+        "updatedAt": "2026-06-15T04:47:39.707Z"
+      }
+    },
+    {
+      "id": 7,
+      "badge": "",
+      "badgeColor": "",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780897222396-IMG20250917121311600x404png.png",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780897222396-IMG20250917121311600x404png.png"
+      ],
+      "title": "Petal Jam Combo",
+      "description": "A delightful floral duo in one pack – Golden Shower Flower Jam (30g) & Rose Gulkhand Jam (30g).\n\nEnjoy the unique taste yourself or share it as a thoughtful festive gift.",
+      "originalPrice": 130,
+      "discountedPrice": 130,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 7,
+        "name": "Petal Jam Combo",
+        "slug": "petal-jam-combo",
+        "description": "Experience two timeless floral delicacies in one pack. This combo brings together:\n\nAavaram Flower Jam (30g) : Made from the seasonal Aavarampoo blossoms, slow-cooked to capture their delicate sweetness and festive charm.\nRose Gulkhand Jam (30g) : A fragrant delight prepared from fresh rose petals, offering a naturally rich floral taste.\nTogether, they create a unique duo of flavors – one bright and delicate, the other sweet and aromatic. Perfect for gifting, celebrations, or simply indulging yourself in a touch of tradition.\n\nWhy you’ll love this combo:\n\n100% natural & preservative-free\n\n Easy trial-size (30g each)\n\n Perfect gift for yourself or loved ones",
+        "categoryId": 3,
+        "price": 130,
+        "discountPrice": null,
+        "stock": 97,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780897222396-IMG20250917121311600x404png.png",
+        "imagePath": "products/1780897222396-IMG20250917121311600x404png.png",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "A delightful floral duo in one pack – Golden Shower Flower Jam (30g) & Rose Gulkhand Jam (30g).\n\nEnjoy the unique taste yourself or share it as a thoughtful festive gift.",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "shop_all, family_combos",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [
+          {
+            "size": "30g",
+            "price": "130",
+            "stock": "",
+            "offerPrice": ""
+          }
+        ],
+        "createdAt": "2026-06-08T05:40:23.638Z",
+        "updatedAt": "2026-06-08T05:40:53.492Z"
+      }
+    },
+    {
+      "id": 8,
+      "badge": "Bestseller",
+      "badgeColor": "bg-[#fde047] text-black",
+      "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936736170-whitelotuscookie300x300jpeg.jpeg",
+      "images": [
+        "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936736170-whitelotuscookie300x300jpeg.jpeg"
+      ],
+      "title": "Bloom Cookies – White lotus",
+      "description": "Bloom Cookies White Lotus are a delicate and soothing snack crafted for those who appreciate subtle floral flavors combined with a soft and melt-in-the-mouth texture. Made using carefully selected ingredients and infused with natural white lotus petals, these cookies offer a unique and calming taste that stands out from ordinary snacks. They are an ideal choice for anyone looking for a light, aromatic, and enjoyable treat for daily snacking.\n\n",
+      "originalPrice": 66,
+      "discountedPrice": 66,
+      "rating": 4.8,
+      "reviewsCount": 12,
+      "raw": {
+        "id": 8,
+        "name": "Bloom Cookies – White lotus",
+        "slug": "bloom-cookies-white-lotus",
+        "description": "Bloom Cookies White Lotus are not just regular cookies; they are a refined and mindful snacking choice. Prepared with attention to quality and purity, they ensure a consistent and enjoyable experience.\n\nMade with real white lotus petals\nSoft, crumbly, and melt-in-the-mouth texture\nSuitable for all age groups\nPerfect for tea-time and coffee breaks\nA calming and unique alternative to regular cookies",
+        "categoryId": 2,
+        "price": 66,
+        "discountPrice": null,
+        "stock": 103,
+        "image": "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936736170-whitelotuscookie300x300jpeg.jpeg",
+        "imagePath": "products/1780936736170-whitelotuscookie300x300jpeg.jpeg",
+        "featured": false,
+        "status": "ACTIVE",
+        "shortDescription": "Bloom Cookies White Lotus are a delicate and soothing snack crafted for those who appreciate subtle floral flavors combined with a soft and melt-in-the-mouth texture. Made using carefully selected ingredients and infused with natural white lotus petals, these cookies offer a unique and calming taste that stands out from ordinary snacks. They are an ideal choice for anyone looking for a light, aromatic, and enjoyable treat for daily snacking.\n\n",
+        "ingredients": "",
+        "benefits": [],
+        "highlights": [],
+        "nutritionInfo": {
+          "fat": "",
+          "carbs": "",
+          "protein": "",
+          "calories": ""
+        },
+        "faqData": [],
+        "tags": "shop_all, bestseller",
+        "seoTitle": "",
+        "seoDescription": "",
+        "variants": [],
+        "createdAt": "2026-06-08T16:38:57.641Z",
+        "updatedAt": "2026-06-08T16:39:31.911Z"
+      }
+    }
+  ]
+}
