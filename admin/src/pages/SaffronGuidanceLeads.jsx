@@ -173,7 +173,9 @@ const SaffronGuidanceLeads = () => {
                     </td>
                     <td className="px-5 py-4 align-top">
                       <div className="font-bold text-gray-900">{lead.yourName}</div>
-                      <div className="text-sm text-gray-500 mt-0.5">Spouse: {lead.spouseName}</div>
+                      {lead.purpose === 'Pregnancy Support' && lead.spouseName && lead.spouseName !== 'N/A' && (
+                        <div className="text-sm text-gray-500 mt-0.5">Spouse: {lead.spouseName}</div>
+                      )}
                     </td>
                     <td className="px-5 py-4 align-top">
                       <a href={`tel:${lead.phone}`} className="text-[#662654] font-semibold text-sm hover:underline">
@@ -184,18 +186,26 @@ const SaffronGuidanceLeads = () => {
                       {lead.purpose}
                     </td>
                     <td className="px-5 py-4 align-top">
-                      <span className="inline-flex items-center gap-1 text-sm font-bold text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-3 py-1">
-                        🤰 Month {lead.pregnancyMonth}
-                      </span>
+                      {lead.purpose === 'Pregnancy Support' ? (
+                        <span className="inline-flex items-center gap-1 text-sm font-bold text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-3 py-1">
+                          🤰 Month {lead.pregnancyMonth}
+                        </span>
+                      ) : (
+                        <span className="text-gray-400 text-sm">-</span>
+                      )}
                     </td>
                     <td className="px-5 py-4 align-top">
-                      <span className={`inline-flex items-center gap-1 text-xs font-bold rounded-full px-3 py-1 border ${
-                        lead.doctorPermission === 'Yes'
-                          ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                          : 'bg-rose-50 text-rose-700 border-rose-200'
-                      }`}>
-                        {lead.doctorPermission === 'Yes' ? '✅ Yes' : '❌ No'}
-                      </span>
+                      {lead.purpose === 'Pregnancy Support' ? (
+                        <span className={`inline-flex items-center gap-1 text-xs font-bold rounded-full px-3 py-1 border ${
+                          lead.doctorPermission === 'Yes'
+                            ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                            : 'bg-rose-50 text-rose-700 border-rose-200'
+                        }`}>
+                          {lead.doctorPermission === 'Yes' ? '✅ Yes' : '❌ No'}
+                        </span>
+                      ) : (
+                        <span className="text-gray-400 text-sm">-</span>
+                      )}
                     </td>
                     <td className="px-5 py-4 align-top">
                       <select

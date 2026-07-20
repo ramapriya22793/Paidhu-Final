@@ -7,18 +7,22 @@ router.post('/', async (req, res) => {
   try {
     const { yourName, spouseName, phone, purpose, pregnancyMonth, doctorPermission } = req.body;
 
-    if (!yourName || !spouseName || !phone || !purpose || !pregnancyMonth || !doctorPermission) {
-      return res.status(400).json({ error: 'All fields are required.' });
+    if (!yourName || !phone || !purpose) {
+      return res.status(400).json({ error: 'Name, phone, and purpose are required.' });
+    }
+
+    if (purpose === 'Pregnancy Support' && (!pregnancyMonth || !doctorPermission)) {
+      return res.status(400).json({ error: 'Pregnancy month and doctor permission are required for pregnancy support.' });
     }
 
     const entry = await prisma.saffronGuidance.create({
       data: {
         yourName,
-        spouseName,
+        spouseName: spouseName || 'N/A',
         phone,
         purpose,
-        pregnancyMonth: parseInt(pregnancyMonth),
-        doctorPermission,
+        pregnancyMonth: pregnancyMonth ? parseInt(pregnancyMonth) : 0,
+        doctorPermission: doctorPermission || 'N/A',
       },
     });
 
