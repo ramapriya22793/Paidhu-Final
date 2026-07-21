@@ -6,7 +6,7 @@ import {
   ShieldCheck, CheckCircle2, Heart, Info, HelpCircle, ArrowLeft, Check
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/seo/SEO';
 import ProductCarousel from '../components/home/ProductCarousel';
 import Breadcrumbs from '../components/ui/Breadcrumbs';
 
