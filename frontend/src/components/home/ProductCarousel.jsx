@@ -213,8 +213,8 @@ const ProductCarousel = ({
             }}
             className="pb-12 pt-4 product-carousel-swiper"
           >
-            {products.map((product) => (
-              <SwiperSlide key={product.id} className="h-auto">
+            {(products.length < 8 ? [...products, ...products, ...products] : products).map((product, idx) => (
+              <SwiperSlide key={`${product.id}-${idx}`} className="h-auto">
                 <motion.div 
                   whileHover={{ y: -8 }}
                   transition={{ duration: 0.3 }}
