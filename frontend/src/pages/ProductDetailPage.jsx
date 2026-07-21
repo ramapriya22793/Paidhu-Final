@@ -93,6 +93,28 @@ const ProductDetailPage = () => {
         const data = await res.json();
         setProduct(data);
 
+        // Fetch similar products in same category or matching keywords
+        try {
+          const listRes = await fetch(`${API_BASE}/api/products?limit=50`);
+          if (listRes.ok) {
+            const listData = await listRes.json();
+            const all = listData.products || [];
+            
+            // Filter products in the same category or matching type, excluding current product
+            let filtered = all.filter(p => p.id !== data.id && p.slug !== data.slug);
+            
+            if (data.category) {
+              const catMatches = filtered.filter(p => p.category?.toLowerCase() === data.category?.toLowerCase());
+              if (catMatches.length > 0) {
+                filtered = catMatches;
+              }
+            }
+            setSimilarProducts(filtered);
+          }
+        } catch (e) {
+          console.error("Failed to fetch similar products:", e);
+        }
+
         // If they landed on a numeric ID URL, redirect them to the slug URL
         const isIdNumeric = !isNaN(Number(id)) && /^\d+$/.test(id);
         if (isIdNumeric && data.slug) {
@@ -672,6 +694,74 @@ const ProductDetailPage = () => {
           </div>
 
         </div>
+
+        {/* ── Category-Based Similar Products Section ── */}
+        {similarProducts.length > 0 && (
+          <div className="mt-14 mb-8">
+            <div className="flex flex-col items-center mb-8">
+              <h2 className="font-serif text-2xl md:text-3xl font-black text-[#662654] text-center tracking-tight mb-2">
+                Similar Products
+              </h2>
+              <div className="w-12 h-1 bg-[#662654] rounded-full" />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {similarProducts.map((simProd) => {
+                const simImg = resolveImage(simProd.image);
+                const simPrice = simProd.discountPrice || simProd.price;
+                return (
+                  <motion.div
+                    key={simProd.id}
+                    whileHover={{ y: -6 }}
+                    className="bg-white rounded-3xl p-4 border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
+                  >
+                    <Link to={`/product/${simProd.slug || simProd.id}`} className="block relative aspect-square rounded-2xl overflow-hidden bg-[#faf9f6] mb-4">
+                      <img 
+                        src={simImg} 
+                        alt={simProd.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </Link>
+
+                    <div>
+                      <span className="text-[10px] font-black uppercase tracking-wider text-[#662654]/70 bg-[#662654]/5 px-2.5 py-1 rounded-full">
+                        {simProd.category || 'Similar'}
+                      </span>
+                      <Link to={`/product/${simProd.slug || simProd.id}`} className="block mt-2">
+                        <h3 className="font-bold text-base text-gray-900 group-hover:text-[#662654] transition-colors line-clamp-1">
+                          {simProd.name}
+                        </h3>
+                      </Link>
+                      <p className="text-xs text-gray-500 line-clamp-2 mt-1 min-h-[2rem]">
+                        {simProd.shortDescription || simProd.description}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
+                      <div>
+                        <span className="font-black text-gray-900 text-lg">
+                          ₹{simPrice}
+                        </span>
+                        {simProd.discountPrice && (
+                          <span className="text-xs text-gray-400 line-through ml-2">
+                            ₹{simProd.price}
+                          </span>
+                        )}
+                      </div>
+
+                      <Link
+                        to={`/product/${simProd.slug || simProd.id}`}
+                        className="bg-[#662654] hover:bg-[#7a2e64] text-white text-xs font-bold px-4 py-2 rounded-full transition-all shadow-md hover:shadow-lg flex items-center gap-1.5"
+                      >
+                        <ShoppingCart size={13} /> View
+                      </Link>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
       </div>
 
