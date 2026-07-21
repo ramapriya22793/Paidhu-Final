@@ -59,6 +59,7 @@ const ProductDetailPage = () => {
   const { addToCart, wishlist, toggleWishlist } = useCart();
   const isInWishlist = product && wishlist && wishlist.some(item => item.id === product.id);
   const [isAdding, setIsAdding] = useState(false);
+  const [similarProducts, setSimilarProducts] = useState([]);
 
   const handleAddToCart = async () => {
     if (isAdding) return;
