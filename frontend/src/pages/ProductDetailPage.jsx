@@ -673,15 +673,6 @@ const ProductDetailPage = () => {
 
         </div>
 
-        {/* ── Similar Products Section ── */}
-        <div className="mt-16 rounded-[2.5rem] overflow-hidden border border-gray-100/60 shadow-[0_10px_35px_rgba(0,0,0,0.01)]">
-          <ProductCarousel 
-            title="Similar Products" 
-            bgClass="bg-[#fdfbf7]"
-            pyClass="py-12"
-          />
-        </div>
-
       </div>
 
     </motion.div>
