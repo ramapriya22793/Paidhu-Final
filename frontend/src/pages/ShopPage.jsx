@@ -929,21 +929,26 @@ const ShopPage = () => {
           </motion.div>
         ) : (
           <>
-            {/* Desktop / Tablet Grid OR Mobile with specific active category filter */}
+            {/* Standard Grid layout */}
             <motion.div 
               variants={gridVariants}
               initial="hidden"
               animate="show"
-              className={`${activeCategory ? 'grid' : 'hidden sm:grid'} grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6`}
+              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6"
             >
               {products.map((product, i) => (
                 <ProductCard key={product.id} product={product} index={i} navSection={navSection} />
               ))}
             </motion.div>
 
-            {/* Mobile Category-wise Horizontal Scroll (only when showing All Categories) */}
+            {/* Category-wise Horizontal Carousel Scroll Section */}
             {!activeCategory && (
-              <div className="block sm:hidden space-y-8">
+              <div className="mt-12 space-y-10 border-t border-gray-100 pt-8">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-extrabold text-[#662654] uppercase tracking-wide">
+                    Explore By Category
+                  </h2>
+                </div>
                 {['Bloom Cookies', 'Saffron', 'Petal Jam', 'Medley Teas', 'Brew Flora'].map((catName) => {
                   const categoryProducts = products.filter(p => {
                     const name = p.category && typeof p.category === 'object' ? p.category.name : p.category;
@@ -953,21 +958,25 @@ const ShopPage = () => {
                   if (categoryProducts.length === 0) return null;
 
                   return (
-                    <div key={catName} className="space-y-3">
+                    <div key={catName} className="space-y-4">
                       <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-                        <h3 className="text-sm font-extrabold text-[#662654] uppercase tracking-wider">
+                        <h3 className="text-base font-extrabold text-gray-800 tracking-wide flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-[#662654]"></span>
                           {catName}
                         </h3>
-                        <span className="text-[10px] text-gray-400 font-bold uppercase">
-                          {categoryProducts.length} Items
-                        </span>
+                        <button 
+                          onClick={() => handleCategoryChange(catName)}
+                          className="text-[12px] font-bold text-[#662654] hover:underline"
+                        >
+                          View All →
+                        </button>
                       </div>
                       <div 
-                        className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory hide-scrollbar"
+                        className="flex overflow-x-auto gap-4 md:gap-6 pb-4 snap-x snap-mandatory hide-scrollbar"
                         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                       >
                         {categoryProducts.map((product, idx) => (
-                          <div key={product.id} className="w-[46vw] max-w-[185px] flex-shrink-0 snap-center">
+                          <div key={product.id} className="w-[220px] sm:w-[240px] md:w-[260px] flex-shrink-0 snap-start">
                             <ProductCard product={product} index={idx} navSection={navSection} />
                           </div>
                         ))}
