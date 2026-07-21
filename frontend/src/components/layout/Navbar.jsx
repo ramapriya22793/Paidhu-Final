@@ -118,6 +118,7 @@ const Navbar = () => {
   const searchRef = useRef(null);
   const mobileSearchRef = useRef(null);
   const [allProducts, setAllProducts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [showSearchSuggestions, setShowSearchSuggestions] = useState(false);
   const navigate = useNavigate();
 
