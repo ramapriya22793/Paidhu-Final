@@ -102,8 +102,14 @@ const Navbar = () => {
   const [currentText, setCurrentText]         = useState('');
   const [isDeleting, setIsDeleting]           = useState(false);
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
-  const [searchQuery, setSearchQuery]         = useState('');
-  const [categories, setCategories]           = useState([]);
+  const defaultCategoriesList = [
+    { name: 'Bloom Cookies', image: '/bloom_cookies_banner.png' },
+    { name: 'Saffron', image: '/saffron_threads-B9qmeB7u.png' },
+    { name: 'Petal Jam', image: '/banner_jam.jpeg' },
+    { name: 'Medley Teas', image: '/banner_tea.jpeg' },
+    { name: 'Brew Flora', image: '/hibiscus_tea-t1d8KRFf.png' }
+  ];
+  const [categories, setCategories]           = useState(defaultCategoriesList);
   const [showCatDropdown, setShowCatDropdown] = useState(false);
   const [mobileCatOpen, setMobileCatOpen]     = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
