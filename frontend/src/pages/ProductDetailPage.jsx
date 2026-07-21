@@ -8,6 +8,7 @@ import {
 import { useCart } from '../context/CartContext';
 import { Helmet } from 'react-helmet-async';
 import ProductCarousel from '../components/home/ProductCarousel';
+import Breadcrumbs from '../components/ui/Breadcrumbs';
 
 const API_BASE = 'https://paidhu-final-anm2.vercel.app';
 
@@ -223,6 +224,12 @@ const ProductDetailPage = () => {
   // Single product image
   const productImage = resolveImage(product.image || '');
 
+  const breadcrumbItems = [
+    { name: 'Shop', url: '/shop' },
+    { name: product.category || 'Category', url: `/shop/${(product.category || '').toLowerCase().replace(/\s+/g, '-')}` },
+    { name: product.name || 'Product' }
+  ];
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 12 }}
@@ -230,89 +237,29 @@ const ProductDetailPage = () => {
       transition={{ duration: 0.55, ease: 'easeOut' }}
       className="w-full min-h-screen bg-[#fcfbfa] py-8 font-sans"
     >
-      <Helmet>
-        <title>{product.seoTitle || product.name}</title>
-        <meta
-          name="description"
-          content={product.seoDescription || product.shortDescription || (product.description ? product.description.substring(0, 160) : '')}
-        />
-        <meta
-          name="keywords"
-          content={product.keywords || product.seoKeywords || ''}
-        />
-        <link
-          rel="canonical"
-          href={`https://paidhu.com/product/${product.slug || id}`}
-        />
-        
-        {/* Open Graph Tags */}
-        <meta
-          property="og:title"
-          content={product.seoTitle || product.name}
-        />
-        <meta
-          property="og:description"
-          content={product.seoDescription || product.shortDescription || (product.description ? product.description.substring(0, 160) : '')}
-        />
-        <meta
-          property="og:image"
-          content={productImage}
-        />
-        <meta
-          property="og:url"
-          content={window.location.href}
-        />
-        <meta
-          property="og:type"
-          content="product"
-        />
-
-        {/* Twitter Tags */}
-        <meta
-          name="twitter:card"
-          content="summary_large_image"
-        />
-        <meta
-          name="twitter:title"
-          content={product.seoTitle || product.name}
-        />
-        <meta
-          name="twitter:description"
-          content={product.seoDescription || product.shortDescription || (product.description ? product.description.substring(0, 160) : '')}
-        />
-        <meta
-          name="twitter:image"
-          content={productImage}
-        />
-
-        {/* Product Schema (JSON-LD) */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org/",
-            "@type": "Product",
-            "name": product.name,
-            "image": productImage,
-            "description": product.shortDescription || (product.description ? product.description.substring(0, 160) : ''),
-            "brand": {
-              "@type": "Brand",
-              "name": "Paidhu"
-            },
-            "offers": {
-              "@type": "Offer",
-              "url": `https://paidhu.com/product/${product.slug || id}`,
-              "priceCurrency": "INR",
-              "price": offerPrice || price,
-              "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
-            }
-          })}
-        </script>
-      </Helmet>
+      <SEO 
+        title={product.seoTitle || product.name}
+        description={product.seoDescription || product.shortDescription || (product.description ? product.description.substring(0, 160) : '')}
+        keywords={product.seoKeywords}
+        image={productImage}
+        productData={{
+          name: product.name,
+          image: productImage,
+          description: product.shortDescription || (product.description ? product.description.substring(0, 160) : ''),
+          price: offerPrice || price,
+          inStock: product.stock > 0
+        }}
+        breadcrumbData={breadcrumbItems}
+      />
       <div className="max-w-[1400px] mx-auto px-4 md:px-8">
+        
+        {/* Breadcrumbs Navigation */}
+        <Breadcrumbs items={breadcrumbItems} />
         
         {/* Breadcrumb / Back Link */}
         <Link 
           to="/shop" 
-          className="group inline-flex items-center gap-2 text-gray-500 hover:text-[#662654] font-bold text-sm mb-8 transition-colors"
+          className="group inline-flex items-center gap-2 text-gray-500 hover:text-[#662654] font-bold text-sm mb-4 transition-colors"
         >
           <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" /> Back to Shop
         </Link>
@@ -342,6 +289,12 @@ const ProductDetailPage = () => {
                 transition={isZooming ? { type: 'tween', duration: 0.1 } : { type: 'spring', damping: 25, stiffness: 120 }}
                 src={productImage} 
                 alt={product.name} 
+                title={product.name}
+                width="600"
+                height="600"
+                loading="eager"
+                srcSet={`${productImage}?w=300 300w, ${productImage}?w=600 600w`}
+                sizes="(max-width: 600px) 300px, 600px"
                 className="w-full h-full object-contain p-6 pointer-events-none"
                 style={{ imageRendering: 'high-quality', WebkitBackfaceVisibility: 'hidden', WebkitTransform: 'translateZ(0)' }}
                 onLoad={() => setMainImgLoading(false)}
@@ -371,11 +324,6 @@ const ProductDetailPage = () => {
               <h1 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight mt-4 leading-tight">
                 {product.name}
               </h1>
-              {product.shortDescription && (
-                <p className="text-gray-500 font-medium text-[15px] mt-2.5 leading-relaxed">
-                  {product.shortDescription}
-                </p>
-              )}
             </div>
 
             {/* Ratings and Reviews Summary */}
@@ -426,6 +374,7 @@ const ProductDetailPage = () => {
                         if (selected) handleVariantSelect(selected);
                       }}
                       className="w-full text-sm font-bold px-4 py-3 rounded-xl border border-gray-200 text-[#662654] bg-white hover:border-[#662654]/50 focus:outline-none focus:ring-2 focus:ring-[#662654]/20 focus:border-[#662654] appearance-none cursor-pointer pr-10 shadow-sm"
+                      aria-label="Select product variation option"
                     >
                       {variants.map((v, i) => (
                         <option key={i} value={v.size}>
@@ -722,6 +671,15 @@ const ProductDetailPage = () => {
             </AnimatePresence>
           </div>
 
+        </div>
+
+        {/* ── Similar Products Section ── */}
+        <div className="mt-16 rounded-[2.5rem] overflow-hidden border border-gray-100/60 shadow-[0_10px_35px_rgba(0,0,0,0.01)]">
+          <ProductCarousel 
+            title="Similar Products" 
+            bgClass="bg-[#fdfbf7]"
+            pyClass="py-12"
+          />
         </div>
 
       </div>

@@ -74,7 +74,16 @@ const AuthModal = ({ isOpen, onClose, onLoginSuccess, user, onLogout }) => {
       const res = await fetch(`${API_BASE}/api/users/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone, name, email, password, addressLine1, city, state, pincode })
+        body: JSON.stringify({ 
+          phone, 
+          name, 
+          email, 
+          password, 
+          addressLine1: addressLine1 || "-", 
+          city: city || "-", 
+          state: state || "-", 
+          pincode: pincode || "-" 
+        })
       });
       const data = await res.json();
       if (res.ok) {
@@ -293,17 +302,7 @@ const AuthModal = ({ isOpen, onClose, onLoginSuccess, user, onLogout }) => {
                     </div>
                   </div>
                   
-                  <div className="pt-2 border-t border-gray-100 mt-4 mb-2">
-                    <p className="text-sm font-bold text-gray-800 mb-3">Delivery Address</p>
-                    <div className="space-y-3">
-                      <input type="text" required value={addressLine1} onChange={e => setAddressLine1(e.target.value)} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#662654] outline-none transition-all text-sm" placeholder="Flat / House No. / Building" />
-                      <div className="grid grid-cols-2 gap-3">
-                        <input type="text" required value={city} onChange={e => setCity(e.target.value)} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#662654] outline-none transition-all text-sm" placeholder="City" />
-                        <input type="text" required value={state} onChange={e => setState(e.target.value)} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#662654] outline-none transition-all text-sm" placeholder="State" />
-                      </div>
-                      <input type="text" required value={pincode} onChange={e => setPincode(e.target.value)} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#662654] outline-none transition-all text-sm" placeholder="Pincode" />
-                    </div>
-                  </div>
+
 
                   <button
                     type="submit"

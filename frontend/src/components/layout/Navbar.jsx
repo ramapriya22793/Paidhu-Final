@@ -314,6 +314,7 @@ const Navbar = () => {
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="text-[#ede7d7]"
+                aria-label="Toggle Navigation Menu"
               >
                 {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
               </button>
@@ -826,17 +827,21 @@ const Navbar = () => {
                               className="flex items-center gap-4 bg-white p-3 rounded-2xl border border-gray-100 hover:shadow-md transition-shadow group/item"
                             >
                               {/* Product Thumbnail */}
-                              <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-50 flex-shrink-0 border border-gray-100">
+                              <Link 
+                                to={`/product/${item.slug || item.id}`}
+                                onClick={() => setIsCartOpen(false)}
+                                className="w-16 h-16 rounded-xl overflow-hidden bg-gray-50 flex-shrink-0 border border-gray-100 block cursor-pointer"
+                              >
                                 <img src={resolvedImg} alt={item.name} className="w-full h-full object-cover" />
-                              </div>
+                              </Link>
 
                               {/* Item Details */}
                               <div className="flex-1 min-w-0">
-                                <h4 className="text-[13px] font-bold text-gray-900 truncate group-hover/item:text-[#662654] transition-colors">
+                                <h4 className="hidden sm:block text-[13px] font-bold text-gray-900 truncate group-hover/item:text-[#662654] transition-colors">
                                   {item.name}
                                 </h4>
                                 {item.selectedVariant && (
-                                  <span className="inline-block text-[10px] font-black text-gray-500 bg-gray-100 px-2 py-0.5 rounded-md mt-0.5">
+                                  <span className="hidden sm:inline-block text-[10px] font-black text-gray-500 bg-gray-100 px-2 py-0.5 rounded-md mt-0.5">
                                     Size: {item.selectedVariant.size}
                                   </span>
                                 )}

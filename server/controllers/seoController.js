@@ -15,7 +15,14 @@ const getSeoBySlug = async (req, res) => {
     const seo = await prisma.seoData.findUnique({
       where: { pageSlug: slug }
     });
-    if (!seo) return res.status(404).json({ message: "SEO data not found for this slug" });
+    if (!seo) {
+      return res.json({
+        pageSlug: slug,
+        title: "",
+        description: "",
+        keywords: ""
+      });
+    }
     res.json(seo);
   } catch (error) {
     res.status(500).json({ message: error.message });

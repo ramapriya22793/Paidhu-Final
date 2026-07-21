@@ -90,7 +90,9 @@ const BYOCPage = () => {
       }) : [];
       const variant = variantSorted.length > 0 ? variantSorted[0] : null;
         
-      const bundledVariant = variant ? { ...variant, offerPrice: bundledPrice } : null;
+      const bundledVariant = variant 
+        ? { ...variant, size: `${variant.size}-byoc`, offerPrice: bundledPrice } 
+        : { size: 'default-byoc', price: item.price, offerPrice: bundledPrice };
       
       const productToAdd = {
         ...item,
@@ -137,7 +139,7 @@ const BYOCPage = () => {
                 
                 <div className="aspect-[4/5] overflow-hidden bg-[#f8f5f0] relative">
                   <img 
-                    src={product.image.startsWith('http') ? product.image : `${API_BASE}${product.image}`}
+                    src={(product.image && typeof product.image === 'string' && product.image.startsWith('http')) ? product.image : (product.image ? `${API_BASE}${product.image}` : '/mascot.png')}
                     alt={product.name}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     onError={e => { e.currentTarget.src = '/mascot.png'; }}
@@ -220,7 +222,7 @@ const BYOCPage = () => {
                     >
                       <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
                         <img 
-                          src={item.image.startsWith('http') ? item.image : `${API_BASE}${item.image}`} 
+                          src={(item.image && typeof item.image === 'string' && item.image.startsWith('http')) ? item.image : (item.image ? `${API_BASE}${item.image}` : '/mascot.png')} 
                           alt={item.name} 
                           className="w-full h-full object-cover"
                           onError={e => { e.currentTarget.src = '/mascot.png'; }}

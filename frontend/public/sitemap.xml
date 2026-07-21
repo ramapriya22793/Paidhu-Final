@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Core Pages -->
   <url>
     <loc>https://paidhu.com/</loc>
     <priority>1.0</priority>
@@ -11,20 +12,39 @@
     <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://paidhu.com/about</loc>
-    <priority>0.5</priority>
-    <changefreq>monthly</changefreq>
+    <loc>https://paidhu.com/shop/about-us</loc>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://paidhu.com/saffron-guidance</loc>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://paidhu.com/byoc</loc>
+    <loc>https://paidhu.com/shop/byoc</loc>
     <priority>0.7</priority>
     <changefreq>weekly</changefreq>
   </url>
+
+  <!-- Legal & Support Pages -->
+  <url>
+    <loc>https://paidhu.com/legal/terms-conditions</loc>
+    <priority>0.3</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://paidhu.com/legal/privacy-policy</loc>
+    <priority>0.3</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://paidhu.com/legal/shipping-policy</loc>
+    <priority>0.3</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <!-- Product Pages -->
   <url>
     <loc>https://paidhu.com/product/super-negin-saffron</loc>
     <priority>0.9</priority>

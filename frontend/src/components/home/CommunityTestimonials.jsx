@@ -98,6 +98,7 @@ const CommunityTestimonials = () => {
                   <img 
                     src={item.image} 
                     alt={item.name} 
+                    loading="lazy"
                     className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
                   />
                   {/* Subtle dark gradient to make the image pop */}

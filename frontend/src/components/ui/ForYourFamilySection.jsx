@@ -12,7 +12,7 @@ const ForYourFamilySection = () => {
   // 1. EDIBLE FLOWER ENCYCLOPEDIA DATA
   const flowerEncyclopedia = [
     {
-      name: "Saffron (Kesar)",
+      name: "Saffron",
       scientific: "Crocus sativus",
       color: "from-amber-500 to-red-600",
       bgLight: "bg-amber-50",
@@ -27,7 +27,7 @@ const ForYourFamilySection = () => {
       productImage: "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780938979730-SuperNeiginbig1600x600jpg.jpg"
     },
     {
-      name: "Hibiscus (Jaba)",
+      name: "Hibiscus",
       scientific: "Hibiscus rosa-sinensis",
       color: "from-rose-500 to-red-700",
       bgLight: "bg-rose-50",
@@ -42,7 +42,7 @@ const ForYourFamilySection = () => {
       productImage: "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg"
     },
     {
-      name: "Butterfly Pea (Aparajita)",
+      name: "Butterfly Pea",
       scientific: "Clitoria ternatea",
       color: "from-blue-600 to-indigo-800",
       bgLight: "bg-blue-50",
@@ -57,7 +57,7 @@ const ForYourFamilySection = () => {
       productImage: "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780937499230-WhatsAppImage20251113at233020322c5e7d600x800jpg.jpg"
     },
     {
-      name: "Rose Petals (Gulab)",
+      name: "Rose Petals",
       scientific: "Rosa",
       color: "from-pink-400 to-rose-600",
       bgLight: "bg-pink-50",
@@ -182,9 +182,6 @@ const ForYourFamilySection = () => {
                 </div>
                 <div>
                   <div className="block leading-tight">{flower.name}</div>
-                  <div className={`text-[10px] italic font-medium mt-0.5 ${activeFlower === idx ? 'text-[#fbc225]' : 'text-gray-400'}`}>
-                    {flower.scientific}
-                  </div>
                 </div>
               </button>
             ))}
@@ -210,16 +207,6 @@ const ForYourFamilySection = () => {
                     <h3 className="text-2xl md:text-3xl font-black text-gray-900 mt-2">
                       {flowerEncyclopedia[activeFlower].name}
                     </h3>
-                    <p className="text-xs text-gray-400 font-bold italic mt-1 uppercase tracking-wide">
-                      Scientific Name: {flowerEncyclopedia[activeFlower].scientific}
-                    </p>
-                  </div>
-                  <div className="w-20 h-20 rounded-2xl overflow-hidden border-2 border-white shadow-md">
-                    <img 
-                      src={flowerEncyclopedia[activeFlower].image} 
-                      alt={flowerEncyclopedia[activeFlower].name} 
-                      className="w-full h-full object-cover"
-                    />
                   </div>
                 </div>
 

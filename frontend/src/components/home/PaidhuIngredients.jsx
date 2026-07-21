@@ -77,6 +77,7 @@ const PaidhuIngredients = () => {
                 <img 
                   src={item.image} 
                   alt={item.title} 
+                  loading="lazy"
                   className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
                 />
                 {/* Subtle Overlay */}

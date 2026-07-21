@@ -3,18 +3,12 @@ import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Hero from './components/home/Hero';
-import BenefitsMarquee from './components/home/BenefitsMarquee';
 import ProductCollection from './components/home/ProductCollection';
-import ExploreCategory from './components/home/ExploreCategory';
-import FeaturedBento from './components/home/FeaturedBento';
-import PaidhuSpotlight from './components/home/PaidhuSpotlight';
-import StorytellingVideo from './components/home/StorytellingVideo';
-import RealMomsSection from './components/home/RealMomsSection';
-import BrandCharactersBanner from './components/home/BrandCharactersBanner';
 import WhatsAppButton from './components/ui/WhatsAppButton';
 import TiffinModal from './components/home/TiffinModal';
 import { CartProvider } from './context/CartContext';
 import { motion } from 'framer-motion';
+import SEO from './components/seo/SEO';
 
 // Lazy load pages to speed up initial site rendering
 const ShopPage = lazy(() => import('./pages/ShopPage'));
@@ -25,6 +19,15 @@ const SaffronGuidancePage = lazy(() => import('./pages/SaffronGuidancePage'));
 const BYOCPage = lazy(() => import('./pages/BYOCPage'));
 const LegalPage = lazy(() => import('./pages/LegalPage'));
 
+// Lazy load below-the-fold home components
+const ExploreCategory = lazy(() => import('./components/home/ExploreCategory'));
+const BenefitsMarquee = lazy(() => import('./components/home/BenefitsMarquee'));
+const FeaturedBento = lazy(() => import('./components/home/FeaturedBento'));
+const PaidhuSpotlight = lazy(() => import('./components/home/PaidhuSpotlight'));
+const StorytellingVideo = lazy(() => import('./components/home/StorytellingVideo'));
+const RealMomsSection = lazy(() => import('./components/home/RealMomsSection'));
+const BrandCharactersBanner = lazy(() => import('./components/home/BrandCharactersBanner'));
+
 // ---------- HOME PAGE ----------
 const HomePage = () => (
   <motion.main 
@@ -33,15 +36,22 @@ const HomePage = () => (
     transition={{ duration: 0.55, ease: 'easeOut' }}
     className="flex-1"
   >
+    <SEO 
+      slug="home"
+      url="https://paidhu.com/"
+    />
     <Hero />
     <ProductCollection />
-    <ExploreCategory />
-    <BenefitsMarquee />
-    <FeaturedBento />
-    <PaidhuSpotlight />
-    <StorytellingVideo />
-    <RealMomsSection />
-    <BrandCharactersBanner />
+    
+    <Suspense fallback={null}>
+      <ExploreCategory />
+      <BenefitsMarquee />
+      <FeaturedBento />
+      <PaidhuSpotlight />
+      <StorytellingVideo />
+      <RealMomsSection />
+      <BrandCharactersBanner />
+    </Suspense>
   </motion.main>
 );
 

@@ -47,13 +47,20 @@ const formatBackendCartItem = (item) => {
   if (!p) return null;
 
   let selectedVariant = null;
-  if (item.variant && item.variant !== 'default') {
+  const isByoc = item.variant?.endsWith('-byoc');
+  const cleanVariantName = item.variant ? item.variant.replace('-byoc', '') : 'default';
+
+  if (cleanVariantName !== 'default') {
     let variantsList = [];
     try {
       variantsList = typeof p.variants === 'string' ? JSON.parse(p.variants) : (p.variants || []);
     } catch {}
-    const matchingVariant = Array.isArray(variantsList) ? variantsList.find(v => v.size === item.variant) : null;
-    selectedVariant = matchingVariant || { size: item.variant, price: p.price, offerPrice: p.discountPrice };
+    const matchingVariant = Array.isArray(variantsList) ? variantsList.find(v => v.size === cleanVariantName) : null;
+    selectedVariant = matchingVariant 
+      ? { ...matchingVariant, size: cleanVariantName }
+      : { size: cleanVariantName, price: p.price, offerPrice: p.discountPrice };
+  } else if (isByoc) {
+    selectedVariant = { size: 'default', price: p.price, offerPrice: p.discountPrice };
   }
 
   const basePrice = selectedVariant ? Number(selectedVariant.price) : Number(p.price);
@@ -70,7 +77,8 @@ const formatBackendCartItem = (item) => {
     category: p.category?.name || p.category || 'Uncategorized',
     shortDescription: p.shortDescription || p.description,
     selectedVariant,
-    quantity: item.quantity
+    quantity: item.quantity,
+    variant: item.variant
   };
 };
 
@@ -524,16 +532,64 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+  const processByocDiscounts = (rawCart) => {
+    // 1. Identify all BYOC items
+    const byocItems = rawCart.filter(item => item.variant?.endsWith('-byoc'));
+    const nonByocItems = rawCart.filter(item => !byocItems.includes(item));
+    
+    if (byocItems.length === 0) return rawCart;
+    
+    // Count total quantity of BYOC items
+    const totalByocQty = byocItems.reduce((sum, item) => sum + item.quantity, 0);
+    
+    // Determine the bundle total price based on total quantity
+    let bundleTotal = 0;
+    if (totalByocQty >= 5) {
+      bundleTotal = 1399;
+    } else if (totalByocQty === 4) {
+      bundleTotal = 1049;
+    } else if (totalByocQty === 3) {
+      bundleTotal = 799;
+    } else {
+      // Less than 3 items, no bundle discount applies
+      return rawCart;
+    }
+    
+    // Calculate original total of the BYOC items (using their regular prices)
+    const originalTotal = byocItems.reduce((sum, item) => {
+      const price = item.selectedVariant ? Number(item.selectedVariant.price) : Number(item.price);
+      return sum + (price * item.quantity);
+    }, 0);
+    
+    if (originalTotal === 0) return rawCart;
+    
+    const discountFactor = bundleTotal / originalTotal;
+    
+    // Apply the discount factor to each BYOC item's offerPrice
+    const discountedByocItems = byocItems.map(item => {
+      const regularPrice = item.selectedVariant ? Number(item.selectedVariant.price) : Number(item.price);
+      const discountedPrice = Math.round(regularPrice * discountFactor);
+      return {
+        ...item,
+        offerPrice: discountedPrice
+      };
+    });
+    
+    return [...nonByocItems, ...discountedByocItems];
+  };
 
-  const cartTotal = cart.reduce((acc, item) => {
+  const formattedCart = processByocDiscounts(cart);
+
+  const cartCount = formattedCart.reduce((acc, item) => acc + item.quantity, 0);
+
+  const cartTotal = formattedCart.reduce((acc, item) => {
     const itemPrice = item.offerPrice || item.price;
     return acc + (itemPrice * item.quantity);
   }, 0);
 
   return (
     <CartContext.Provider value={{
-      cart,
+      cart: formattedCart,
       isCartOpen,
       setIsCartOpen,
       addToCart,

@@ -124,6 +124,7 @@ const TiffinModal = ({
             <img
               src="/tiffin_popup_banner.png"
               alt="Kids Healthy Tiffin Ideas"
+              loading="lazy"
               className="absolute inset-0 w-full h-full object-cover brightness-[0.95]"
             />
             {/* Split overlay */}

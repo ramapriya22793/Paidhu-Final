@@ -366,6 +366,7 @@ model LoginHistory {
   status    String   @default("SUCCESS") // SUCCESS, FAILED
 }
 
+
 model PasswordResetToken {
   id        Int      @id @default(autoincrement())
   phone     String
@@ -374,4 +375,11 @@ model PasswordResetToken {
   user      User     @relation(fields: [phone], references: [phone], onDelete: Cascade)
   createdAt DateTime @default(now())
 }
+
+model NewsletterSubscriber {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
+
 

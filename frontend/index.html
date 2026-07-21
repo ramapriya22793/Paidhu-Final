@@ -4,6 +4,21 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/favicon.png?v=2" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#522742" />
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18092378259"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'AW-18092378259');
+    </script>
+
+    <!-- Bing Webmaster Verification Placeholder -->
+    <!-- <meta name="msvalidate.01" content="BING_PLACEHOLDER" /> -->
     
     <!-- Primary Meta Tags -->
     <title>Paidhu - The Edible Flower Co. | Natural & Organic Products</title>
@@ -31,7 +46,21 @@
     <link rel="dns-prefetch" href="https://paidhu-final-anm2.vercel.app" />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- SEO Fallback Content for Non-JS Crawlers and Search Engines -->
+      <div style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">
+        <h1>Paidhu - The Edible Flower Co.</h1>
+        <p>Discover premium quality organic edible flowers, organic saffron, and handcrafted floral jams at Paidhu. Sourced directly from local organic farms to enhance your culinary and wellness experience.</p>
+        <h2>Our Main Categories</h2>
+        <ul>
+          <li><strong>Premium Saffron:</strong> 100% pure Mongra Saffron.</li>
+          <li><strong>Organic Teas:</strong> Hibiscus Tea and Blue Pea Brew Flora infusions.</li>
+          <li><strong>Artisanal Floral Jams:</strong> Hibiscus Petal Jam, Rose Gulkhand, and Tanner's Preserves.</li>
+          <li><strong>Floral Cookies:</strong> Freshly baked cookies with flower petals.</li>
+        </ul>
+        <p>Purchase our unique floral food products, build a custom cart, or read our saffron guidance to learn more about edible flowers.</p>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

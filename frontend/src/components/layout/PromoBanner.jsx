@@ -54,7 +54,7 @@ const PromoBanner = () => {
 
         {/* Right side links (like login/track order on Veeba) */}
         <div className="hidden md:flex items-center gap-4 text-[10px] font-medium tracking-wider text-white/90 w-20 justify-end">
-          <a href="#" className="hover:underline">Track Order</a>
+          <a href="https://wa.me/918754787774" target="_blank" rel="noopener noreferrer" className="hover:underline">Track Order</a>
         </div>
       </div>
     </div>

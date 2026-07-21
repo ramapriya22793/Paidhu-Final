@@ -367,7 +367,7 @@ const AddProduct = () => {
                           <button
                             type="button"
                             onClick={() => removeImage(idx)}
-                            className="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 shadow-sm"
+                            className="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-full hover:bg-red-600 shadow-sm"
                           >
                             <FiTrash2 size={14} />
                           </button>

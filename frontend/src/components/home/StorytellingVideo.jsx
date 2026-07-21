@@ -44,6 +44,7 @@ const StorytellingVideo = () => {
             alt="Paidhu Video Frame" 
             width={1024}
             height={554}
+            loading="lazy"
             className="w-full h-auto block"
           />
 

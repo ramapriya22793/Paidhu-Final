@@ -422,7 +422,7 @@ const EditProduct = () => {
                         <button
                           type="button"
                           onClick={removePrimaryOldImage}
-                          className="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 shadow-sm"
+                          className="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-full hover:bg-red-600 shadow-sm"
                         >
                           <FiTrash2 size={14} />
                         </button>
@@ -437,7 +437,7 @@ const EditProduct = () => {
                         <button
                           type="button"
                           onClick={() => removeOldImage(idx)}
-                          className="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 shadow-sm"
+                          className="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-full hover:bg-red-600 shadow-sm"
                         >
                           <FiTrash2 size={14} />
                         </button>
@@ -456,7 +456,7 @@ const EditProduct = () => {
                           <button
                             type="button"
                             onClick={() => removeNewImage(idx)}
-                            className="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 shadow-sm"
+                            className="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-full hover:bg-red-600 shadow-sm"
                           >
                             <FiTrash2 size={14} />
                           </button>

@@ -42,6 +42,7 @@ const CategorySlider = () => {
                 <img 
                   src={category.image} 
                   alt={category.name} 
+                  loading="lazy"
                   className="w-full h-full object-cover rounded-full"
                   onError={(e) => {
                     e.target.src = "https://picsum.photos/150/150?blur=2";

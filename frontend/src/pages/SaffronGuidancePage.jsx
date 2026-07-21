@@ -29,14 +29,6 @@ const FIELD_CONFIGS = [
     required: true,
   },
   {
-    key: 'spouseName',
-    label: 'Spouse Name',
-    placeholder: 'Enter spouse full name',
-    type: 'text',
-    icon: Users,
-    required: false,
-  },
-  {
     key: 'phone',
     label: 'Phone Number',
     placeholder: 'Enter your phone number',
@@ -280,6 +272,25 @@ const SaffronGuidancePage = () => {
                       exit={{ opacity: 0, height: 0 }}
                       className="space-y-6 overflow-hidden"
                     >
+                      {/* Spouse Name */}
+                      <div className="space-y-2">
+                        <label className="block text-xs font-black text-gray-500 uppercase tracking-wider">
+                          Spouse Name
+                        </label>
+                        <div className="relative">
+                          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#662654]/50">
+                            <Users size={18} />
+                          </div>
+                          <input
+                            type="text"
+                            value={form.spouseName}
+                            onChange={e => handleChange('spouseName', e.target.value)}
+                            placeholder="Enter spouse full name"
+                            className="w-full pl-12 pr-4 py-3.5 bg-[#faf9f7] border border-gray-200 rounded-xl text-sm font-medium text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#662654]/20 focus:border-[#662654] transition-all"
+                          />
+                        </div>
+                      </div>
+
                       {/* Pregnancy Month */}
                       <div className="space-y-2">
                         <label className="block text-xs font-black text-gray-500 uppercase tracking-wider">

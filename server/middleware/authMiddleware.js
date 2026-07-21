@@ -13,15 +13,20 @@ const verifyToken = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret_key');
-    
+    const userId = decoded.id || decoded.userId;
+    if (!userId) {
+      console.log("No user ID found in token payload");
+      return res.status(401).json({ message: 'Invalid token: user ID missing' });
+    }
+
     // Verify user exists in database to prevent foreign key issues on stale/deleted users
-    const userExists = await prisma.user.findUnique({ where: { id: decoded.id } });
+    const userExists = await prisma.user.findUnique({ where: { id: userId } });
     if (!userExists) {
       console.log("Token points to a user that does not exist in database");
       return res.status(401).json({ message: 'Invalid token: user not found' });
     }
 
-    req.user = decoded; // { id, isAdmin }
+    req.user = { id: userId, isAdmin: decoded.isAdmin }; // { id, isAdmin }
     next();
   } catch (error) {
     console.log("JWT Verification Error:", error.message);

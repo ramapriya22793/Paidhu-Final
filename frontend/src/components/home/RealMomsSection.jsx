@@ -84,6 +84,7 @@ const RealMomsSection = () => {
               alt="Paidhu Moms Community" 
               width={600}
               height={600}
+              loading="lazy"
               className="w-full h-full object-cover"
             />
           </div>

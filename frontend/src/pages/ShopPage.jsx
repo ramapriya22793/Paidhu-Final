@@ -224,7 +224,7 @@ const ProductCard = ({ product, index, navSection }) => {
       ) : null}
 
       {/* Image — single static image, no swap on hover */}
-      <Link to={`/product/${product.slug || product.id}`} state={{ product }} className="block relative aspect-square overflow-hidden bg-[#f8f4ef]">
+      <Link to={`/product/${product.slug || product.id}`} state={{ product }} className="block relative aspect-[1.35/1] sm:aspect-square overflow-hidden bg-[#f8f4ef]">
         {product.image ? (
           <>
             {/* Branded placeholder behind — visible only when image fails to load */}
@@ -235,7 +235,7 @@ const ProductCard = ({ product, index, navSection }) => {
 
             {/* Product image — hides on error, gentle scale on hover */}
             <img
-              src={product.image.startsWith('http') ? product.image : `${API_BASE}${product.image}`}
+              src={(product.image && typeof product.image === 'string' && product.image.startsWith('http')) ? product.image : (product.image ? `${API_BASE}${product.image}` : '/mascot.png')}
               alt={product.name}
               className="absolute inset-0 w-full h-full object-contain p-3 transition-transform duration-500 ease-out group-hover:scale-105"
               onError={e => { e.currentTarget.style.display = 'none'; }}
@@ -252,15 +252,10 @@ const ProductCard = ({ product, index, navSection }) => {
       </Link>
 
       {/* Info */}
-      <div className="p-4 flex flex-col flex-1">
-        <Link to={`/product/${product.slug || product.id}`} state={{ product }} className="block group/link mb-2 flex-1">
-          <p className="text-[11px] text-[#662654] font-semibold uppercase tracking-wider mb-1">{product.category}</p>
-          <h3 className="text-[13.5px] font-semibold text-gray-900 line-clamp-2 leading-snug group-hover/link:text-[#662654] transition-colors">{product.name}</h3>
+      <div className="p-2.5 sm:p-4 flex flex-col flex-1">
+        <Link to={`/product/${product.slug || product.id}`} state={{ product }} className="block group/link mb-1 sm:mb-2 flex-1">
+          <h3 className="text-[12.5px] sm:text-[13.5px] font-semibold text-gray-900 line-clamp-2 leading-snug group-hover/link:text-[#662654] transition-colors">{product.name}</h3>
         </Link>
-
-        {product.shortDescription && (
-          <p className="text-[11.5px] text-gray-400 line-clamp-1 mb-3">{product.shortDescription}</p>
-        )}
 
         {/* Option Selector */}
         {hasVariants && (
@@ -280,6 +275,7 @@ const ProductCard = ({ product, index, navSection }) => {
                   }}
                   value={selectedVariant?.size || ''}
                   className="w-full text-[11px] md:text-[12px] font-bold px-3 py-2 rounded-lg border border-gray-200 text-[#662654] bg-[#faf9f7] hover:border-[#662654]/50 focus:outline-none focus:border-[#662654] appearance-none cursor-pointer pr-8 text-ellipsis overflow-hidden"
+                  aria-label="Select product option size"
                 >
                   {variants.map((v, i) => (
                     <option key={i} value={v.size}>
@@ -319,12 +315,12 @@ const ProductCard = ({ product, index, navSection }) => {
         )}
 
         {/* Price */}
-        <div className="flex items-baseline gap-2 mb-3">
-          <span className="text-[16px] font-bold text-gray-900">
+        <div className="flex items-baseline gap-2 mb-2 sm:mb-3">
+          <span className="text-[15px] sm:text-[16px] font-bold text-gray-900">
             ₹{currentPrice.toLocaleString('en-IN')}
           </span>
           {originalPrice && (
-            <span className="text-[12px] text-gray-400 line-through">
+            <span className="text-[11px] sm:text-[12px] text-gray-400 line-through">
               ₹{originalPrice.toLocaleString('en-IN')}
             </span>
           )}
@@ -338,7 +334,7 @@ const ProductCard = ({ product, index, navSection }) => {
           disabled={isAdding}
           whileHover={{ scale: 1.02, y: -1 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full bg-gradient-to-r from-[#662654] to-[#7f2d68] hover:from-[#7a2e64] hover:to-[#913b7e] disabled:from-emerald-600 disabled:to-teal-500 text-white rounded-full py-2.5 flex items-center justify-center gap-2 font-bold text-xs uppercase tracking-wider shadow-[0_4px_12px_rgba(102,38,84,0.15)] hover:shadow-[0_6px_20px_rgba(102,38,84,0.3)] transition-all duration-300 group/btn cursor-pointer"
+          className="w-full bg-gradient-to-r from-[#662654] to-[#7f2d68] hover:from-[#7a2e64] hover:to-[#913b7e] disabled:from-emerald-600 disabled:to-teal-500 text-white rounded-full py-2 sm:py-2.5 flex items-center justify-center gap-2 font-bold text-[10px] sm:text-xs uppercase tracking-wider shadow-[0_4px_12px_rgba(102,38,84,0.15)] hover:shadow-[0_6px_20px_rgba(102,38,84,0.3)] transition-all duration-300 group/btn cursor-pointer"
         >
           {isAdding ? (
             <>
@@ -742,6 +738,14 @@ const ShopPage = () => {
     );
   }
 
+  const getSeoSlug = () => {
+    if (!navSection || navSection === 'shop-all') return 'shop';
+    if (navSection === 'about-us') return 'about';
+    if (navSection === 'bulk-orders') return 'contact';
+    if (navSection === 'blogs') return 'blogs';
+    return null;
+  };
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 12 }} 
@@ -750,6 +754,7 @@ const ShopPage = () => {
       className="min-h-screen bg-[#faf9f7]"
     >
       <SEO 
+        slug={getSeoSlug()}
         title={meta.label} 
         description={meta.desc} 
         keywords={`Paidhu, ${meta.label}, edible flowers, natural products`} 
@@ -962,7 +967,7 @@ const ShopPage = () => {
                         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                       >
                         {categoryProducts.map((product, idx) => (
-                          <div key={product.id} className="w-[72vw] max-w-[260px] flex-shrink-0 snap-center">
+                          <div key={product.id} className="w-[46vw] max-w-[185px] flex-shrink-0 snap-center">
                             <ProductCard product={product} index={idx} navSection={navSection} />
                           </div>
                         ))}

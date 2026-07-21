@@ -107,6 +107,12 @@ const BulkOrdersSection = () => {
       if (res.ok) {
         setIsSuccess(true);
         setSubmitMessage(resData.message || 'Inquiry submitted successfully!');
+        
+        // Redirect to WhatsApp with filled details
+        const whatsappText = `Hello Paidhu, I want to submit a B2B Reseller Inquiry:\n\n*Name:* ${formData.fullName}\n*Email:* ${formData.email}\n*Mobile:* ${formData.mobile}\n*Region:* ${formData.region}\n*Country:* ${formData.country}\n*Purpose:* ${formData.purpose}`;
+        const whatsappUrl = `https://wa.me/918754787774?text=${encodeURIComponent(whatsappText)}`;
+        window.open(whatsappUrl, '_blank');
+
         setFormData({
           fullName: '',
           email: '',
@@ -141,14 +147,7 @@ const BulkOrdersSection = () => {
     ));
   };
 
-  if (loading) {
-    return (
-      <div className="w-full h-screen flex flex-col items-center justify-center bg-[#faf9f7] gap-4">
-        <div className="w-12 h-12 border-4 border-[#662654]/20 border-t-[#662654] rounded-full animate-spin"></div>
-        <p className="text-[#662654] font-medium animate-pulse">Loading Bulk Orders...</p>
-      </div>
-    );
-  }
+
 
   return (
     <div className="w-full bg-[#faf9f7] font-sans pb-16">

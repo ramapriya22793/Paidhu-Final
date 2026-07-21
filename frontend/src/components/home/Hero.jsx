@@ -37,13 +37,13 @@ const getBannerLink = (slide) => {
   const imgUrl = slide.image.toLowerCase();
   
   if (imgUrl.includes('banner1') || imgUrl.includes('cookie')) {
-    return '/shop/shop-by-category?category=Bloom%20Cookies';
+    return '/product/bloom-cookies-hibiscus';
   }
   if (imgUrl.includes('banner2') || imgUrl.includes('tea')) {
-    return '/shop/shop-by-category?category=Medley%20Teas';
+    return '/product/medly-teas-hibiscus-20-dips';
   }
   if (imgUrl.includes('banner3') || imgUrl.includes('jam')) {
-    return '/shop/shop-by-category?category=Petal%20Jam';
+    return '/product/hibiscus-petal-jam';
   }
   return '/shop';
 };
@@ -131,6 +131,31 @@ const Hero = () => {
       });
   }, []);
 
+  // Preload first slide image as soon as slides are determined
+  useEffect(() => {
+    if (slides && slides.length > 0) {
+      const firstSlide = slides[0];
+      const isMobileDevice = window.innerWidth < 768;
+      const imageUrl = (isMobileDevice && firstSlide.mobileImage) ? firstSlide.mobileImage : firstSlide.image;
+      
+      if (imageUrl) {
+        // Remove existing slide preload link if any
+        const existingLink = document.getElementById('hero-banner-preload');
+        if (existingLink) {
+          existingLink.remove();
+        }
+        
+        const link = document.createElement('link');
+        link.id = 'hero-banner-preload';
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = imageUrl;
+        link.setAttribute('fetchpriority', 'high');
+        document.head.appendChild(link);
+      }
+    }
+  }, [slides]);
+
   // Auto-slide every 6 seconds
   useEffect(() => {
     if (slides.length <= 1) return;
@@ -148,6 +173,9 @@ const Hero = () => {
 
   return (
     <div className="w-full bg-[#f8f4ef] py-3 md:py-4 px-3 sm:px-4 lg:px-6">
+      {/* SEO H1 Heading (Visually Hidden) */}
+      <h1 className="sr-only">Paidhu - The Edible Flower Co. | Natural & Organic Products</h1>
+      
       {/* Banner container — aspect ratio auto-fits to image dimensions */}
       <div 
         className="relative w-full overflow-hidden rounded-[28px] md:rounded-[36px] shadow-[0_8px_40px_rgba(0,0,0,0.10)] hover:shadow-[0_14px_50px_rgba(212,175,55,0.20)] transition-all duration-500 group"

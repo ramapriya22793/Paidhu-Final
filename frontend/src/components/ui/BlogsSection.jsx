@@ -354,7 +354,7 @@ const BlogsSection = () => {
                 {/* Article Info & Body */}
                 <div className="px-6 py-8 md:px-10 md:py-10 max-w-3xl mx-auto space-y-6">
                   {/* Author Meta */}
-                  <div className="flex items-center gap-6 pb-6 border-b border-gray-100 text-gray-500 text-xs font-bold uppercase tracking-wider">
+                  <div className="flex items-center gap-6 pb-6 border-b border-gray-100 text-gray-500 text-xs font-bold uppercase tracking-wider flex-wrap">
                     <div className="flex items-center gap-1.5">
                       <Calendar size={14} className="text-[#662654]" />
                       <span>{formatDate(selectedBlog.createdAt)}</span>
@@ -363,13 +363,57 @@ const BlogsSection = () => {
                       <User size={14} className="text-[#662654]" />
                       <span>By {selectedBlog.author || 'Paidhu Team'}</span>
                     </div>
+                    <div className="flex items-center gap-1.5">
+                      <BookOpen size={14} className="text-[#662654]" />
+                      <span>
+                        {Math.max(1, Math.ceil((selectedBlog.content ? selectedBlog.content.split(/\s+/).length : 0) / 200))} Min Read
+                      </span>
+                    </div>
                   </div>
+
+                  {/* Dynamic Table of Contents */}
+                  {(() => {
+                    const toc = [];
+                    const regex = /<h([2-3])[^>]*>(.*?)<\/h\1>/gi;
+                    let match;
+                    while ((match = regex.exec(selectedBlog.content || '')) !== null) {
+                      toc.push({ level: parseInt(match[1]), text: match[2].replace(/<[^>]*>/g, '') });
+                    }
+                    if (toc.length > 0) {
+                      return (
+                        <div className="bg-[#faf9f7] p-5 rounded-2xl border border-gray-100 space-y-3">
+                          <h4 className="text-sm font-black text-[#662654] uppercase tracking-wider flex items-center gap-2">
+                            <span>📋</span> Table of Contents
+                          </h4>
+                          <ul className="space-y-2 text-xs md:text-sm text-gray-600 font-semibold">
+                            {toc.map((item, idx) => (
+                              <li key={idx} style={{ paddingLeft: `${(item.level - 2) * 16}px` }} className="hover:text-[#662654] transition-colors cursor-pointer">
+                                • {item.text}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      );
+                    }
+                    return null;
+                  })()}
 
                   {/* Rich Text / Raw HTML Content Rendering */}
                   <div
                     className="prose prose-sm md:prose-base max-w-none text-gray-700 font-medium leading-relaxed space-y-4 prose-headings:font-serif prose-headings:text-[#662654] prose-headings:font-black prose-a:text-[#662654] prose-a:font-bold hover:prose-a:underline prose-img:rounded-2xl"
                     dangerouslySetInnerHTML={{ __html: selectedBlog.content }}
                   />
+
+                  {/* Dynamic FAQ Support block */}
+                  <div className="pt-8 border-t border-gray-100">
+                    <h3 className="text-xl font-serif font-black text-[#662654] mb-4">Frequently Asked Questions</h3>
+                    <div className="space-y-4">
+                      <div className="bg-[#faf9f7] p-4 rounded-xl border border-gray-100">
+                        <p className="font-bold text-sm text-gray-800">Q: Are the ingredients and guidelines listed here verified?</p>
+                        <p className="text-xs text-gray-600 mt-1.5">Yes, all wellness and recipe articles are compiled in collaboration with certified nutritionists and edible flower experts.</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>

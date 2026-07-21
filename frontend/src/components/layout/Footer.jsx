@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
@@ -25,6 +25,35 @@ const MessageCircleIcon = ({ size = 20 }) => (
 );
 
 const Footer = () => {
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    if (!email) return;
+    setLoading(true);
+    setMessage('');
+    try {
+      const res = await fetch('https://paidhu-final-anm2.vercel.app/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setMessage(data.message || 'Subscribed successfully!');
+        setEmail('');
+      } else {
+        setMessage(data.error || 'Failed to subscribe.');
+      }
+    } catch (err) {
+      setMessage('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <footer className="w-full bg-[#522742] text-[#fdfaf6] pt-16 pb-8">
       <div className="max-w-[1400px] mx-auto px-6 md:px-12">
@@ -34,9 +63,9 @@ const Footer = () => {
           <div className="flex flex-col space-y-4">
             <h4 className="font-bold text-xl mb-4 font-serif text-[#ede7d7]">Quick Links</h4>
             <Link to="/shop/about-us" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">About Us</Link>
-            <Link to="/shop/shop-all" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Shop</Link>
-            <Link to="/shop/bulk-orders" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Contact</Link>
-            <Link to="/shop/for-your-family" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">FAQs</Link>
+            <Link to="/shop" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Shop All</Link>
+            <Link to="/shop/bulk-orders" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Bulk Orders</Link>
+            <Link to="/saffron-guidance" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Saffron Guidance</Link>
           </div>
 
           {/* Legal */}
@@ -51,16 +80,27 @@ const Footer = () => {
           <div className="flex flex-col space-y-4">
             <h4 className="font-bold text-xl mb-4 font-serif text-[#ede7d7]">Subscribe to our newsletter</h4>
             <p className="text-sm opacity-90 mb-2">Get updates, tips, and exclusive offers straight to your inbox.</p>
-            <div className="relative flex flex-col space-y-3 mt-2">
+            <form onSubmit={handleSubscribe} className="relative flex flex-col space-y-3 mt-2">
               <input 
                 type="email" 
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email" 
                 className="w-full bg-transparent border-b border-[#fdfaf6]/50 py-2 text-sm focus:outline-none focus:border-[#ede7d7] text-white placeholder-white/60 transition-colors"
+                aria-label="Email address for newsletter"
               />
-              <button className="bg-[#ede7d7] hover:bg-white text-[#522742] font-bold py-2 px-6 rounded-full w-max text-sm transition-transform hover:scale-105 active:scale-95">
-                Subscribe
+              <button 
+                type="submit"
+                disabled={loading}
+                className="bg-[#ede7d7] hover:bg-white text-[#522742] font-bold py-2 px-6 rounded-full w-max text-sm transition-transform hover:scale-105 active:scale-95 disabled:opacity-75"
+              >
+                {loading ? 'Subscribing...' : 'Subscribe'}
               </button>
-            </div>
+              {message && (
+                <p className="text-xs text-[#ede7d7] mt-1 font-semibold">{message}</p>
+              )}
+            </form>
           </div>
 
           {/* Follow Us / Branding */}
@@ -68,33 +108,59 @@ const Footer = () => {
             <div>
               <h4 className="font-bold text-xl mb-4 font-serif text-[#ede7d7]">Follow Us</h4>
               <div className="flex space-x-4 lg:justify-end">
-                <motion.a 
-                  whileHover={{ scale: 1.1, color: "#ede7d7" }} 
-                  href="https://www.instagram.com/paidhu_edibleflower/" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="text-[#fdfaf6] hover:text-[#ede7d7] transition-colors"
-                >
-                  <InstagramIcon size={24} />
-                </motion.a>
-                <motion.a 
-                  whileHover={{ scale: 1.1, color: "#ede7d7" }} 
-                  href="https://www.youtube.com/@Paidhu" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="text-[#fdfaf6] hover:text-[#ede7d7] transition-colors"
-                >
-                  <YoutubeIcon size={24} />
-                </motion.a>
-                <motion.a 
-                  whileHover={{ scale: 1.1, color: "#ede7d7" }} 
-                  href="https://wa.me/918754787774" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="text-[#fdfaf6] hover:text-[#ede7d7] transition-colors"
-                >
-                  <MessageCircleIcon size={24} />
-                </motion.a>
+                {/* Instagram */}
+                <div className="relative group">
+                  <motion.a 
+                    whileHover={{ scale: 1.1, color: "#ede7d7" }} 
+                    href="https://www.instagram.com/paidhu_edibleflower/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-[#fdfaf6] hover:text-[#ede7d7] transition-colors block"
+                    aria-label="Follow us on Instagram"
+                  >
+                    <InstagramIcon size={24} />
+                  </motion.a>
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1 bg-black text-[#fdfaf6] text-[10px] font-bold rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50 shadow-md">
+                    Instagram
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black" />
+                  </div>
+                </div>
+
+                {/* YouTube */}
+                <div className="relative group">
+                  <motion.a 
+                    whileHover={{ scale: 1.1, color: "#ede7d7" }} 
+                    href="https://www.youtube.com/@Paidhu" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-[#fdfaf6] hover:text-[#ede7d7] transition-colors block"
+                    aria-label="Subscribe to our YouTube channel"
+                  >
+                    <YoutubeIcon size={24} />
+                  </motion.a>
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1 bg-black text-[#fdfaf6] text-[10px] font-bold rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50 shadow-md">
+                    YouTube
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black" />
+                  </div>
+                </div>
+
+                {/* WhatsApp */}
+                <div className="relative group">
+                  <motion.a 
+                    whileHover={{ scale: 1.1, color: "#ede7d7" }} 
+                    href="https://wa.me/918754787774" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-[#fdfaf6] hover:text-[#ede7d7] transition-colors block"
+                    aria-label="Contact us on WhatsApp"
+                  >
+                    <MessageCircleIcon size={24} />
+                  </motion.a>
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1 bg-black text-[#fdfaf6] text-[10px] font-bold rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50 shadow-md">
+                    WhatsApp
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black" />
+                  </div>
+                </div>
               </div>
             </div>
 

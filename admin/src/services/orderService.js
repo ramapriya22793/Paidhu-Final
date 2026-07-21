@@ -13,7 +13,7 @@ const getOrderById = async (id) => {
 };
 
 const updateOrderStatus = async (id, statusData) => {
-  const response = await axios.put(`${API_URL}/${id}`, statusData);
+  const response = await axios.put(`${API_URL}/${id}/status`, statusData);
   return response.data;
 };
 

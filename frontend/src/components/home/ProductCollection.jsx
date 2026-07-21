@@ -107,7 +107,7 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
       className="w-full h-full bg-white rounded-2xl border border-gray-100 hover:shadow-[0_12px_30px_rgba(102,38,84,0.08)] transition-all duration-300 overflow-hidden flex flex-col group shadow-sm"
     >
       {/* Image Area */}
-      <Link to={`/product/${product.raw?.slug || product.id}`} state={{ product: product.raw }} className="block relative aspect-[4/3] md:aspect-square bg-[#f8f5f0] overflow-hidden">
+      <Link to={`/product/${product.raw?.slug || product.id}`} state={{ product: product.raw }} className="block relative aspect-[1.35/1] sm:aspect-square bg-[#f8f5f0] overflow-hidden">
         {product.badge && (
           <div className={`absolute top-0 left-0 z-10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${product.badgeColor} rounded-br-lg shadow-sm`}>
             {product.badge}
@@ -136,15 +136,10 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
       </Link>
 
       {/* Info Area - matching ShopPage.jsx */}
-      <div className="p-4 flex flex-col flex-1">
-        <Link to={`/product/${product.raw?.slug || product.id}`} state={{ product: product.raw }} className="block group/link mb-2 flex-1">
-          <p className="text-[11px] text-[#662654] font-semibold uppercase tracking-wider mb-1">{activeCategory}</p>
-          <h3 className="text-[13.5px] font-semibold text-gray-900 line-clamp-2 leading-snug group-hover/link:text-[#662654] transition-colors">{product.title}</h3>
+      <div className="p-2.5 sm:p-4 flex flex-col flex-1">
+        <Link to={`/product/${product.raw?.slug || product.id}`} state={{ product: product.raw }} className="block group/link mb-1 sm:mb-2 flex-1">
+          <h3 className="text-[12.5px] sm:text-[13.5px] font-semibold text-gray-900 line-clamp-2 leading-snug group-hover/link:text-[#662654] transition-colors">{product.title}</h3>
         </Link>
-
-        {product.description && (
-          <p className="text-[11.5px] text-gray-400 line-clamp-1 mb-3">{product.description}</p>
-        )}
 
         {/* Option Selector */}
         {hasVariants && (
@@ -164,6 +159,7 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
                   }}
                   value={selectedVariant?.size || ''}
                   className="w-full text-[11px] md:text-[12px] font-bold px-3 py-2 rounded-lg border border-gray-200 text-[#662654] bg-[#faf9f7] hover:border-[#662654]/50 focus:outline-none focus:border-[#662654] appearance-none cursor-pointer pr-8 text-ellipsis overflow-hidden"
+                  aria-label="Select product option size"
                 >
                   {variants.map((v, i) => (
                     <option key={i} value={v.size}>
@@ -203,17 +199,17 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
         )}
 
         {/* Price Section */}
-        <div className="flex items-baseline gap-2 mb-3">
-          <span className="text-[16px] font-bold text-gray-900">
+        <div className="flex items-baseline gap-2 mb-2 sm:mb-3">
+          <span className="text-[15px] sm:text-[16px] font-bold text-gray-900">
             ₹{currentPrice.toLocaleString('en-IN')}
           </span>
           {originalPrice > currentPrice && (
-            <span className="text-[12px] text-gray-400 line-through">
+            <span className="text-[11px] sm:text-[12px] text-gray-400 line-through">
               ₹{originalPrice.toLocaleString('en-IN')}
             </span>
           )}
           {discountPercent > 0 && (
-            <span className="text-[10px] font-bold text-white bg-green-500 px-1.5 py-0.5 rounded shadow-sm ml-auto">
+            <span className="text-[9px] sm:text-[10px] font-bold text-white bg-green-500 px-1.5 py-0.5 rounded shadow-sm ml-auto">
               {discountPercent}% OFF
             </span>
           )}
@@ -225,7 +221,7 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
           disabled={addingId === product.id}
           whileHover={{ scale: 1.02, y: -1 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full mt-auto bg-gradient-to-r from-[#662654] to-[#7f2d68] hover:from-[#7a2e64] hover:to-[#913b7e] disabled:from-emerald-600 disabled:to-teal-500 text-white rounded-full py-2.5 flex items-center justify-center gap-2 font-bold text-xs uppercase tracking-wider shadow-[0_4px_12px_rgba(102,38,84,0.15)] hover:shadow-[0_6px_20px_rgba(102,38,84,0.3)] transition-all duration-300 group/btn cursor-pointer"
+          className="w-full mt-auto bg-gradient-to-r from-[#662654] to-[#7f2d68] hover:from-[#7a2e64] hover:to-[#913b7e] disabled:from-emerald-600 disabled:to-teal-500 text-white rounded-full py-2 sm:py-2.5 flex items-center justify-center gap-2 font-bold text-[10px] sm:text-xs uppercase tracking-wider shadow-[0_4px_12px_rgba(102,38,84,0.15)] hover:shadow-[0_6px_20px_rgba(102,38,84,0.3)] transition-all duration-300 group/btn cursor-pointer"
         >
           {addingId === product.id ? (
             <>
@@ -447,22 +443,25 @@ const ProductCollection = () => {
           initial="hidden"
           animate="show"
           key={activeCategory}
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 pb-4"
+          className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory hide-scrollbar sm:grid sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 sm:gap-6 sm:overflow-visible sm:pb-0"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {loading ? (
             Array.from({ length: 5 }).map((_, idx) => (
               <div 
                 key={`skeleton-${idx}`} 
-                className="w-full bg-white rounded-2xl border border-gray-100 overflow-hidden flex flex-col shadow-sm animate-pulse"
+                className="w-[46vw] max-w-[185px] flex-shrink-0 snap-center sm:w-auto sm:max-w-none sm:snap-align-none"
               >
-                <div className="aspect-square bg-gray-50 flex items-center justify-center p-4">
-                  <div className="w-4/5 h-4/5 bg-gray-200 rounded-lg" />
-                </div>
-                <div className="p-4 flex flex-col flex-1 space-y-3">
-                  <div className="h-4 bg-gray-200 rounded w-3/4" />
-                  <div className="h-3 bg-gray-200 rounded w-5/6" />
-                  <div className="mt-auto h-4 bg-gray-200 rounded w-1/2" />
-                  <div className="h-10 bg-gray-200 rounded-full w-full" />
+                <div className="w-full bg-white rounded-2xl border border-gray-100 overflow-hidden flex flex-col shadow-sm animate-pulse">
+                  <div className="aspect-square bg-gray-50 flex items-center justify-center p-4">
+                    <div className="w-4/5 h-4/5 bg-gray-200 rounded-lg" />
+                  </div>
+                  <div className="p-4 flex flex-col flex-1 space-y-3">
+                    <div className="h-4 bg-gray-200 rounded w-3/4" />
+                    <div className="h-3 bg-gray-200 rounded w-5/6" />
+                    <div className="mt-auto h-4 bg-gray-200 rounded w-1/2" />
+                    <div className="h-10 bg-gray-200 rounded-full w-full" />
+                  </div>
                 </div>
               </div>
             ))
@@ -472,15 +471,16 @@ const ProductCollection = () => {
             </div>
           ) : (
             products.slice(0, 5).map((product) => (
-              <CollectionProductCard
-                key={product.id}
-                product={product}
-                activeCategory={activeCategory}
-                addingId={addingId}
-                setAddingId={setAddingId}
-                isInWishlist={isInWishlist}
-                handleToggleWishlist={handleToggleWishlist}
-              />
+              <div key={product.id} className="w-[46vw] max-w-[185px] flex-shrink-0 snap-center sm:w-auto sm:max-w-none sm:snap-align-none">
+                <CollectionProductCard
+                  product={product}
+                  activeCategory={activeCategory}
+                  addingId={addingId}
+                  setAddingId={setAddingId}
+                  isInWishlist={isInWishlist}
+                  handleToggleWishlist={handleToggleWishlist}
+                />
+              </div>
             )))}
         </motion.div>
 
