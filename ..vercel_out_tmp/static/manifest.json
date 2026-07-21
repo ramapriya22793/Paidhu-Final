@@ -1,0 +1,21 @@
+{
+  "short_name": "Paidhu",
+  "name": "Paidhu - The Edible Flower Co.",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "type": "image/png",
+      "sizes": "196x196"
+    },
+    {
+      "src": "/Paidhulogo.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#522742",
+  "theme_color": "#522742",
+  "display": "standalone",
+  "orientation": "portrait"
+}

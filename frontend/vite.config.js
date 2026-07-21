@@ -7,6 +7,9 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  define: {
+    __BUILD_TIME__: JSON.stringify(new Date().toISOString()),
+  },
   build: {
     rollupOptions: {
       output: {
@@ -19,3 +22,4 @@ export default defineConfig({
     }
   }
 })
+

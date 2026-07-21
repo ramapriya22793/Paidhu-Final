@@ -1,3 +1,6 @@
+// v4 - all fixes: similarProducts, carousel, product names
+// Build: 2026-07-21
+if (typeof __BUILD_TIME__ !== 'undefined') console.debug('Build:', __BUILD_TIME__);
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'

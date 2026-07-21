@@ -18,6 +18,13 @@ const resolveImage = (img) => {
   return `${API_BASE}${img.startsWith('/') ? '' : '/'}${img}`;
 };
 
+// Fix corrupted product names from DB (e.g. "???" -> " - ")
+const resolveProductName = (name) => {
+  if (!name) return '';
+  return name.replace(/\s*\?+\s*/g, ' - ').trim();
+};
+
+
 const ProductDetailPage = () => {
   const { id } = useParams();
   const location = useLocation();
