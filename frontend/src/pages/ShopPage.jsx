@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useSearchParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -18,6 +18,12 @@ import fallbacks from '../components/home/fallbacks.json';
 import SEO from '../components/seo/SEO';
 
 const API_BASE = 'https://paidhu-final-anm2.vercel.app';
+
+// Clean up corrupted product names (??? -> -)
+const resolveProductName = (name) => {
+  if (!name) return '';
+  return name.replace(/\s*\?+\s*/g, ' - ').trim();
+};
 
 const allFallbackProducts = (() => {
   const seen = new Set();
@@ -139,7 +145,10 @@ const DealCountdown = () => {
   );
 };
 
+// ProductCarouselRow is defined after ProductCard (below)
+
 // ---------- PRODUCT CARD ----------
+
 const ProductCard = ({ product, index, navSection }) => {
   const [isAdding, setIsAdding] = useState(false);
   const { addToCart, wishlist, toggleWishlist } = useCart();
@@ -224,7 +233,7 @@ const ProductCard = ({ product, index, navSection }) => {
       ) : null}
 
       {/* Image — single static image, no swap on hover */}
-      <Link to={`/product/${product.slug || product.id}`} state={{ product }} className="block relative aspect-[1.35/1] sm:aspect-square overflow-hidden bg-[#f8f4ef]">
+      <Link to={`/product/${product.slug || product.id}`} state={{ product }} className="block relative aspect-square overflow-hidden bg-[#f8f4ef]">
         {product.image ? (
           <>
             {/* Branded placeholder behind — visible only when image fails to load */}
@@ -254,7 +263,7 @@ const ProductCard = ({ product, index, navSection }) => {
       {/* Info */}
       <div className="p-2.5 sm:p-4 flex flex-col flex-1">
         <Link to={`/product/${product.slug || product.id}`} state={{ product }} className="block group/link mb-1 sm:mb-2 flex-1">
-          <h3 className="text-[12.5px] sm:text-[13.5px] font-semibold text-gray-900 line-clamp-2 leading-snug group-hover/link:text-[#662654] transition-colors">{product.name}</h3>
+        <h3 className="text-[12.5px] sm:text-[13.5px] font-semibold text-gray-900 line-clamp-2 leading-snug group-hover/link:text-[#662654] transition-colors">{resolveProductName(product.name)}</h3>
         </Link>
 
         {/* Option Selector */}
@@ -367,7 +376,83 @@ const SkeletonCard = () => (
   </div>
 );
 
+// ---------- PRODUCT CAROUSEL ROW ----------
+const ProductCarouselRow = ({ products, navSection }) => {
+  const scrollRef = useRef(null);
+  const [canLeft, setCanLeft]   = useState(false);
+  const [canRight, setCanRight] = useState(true);
+
+  const CARD_W = 240;
+
+  const checkScroll = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanLeft(el.scrollLeft > 8);
+    setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 8);
+  };
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    checkScroll();
+    el.addEventListener('scroll', checkScroll, { passive: true });
+    return () => el.removeEventListener('scroll', checkScroll);
+  }, [products]);
+
+  const scroll = (dir) => {
+    scrollRef.current?.scrollBy({ left: dir * CARD_W * 2, behavior: 'smooth' });
+  };
+
+  return (
+    <div className="relative">
+      {/* Left Arrow */}
+      <button
+        onClick={() => scroll(-1)}
+        className={`absolute left-0 top-1/2 -translate-y-1/2 z-20 -translate-x-3
+          w-10 h-10 rounded-full bg-white shadow-lg border border-gray-200
+          flex items-center justify-center text-[#662654]
+          transition-all duration-200 hover:bg-[#662654] hover:text-white hover:shadow-xl
+          ${canLeft ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+      >
+        <ChevronLeft size={20} />
+      </button>
+
+      {/* Scrollable Row */}
+      <div
+        ref={scrollRef}
+        className="flex gap-4 overflow-x-auto pb-4 pt-1 px-2 snap-x snap-mandatory"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        {products.map((product, i) => (
+          <motion.div
+            key={product.id}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: Math.min(i * 0.04, 0.4), type: 'spring', damping: 20, stiffness: 120 }}
+            className="flex-shrink-0 w-[200px] sm:w-[230px] md:w-[255px] snap-start"
+          >
+            <ProductCard product={product} index={i} navSection={navSection} />
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Right Arrow */}
+      <button
+        onClick={() => scroll(1)}
+        className={`absolute right-0 top-1/2 -translate-y-1/2 z-20 translate-x-3
+          w-10 h-10 rounded-full bg-white shadow-lg border border-gray-200
+          flex items-center justify-center text-[#662654]
+          transition-all duration-200 hover:bg-[#662654] hover:text-white hover:shadow-xl
+          ${canRight ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+      >
+        <ChevronRight size={20} />
+      </button>
+    </div>
+  );
+};
+
 // ---------- MAIN SHOP PAGE ----------
+
 const ShopPage = () => {
   const { navSection = 'shop-all' } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -905,13 +990,13 @@ const ShopPage = () => {
       )}
 
       {/* ══════════════════════════════════════════════════
-          PRODUCT GRID
+          PRODUCT CAROUSEL
           ══════════════════════════════════════════════════ */}
       <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-8">
 
         {loading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-            {Array.from({ length: LIMIT }).map((_, i) => <SkeletonCard key={i} />)}
+          <div className="flex gap-4 overflow-hidden pb-4">
+            {Array.from({ length: 6 }).map((_, i) => <div key={i} className="flex-shrink-0 w-[200px] sm:w-[220px]"><SkeletonCard /></div>)}
           </div>
         ) : products.length === 0 ? (
           <motion.div
@@ -929,17 +1014,8 @@ const ShopPage = () => {
           </motion.div>
         ) : (
           <>
-            {/* Standard Grid layout */}
-            <motion.div 
-              variants={gridVariants}
-              initial="hidden"
-              animate="show"
-              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6"
-            >
-              {products.map((product, i) => (
-                <ProductCard key={product.id} product={product} index={i} navSection={navSection} />
-              ))}
-            </motion.div>
+            {/* ── Horizontal Carousel ── */}
+            <ProductCarouselRow products={products} navSection={navSection} />
 
             {/* Category-wise Horizontal Carousel Scroll Section */}
             {!activeCategory && (
