@@ -369,18 +369,11 @@ const CareersPage = () => {
               <span className="text-gray-500 font-medium">Experience Required</span>
               <span className="font-semibold">Freshers Can Apply</span>
             </li>
-            <li className="flex justify-between border-b border-gray-50 pb-2">
-              <span className="text-gray-500 font-medium">Working Days</span>
-              <span className="font-semibold">Monday to Friday</span>
-            </li>
-            <li className="flex justify-between border-b border-gray-50 pb-2">
-              <span className="text-gray-500 font-medium">Working Hours</span>
-              <span className="font-semibold">Flexible</span>
-            </li>
             <li className="flex justify-between">
               <span className="text-gray-500 font-medium">Certificate</span>
               <span className="font-semibold text-emerald-700">Provided after completion</span>
             </li>
+
           </ul>
         </div>
 
