@@ -36,8 +36,10 @@ const ProductDetailPage = () => {
   const [product, setProduct] = useState(() => stateProduct || null);
   const [loading, setLoading] = useState(() => !stateProduct);
   const [error, setError] = useState(null);
+  const [mainImgLoading, setMainImgLoading] = useState(true);
   
   // Image Hover Zoom Magnifier state
+
   const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
   const [isZooming, setIsZooming] = useState(false);
 
