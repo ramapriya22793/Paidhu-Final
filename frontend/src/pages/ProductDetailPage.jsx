@@ -732,18 +732,13 @@ const ProductDetailPage = () => {
                     </Link>
 
                     <div>
-                      <span className="text-[9px] font-bold uppercase tracking-wider text-[#662654] bg-[#662654]/10 px-2 py-0.5 rounded-full inline-block">
-                        {simProd.category || 'Similar'}
-                      </span>
-                      <Link to={`/product/${simProd.slug || simProd.id}`} className="block mt-1">
+                      <Link to={`/product/${simProd.slug || simProd.id}`} className="block">
                         <h3 className="font-bold text-xs sm:text-sm text-gray-900 group-hover:text-[#662654] transition-colors line-clamp-1">
                           {simProd.name}
                         </h3>
                       </Link>
-                      <p className="text-[11px] text-gray-500 line-clamp-1 mt-0.5">
-                        {simProd.shortDescription || simProd.description}
-                      </p>
                     </div>
+
 
                     <div className="flex items-center justify-between mt-3 pt-2 border-t border-gray-100">
                       <div>
