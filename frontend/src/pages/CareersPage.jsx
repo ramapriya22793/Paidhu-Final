@@ -72,8 +72,9 @@ const CareersPage = () => {
     setSubmitError('');
 
     try {
-      const baseUrl = import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app';
-      const response = await fetch(`${baseUrl}/api/careers/apply`, {
+      const API_BASE = 'https://paidhu-final-anm2.vercel.app';
+      const response = await fetch(`${API_BASE}/api/careers/apply`, {
+
 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
