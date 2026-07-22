@@ -321,30 +321,7 @@ const CareersPage = () => {
         </div>
       </section>
 
-      {/* WHY JOIN PAIDHU */}
-      <section className="bg-[#ede7d7]/40 py-16 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#662654]">Why Join Paidhu?</h2>
-            <p className="text-gray-600 mt-2">Empowering culture, hands-on learning, and real growth.</p>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {whyJoin.map((item, index) => (
-              <motion.div 
-                key={index}
-                whileHover={{ y: -3 }}
-                className="bg-white p-6 rounded-2xl shadow-sm border border-[#ede7d7] text-center flex flex-col items-center space-y-4"
-              >
-                <div className="p-4 rounded-2xl bg-[#662654]/5">
-                  {item.icon}
-                </div>
-                <h3 className="font-semibold text-gray-800 text-base leading-snug">{item.title}</h3>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* INTERNSHIP DETAILS & APPLICATION PROCESS */}
       <section className="max-w-6xl mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12">
