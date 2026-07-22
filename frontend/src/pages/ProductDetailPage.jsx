@@ -789,12 +789,20 @@ const ProductDetailPage = () => {
                         )}
                       </div>
 
-                      <Link
-                        to={`/product/${simProd.slug || simProd.id}`}
-                        className="bg-[#662654] hover:bg-[#7a2e64] text-white text-[11px] font-bold px-3 py-1.5 rounded-full transition-all shadow-sm flex items-center gap-1"
+                      <motion.button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          addToCart(simProd, 1);
+                        }}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="w-7 h-7 rounded-full bg-[#662654] hover:bg-[#7a2e64] text-white flex items-center justify-center shadow-md transition-all cursor-pointer"
+                        title="Add to Cart"
                       >
-                        <ShoppingCart size={11} /> View
-                      </Link>
+                        <Plus size={16} strokeWidth={2.5} />
+                      </motion.button>
+
                     </div>
                   </motion.div>
                 );
