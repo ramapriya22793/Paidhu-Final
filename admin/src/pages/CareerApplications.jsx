@@ -17,7 +17,7 @@ const CareerApplications = () => {
   const fetchApplications = async () => {
     try {
       const config = { headers: { Authorization: `Bearer ${authService.getToken()}` } };
-      const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const baseUrl = import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app';
       const res = await axios.get(`${baseUrl}/api/careers/applications`, config);
       setApplications(res.data);
     } catch (error) {
@@ -30,7 +30,7 @@ const CareerApplications = () => {
   const updateStatus = async (id, newStatus) => {
     try {
       const config = { headers: { Authorization: `Bearer ${authService.getToken()}` } };
-      const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const baseUrl = import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app';
       await axios.patch(`${baseUrl}/api/careers/applications/${id}/status`, { status: newStatus }, config);
       fetchApplications();
     } catch (error) {
@@ -42,7 +42,7 @@ const CareerApplications = () => {
     if (!window.confirm('Are you sure you want to delete this application?')) return;
     try {
       const config = { headers: { Authorization: `Bearer ${authService.getToken()}` } };
-      const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const baseUrl = import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app';
       await axios.delete(`${baseUrl}/api/careers/applications/${id}`, config);
       fetchApplications();
     } catch (error) {
