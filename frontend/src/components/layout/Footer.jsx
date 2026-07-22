@@ -63,7 +63,9 @@ const Footer = () => {
           <div className="flex flex-col space-y-4">
             <h4 className="font-bold text-xl mb-4 font-serif text-[#ede7d7]">Quick Links</h4>
             <Link to="/shop/about-us" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">About Us</Link>
+            <Link to="/careers" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Careers</Link>
             <Link to="/shop" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Shop All</Link>
+
             <Link to="/shop/bulk-orders" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Bulk Orders</Link>
             <Link to="/saffron-guidance" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Saffron Guidance</Link>
           </div>

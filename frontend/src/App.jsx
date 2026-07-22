@@ -18,6 +18,8 @@ const OrderSuccessPage = lazy(() => import('./pages/OrderSuccessPage'));
 const SaffronGuidancePage = lazy(() => import('./pages/SaffronGuidancePage'));
 const BYOCPage = lazy(() => import('./pages/BYOCPage'));
 const LegalPage = lazy(() => import('./pages/LegalPage'));
+const CareersPage = lazy(() => import('./pages/CareersPage'));
+
 
 // Lazy load below-the-fold home components
 const ExploreCategory = lazy(() => import('./components/home/ExploreCategory'));
@@ -84,7 +86,9 @@ function App() {
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/order-success/:orderNumber" element={<OrderSuccessPage />} />
             <Route path="/saffron-guidance" element={<SaffronGuidancePage />} />
+            <Route path="/careers" element={<CareersPage />} />
             <Route path="/legal/:type" element={<LegalPage />} />
+
           </Routes>
         </Suspense>
 

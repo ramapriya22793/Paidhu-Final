@@ -64,6 +64,7 @@ app.use("/api/tracking", require("./routes/trackingRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes"));
 app.use("/api/saffron-guidance", require("./routes/saffronGuidanceRoutes"));
 app.use("/api/newsletter", require("./routes/newsletterRoutes"));
+app.use("/api/careers", require("./routes/careerRoutes"));
 
 
 const initializeAdmin = async () => {

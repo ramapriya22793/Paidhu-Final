@@ -382,4 +382,23 @@ model NewsletterSubscriber {
   createdAt DateTime @default(now())
 }
 
+model CareerApplication {
+  id               String   @id @default(uuid())
+  fullName         String
+  email            String
+  phone            String
+  location         String
+  college          String
+  degree           String
+  graduationYear   String
+  position         String
+  resumeData       String?  // Base64 encoded file content
+  resumeName       String?  // File name
+  portfolioUrl     String?
+  coverLetter      String?
+  status           String   @default("New") // New, Reviewed, Shortlisted, Rejected
+  createdAt        DateTime @default(now())
+}
+
+
 

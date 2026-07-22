@@ -93,8 +93,10 @@ const navSlugMap = {
   'Bulk Orders':                 'bulk-orders',
   'Blogs':                       'blogs',
   'About Us':                    'about-us',
+  'Careers':                     '__direct__/careers',
   'Saffron Guidance':            '__direct__/saffron-guidance',
 };
+
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled]           = useState(false);
@@ -301,8 +303,9 @@ const Navbar = () => {
     { top: { name: 'Starting Floral food habitat' }, bottom: { name: 'Blogs' } },
     { top: { name: 'BYOC' }, bottom: { name: 'Saffron Guidance' } },
     { top: { name: 'Our Own Community' } },
-    { top: { name: 'About Us' } },
+    { top: { name: 'About Us' }, bottom: { name: 'Careers' } },
   ];
+
 
   return (
     <motion.header

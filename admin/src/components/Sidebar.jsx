@@ -36,7 +36,9 @@ const menuItems = [
   { name: 'Bulk Inquiries', path: '/bulk-order-inquiries', icon: <FiFileText /> },
   { name: 'About Us', path: '/about-us-management', icon: <FiUsers /> },
   { name: 'Saffron Guidance Leads', path: '/saffron-guidance-leads', icon: <FiFileText /> },
+  { name: 'Career Applications', path: '/career-applications', icon: <FiUsers /> },
 ];
+
 
 const Sidebar = () => {
   const navigate = useNavigate();

@@ -41,7 +41,9 @@ const WishlistInsights = lazy(() => import('./pages/WishlistInsights'));
 const CategoryGridManagement = lazy(() => import('./pages/CategoryGridManagement'));
 const TiffinLeads = lazy(() => import('./pages/TiffinLeads'));
 const SaffronGuidanceLeads = lazy(() => import('./pages/SaffronGuidanceLeads'));
+const CareerApplications = lazy(() => import('./pages/CareerApplications'));
 const LoginHistory = lazy(() => import('./pages/LoginHistory'));
+
 
 const App = () => {
   // Keep the Render free tier server awake while the admin panel is open
@@ -109,7 +111,9 @@ const App = () => {
               <Route path="tiffin-leads" element={<TiffinLeads />} />
               <Route path="whatsapp-leads" element={<TiffinLeads />} />
               <Route path="saffron-guidance-leads" element={<SaffronGuidanceLeads />} />
+              <Route path="career-applications" element={<CareerApplications />} />
               <Route path="login-history" element={<LoginHistory />} />
+
               <Route path="settings" element={<Settings />} />
               <Route path="tracking" element={<TrackingScripts />} />
               <Route path="pages" element={<PagesList />} />
