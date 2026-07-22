@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Star, ChevronDown, ChevronUp, Plus, Minus, ShoppingCart, 
-  ShieldCheck, CheckCircle2, Heart, Info, HelpCircle, ArrowLeft, Check
+  ShieldCheck, CheckCircle2, Heart, Info, HelpCircle, ArrowLeft, Check,
+  ChevronLeft, ChevronRight
 } from 'lucide-react';
+
 import { useCart } from '../context/CartContext';
 import SEO from '../components/seo/SEO';
 import ProductCarousel from '../components/home/ProductCarousel';
@@ -37,9 +39,15 @@ const ProductDetailPage = () => {
   
   const [mainImgLoading, setMainImgLoading] = useState(true);
 
-  // Image Hover Zoom Magnifier state
-  const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
-  const [isZooming, setIsZooming] = useState(false);
+  // Similar Products Carousel ref & helper
+  const similarScrollRef = useRef(null);
+  const scrollSimilar = (direction) => {
+    if (similarScrollRef.current) {
+      const scrollAmount = direction === 'left' ? -320 : 320;
+      similarScrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
   
   // Order states
   const [quantity, setQuantity] = useState(1);
@@ -703,17 +711,42 @@ const ProductDetailPage = () => {
 
         </div>
 
-        {/* ── Category-Based Similar Products Section ── */}
+        {/* ── Category-Based Similar Products Section (Carousel Scroller) ── */}
         {similarProducts.length > 0 && (
-          <div className="mt-12 mb-8 max-w-5xl mx-auto">
-            <div className="flex flex-col items-center mb-6">
-              <h2 className="font-serif text-xl md:text-2xl font-bold text-[#662654] text-center tracking-tight mb-1.5">
-                Similar Products
-              </h2>
-              <div className="w-10 h-0.5 bg-[#662654] rounded-full" />
+          <div className="mt-12 mb-8 max-w-6xl mx-auto px-4">
+            <div className="flex items-center justify-between mb-5 border-b border-gray-100 pb-3">
+              <div>
+                <h2 className="font-serif text-xl md:text-2xl font-bold text-[#662654] tracking-tight">
+                  Similar Products
+                </h2>
+                <div className="w-10 h-0.5 bg-[#662654] rounded-full mt-1" />
+              </div>
+
+              {/* Scroll Arrow Controls */}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => scrollSimilar('left')}
+                  className="w-9 h-9 rounded-full bg-white border border-gray-200 text-[#662654] flex items-center justify-center shadow-sm hover:bg-[#662654] hover:text-white transition-all active:scale-95 cursor-pointer"
+                  aria-label="Scroll Left"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                <button
+                  onClick={() => scrollSimilar('right')}
+                  className="w-9 h-9 rounded-full bg-white border border-gray-200 text-[#662654] flex items-center justify-center shadow-sm hover:bg-[#662654] hover:text-white transition-all active:scale-95 cursor-pointer"
+                  aria-label="Scroll Right"
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </div>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {/* Horizontal Carousel Container */}
+            <div 
+              ref={similarScrollRef}
+              className="flex overflow-x-auto gap-4 py-2 scroll-smooth snap-x snap-mandatory no-scrollbar"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
               {similarProducts.map((simProd) => {
                 const simImg = resolveImage(simProd.image);
                 const simPrice = simProd.discountPrice || simProd.price;
@@ -721,7 +754,7 @@ const ProductDetailPage = () => {
                   <motion.div
                     key={simProd.id}
                     whileHover={{ y: -4 }}
-                    className="bg-white rounded-2xl p-3 border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-md transition-all duration-300 flex flex-col justify-between group"
+                    className="w-[200px] sm:w-[220px] shrink-0 snap-start bg-white rounded-2xl p-3 border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-md transition-all duration-300 flex flex-col justify-between group"
                   >
                     <Link to={`/product/${simProd.slug || simProd.id}`} className="block relative aspect-[4/3] rounded-xl overflow-hidden bg-[#faf9f6] mb-2.5">
                       <img 
@@ -738,7 +771,6 @@ const ProductDetailPage = () => {
                         </h3>
                       </Link>
                     </div>
-
 
                     <div className="flex items-center justify-between mt-3 pt-2 border-t border-gray-100">
                       <div>
@@ -765,6 +797,7 @@ const ProductDetailPage = () => {
             </div>
           </div>
         )}
+
 
 
       </div>
