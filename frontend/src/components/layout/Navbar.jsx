@@ -303,8 +303,9 @@ const Navbar = () => {
     { top: { name: 'Starting Floral food habitat' }, bottom: { name: 'Blogs' } },
     { top: { name: 'BYOC' }, bottom: { name: 'Saffron Guidance' } },
     { top: { name: 'Our Own Community' } },
-    { top: { name: 'About Us' }, bottom: { name: 'Careers' } },
+    { top: { name: 'About Us' } },
   ];
+
 
 
   return (
