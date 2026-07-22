@@ -1,11 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  FiBriefcase, FiClock, FiUserCheck, FiCheckCircle, FiChevronDown, 
-  FiChevronUp, FiUpload, FiSend, FiAward, FiHeart, FiTrendingUp, 
-  FiBookOpen, FiShield, FiSmile, FiMapPin, FiCalendar, FiFileText
-} from 'react-icons/fi';
+  Briefcase, Clock, UserCheck, CheckCircle, ChevronDown, 
+  ChevronUp, Upload, Send, Award, Heart, TrendingUp, 
+  BookOpen, Shield, Smile, MapPin, Calendar, FileText
+} from 'lucide-react';
 import SEO from '../components/seo/SEO';
+
 
 const CareersPage = () => {
   const formRef = useRef(null);
@@ -174,14 +175,15 @@ const CareersPage = () => {
   ];
 
   const whyJoin = [
-    { icon: <FiBookOpen className="text-3xl text-[#662654]" />, title: 'Learn from Real Industry Projects' },
-    { icon: <FiClock className="text-3xl text-[#662654]" />, title: 'Flexible Working Environment' },
-    { icon: <FiHeart className="text-3xl text-[#662654]" />, title: 'Mentorship & Guidance' },
-    { icon: <FiTrendingUp className="text-3xl text-[#662654]" />, title: 'Improve Professional Skills' },
-    { icon: <FiBriefcase className="text-3xl text-[#662654]" />, title: 'Opportunity to Build Your Portfolio' },
-    { icon: <FiAward className="text-3xl text-[#662654]" />, title: 'Certificate of Internship on Completion' },
-    { icon: <FiUserCheck className="text-3xl text-[#662654]" />, title: 'Potential Full-Time Opportunity' }
+    { icon: <BookOpen className="text-3xl text-[#662654]" />, title: 'Learn from Real Industry Projects' },
+    { icon: <Clock className="text-3xl text-[#662654]" />, title: 'Flexible Working Environment' },
+    { icon: <Heart className="text-3xl text-[#662654]" />, title: 'Mentorship & Guidance' },
+    { icon: <TrendingUp className="text-3xl text-[#662654]" />, title: 'Improve Professional Skills' },
+    { icon: <Briefcase className="text-3xl text-[#662654]" />, title: 'Opportunity to Build Your Portfolio' },
+    { icon: <Award className="text-3xl text-[#662654]" />, title: 'Certificate of Internship on Completion' },
+    { icon: <UserCheck className="text-3xl text-[#662654]" />, title: 'Potential Full-Time Opportunity' }
   ];
+
 
   const faqs = [
     { q: 'Is this a paid internship?', a: 'No. This is an unpaid internship designed for learning and hands-on industry experience.' },
@@ -252,7 +254,7 @@ const CareersPage = () => {
                         {pos.type}
                       </span>
                       <span className="bg-amber-100 text-amber-800 text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
-                        <FiClock size={12} /> {pos.duration}
+                        <Clock size={12} /> {pos.duration}
                       </span>
                     </div>
                   </div>
@@ -260,12 +262,13 @@ const CareersPage = () => {
 
                 <div className="space-y-2 text-sm text-gray-600 border-t border-b border-gray-100 py-4">
                   <p className="flex items-center gap-2">
-                    <FiUserCheck className="text-[#662654]" /> <strong className="text-gray-800">Eligibility:</strong> {pos.eligibility}
+                    <UserCheck className="text-[#662654]" /> <strong className="text-gray-800">Eligibility:</strong> {pos.eligibility}
                   </p>
                   <p className="flex items-center gap-2">
-                    <FiMapPin className="text-[#662654]" /> <strong className="text-gray-800">Work Mode:</strong> {pos.workMode}
+                    <MapPin className="text-[#662654]" /> <strong className="text-gray-800">Work Mode:</strong> {pos.workMode}
                   </p>
                 </div>
+
 
                 {/* Responsibilities */}
                 <div>
@@ -346,7 +349,7 @@ const CareersPage = () => {
         {/* Information Card */}
         <div className="bg-white p-8 rounded-2xl shadow-md border border-[#ede7d7] space-y-6">
           <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
-            <FiShield className="text-3xl text-[#662654]" />
+            <Shield className="text-3xl text-[#662654]" />
             <h3 className="text-2xl font-serif font-bold text-[#662654]">Internship Details</h3>
           </div>
           <ul className="space-y-4 text-gray-700">
@@ -384,7 +387,7 @@ const CareersPage = () => {
         {/* 4-Step Timeline */}
         <div className="bg-white p-8 rounded-2xl shadow-md border border-[#ede7d7] space-y-6">
           <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
-            <FiCheckCircle className="text-3xl text-[#662654]" />
+            <CheckCircle className="text-3xl text-[#662654]" />
             <h3 className="text-2xl font-serif font-bold text-[#662654]">Application Process</h3>
           </div>
           <div className="space-y-6 relative before:absolute before:inset-0 before:left-5 before:w-0.5 before:bg-[#662654]/20">
@@ -422,7 +425,8 @@ const CareersPage = () => {
               animate={{ scale: 1, opacity: 1 }}
               className="bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl p-8 text-center space-y-4"
             >
-              <FiCheckCircle className="text-5xl text-emerald-600 mx-auto" />
+              <CheckCircle className="text-5xl text-emerald-600 mx-auto" />
+
               <h3 className="text-2xl font-bold">Application Submitted!</h3>
               <p className="text-sm text-emerald-700 max-w-md mx-auto">
                 Thank you for applying to Paidhu Ethical Foods. We have received your application and will get back to you soon.
@@ -550,7 +554,7 @@ const CareersPage = () => {
                     onChange={handleFileChange}
                     className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
                   />
-                  <FiUpload className="text-3xl text-[#662654] mx-auto mb-2" />
+                  <Upload className="text-3xl text-[#662654] mx-auto mb-2" />
                   <p className="text-sm font-semibold text-gray-700">
                     {resumeName ? `Selected: ${resumeName}` : 'Click or Drag & Drop to upload Resume'}
                   </p>
@@ -606,7 +610,7 @@ const CareersPage = () => {
                   <span>Submitting Application...</span>
                 ) : (
                   <>
-                    <FiSend /> Submit Application
+                    <Send size={18} /> Submit Application
                   </>
                 )}
               </button>
@@ -632,7 +636,7 @@ const CareersPage = () => {
                 className="w-full p-6 text-left font-bold text-gray-800 flex justify-between items-center hover:text-[#662654] transition-colors"
               >
                 <span>{faq.q}</span>
-                {openFaq === index ? <FiChevronUp className="text-[#662654]" /> : <FiChevronDown className="text-gray-400" />}
+                {openFaq === index ? <ChevronUp className="text-[#662654]" /> : <ChevronDown className="text-gray-400" />}
               </button>
               <AnimatePresence>
                 {openFaq === index && (
@@ -676,9 +680,10 @@ const CareersPage = () => {
           onClick={() => scrollToForm()}
           className="bg-[#662654] text-white font-bold px-6 py-3.5 rounded-full shadow-2xl flex items-center gap-2 border border-[#ede7d7] active:scale-95"
         >
-          <FiSend /> Apply Now
+          <Send size={18} /> Apply Now
         </button>
       </div>
+
     </div>
   );
 };
