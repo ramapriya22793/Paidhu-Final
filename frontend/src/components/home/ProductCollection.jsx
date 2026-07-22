@@ -141,10 +141,10 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
           <h3 className="text-[12.5px] sm:text-[13.5px] font-semibold text-gray-900 line-clamp-2 leading-snug group-hover/link:text-[#662654] transition-colors">{product.title}</h3>
         </Link>
 
-        {/* Option Selector */}
-        {hasVariants && (
-          <div className="mb-3 w-full">
-            {variants.some(v => v.size.length > 12) ? (
+        {/* Option Selector Container - reserved min-height slot for uniform card height */}
+        <div className="min-h-[36px] mb-2 flex items-center w-full">
+          {hasVariants && (
+            variants.some(v => v.size.length > 12) ? (
               <div className="relative w-full">
                 <select
                   onClick={(e) => {
@@ -194,9 +194,10 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
                   </button>
                 ))}
               </div>
-            )}
-          </div>
-        )}
+            )
+          )}
+        </div>
+
 
         {/* Price Section */}
         <div className="flex items-baseline gap-2 mb-2 sm:mb-3">
