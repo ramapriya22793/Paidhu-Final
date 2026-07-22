@@ -12,7 +12,8 @@ const CareersPage = () => {
   const formRef = useRef(null);
   
   // Accordion open states for positions
-  const [openPosition, setOpenPosition] = useState('sales'); // 'sales' | 'marketing' | null
+  const [openPosition, setOpenPosition] = useState(null); // 'sales' | 'marketing' | null
+
   
   // FAQ accordion open states
   const [openFaq, setOpenFaq] = useState(null);
@@ -240,85 +241,116 @@ const CareersPage = () => {
           <p className="text-gray-600 mt-2">Explore exciting internship opportunities to kickstart your career.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {positions.map((pos) => (
-            <motion.div 
-              key={pos.id}
-              whileHover={{ y: -4 }}
-              className="bg-white rounded-2xl shadow-md border border-[#ede7d7] overflow-hidden flex flex-col justify-between"
-            >
-              <div className="p-8 space-y-6">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-2xl font-bold text-[#662654]">{pos.title}</h3>
-                    <div className="flex flex-wrap gap-2 mt-3">
-                      <span className="bg-[#662654]/10 text-[#662654] text-xs font-semibold px-3 py-1 rounded-full">
-                        {pos.type}
-                      </span>
-                      <span className="bg-amber-100 text-amber-800 text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
-                        <Clock size={12} /> {pos.duration}
-                      </span>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+          {positions.map((pos) => {
+            const isExpanded = openPosition === pos.id;
+            return (
+              <motion.div 
+                key={pos.id}
+                layout
+                className="bg-white rounded-2xl shadow-sm border border-[#ede7d7] overflow-hidden flex flex-col justify-between"
+              >
+                <div className="p-6 space-y-4">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="text-xl font-bold text-[#662654]">{pos.title}</h3>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        <span className="bg-[#662654]/10 text-[#662654] text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                          {pos.type}
+                        </span>
+                        <span className="bg-amber-100 text-amber-800 text-xs font-semibold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                          <Clock size={12} /> {pos.duration}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="space-y-2 text-sm text-gray-600 border-t border-b border-gray-100 py-4">
-                  <p className="flex items-center gap-2">
-                    <UserCheck className="text-[#662654]" /> <strong className="text-gray-800">Eligibility:</strong> {pos.eligibility}
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <MapPin className="text-[#662654]" /> <strong className="text-gray-800">Work Mode:</strong> {pos.workMode}
-                  </p>
-                </div>
-
-
-                {/* Responsibilities */}
-                <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Responsibilities:</h4>
-                  <ul className="space-y-1.5 text-sm text-gray-600">
-                    {pos.responsibilities.map((r, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <span className="text-[#662654] font-bold">•</span>
-                        <span>{r}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Skills Required */}
-                <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Skills Required:</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {pos.skills.map((s, i) => (
-                      <span key={i} className="bg-gray-100 text-gray-700 text-xs font-medium px-2.5 py-1 rounded-md">
-                        {s}
-                      </span>
-                    ))}
+                  <div className="space-y-1.5 text-xs text-gray-600 border-t border-gray-100 pt-3">
+                    <p className="flex items-center gap-2">
+                      <UserCheck size={14} className="text-[#662654]" /> <strong className="text-gray-800">Eligibility:</strong> {pos.eligibility}
+                    </p>
+                    <p className="flex items-center gap-2">
+                      <MapPin size={14} className="text-[#662654]" /> <strong className="text-gray-800">Work Mode:</strong> {pos.workMode}
+                    </p>
                   </div>
+
+                  {/* Expandable Details */}
+                  <AnimatePresence>
+                    {isExpanded && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.25 }}
+                        className="space-y-4 pt-3 border-t border-gray-100 overflow-hidden"
+                      >
+                        {/* Responsibilities */}
+                        <div>
+                          <h4 className="font-semibold text-xs text-gray-800 uppercase tracking-wider mb-2">Responsibilities:</h4>
+                          <ul className="space-y-1 text-xs text-gray-600">
+                            {pos.responsibilities.map((r, i) => (
+                              <li key={i} className="flex items-start gap-1.5">
+                                <span className="text-[#662654] font-bold">•</span>
+                                <span>{r}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* Skills Required */}
+                        <div>
+                          <h4 className="font-semibold text-xs text-gray-800 uppercase tracking-wider mb-2">Skills Required:</h4>
+                          <div className="flex flex-wrap gap-1.5">
+                            {pos.skills.map((s, i) => (
+                              <span key={i} className="bg-gray-100 text-gray-700 text-[11px] font-medium px-2 py-0.5 rounded">
+                                {s}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Preferred Qualification */}
+                        <div>
+                          <h4 className="font-semibold text-xs text-gray-800 uppercase tracking-wider mb-1">Preferred Qualification:</h4>
+                          <ul className="text-xs text-gray-600 space-y-1">
+                            {pos.qualifications.map((q, i) => (
+                              <li key={i}>• {q}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
 
-                {/* Preferred Qualification */}
-                <div>
-                  <h4 className="font-semibold text-gray-800 mb-1">Preferred Qualification:</h4>
-                  <ul className="text-sm text-gray-600 space-y-1">
-                    {pos.qualifications.map((q, i) => (
-                      <li key={i}>• {q}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+                <div className="p-4 bg-gray-50/80 border-t border-gray-100 flex items-center justify-between gap-3">
+                  <button
+                    onClick={() => setOpenPosition(isExpanded ? null : pos.id)}
+                    className="text-xs font-bold text-[#662654] hover:text-[#521f43] flex items-center gap-1 px-3 py-2 rounded-lg hover:bg-white transition-colors border border-transparent hover:border-gray-200"
+                  >
+                    {isExpanded ? (
+                      <>
+                        Hide Details <ChevronUp size={14} />
+                      </>
+                    ) : (
+                      <>
+                        View Details <ChevronDown size={14} />
+                      </>
+                    )}
+                  </button>
 
-              <div className="p-6 bg-gray-50 border-t border-gray-100">
-                <button
-                  onClick={() => scrollToForm(pos.title)}
-                  className="w-full bg-[#662654] hover:bg-[#521f43] text-white font-bold py-3 px-6 rounded-xl shadow transition-colors flex items-center justify-center gap-2"
-                >
-                  {pos.buttonText}
-                </button>
-              </div>
-            </motion.div>
-          ))}
+                  <button
+                    onClick={() => scrollToForm(pos.title)}
+                    className="bg-[#662654] hover:bg-[#521f43] text-white text-xs font-bold py-2 px-4 rounded-lg shadow-sm transition-all hover:scale-105 active:scale-95 flex items-center gap-1"
+                  >
+                    Apply Now <Send size={12} />
+                  </button>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
+
       </section>
 
 
