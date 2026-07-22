@@ -302,9 +302,10 @@ const Navbar = () => {
     { top: { name: 'For Your Family' }, bottom: { name: 'Bulk Orders' } },
     { top: { name: 'Starting Floral food habitat' }, bottom: { name: 'Blogs' } },
     { top: { name: 'BYOC' }, bottom: { name: 'Saffron Guidance' } },
-    { top: { name: 'Our Own Community' } },
-    { top: { name: 'About Us' }, bottom: { name: 'Careers' } },
+    { top: { name: 'Our Own Community' }, bottom: { name: 'Careers' } },
+    { top: { name: 'About Us' } },
   ];
+
 
 
   return (
