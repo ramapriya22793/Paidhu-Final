@@ -472,7 +472,8 @@ const Navbar = () => {
         <nav className="max-w-[1400px] mx-auto px-4 xl:px-8">
           <div className="flex justify-center gap-x-6 xl:gap-x-8 w-full mt-0">
             {navColumns.map((col, i) => (
-              <div key={i} className={`flex flex-col items-center ${col.bottom ? 'justify-start gap-y-2' : 'justify-center min-h-[44px]'}`}>
+              <div key={i} className={`flex flex-col items-center ${col.bottom ? 'justify-start gap-y-0.5' : 'justify-center min-h-[44px]'}`}>
+
 
 
                 {/* "Shop by Category" gets the dropdown */}
