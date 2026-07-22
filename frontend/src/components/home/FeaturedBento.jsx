@@ -8,9 +8,9 @@ const features = [
     title: 'Healthy Kids Snacks',
     description: 'Nutritious and delicious snacks made with premium natural ingredients for growing kids.',
     images: [
-      '/bloom_cookies_banner.png',
-      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936984001-aavarampoo600x403jpeg.jpeg',
-      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780936736170-whitelotuscookie300x300jpeg.jpeg'
+      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1784287035218-WhatsAppImage20260717at44032PMjpeg.jpeg',
+      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1784531589206-WhatsAppImage20260717at44020PMjpeg.jpeg',
+      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1784286773702-WhatsAppImage20260717at43940PMjpeg.jpeg'
     ]
   },
   {
@@ -18,11 +18,11 @@ const features = [
     title: 'Flower Based Infusions',
     description: 'Discover wellness blends crafted from edible flowers, herbs, and traditional ingredients.',
     images: [
-      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780937722325-WhatsAppImage20251113at233024f74fae34600x800jpg.jpg',
+      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1784114222785-IMG34991jpg.jpg',
       'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780938733725-WhatsAppImage20251113at23302330981866600x800jpg.jpg',
-      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780937825758-WhatsAppImage20251113at233021b33d20d8600x600jpg.jpg',
-      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780937914670-WhatsAppImage20251113at2330215f60b43f600x800jpg.jpg',
-      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780937499230-WhatsAppImage20251113at233020322c5e7d600x800jpg.jpg'
+      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780938385526-WhatsAppImage20251202at80940PM600x600jpeg.jpeg',
+      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780937722325-WhatsAppImage20251113at233024f74fae34600x800jpg.jpg',
+      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780937914670-WhatsAppImage20251113at2330215f60b43f600x800jpg.jpg'
     ]
   },
   {
@@ -42,10 +42,12 @@ const features = [
     images: [
       'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png',
       'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780939517153-saffronneign600x600jpg.jpg',
-      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg'
+      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1783510735061-saffronmothersdayjpg.jpg',
+      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1782210039441-10png.png'
     ]
   }
 ];
+
 
 const FeaturedBento = () => {
   const [activeIndex, setActiveIndex] = useState(0);
