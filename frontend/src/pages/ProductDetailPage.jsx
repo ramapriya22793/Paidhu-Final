@@ -705,25 +705,25 @@ const ProductDetailPage = () => {
 
         {/* ── Category-Based Similar Products Section ── */}
         {similarProducts.length > 0 && (
-          <div className="mt-14 mb-8">
-            <div className="flex flex-col items-center mb-8">
-              <h2 className="font-serif text-2xl md:text-3xl font-black text-[#662654] text-center tracking-tight mb-2">
+          <div className="mt-12 mb-8 max-w-5xl mx-auto">
+            <div className="flex flex-col items-center mb-6">
+              <h2 className="font-serif text-xl md:text-2xl font-bold text-[#662654] text-center tracking-tight mb-1.5">
                 Similar Products
               </h2>
-              <div className="w-12 h-1 bg-[#662654] rounded-full" />
+              <div className="w-10 h-0.5 bg-[#662654] rounded-full" />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {similarProducts.map((simProd) => {
                 const simImg = resolveImage(simProd.image);
                 const simPrice = simProd.discountPrice || simProd.price;
                 return (
                   <motion.div
                     key={simProd.id}
-                    whileHover={{ y: -6 }}
-                    className="bg-white rounded-3xl p-4 border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
+                    whileHover={{ y: -4 }}
+                    className="bg-white rounded-2xl p-3 border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-md transition-all duration-300 flex flex-col justify-between group"
                   >
-                    <Link to={`/product/${simProd.slug || simProd.id}`} className="block relative aspect-square rounded-2xl overflow-hidden bg-[#faf9f6] mb-4">
+                    <Link to={`/product/${simProd.slug || simProd.id}`} className="block relative aspect-[4/3] rounded-xl overflow-hidden bg-[#faf9f6] mb-2.5">
                       <img 
                         src={simImg} 
                         alt={simProd.name}
@@ -732,26 +732,26 @@ const ProductDetailPage = () => {
                     </Link>
 
                     <div>
-                      <span className="text-[10px] font-black uppercase tracking-wider text-[#662654]/70 bg-[#662654]/5 px-2.5 py-1 rounded-full">
+                      <span className="text-[9px] font-bold uppercase tracking-wider text-[#662654] bg-[#662654]/10 px-2 py-0.5 rounded-full inline-block">
                         {simProd.category || 'Similar'}
                       </span>
-                      <Link to={`/product/${simProd.slug || simProd.id}`} className="block mt-2">
-                        <h3 className="font-bold text-base text-gray-900 group-hover:text-[#662654] transition-colors line-clamp-1">
+                      <Link to={`/product/${simProd.slug || simProd.id}`} className="block mt-1">
+                        <h3 className="font-bold text-xs sm:text-sm text-gray-900 group-hover:text-[#662654] transition-colors line-clamp-1">
                           {simProd.name}
                         </h3>
                       </Link>
-                      <p className="text-xs text-gray-500 line-clamp-2 mt-1 min-h-[2rem]">
+                      <p className="text-[11px] text-gray-500 line-clamp-1 mt-0.5">
                         {simProd.shortDescription || simProd.description}
                       </p>
                     </div>
 
-                    <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
+                    <div className="flex items-center justify-between mt-3 pt-2 border-t border-gray-100">
                       <div>
-                        <span className="font-black text-gray-900 text-lg">
+                        <span className="font-bold text-gray-900 text-sm sm:text-base">
                           ₹{simPrice}
                         </span>
                         {simProd.discountPrice && (
-                          <span className="text-xs text-gray-400 line-through ml-2">
+                          <span className="text-[10px] text-gray-400 line-through ml-1">
                             ₹{simProd.price}
                           </span>
                         )}
@@ -759,9 +759,9 @@ const ProductDetailPage = () => {
 
                       <Link
                         to={`/product/${simProd.slug || simProd.id}`}
-                        className="bg-[#662654] hover:bg-[#7a2e64] text-white text-xs font-bold px-4 py-2 rounded-full transition-all shadow-md hover:shadow-lg flex items-center gap-1.5"
+                        className="bg-[#662654] hover:bg-[#7a2e64] text-white text-[11px] font-bold px-3 py-1.5 rounded-full transition-all shadow-sm flex items-center gap-1"
                       >
-                        <ShoppingCart size={13} /> View
+                        <ShoppingCart size={11} /> View
                       </Link>
                     </div>
                   </motion.div>
@@ -770,6 +770,7 @@ const ProductDetailPage = () => {
             </div>
           </div>
         )}
+
 
       </div>
 
