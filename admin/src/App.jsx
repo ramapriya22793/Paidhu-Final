@@ -50,7 +50,7 @@ const App = () => {
   useEffect(() => {
     const pingServer = async () => {
       try {
-        await fetch((import.meta.env.VITE_API_URL || 'http://localhost:5000').replace('/api/products', ''));
+        await fetch((import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app').replace('/api/products', ''));
       } catch (e) {
         // Ignore ping errors
       }

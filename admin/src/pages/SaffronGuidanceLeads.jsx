@@ -3,7 +3,7 @@ import { FiTrash2, FiRefreshCw, FiDownload } from 'react-icons/fi';
 import axios from 'axios';
 import authService from '../services/authService';
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API = import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app';
 
 const STATUS_STYLES = {
   Pending:   'bg-yellow-50 text-yellow-700 border-yellow-200',

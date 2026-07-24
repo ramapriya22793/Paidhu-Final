@@ -32,7 +32,7 @@ const FamilyManagement = () => {
       }
 
       // Fetch Settings
-      const response = await axios.get((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/settings');
+      const response = await axios.get((import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/settings');
       if (response.data) {
         if (response.data.familyTitle) setFamilyTitle(response.data.familyTitle);
         if (response.data.familyTabs) setFamilyTabs(response.data.familyTabs);
@@ -88,7 +88,7 @@ const FamilyManagement = () => {
 
       // 2. Save Settings
       const cleanedTabs = familyTabs.filter(tab => tab.trim() !== '');
-      await axios.put((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/settings', {
+      await axios.put((import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/settings', {
         familyTitle,
         familyTabs: cleanedTabs
       });

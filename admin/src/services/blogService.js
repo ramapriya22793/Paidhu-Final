@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/blogs';
+const API_URL = (import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/blogs';
 
 const getAllBlogs = async () => {
   const response = await axios.get(API_URL);

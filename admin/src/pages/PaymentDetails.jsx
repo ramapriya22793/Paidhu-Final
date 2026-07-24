@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { FiChevronLeft, FiCreditCard, FiUser, FiShoppingBag, FiAlertCircle } from 'react-icons/fi';
 
-const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/payments';
+const API_URL = (import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/payments';
 
 const PaymentDetails = () => {
   const { id } = useParams();

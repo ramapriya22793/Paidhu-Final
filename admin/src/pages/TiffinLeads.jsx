@@ -10,7 +10,7 @@ const TiffinLeads = () => {
   useEffect(() => {
     const fetchLeads = async () => {
       try {
-        const res = await axios.get((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/admin/tiffin-registrations', {
+        const res = await axios.get((import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/admin/tiffin-registrations', {
           headers: { Authorization: `Bearer ${localStorage.getItem('adminToken')}` }
         });
         setLeads(res.data);

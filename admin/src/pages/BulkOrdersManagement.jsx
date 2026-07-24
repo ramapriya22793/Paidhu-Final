@@ -57,7 +57,7 @@ const BulkOrdersManagement = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const res = await axios.get((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/settings');
+      const res = await axios.get((import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/settings');
       if (res.data?.bulkOrdersData) {
         setData({ ...defaultData, ...res.data.bulkOrdersData });
       }
@@ -72,7 +72,7 @@ const BulkOrdersManagement = () => {
     setSaving(true);
     setMessage('');
     try {
-      await axios.put((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/settings', { bulkOrdersData: data });
+      await axios.put((import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/settings', { bulkOrdersData: data });
       setMessage('Bulk Orders Settings saved successfully!');
       setTimeout(() => setMessage(''), 3000);
     } catch (error) {

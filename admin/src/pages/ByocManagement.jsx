@@ -26,7 +26,7 @@ const ByocManagement = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/settings');
+      const response = await axios.get((import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/settings');
       if (response.data && response.data.byocData) {
         setData({ ...defaultData, ...response.data.byocData });
       }
@@ -69,7 +69,7 @@ const ByocManagement = () => {
         tiers: [...data.tiers].sort((a, b) => a.items - b.items)
       };
 
-      await axios.put((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/settings', {
+      await axios.put((import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/settings', {
         byocData: sortedData
       });
       setMessage('BYOC Settings updated successfully!');

@@ -9,7 +9,7 @@ const WishlistInsights = () => {
   useEffect(() => {
     const fetchInsights = async () => {
       try {
-        const res = await axios.get((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/wishlist/admin/insights', {
+        const res = await axios.get((import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/wishlist/admin/insights', {
           headers: { Authorization: `Bearer ${localStorage.getItem('adminToken')}` }
         });
         setInsights(res.data);

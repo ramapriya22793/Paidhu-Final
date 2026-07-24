@@ -17,7 +17,7 @@ const CategoryGridManagement = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/settings');
+      const response = await axios.get((import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/settings');
       if (response.data && response.data.categoryGridData) {
         setCategories(response.data.categoryGridData);
       } else {
@@ -69,7 +69,7 @@ const CategoryGridManagement = () => {
     
     try {
       const cleanedCategories = categories.filter(cat => cat.title.trim() !== '');
-      await axios.put((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/settings', {
+      await axios.put((import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/settings', {
         categoryGridData: cleanedCategories
       });
       

@@ -29,7 +29,7 @@ const DealsManagement = () => {
       }
 
       // Fetch Settings for Icons
-      const response = await axios.get((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/settings');
+      const response = await axios.get((import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/settings');
       if (response.data && response.data.dealCategories) {
         setDealCategories(response.data.dealCategories);
       }
@@ -91,7 +91,7 @@ const DealsManagement = () => {
 
       // 2. Save Categories
       const cleanedCategories = dealCategories.filter(cat => cat.name.trim() !== '');
-      await axios.put((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/settings', {
+      await axios.put((import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/settings', {
         dealCategories: cleanedCategories
       });
       

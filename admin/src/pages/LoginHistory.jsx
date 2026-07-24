@@ -9,7 +9,7 @@ const LoginHistory = () => {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/login-history`, {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app'}/api/admin/login-history`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('adminToken')}` }
         });
         setHistory(res.data);
