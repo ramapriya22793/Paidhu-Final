@@ -296,6 +296,9 @@ const verifyPayment = async (req, res) => {
 
     if (expectedSignature === razorpay_signature) {
       // Payment is successful
+      const existingOrder = await prisma.order.findUnique({ where: { id: parseInt(orderId) } });
+      const orderAmount = existingOrder ? existingOrder.totalPrice : 0;
+
       const updatedOrder = await prisma.order.update({
         where: { id: parseInt(orderId) },
         data: {
@@ -305,7 +308,7 @@ const verifyPayment = async (req, res) => {
               razorpayOrderId: razorpay_order_id,
               razorpayPaymentId: razorpay_payment_id,
               razorpaySignature: razorpay_signature,
-              amount: 0, // Should be fetched but 0 for now as placeholder or fetch from order
+              amount: orderAmount,
               method: 'Online',
               status: 'SUCCESS'
             }
@@ -431,9 +434,38 @@ const razorpayWebhook = async (req, res) => {
   }
 };
 
+// Get Order by Order Number (Public endpoint for order success page)
+const getOrderByNumber = async (req, res) => {
+  try {
+    const { orderNumber } = req.params;
+    const order = await prisma.order.findFirst({
+      where: { orderNumber },
+      include: {
+        items: {
+          include: {
+            product: true
+          }
+        },
+        payments: true
+      }
+    });
+
+    if (!order) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+
+    res.json({ success: true, order });
+  } catch (error) {
+    console.error('Get order by number error:', error);
+    res.status(500).json({ error: 'Failed to fetch order details' });
+  }
+};
+
 module.exports = {
   calculateSummary,
   initiateCheckout,
   verifyPayment,
-  razorpayWebhook
+  razorpayWebhook,
+  getOrderByNumber
 };
+

@@ -374,7 +374,7 @@ const CheckoutPage = () => {
 
       if (paymentMethod === 'COD') {
         await clearCart();
-        navigate(`/order-success/${result.order.orderNumber}`);
+        navigate(`/order-success/${result.order.orderNumber}`, { state: { order: result.order, paymentSuccess: true } });
         return;
       }
 
@@ -435,7 +435,7 @@ const CheckoutPage = () => {
             const verifyResult = await verifyRes.json();
             if (verifyRes.ok && verifyResult.success) {
               await clearCart();
-              navigate(`/order-success/${verifyResult.order.orderNumber}`);
+              navigate(`/order-success/${verifyResult.order.orderNumber}`, { state: { order: verifyResult.order, paymentSuccess: true } });
             } else {
               setErrorMsg("Payment verification failed. Please contact support.");
               setSubmitting(false);
