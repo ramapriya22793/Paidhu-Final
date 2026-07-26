@@ -214,9 +214,19 @@ const BlogsPage = () => {
       return 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop';
     }
 
-    // 13. Pumpkin Flower & Fritters & Dandelion
-    if (text.includes('pumpkin flower') || text.includes('fritter') || text.includes('dandelion')) {
-      return 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800&auto=format&fit=crop';
+    // 13. Dandelion & Lentil Sambar (Authentic Indian Lentil Sambar Stew)
+    if (text.includes('dandelion') || text.includes('sambar')) {
+      return 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?q=80&w=800&auto=format&fit=crop';
+    }
+
+    // 13b. Dosa (South Indian Crispy Marigold Dosa)
+    if (text.includes('dosa')) {
+      return 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?q=80&w=800&auto=format&fit=crop';
+    }
+
+    // 13c. Pumpkin Flower & Fritters
+    if (text.includes('pumpkin flower') || text.includes('fritter')) {
+      return 'https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=800&auto=format&fit=crop';
     }
 
     // 14. Neem Flower / Rasam / Herbal Remedy

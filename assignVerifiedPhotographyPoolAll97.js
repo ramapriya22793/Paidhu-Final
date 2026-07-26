@@ -71,15 +71,23 @@ async function main() {
     else if (text.includes('drumstick flower') || text.includes('moringa') || text.includes('curd rice') || text.includes('neer mor') || text.includes('lemon rice') || text.includes('aval')) {
       img = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop';
     }
-    // 15. Pumpkin Flower & Fritters & Dandelion
-    else if (text.includes('pumpkin flower') || text.includes('fritter') || text.includes('dandelion')) {
-      img = 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800&auto=format&fit=crop';
+    // 15. Dandelion & Lentil Sambar
+    else if (text.includes('dandelion') || text.includes('sambar')) {
+      img = 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?q=80&w=800&auto=format&fit=crop';
     }
-    // 16. Neem Flower / Rasam / Herbal Remedy
+    // 16. Marigold & Vegetable Dosa
+    else if (text.includes('dosa')) {
+      img = 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?q=80&w=800&auto=format&fit=crop';
+    }
+    // 17. Pumpkin Flower & Fritters
+    else if (text.includes('pumpkin flower') || text.includes('fritter')) {
+      img = 'https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=800&auto=format&fit=crop';
+    }
+    // 18. Neem Flower / Rasam / Herbal Remedy
     else if (text.includes('neem') || text.includes('rasam') || text.includes('herbal tea') || text.includes('traditional')) {
       img = '/blogs/aavaram_dip_tea.png';
     }
-    // 17. Fallback
+    // 19. Fallback
     else {
       img = '/blogs/aavaram_dip_tea.png';
     }
