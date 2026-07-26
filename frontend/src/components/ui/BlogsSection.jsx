@@ -309,7 +309,7 @@ const BlogsSection = () => {
                 onClick={() => setSelectedBlog(blog)}
               >
                 {/* Featured Image */}
-                <div className="relative aspect-[16/10] overflow-hidden bg-gray-100">
+                <div className="relative h-[170px] sm:h-[190px] w-full overflow-hidden bg-gray-100">
                   <BlogImage src={getBlogImageSrc(blog)} alt={blog.title} />
                   {blog.category && (
                     <span className="absolute top-4 left-4 bg-[#662654] text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-md flex items-center gap-1">

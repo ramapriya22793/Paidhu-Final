@@ -308,18 +308,18 @@ const BlogsPage = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-[2.5rem] overflow-hidden border border-gray-100 shadow-lg grid grid-cols-1 lg:grid-cols-12 group hover:shadow-2xl transition-all duration-300"
+            className="bg-white rounded-[2rem] overflow-hidden border border-gray-100 shadow-lg grid grid-cols-1 lg:grid-cols-12 group hover:shadow-xl transition-all duration-300"
           >
-            <div className="lg:col-span-7 aspect-[16/10] lg:aspect-auto relative min-h-[300px]">
+            <div className="lg:col-span-5 relative h-[220px] sm:h-[260px] md:h-[300px] overflow-hidden bg-gray-100">
               <BlogCardImage src={getBlogImageSrc(featuredBlog)} alt={featuredBlog.title} />
               {featuredBlog.category && (
-                <span className="absolute top-6 left-6 bg-[#662654] text-white text-xs font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-md flex items-center gap-1.5">
-                  <Tag size={11} /> {featuredBlog.category}
+                <span className="absolute top-4 left-4 bg-[#662654] text-white text-[11px] font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-md flex items-center gap-1.5">
+                  <Tag size={10} /> {featuredBlog.category}
                 </span>
               )}
             </div>
 
-            <div className="lg:col-span-5 p-6 sm:p-10 flex flex-col justify-between space-y-6">
+            <div className="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between space-y-4">
               <div className="space-y-4">
                 <div className="flex items-center gap-4 text-xs font-bold text-gray-400 uppercase tracking-wider">
                   <span className="flex items-center gap-1.5">
@@ -400,7 +400,7 @@ const BlogsPage = () => {
                 >
                   <Link to={`/blogs/${blog.slug || blog.id}`} className="flex flex-col h-full">
                     {/* Featured Image */}
-                    <div className="relative aspect-[16/10] overflow-hidden bg-gray-100">
+                    <div className="relative h-[170px] sm:h-[190px] w-full overflow-hidden bg-gray-100">
                       <BlogCardImage src={getBlogImageSrc(blog)} alt={blog.title} />
                       {blog.category && (
                         <span className="absolute top-4 left-4 bg-[#662654] text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-md flex items-center gap-1">
