@@ -145,7 +145,7 @@ const BlogDetailPage = () => {
       return '/blogs/aavaram_dip_tea.png';
     }
     if (text.includes('jasmine') || text.includes('payasam') || text.includes('sweet') || text.includes('dessert')) {
-      return 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop';
+      return '/blogs/rose_petal_delicacy.png';
     }
 
     const isGeneric = !originalUrl || 
