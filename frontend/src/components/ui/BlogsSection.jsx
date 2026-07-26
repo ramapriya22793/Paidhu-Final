@@ -84,21 +84,75 @@ const BlogsSection = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
 
+  const getCuratedFloralImage = (title = '', category = '', originalUrl = '') => {
+    const text = (title + ' ' + (category || '')).toLowerCase();
+
+    const isGeneric = !originalUrl || 
+      originalUrl.includes('wp.paidhu.com/wp-content') ||
+      originalUrl.includes('placeholder') || 
+      originalUrl.includes('default') || 
+      originalUrl.includes('child') || 
+      originalUrl.includes('camera') || 
+      originalUrl.includes('toy') ||
+      originalUrl.includes('516627145497') ||
+      originalUrl.includes('kms');
+
+    if (originalUrl && !isGeneric && (originalUrl.startsWith('http') || originalUrl.startsWith('/'))) {
+      return originalUrl;
+    }
+
+    if (text.includes('hibiscus')) {
+      return 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?q=80&w=800&auto=format&fit=crop';
+    }
+    if (text.includes('rose') || text.includes('gulkand') || text.includes('damask')) {
+      return 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=800&auto=format&fit=crop';
+    }
+    if (text.includes('saffron') || text.includes('kesar')) {
+      return 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?q=80&w=800&auto=format&fit=crop';
+    }
+    if (text.includes('blue pea') || text.includes('butterfly pea') || text.includes('bluepea')) {
+      return 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?q=80&w=800&auto=format&fit=crop';
+    }
+    if (text.includes('chamomile')) {
+      return 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?q=80&w=800&auto=format&fit=crop';
+    }
+    if (text.includes('neem') || text.includes('aavaram') || text.includes('kondrai') || text.includes('cassia')) {
+      return 'https://images.unsplash.com/photo-1546852199-2d7e912e98c6?q=80&w=800&auto=format&fit=crop';
+    }
+    if (text.includes('lavender')) {
+      return 'https://images.unsplash.com/photo-1528722828814-77b9b83aafb2?q=80&w=800&auto=format&fit=crop';
+    }
+    if (text.includes('jasmine')) {
+      return 'https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?q=80&w=800&auto=format&fit=crop';
+    }
+    if (text.includes('salad') || text.includes('fruit')) {
+      return 'https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=800&auto=format&fit=crop';
+    }
+    if (text.includes('tea') || text.includes('brew') || text.includes('herbal')) {
+      return 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?q=80&w=800&auto=format&fit=crop';
+    }
+
+    return 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=800&auto=format&fit=crop';
+  };
+
   useEffect(() => {
     fetch(`${API_BASE}/api/blogs`)
-      .then((res) => (res.ok ? res.json() : []))
+      .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
-        if (data && data.length > 0) {
-          setBlogs(data);
+        const blogList = Array.isArray(data) ? data : (data?.blogs || []);
+        if (blogList && blogList.length > 0) {
+          setBlogs(blogList);
         }
       })
       .catch((err) => console.error('Failed to fetch blogs:', err));
   }, []);
 
-  const getBlogImageSrc = (img) => {
-    if (!img) return 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=800&auto=format&fit=crop';
-    if (img.startsWith('data:image') || img.startsWith('http') || img.startsWith('/src') || img.startsWith('/assets')) return img;
-    return `${API_BASE}${img.startsWith('/') ? '' : '/'}${img}`;
+  const getBlogImageSrc = (blog) => {
+    if (!blog) return 'https://images.unsplash.com/photo-1546852199-2d7e912e98c6?q=80&w=800&auto=format&fit=crop';
+    const img = typeof blog === 'string' ? blog : (blog?.featuredImage || blog?.image);
+    const title = typeof blog === 'object' ? blog?.title : '';
+    const category = typeof blog === 'object' ? blog?.category : '';
+    return getCuratedFloralImage(title, category, img);
   };
 
   const formatDate = (dateStr) => {
@@ -254,7 +308,7 @@ const BlogsSection = () => {
               >
                 {/* Featured Image */}
                 <div className="relative aspect-[16/10] overflow-hidden bg-gray-100">
-                  <BlogImage src={getBlogImageSrc(blog.image)} alt={blog.title} />
+                  <BlogImage src={getBlogImageSrc(blog)} alt={blog.title} />
                   {blog.category && (
                     <span className="absolute top-4 left-4 bg-[#662654] text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-md flex items-center gap-1">
                       <Tag size={9} />
@@ -332,7 +386,7 @@ const BlogsSection = () => {
                 {/* Cover Image */}
                 <div className="relative h-[250px] md:h-[400px] w-full bg-gray-100">
                   <img
-                    src={getBlogImageSrc(selectedBlog.image)}
+                    src={getBlogImageSrc(selectedBlog)}
                     alt={selectedBlog.title}
                     className="w-full h-full object-cover"
                   />
