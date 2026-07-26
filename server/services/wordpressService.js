@@ -99,53 +99,37 @@ function getCuratedFloralImage(title = '', category = '', originalUrl = '') {
   const text = (title + ' ' + (category || '')).toLowerCase();
 
   const isGeneric = !originalUrl || 
+    originalUrl.includes('wp.paidhu.com/wp-content') ||
     originalUrl.includes('placeholder') || 
     originalUrl.includes('default') || 
     originalUrl.includes('child') || 
     originalUrl.includes('camera') || 
     originalUrl.includes('toy') ||
+    originalUrl.includes('teacora') ||
     originalUrl.includes('516627145497') ||
-    originalUrl.includes('kms');
+    originalUrl.includes('kms') ||
+    originalUrl.includes('broccoli') ||
+    originalUrl.includes('galaxy') ||
+    originalUrl.includes('space');
 
-  if (originalUrl && !isGeneric && originalUrl.startsWith('http')) {
+  if (originalUrl && !isGeneric && originalUrl.startsWith('http') && !originalUrl.includes('wp.paidhu.com')) {
     return originalUrl;
   }
 
-  if (text.includes('hibiscus')) {
-    return 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?q=80&w=800&auto=format&fit=crop';
+  if (text.includes('hibiscus') || text.includes('sembaruthi')) {
+    return '/blogs/hibiscus_gourmet_drink.png';
   }
   if (text.includes('rose') || text.includes('gulkand') || text.includes('damask')) {
-    return 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=800&auto=format&fit=crop';
+    return '/blogs/rose_petal_delicacy.png';
   }
-  if (text.includes('saffron') || text.includes('kesar')) {
-    return 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?q=80&w=800&auto=format&fit=crop';
+  if (text.includes('blue pea') || text.includes('butterfly pea') || text.includes('bluepea') || text.includes('blue bloom')) {
+    return '/blogs/blue_pea_floral_tea.png';
   }
-  if (text.includes('blue pea') || text.includes('butterfly pea') || text.includes('bluepea')) {
-    return 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?q=80&w=800&auto=format&fit=crop';
-  }
-  if (text.includes('chamomile')) {
-    return 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?q=80&w=800&auto=format&fit=crop';
-  }
-  if (text.includes('neem') || text.includes('aavaram') || text.includes('kondrai') || text.includes('cassia')) {
-    return 'https://images.unsplash.com/photo-1546852199-2d7e912e98c6?q=80&w=800&auto=format&fit=crop';
-  }
-  if (text.includes('lavender')) {
-    return 'https://images.unsplash.com/photo-1528722828814-77b9b83aafb2?q=80&w=800&auto=format&fit=crop';
-  }
-  if (text.includes('jasmine')) {
-    return 'https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?q=80&w=800&auto=format&fit=crop';
-  }
-  if (text.includes('salad') || text.includes('fruit')) {
-    return 'https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=800&auto=format&fit=crop';
-  }
-  if (text.includes('rasam') || text.includes('tea') || text.includes('drink') || text.includes('syrup') || text.includes('lemonade')) {
-    return 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?q=80&w=800&auto=format&fit=crop';
-  }
-  if (text.includes('idli') || text.includes('rice') || text.includes('pancake') || text.includes('cookie') || text.includes('halwa') || text.includes('panna cotta')) {
-    return 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop';
+  if (text.includes('aavaram') || text.includes('neem') || text.includes('kondrai') || text.includes('cassia') || text.includes('chamomile') || text.includes('lavender') || text.includes('herbal tea') || text.includes('traditional') || text.includes('brew flora')) {
+    return '/blogs/aavaram_herbal_tea.png';
   }
 
-  return 'https://images.unsplash.com/photo-1546852199-2d7e912e98c6?q=80&w=800&auto=format&fit=crop';
+  return '/blogs/gourmet_floral_salad.png';
 }
 
 /**
