@@ -149,74 +149,54 @@ const BlogsPage = () => {
   const getCuratedFloralImage = (title = '', category = '', originalUrl = '') => {
     const text = (title + ' ' + (category || '')).toLowerCase();
 
-    const isGeneric = !originalUrl || 
-      originalUrl.includes('wp.paidhu.com/wp-content') ||
-      originalUrl.includes('placeholder') || 
-      originalUrl.includes('default') || 
-      originalUrl.includes('child') || 
-      originalUrl.includes('camera') || 
-      originalUrl.includes('toy') ||
-      originalUrl.includes('teacora') ||
-      originalUrl.includes('516627145497') ||
-      originalUrl.includes('kms') ||
-      originalUrl.includes('broccoli') ||
-      originalUrl.includes('galaxy') ||
-      originalUrl.includes('546852199-2d7e912e98c6') ||
-      originalUrl.includes('564890369478-c89ca6d9cde9') ||
-      originalUrl.includes('space');
-
-    if (originalUrl && !isGeneric && (originalUrl.startsWith('http') || originalUrl.startsWith('/blogs/'))) {
-      return originalUrl;
-    }
-
     // 1. Chamomile (White Daisy Flower Herbal Tea)
     if (text.includes('chamomile')) {
       return 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?q=80&w=800&auto=format&fit=crop';
     }
 
-    // 2. Lavender Tea
-    if (text.includes('lavender')) {
-      return '/blogs/lavender_dip_tea.png';
-    }
-
-    // 3. Saffron Tea & Wellness
-    if (text.includes('saffron')) {
-      return '/blogs/saffron_herbal_tea.png';
-    }
-
-    // 4. Rainbow Flower Fruit Salad
-    if (text.includes('fruit salad') || text.includes('rainbow flower')) {
-      return '/blogs/rainbow_flower_salad.png';
-    }
-
-    // 5. Bluepea Panna Cotta
-    if (text.includes('panna cotta')) {
-      return '/blogs/bluepea_panna_cotta.png';
-    }
-
-    // 6. Marigold Halwa & Dishes
-    if (text.includes('halwa') || text.includes('marigold')) {
-      return '/blogs/marigold_halwa.png';
-    }
-
-    // 7. Aavaram Poo (Golden Yellow Herbal Dip Tea Bag)
-    if (text.includes('aavaram') || text.includes('cassia') || text.includes('kondrai') || text.includes('golden bloom') || text.includes('yellow bloom')) {
-      return '/blogs/aavaram_dip_tea.png';
-    }
-
-    // 8. Hibiscus (Ruby Red Herbal Dip Tea Bag)
+    // 2. Hibiscus (Ruby Red Herbal Dip Tea Bag)
     if (text.includes('hibiscus') || text.includes('sembaruthi')) {
       return '/blogs/hibiscus_dip_tea.png';
     }
 
-    // 9. Blue Pea / Butterfly Pea (Electric Cobalt Blue Dip Tea)
+    // 3. Blue Pea / Butterfly Pea (Electric Cobalt Blue Dip Tea)
     if (text.includes('blue pea') || text.includes('butterfly pea') || text.includes('bluepea') || text.includes('blue bloom')) {
       return '/blogs/blue_pea_dip_tea.png';
     }
 
-    // 10. Rose / Gulkand / Damask Rose
+    // 4. Lavender Tea
+    if (text.includes('lavender')) {
+      return '/blogs/lavender_dip_tea.png';
+    }
+
+    // 5. Saffron Tea & Wellness
+    if (text.includes('saffron')) {
+      return '/blogs/saffron_herbal_tea.png';
+    }
+
+    // 6. Rainbow Flower Fruit Salad
+    if (text.includes('fruit salad') || text.includes('rainbow flower')) {
+      return '/blogs/rainbow_flower_salad.png';
+    }
+
+    // 7. Bluepea Panna Cotta
+    if (text.includes('panna cotta')) {
+      return '/blogs/bluepea_panna_cotta.png';
+    }
+
+    // 8. Marigold Halwa & Dishes
+    if (text.includes('halwa') || text.includes('marigold')) {
+      return '/blogs/marigold_halwa.png';
+    }
+
+    // 9. Rose / Gulkand / Damask Rose
     if (text.includes('rose') || text.includes('gulkand') || text.includes('damask')) {
       return '/blogs/rose_petal_delicacy.png';
+    }
+
+    // 10. Aavaram Poo (Golden Yellow Herbal Dip Tea Bag)
+    if (text.includes('aavaram') || text.includes('cassia') || text.includes('kondrai') || text.includes('golden bloom') || text.includes('yellow bloom')) {
+      return '/blogs/aavaram_dip_tea.png';
     }
 
     // 11. Banana Flower (Vazhaipoo dishes & snacks)
@@ -239,9 +219,29 @@ const BlogsPage = () => {
       return '/blogs/aavaram_dip_tea.png';
     }
 
-    // 14. Jasmine / Desserts / Payasam
+    // 15. Jasmine / Desserts / Payasam
     if (text.includes('jasmine') || text.includes('payasam') || text.includes('sweet') || text.includes('dessert')) {
       return 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop';
+    }
+
+    const isGeneric = !originalUrl || 
+      originalUrl.includes('wp.paidhu.com/wp-content') ||
+      originalUrl.includes('placeholder') || 
+      originalUrl.includes('default') || 
+      originalUrl.includes('child') || 
+      originalUrl.includes('camera') || 
+      originalUrl.includes('toy') ||
+      originalUrl.includes('teacora') ||
+      originalUrl.includes('516627145497') ||
+      originalUrl.includes('kms') ||
+      originalUrl.includes('broccoli') ||
+      originalUrl.includes('galaxy') ||
+      originalUrl.includes('546852199-2d7e912e98c6') ||
+      originalUrl.includes('564890369478-c89ca6d9cde9') ||
+      originalUrl.includes('space');
+
+    if (originalUrl && !isGeneric && (originalUrl.startsWith('http') || originalUrl.startsWith('/blogs/'))) {
+      return originalUrl;
     }
 
     return '/blogs/aavaram_dip_tea.png';
