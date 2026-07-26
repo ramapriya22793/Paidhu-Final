@@ -24,7 +24,7 @@ const BlogCardImage = ({ src, alt }) => {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
 
-  const fallbackUrl = 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=800&auto=format&fit=crop';
+  const fallbackUrl = 'https://images.unsplash.com/photo-1546852199-2d7e912e98c6?q=80&w=800&auto=format&fit=crop';
 
   return (
     <div className="relative w-full h-full bg-gray-100 overflow-hidden">
@@ -185,7 +185,7 @@ const BlogsPage = () => {
       return 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop';
     }
 
-    return 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=800&auto=format&fit=crop';
+    return 'https://images.unsplash.com/photo-1546852199-2d7e912e98c6?q=80&w=800&auto=format&fit=crop';
   };
 
   const getBlogImageSrc = (blog) => {

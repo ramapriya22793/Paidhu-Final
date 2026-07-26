@@ -6,7 +6,7 @@ const testimonials = [
     id: 1,
     name: "Priya Sharma",
     role: "Mother of 2",
-    image: "https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&q=80&w=600",
+    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=600",
     text: "Paidhu transformed our snacking. The hibiscus cookies are an absolute favorite. Finally, healthy food that is truly joyful!",
   },
   {

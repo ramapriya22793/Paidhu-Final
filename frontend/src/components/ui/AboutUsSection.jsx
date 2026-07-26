@@ -60,7 +60,7 @@ const defaultData = {
     title: 'Connect with a community that cares\nabout your child\'s nutrition as you do!',
     buttonText: 'Join Our Community',
     buttonLink: '/shop/our-own-community',
-    illustration: 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=1000&auto=format&fit=crop'
+    illustration: 'https://images.unsplash.com/photo-1546852199-2d7e912e98c6?q=80&w=1000&auto=format&fit=crop'
   }
 };
 
@@ -315,7 +315,7 @@ const AboutUsSection = () => {
               alt="Our Community"
               className="absolute inset-0 w-full h-full object-cover"
               onError={(e) => {
-                e.target.src = 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=1000&auto=format&fit=crop';
+                e.target.src = 'https://images.unsplash.com/photo-1546852199-2d7e912e98c6?q=80&w=1000&auto=format&fit=crop';
               }}
             />
           </div>
