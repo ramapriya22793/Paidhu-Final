@@ -82,6 +82,8 @@ const SaffronGuidancePage = safeLazy(() => import('./pages/SaffronGuidancePage')
 const BYOCPage = safeLazy(() => import('./pages/BYOCPage'));
 const LegalPage = safeLazy(() => import('./pages/LegalPage'));
 const CareersPage = safeLazy(() => import('./pages/CareersPage'));
+const BlogsPage = safeLazy(() => import('./pages/BlogsPage'));
+const BlogDetailPage = safeLazy(() => import('./pages/BlogDetailPage'));
 
 // Safe Lazy load below-the-fold home components
 const ExploreCategory = safeLazy(() => import('./components/home/ExploreCategory'));
@@ -152,6 +154,9 @@ function App() {
               <Route path="/saffron-guidance" element={<SaffronGuidancePage />} />
               <Route path="/careers" element={<CareersPage />} />
               <Route path="/legal/:type" element={<LegalPage />} />
+              <Route path="/blogs" element={<BlogsPage />} />
+              <Route path="/blogs/:slug" element={<BlogDetailPage />} />
+              <Route path="/journal" element={<BlogsPage />} />
 
             </Routes>
           </Suspense>

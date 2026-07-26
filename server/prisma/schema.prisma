@@ -233,14 +233,31 @@ model Review {
 }
 
 model Blog {
-  id              Int       @id @default(autoincrement())
-  title           String
-  content         String
-  category        String
-  image           String?
-  author          String    @default("Paidhu Team")
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  id                   Int       @id @default(autoincrement())
+  wordpressId          Int?      @unique
+  title                String
+  slug                 String?   @unique
+  excerpt              String?
+  content              String
+  image                String?
+  featuredImage        String?
+  featuredImageAlt     String?
+  featuredImageWidth   Int?
+  featuredImageHeight  Int?
+  author               String    @default("Paidhu Team")
+  authorId             Int?
+  categories           Json?
+  tags                 Json?
+  category             String?
+  status               String    @default("publish")
+  readingTime          Int       @default(1)
+  seoTitle             String?
+  seoDescription       String?
+  canonicalUrl         String?
+  metaKeywords         String?
+  lastSynced           DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt @default(now())
 }
 
 model SeoData {

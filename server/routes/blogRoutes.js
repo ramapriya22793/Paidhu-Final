@@ -1,11 +1,28 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const { getAllBlogs, getBlogById, createBlog, updateBlog, deleteBlog } = require("../controllers/blogController");
+const {
+  getAllBlogs,
+  getBlogBySlug,
+  createBlog,
+  updateBlog,
+  deleteBlog,
+  importBlogsManual,
+  syncBlogsManual,
+  getSyncLogs
+} = require('../controllers/blogController');
 
-router.get("/", getAllBlogs);
-router.get("/:id", getBlogById);
-router.post("/", createBlog);
-router.put("/:id", updateBlog);
-router.delete("/:id", deleteBlog);
+// Public Blog Routes
+router.get('/', getAllBlogs);
+router.get('/sync-status', getSyncLogs);
+router.get('/:slug', getBlogBySlug);
+
+// Import & Sync Routes
+router.post('/import', importBlogsManual);
+router.post('/sync', syncBlogsManual);
+
+// Admin Custom CRUD Routes
+router.post('/', createBlog);
+router.put('/:id', updateBlog);
+router.delete('/:id', deleteBlog);
 
 module.exports = router;
