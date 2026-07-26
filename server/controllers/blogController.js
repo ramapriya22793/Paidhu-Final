@@ -257,6 +257,10 @@ const getSyncLogs = async (req, res) => {
       }
     });
   } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 /**
  * Delete all imported WordPress blogs
  */
