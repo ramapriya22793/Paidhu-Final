@@ -250,7 +250,7 @@ const BlogDetailPage = () => {
         </div>
 
         {/* Hero Featured Image */}
-        <div className="relative aspect-[16/9] w-full rounded-[2.5rem] overflow-hidden shadow-xl border border-gray-100 bg-gray-100">
+        <div className="relative h-[200px] sm:h-[260px] md:h-[300px] w-full rounded-[2rem] overflow-hidden shadow-xl border border-gray-100 bg-gray-100">
           <img
             src={getBlogImageSrc(blog)}
             alt={blog.featuredImageAlt || blog.title}

@@ -310,7 +310,7 @@ const BlogsPage = () => {
             animate={{ opacity: 1, y: 0 }}
             className="bg-white rounded-[2rem] overflow-hidden border border-gray-100 shadow-lg grid grid-cols-1 lg:grid-cols-12 group hover:shadow-xl transition-all duration-300"
           >
-            <div className="lg:col-span-5 relative h-[220px] sm:h-[260px] md:h-[300px] overflow-hidden bg-gray-100">
+            <div className="lg:col-span-5 relative h-[160px] sm:h-[200px] md:h-[230px] overflow-hidden bg-gray-100">
               <BlogCardImage src={getBlogImageSrc(featuredBlog)} alt={featuredBlog.title} />
               {featuredBlog.category && (
                 <span className="absolute top-4 left-4 bg-[#662654] text-white text-[11px] font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-md flex items-center gap-1.5">
@@ -400,7 +400,7 @@ const BlogsPage = () => {
                 >
                   <Link to={`/blogs/${blog.slug || blog.id}`} className="flex flex-col h-full">
                     {/* Featured Image */}
-                    <div className="relative h-[170px] sm:h-[190px] w-full overflow-hidden bg-gray-100">
+                    <div className="relative h-[125px] sm:h-[140px] w-full overflow-hidden bg-gray-100">
                       <BlogCardImage src={getBlogImageSrc(blog)} alt={blog.title} />
                       {blog.category && (
                         <span className="absolute top-4 left-4 bg-[#662654] text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-md flex items-center gap-1">
