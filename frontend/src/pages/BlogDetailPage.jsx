@@ -127,7 +127,7 @@ const BlogDetailPage = () => {
       return 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?q=80&w=800&auto=format&fit=crop';
     }
     if (text.includes('aavaram') || text.includes('neem') || text.includes('kondrai') || text.includes('cassia') || text.includes('chamomile') || text.includes('lavender') || text.includes('herbal tea') || text.includes('traditional') || text.includes('brew flora')) {
-      return 'https://images.unsplash.com/photo-1546852199-2d7e912e98c6?q=80&w=800&auto=format&fit=crop';
+      return 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?q=80&w=800&auto=format&fit=crop';
     }
 
     return 'https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=800&auto=format&fit=crop';
