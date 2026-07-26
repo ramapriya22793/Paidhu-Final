@@ -9,7 +9,9 @@ async function main() {
     const text = (b.title || '').toLowerCase();
     let img = null;
 
-    if (text.includes('lavender')) {
+    if (text.includes('chamomile')) {
+      img = 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?q=80&w=800&auto=format&fit=crop';
+    } else if (text.includes('lavender')) {
       img = '/blogs/lavender_dip_tea.png';
     } else if (text.includes('saffron')) {
       img = '/blogs/saffron_herbal_tea.png';

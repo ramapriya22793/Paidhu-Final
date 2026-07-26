@@ -111,13 +111,17 @@ const BlogDetailPage = () => {
       originalUrl.includes('kms') ||
       originalUrl.includes('broccoli') ||
       originalUrl.includes('galaxy') ||
-      originalUrl.includes('unsplash') ||
+      originalUrl.includes('546852199-2d7e912e98c6') ||
+      originalUrl.includes('564890369478-c89ca6d9cde9') ||
       originalUrl.includes('space');
 
     if (originalUrl && !isGeneric && (originalUrl.startsWith('http') || originalUrl.startsWith('/blogs/'))) {
       return originalUrl;
     }
 
+    if (text.includes('chamomile')) {
+      return 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?q=80&w=800&auto=format&fit=crop';
+    }
     if (text.includes('lavender')) {
       return '/blogs/lavender_dip_tea.png';
     }
@@ -154,7 +158,7 @@ const BlogDetailPage = () => {
     if (text.includes('pumpkin flower') || text.includes('fritter') || text.includes('dandelion')) {
       return 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800&auto=format&fit=crop';
     }
-    if (text.includes('neem') || text.includes('rasam') || text.includes('chamomile') || text.includes('herbal tea') || text.includes('traditional')) {
+    if (text.includes('neem') || text.includes('rasam') || text.includes('herbal tea') || text.includes('traditional')) {
       return '/blogs/aavaram_dip_tea.png';
     }
     if (text.includes('jasmine') || text.includes('payasam') || text.includes('sweet') || text.includes('dessert')) {
