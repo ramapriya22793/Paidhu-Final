@@ -21,25 +21,22 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD ? ''
 
 // Safe Image Component with Skeleton Loading and Fallback
 const BlogCardImage = ({ src, alt }) => {
-  const [loaded, setLoaded] = useState(false);
-  const [error, setError] = useState(false);
+  const [imgSrc, setImgSrc] = useState(src || 'https://images.unsplash.com/photo-1546852199-2d7e912e98c6?q=80&w=800&auto=format&fit=crop');
+
+  useEffect(() => {
+    if (src) setImgSrc(src);
+  }, [src]);
 
   const fallbackUrl = 'https://images.unsplash.com/photo-1546852199-2d7e912e98c6?q=80&w=800&auto=format&fit=crop';
 
   return (
     <div className="relative w-full h-full bg-gray-100 overflow-hidden">
-      {!loaded && !error && (
-        <div className="absolute inset-0 bg-gray-200 animate-pulse" />
-      )}
       <img
-        src={error || !src ? fallbackUrl : src}
+        src={imgSrc}
         alt={alt || 'Paidhu Journal Blog'}
-        onLoad={() => setLoaded(true)}
-        onError={() => setError(true)}
+        onError={() => setImgSrc(fallbackUrl)}
         loading="lazy"
-        className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-105 ${
-          loaded ? 'opacity-100' : 'opacity-0'
-        }`}
+        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
       />
     </div>
   );
@@ -150,24 +147,24 @@ const BlogsPage = () => {
       originalUrl.includes('galaxy') ||
       originalUrl.includes('space');
 
-    if (originalUrl && !isGeneric && (originalUrl.startsWith('http') || originalUrl.startsWith('/'))) {
+    if (originalUrl && !isGeneric && originalUrl.startsWith('http')) {
       return originalUrl;
     }
 
     if (text.includes('hibiscus') || text.includes('sembaruthi')) {
-      return '/blogs/hibiscus_gourmet_drink.png';
+      return 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?q=80&w=800&auto=format&fit=crop';
     }
     if (text.includes('rose') || text.includes('gulkand') || text.includes('damask')) {
-      return '/blogs/rose_petal_delicacy.png';
+      return 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=800&auto=format&fit=crop';
     }
     if (text.includes('blue pea') || text.includes('butterfly pea') || text.includes('bluepea') || text.includes('blue bloom')) {
-      return '/blogs/blue_pea_floral_tea.png';
+      return 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?q=80&w=800&auto=format&fit=crop';
     }
     if (text.includes('aavaram') || text.includes('neem') || text.includes('kondrai') || text.includes('cassia') || text.includes('chamomile') || text.includes('lavender') || text.includes('herbal tea') || text.includes('traditional') || text.includes('brew flora')) {
-      return '/blogs/aavaram_herbal_tea.png';
+      return 'https://images.unsplash.com/photo-1546852199-2d7e912e98c6?q=80&w=800&auto=format&fit=crop';
     }
 
-    return '/blogs/gourmet_floral_salad.png';
+    return 'https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=800&auto=format&fit=crop';
   };
 
   const getBlogImageSrc = (blog) => {

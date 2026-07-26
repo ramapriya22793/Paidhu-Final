@@ -117,19 +117,19 @@ function getCuratedFloralImage(title = '', category = '', originalUrl = '') {
   }
 
   if (text.includes('hibiscus') || text.includes('sembaruthi')) {
-    return '/blogs/hibiscus_gourmet_drink.png';
+    return 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?q=80&w=800&auto=format&fit=crop';
   }
   if (text.includes('rose') || text.includes('gulkand') || text.includes('damask')) {
-    return '/blogs/rose_petal_delicacy.png';
+    return 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=800&auto=format&fit=crop';
   }
   if (text.includes('blue pea') || text.includes('butterfly pea') || text.includes('bluepea') || text.includes('blue bloom')) {
-    return '/blogs/blue_pea_floral_tea.png';
+    return 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?q=80&w=800&auto=format&fit=crop';
   }
   if (text.includes('aavaram') || text.includes('neem') || text.includes('kondrai') || text.includes('cassia') || text.includes('chamomile') || text.includes('lavender') || text.includes('herbal tea') || text.includes('traditional') || text.includes('brew flora')) {
-    return '/blogs/aavaram_herbal_tea.png';
+    return 'https://images.unsplash.com/photo-1546852199-2d7e912e98c6?q=80&w=800&auto=format&fit=crop';
   }
 
-  return '/blogs/gourmet_floral_salad.png';
+  return 'https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=800&auto=format&fit=crop';
 }
 
 /**
