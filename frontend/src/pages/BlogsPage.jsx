@@ -145,32 +145,31 @@ const BlogsPage = () => {
       originalUrl.includes('kms') ||
       originalUrl.includes('broccoli') ||
       originalUrl.includes('galaxy') ||
-      originalUrl.includes('546852199-2d7e912e98c6') ||
-      originalUrl.includes('564890369478-c89ca6d9cde9') ||
+      originalUrl.includes('unsplash') ||
       originalUrl.includes('space');
 
-    if (originalUrl && !isGeneric && originalUrl.startsWith('http')) {
+    if (originalUrl && !isGeneric && (originalUrl.startsWith('http') || originalUrl.startsWith('/blogs/'))) {
       return originalUrl;
     }
 
-    // 1. Aavaram Poo (Golden Yellow Floral Flower Tea)
+    // 1. Aavaram Poo (Golden Yellow Herbal Dip Tea Bag in clear glass cup)
     if (text.includes('aavaram') || text.includes('cassia') || text.includes('kondrai') || text.includes('golden bloom') || text.includes('yellow bloom')) {
-      return 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?q=80&w=800&auto=format&fit=crop';
+      return '/blogs/aavaram_dip_tea.png';
     }
 
-    // 2. Hibiscus (Ruby Red Floral Flower Tea & Dishes)
+    // 2. Hibiscus (Ruby Red Herbal Dip Tea Bag in clear glass cup)
     if (text.includes('hibiscus') || text.includes('sembaruthi')) {
-      return 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?q=80&w=800&auto=format&fit=crop';
+      return '/blogs/hibiscus_dip_tea.png';
     }
 
-    // 3. Blue Pea / Butterfly Pea (Electric Cobalt Blue Floral Tea & Lemonade)
+    // 3. Blue Pea / Butterfly Pea (Electric Cobalt Blue Herbal Dip Tea Bag in clear glass cup)
     if (text.includes('blue pea') || text.includes('butterfly pea') || text.includes('bluepea') || text.includes('blue bloom')) {
-      return 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?q=80&w=800&auto=format&fit=crop';
+      return '/blogs/blue_pea_dip_tea.png';
     }
 
     // 4. Rose / Gulkand / Damask Rose
     if (text.includes('rose') || text.includes('gulkand') || text.includes('damask')) {
-      return 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=800&auto=format&fit=crop';
+      return '/blogs/rose_petal_delicacy.png';
     }
 
     // 5. Banana Flower (Vazhaipoo dishes & snacks)
@@ -190,7 +189,7 @@ const BlogsPage = () => {
 
     // 8. Neem Flower / Rasam / Herbal Remedy
     if (text.includes('neem') || text.includes('rasam') || text.includes('chamomile') || text.includes('lavender') || text.includes('herbal tea') || text.includes('traditional')) {
-      return 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?q=80&w=800&auto=format&fit=crop';
+      return '/blogs/aavaram_dip_tea.png';
     }
 
     // 9. Jasmine / Desserts / Payasam
@@ -198,7 +197,7 @@ const BlogsPage = () => {
       return 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop';
     }
 
-    return 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?q=80&w=800&auto=format&fit=crop';
+    return '/blogs/aavaram_dip_tea.png';
   };
 
   const getBlogImageSrc = (blog) => {
