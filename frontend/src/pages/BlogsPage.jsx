@@ -152,47 +152,72 @@ const BlogsPage = () => {
       return originalUrl;
     }
 
-    // 1. Aavaram Poo (Golden Yellow Herbal Dip Tea Bag in clear glass cup)
+    // 1. Lavender Tea
+    if (text.includes('lavender')) {
+      return '/blogs/lavender_dip_tea.png';
+    }
+
+    // 2. Saffron Tea & Wellness
+    if (text.includes('saffron')) {
+      return '/blogs/saffron_herbal_tea.png';
+    }
+
+    // 3. Rainbow Flower Fruit Salad
+    if (text.includes('fruit salad') || text.includes('rainbow flower')) {
+      return '/blogs/rainbow_flower_salad.png';
+    }
+
+    // 4. Bluepea Panna Cotta
+    if (text.includes('panna cotta')) {
+      return '/blogs/bluepea_panna_cotta.png';
+    }
+
+    // 5. Marigold Halwa & Dishes
+    if (text.includes('halwa') || text.includes('marigold')) {
+      return '/blogs/marigold_halwa.png';
+    }
+
+    // 6. Aavaram Poo (Golden Yellow Herbal Dip Tea Bag)
     if (text.includes('aavaram') || text.includes('cassia') || text.includes('kondrai') || text.includes('golden bloom') || text.includes('yellow bloom')) {
       return '/blogs/aavaram_dip_tea.png';
     }
 
-    // 2. Hibiscus (Ruby Red Herbal Dip Tea Bag in clear glass cup)
+    // 7. Hibiscus (Ruby Red Herbal Dip Tea Bag)
     if (text.includes('hibiscus') || text.includes('sembaruthi')) {
       return '/blogs/hibiscus_dip_tea.png';
     }
 
-    // 3. Blue Pea / Butterfly Pea (Electric Cobalt Blue Herbal Dip Tea Bag in clear glass cup)
+    // 8. Blue Pea / Butterfly Pea (Electric Cobalt Blue Dip Tea)
     if (text.includes('blue pea') || text.includes('butterfly pea') || text.includes('bluepea') || text.includes('blue bloom')) {
       return '/blogs/blue_pea_dip_tea.png';
     }
 
-    // 4. Rose / Gulkand / Damask Rose
+    // 9. Rose / Gulkand / Damask Rose
     if (text.includes('rose') || text.includes('gulkand') || text.includes('damask')) {
       return '/blogs/rose_petal_delicacy.png';
     }
 
-    // 5. Banana Flower (Vazhaipoo dishes & snacks)
+    // 10. Banana Flower (Vazhaipoo dishes & snacks)
     if (text.includes('banana flower') || text.includes('vazhaipoo') || text.includes('chapati roll') || text.includes('pakora') || text.includes('sandwich')) {
       return 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=800&auto=format&fit=crop';
     }
 
-    // 6. Drumstick Flower / Moringa Flower (Rice, Mor & Curd Rice)
+    // 11. Drumstick Flower / Moringa Flower
     if (text.includes('drumstick flower') || text.includes('moringa') || text.includes('curd rice') || text.includes('neer mor')) {
       return 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop';
     }
 
-    // 7. Pumpkin Flower & Fritters & Dandelion
+    // 12. Pumpkin Flower & Fritters & Dandelion
     if (text.includes('pumpkin flower') || text.includes('fritter') || text.includes('dandelion')) {
       return 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800&auto=format&fit=crop';
     }
 
-    // 8. Neem Flower / Rasam / Herbal Remedy
-    if (text.includes('neem') || text.includes('rasam') || text.includes('chamomile') || text.includes('lavender') || text.includes('herbal tea') || text.includes('traditional')) {
+    // 13. Neem Flower / Rasam / Herbal Remedy
+    if (text.includes('neem') || text.includes('rasam') || text.includes('chamomile') || text.includes('herbal tea') || text.includes('traditional')) {
       return '/blogs/aavaram_dip_tea.png';
     }
 
-    // 9. Jasmine / Desserts / Payasam
+    // 14. Jasmine / Desserts / Payasam
     if (text.includes('jasmine') || text.includes('payasam') || text.includes('sweet') || text.includes('dessert')) {
       return 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop';
     }

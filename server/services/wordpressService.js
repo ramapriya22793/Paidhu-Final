@@ -117,6 +117,21 @@ function getCuratedFloralImage(title = '', category = '', originalUrl = '') {
     return originalUrl;
   }
 
+  if (text.includes('lavender')) {
+    return '/blogs/lavender_dip_tea.png';
+  }
+  if (text.includes('saffron')) {
+    return '/blogs/saffron_herbal_tea.png';
+  }
+  if (text.includes('fruit salad') || text.includes('rainbow flower')) {
+    return '/blogs/rainbow_flower_salad.png';
+  }
+  if (text.includes('panna cotta')) {
+    return '/blogs/bluepea_panna_cotta.png';
+  }
+  if (text.includes('halwa') || text.includes('marigold')) {
+    return '/blogs/marigold_halwa.png';
+  }
   if (text.includes('aavaram') || text.includes('cassia') || text.includes('kondrai') || text.includes('golden bloom') || text.includes('yellow bloom')) {
     return '/blogs/aavaram_dip_tea.png';
   }
@@ -138,7 +153,7 @@ function getCuratedFloralImage(title = '', category = '', originalUrl = '') {
   if (text.includes('pumpkin flower') || text.includes('fritter') || text.includes('dandelion')) {
     return 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800&auto=format&fit=crop';
   }
-  if (text.includes('neem') || text.includes('rasam') || text.includes('chamomile') || text.includes('lavender') || text.includes('herbal tea') || text.includes('traditional')) {
+  if (text.includes('neem') || text.includes('rasam') || text.includes('chamomile') || text.includes('herbal tea') || text.includes('traditional')) {
     return '/blogs/aavaram_dip_tea.png';
   }
   if (text.includes('jasmine') || text.includes('payasam') || text.includes('sweet') || text.includes('dessert')) {

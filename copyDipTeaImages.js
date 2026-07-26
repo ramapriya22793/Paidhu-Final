@@ -13,7 +13,12 @@ const files = fs.readdirSync(srcDir);
 const mappings = {
   'aavaram_dip_tea': 'aavaram_dip_tea.png',
   'hibiscus_dip_tea': 'hibiscus_dip_tea.png',
-  'blue_pea_dip_tea': 'blue_pea_dip_tea.png'
+  'blue_pea_dip_tea': 'blue_pea_dip_tea.png',
+  'lavender_dip_tea': 'lavender_dip_tea.png',
+  'saffron_herbal_tea': 'saffron_herbal_tea.png',
+  'rainbow_flower_salad': 'rainbow_flower_salad.png',
+  'bluepea_panna_cotta': 'bluepea_panna_cotta.png',
+  'marigold_halwa': 'marigold_halwa.png'
 };
 
 Object.entries(mappings).forEach(([key, filename]) => {
