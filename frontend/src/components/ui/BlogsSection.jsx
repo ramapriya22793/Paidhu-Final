@@ -94,6 +94,7 @@ const BlogsSection = () => {
       originalUrl.includes('child') || 
       originalUrl.includes('camera') || 
       originalUrl.includes('toy') ||
+      originalUrl.includes('teacora') ||
       originalUrl.includes('516627145497') ||
       originalUrl.includes('kms');
 

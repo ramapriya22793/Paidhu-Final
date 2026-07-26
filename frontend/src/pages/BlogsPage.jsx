@@ -137,11 +137,13 @@ const BlogsPage = () => {
     const text = (title + ' ' + (category || '')).toLowerCase();
 
     const isGeneric = !originalUrl || 
+      originalUrl.includes('wp.paidhu.com/wp-content') ||
       originalUrl.includes('placeholder') || 
       originalUrl.includes('default') || 
       originalUrl.includes('child') || 
       originalUrl.includes('camera') || 
       originalUrl.includes('toy') ||
+      originalUrl.includes('teacora') ||
       originalUrl.includes('516627145497') ||
       originalUrl.includes('kms');
 
