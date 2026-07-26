@@ -9,14 +9,21 @@ const getPayments = async (req, res) => {
             orderNumber: true,
             customerName: true,
             customerEmail: true,
-            orderStatus: true
+            orderStatus: true,
+            totalPrice: true
           }
         },
         refunds: true
       },
       orderBy: { createdAt: 'desc' }
     });
-    res.json(payments);
+
+    const sanitizedPayments = payments.map(p => ({
+      ...p,
+      amount: (p.amount && p.amount > 0) ? p.amount : (p.order ? p.order.totalPrice : 0)
+    }));
+
+    res.json(sanitizedPayments);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -40,6 +47,13 @@ const getPaymentById = async (req, res) => {
       }
     });
     if (!payment) return res.status(404).json({ message: "Payment not found" });
+
+    if (!payment.amount || payment.amount === 0) {
+      if (payment.order && payment.order.totalPrice) {
+        payment.amount = payment.order.totalPrice;
+      }
+    }
+
     res.json(payment);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -49,7 +63,7 @@ const getPaymentById = async (req, res) => {
 const getAnalytics = async (req, res) => {
   try {
     const payments = await prisma.payment.findMany({
-      include: { refunds: true }
+      include: { order: true, refunds: true }
     });
 
     const now = new Date();
@@ -67,11 +81,13 @@ const getAnalytics = async (req, res) => {
 
     payments.forEach(p => {
       const pDate = new Date(p.createdAt);
+      const amt = (p.amount && p.amount > 0) ? p.amount : (p.order ? p.order.totalPrice : 0);
+
       if (p.status === 'SUCCESS' || p.status === 'PAID') {
         successfulCount++;
-        totalRevenue += p.amount;
-        if (pDate >= today) todayRevenue += p.amount;
-        if (pDate >= firstDayOfMonth) monthRevenue += p.amount;
+        totalRevenue += amt;
+        if (pDate >= today) todayRevenue += amt;
+        if (pDate >= firstDayOfMonth) monthRevenue += amt;
       } else if (p.status === 'PENDING') {
         pendingCount++;
       } else if (p.status === 'FAILED') {
