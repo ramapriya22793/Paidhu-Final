@@ -98,6 +98,9 @@ async function fetchAllPosts() {
 function getCuratedFloralImage(title = '', category = '', originalUrl = '') {
   const text = (title + ' ' + (category || '')).toLowerCase();
 
+  if (text.includes('jasmine') && (text.includes('omelette') || text.includes('egg') || text.includes('breakfast'))) {
+    return 'https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=800&auto=format&fit=crop';
+  }
   if (text.includes('chamomile')) {
     return 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?q=80&w=800&auto=format&fit=crop';
   }
