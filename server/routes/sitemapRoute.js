@@ -34,6 +34,17 @@ router.get("/", async (req, res) => {
       xml += `  <url>\n    <loc>https://paidhu.com/product/${productSlug}</loc>\n    <priority>0.6</priority>\n    <lastmod>${lastMod}</lastmod>\n    <changefreq>weekly</changefreq>\n  </url>\n`;
     });
 
+    // Dynamic blogs
+    const blogs = await prisma.blog.findMany({
+      select: { id: true, slug: true, updatedAt: true }
+    });
+
+    blogs.forEach(b => {
+      const blogSlug = b.slug || b.id;
+      const lastMod = b.updatedAt ? new Date(b.updatedAt).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
+      xml += `  <url>\n    <loc>https://paidhu.com/blogs/${blogSlug}</loc>\n    <priority>0.7</priority>\n    <lastmod>${lastMod}</lastmod>\n    <changefreq>weekly</changefreq>\n  </url>\n`;
+    });
+
     xml += `</urlset>`;
 
     res.header("Content-Type", "application/xml");

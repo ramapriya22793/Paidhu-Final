@@ -8,7 +8,8 @@ const {
   deleteBlog,
   importBlogsManual,
   syncBlogsManual,
-  getSyncLogs
+  getSyncLogs,
+  deleteAllImportedBlogs
 } = require('../controllers/blogController');
 
 // Public Blog Routes
@@ -19,6 +20,7 @@ router.get('/:slug', getBlogBySlug);
 // Import & Sync Routes
 router.post('/import', importBlogsManual);
 router.post('/sync', syncBlogsManual);
+router.delete('/imported/all', deleteAllImportedBlogs);
 
 // Admin Custom CRUD Routes
 router.post('/', createBlog);

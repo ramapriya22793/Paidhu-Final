@@ -257,6 +257,17 @@ const getSyncLogs = async (req, res) => {
       }
     });
   } catch (error) {
+/**
+ * Delete all imported WordPress blogs
+ */
+const deleteAllImportedBlogs = async (req, res) => {
+  try {
+    const result = await prisma.blog.deleteMany({
+      where: { wordpressId: { not: null } }
+    });
+    res.json({ success: true, message: `Deleted ${result.count} imported WordPress blogs.` });
+  } catch (error) {
+    console.error('Delete imported blogs error:', error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -269,5 +280,6 @@ module.exports = {
   deleteBlog,
   importBlogsManual,
   syncBlogsManual,
-  getSyncLogs
+  getSyncLogs,
+  deleteAllImportedBlogs
 };
