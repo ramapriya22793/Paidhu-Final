@@ -63,7 +63,7 @@ const BlogsPage = () => {
     setLoading(true);
     const params = new URLSearchParams({
       page: currentPage,
-      limit: 9,
+      limit: 12,
       sort: sortBy
     });
 
@@ -75,7 +75,6 @@ const BlogsPage = () => {
       .then((res) => (res.ok ? res.json() : { blogs: [], totalPages: 1, total: 0, categories: [], tags: [] }))
       .then((data) => {
         const fetchedBlogs = data.blogs || [];
-        setBlogs(fetchedBlogs);
         setTotalPages(data.totalPages || 1);
         setTotalCount(data.total || 0);
 
@@ -89,6 +88,23 @@ const BlogsPage = () => {
         // Set top item as featured blog if on page 1 and no search filter
         if (currentPage === 1 && !searchQuery && selectedCategory === 'All' && fetchedBlogs.length > 0) {
           setFeaturedBlog(fetchedBlogs[0]);
+        }
+
+        // Backfill to ensure 4-column rows are full (at least 4 cards or multiple of 4)
+        if (fetchedBlogs.length > 0 && fetchedBlogs.length % 4 !== 0) {
+          fetch(`${API_BASE}/api/blogs?limit=16`)
+            .then(r => r.ok ? r.json() : { blogs: [] })
+            .then(allData => {
+              const all = allData.blogs || [];
+              const existingIds = new Set(fetchedBlogs.map(b => b.id));
+              const extra = all.filter(b => !existingIds.has(b.id));
+              const targetCount = Math.max(4, Math.ceil(fetchedBlogs.length / 4) * 4);
+              const combined = [...fetchedBlogs, ...extra].slice(0, targetCount);
+              setBlogs(combined);
+            })
+            .catch(() => setBlogs(fetchedBlogs));
+        } else {
+          setBlogs(fetchedBlogs);
         }
       })
       .catch((err) => {

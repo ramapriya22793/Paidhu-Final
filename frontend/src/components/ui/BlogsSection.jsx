@@ -184,14 +184,23 @@ const BlogsSection = () => {
   // Extract categories dynamically
   const categories = ['All', ...new Set(blogs.map((b) => b.category).filter(Boolean))];
 
-  // Filter and search
-  const filteredBlogs = blogs.filter((blog) => {
+  // Filter and search with smart 4-card row backfill
+  const matchedBlogs = blogs.filter((blog) => {
     const matchesCategory = selectedCategory === 'All' || blog.category === selectedCategory;
     const matchesSearch =
       blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       blog.content.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
+
+  const filteredBlogs = (() => {
+    if (matchedBlogs.length === 0) return matchedBlogs;
+    if (matchedBlogs.length % 4 === 0) return matchedBlogs;
+    const existingIds = new Set(matchedBlogs.map(b => b.id));
+    const extra = blogs.filter(b => !existingIds.has(b.id));
+    const targetCount = Math.max(4, Math.ceil(matchedBlogs.length / 4) * 4);
+    return [...matchedBlogs, ...extra].slice(0, targetCount);
+  })();
 
   // Helper to strip HTML tags for clean card summary/excerpt
   const getExcerpt = (htmlContent, limit = 120) => {
