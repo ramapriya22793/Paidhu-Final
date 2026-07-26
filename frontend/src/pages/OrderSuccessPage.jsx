@@ -15,7 +15,7 @@ import {
   Check
 } from 'lucide-react';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD ? '' : 'http://localhost:5000');
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://paidhu-final-anm2.vercel.app';
 
 const OrderSuccessPage = () => {
   const { orderNumber } = useParams();
