@@ -295,7 +295,7 @@ const BlogsSection = () => {
         ) : (
           <motion.div
             layout
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5"
           >
             {filteredBlogs.map((blog, idx) => (
               <motion.article
@@ -304,49 +304,51 @@ const BlogsSection = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: idx * 0.05 }}
-                whileHover={{ y: -8 }}
-                className="group bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full cursor-pointer"
+                whileHover={{ y: -6 }}
+                className="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col h-full cursor-pointer"
                 onClick={() => setSelectedBlog(blog)}
               >
                 {/* Featured Image */}
-                <div className="relative h-[125px] sm:h-[140px] w-full overflow-hidden bg-gray-100">
+                <div className="relative h-[110px] sm:h-[125px] w-full overflow-hidden bg-gray-100">
                   <BlogImage src={getBlogImageSrc(blog)} alt={blog.title} />
                   {blog.category && (
-                    <span className="absolute top-4 left-4 bg-[#662654] text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-md flex items-center gap-1">
-                      <Tag size={9} />
+                    <span className="absolute top-2.5 left-2.5 bg-[#662654] text-white text-[9px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-md flex items-center gap-1">
+                      <Tag size={8} />
                       {blog.category}
                     </span>
                   )}
                 </div>
 
                 {/* Content */}
-                <div className="p-6 flex flex-col flex-1">
-                  {/* Meta details */}
-                  <div className="flex items-center gap-4 text-gray-400 text-[11px] font-bold uppercase tracking-wider mb-3">
-                    <span className="flex items-center gap-1">
-                      <Calendar size={12} />
-                      {formatDate(blog.createdAt)}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <User size={12} />
-                      {blog.author || 'Paidhu Team'}
-                    </span>
+                <div className="p-3.5 sm:p-4 flex flex-col flex-1 justify-between">
+                  <div>
+                    {/* Meta details */}
+                    <div className="flex items-center gap-3 text-gray-400 text-[10px] font-bold uppercase tracking-wider mb-2">
+                      <span className="flex items-center gap-1">
+                        <Calendar size={11} />
+                        {formatDate(blog.createdAt)}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <User size={11} />
+                        {blog.author || 'Paidhu Team'}
+                      </span>
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="text-xs sm:text-sm font-bold text-gray-900 leading-snug group-hover:text-[#662654] transition-colors line-clamp-2 mb-2">
+                      {blog.title}
+                    </h3>
+
+                    {/* Excerpt */}
+                    <p className="text-[11px] text-gray-500 font-medium leading-relaxed line-clamp-2 mb-3">
+                      {getExcerpt(blog.content, 90)}
+                    </p>
                   </div>
 
-                  {/* Title */}
-                  <h3 className="text-[17px] font-bold text-gray-900 leading-snug group-hover:text-[#662654] transition-colors line-clamp-2 mb-3">
-                    {blog.title}
-                  </h3>
-
-                  {/* Excerpt */}
-                  <p className="text-[12.5px] text-gray-500 font-medium leading-relaxed line-clamp-3 mb-6 flex-1">
-                    {getExcerpt(blog.content)}
-                  </p>
-
                   {/* Read More */}
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#662654] uppercase tracking-wider group-hover:translate-x-1.5 transition-transform">
+                  <div className="pt-2 border-t border-gray-100 flex items-center gap-1 text-[10px] font-bold text-[#662654] uppercase tracking-wider group-hover:translate-x-1 transition-transform">
                     <span>Read Article</span>
-                    <ArrowRight size={13} strokeWidth={2.5} />
+                    <ArrowRight size={12} strokeWidth={2.5} />
                   </div>
                 </div>
               </motion.article>

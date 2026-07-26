@@ -389,54 +389,54 @@ const BlogsPage = () => {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
               {blogs.map((blog, idx) => (
                 <motion.article
                   key={blog.id || blog.slug || idx}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: idx * 0.05 }}
-                  className="group bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full cursor-pointer"
+                  className="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col h-full cursor-pointer"
                 >
                   <Link to={`/blogs/${blog.slug || blog.id}`} className="flex flex-col h-full">
                     {/* Featured Image */}
-                    <div className="relative h-[125px] sm:h-[140px] w-full overflow-hidden bg-gray-100">
+                    <div className="relative h-[110px] sm:h-[125px] w-full overflow-hidden bg-gray-100">
                       <BlogCardImage src={getBlogImageSrc(blog)} alt={blog.title} />
                       {blog.category && (
-                        <span className="absolute top-4 left-4 bg-[#662654] text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-md flex items-center gap-1">
-                          <Tag size={10} /> {blog.category}
+                        <span className="absolute top-2.5 left-2.5 bg-[#662654] text-white text-[9px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-md flex items-center gap-1">
+                          <Tag size={9} /> {blog.category}
                         </span>
                       )}
                     </div>
 
                     {/* Content */}
-                    <div className="p-6 flex flex-col flex-1 justify-between space-y-4">
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-4 text-gray-400 text-[11px] font-bold uppercase tracking-wider">
+                    <div className="p-3.5 sm:p-4 flex flex-col flex-1 justify-between space-y-3">
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-3 text-gray-400 text-[10px] font-bold uppercase tracking-wider">
                           <span className="flex items-center gap-1">
-                            <Calendar size={12} className="text-[#662654]" /> {formatDate(blog.createdAt)}
+                            <Calendar size={11} className="text-[#662654]" /> {formatDate(blog.createdAt)}
                           </span>
                           <span className="flex items-center gap-1">
-                            <Clock size={12} className="text-[#662654]" /> {blog.readingTime || 2} Min
+                            <Clock size={11} className="text-[#662654]" /> {blog.readingTime || 2} Min
                           </span>
                         </div>
 
-                        <h3 className="text-[17px] font-bold text-gray-900 leading-snug group-hover:text-[#662654] transition-colors line-clamp-2">
+                        <h3 className="text-xs sm:text-sm font-bold text-gray-900 leading-snug group-hover:text-[#662654] transition-colors line-clamp-2">
                           {blog.title}
                         </h3>
 
-                        <p className="text-[12.5px] text-gray-500 font-medium leading-relaxed line-clamp-3">
-                          {blog.excerpt || blog.content?.replace(/<[^>]*>?/gm, '').slice(0, 120)}
+                        <p className="text-[11px] text-gray-500 font-medium leading-relaxed line-clamp-2">
+                          {blog.excerpt || blog.content?.replace(/<[^>]*>?/gm, '').slice(0, 100)}
                         </p>
                       </div>
 
-                      <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
-                        <span className="text-xs font-semibold text-gray-400">
+                      <div className="pt-2.5 border-t border-gray-100 flex items-center justify-between">
+                        <span className="text-[10px] font-semibold text-gray-400">
                           {blog.author || 'Paidhu Team'}
                         </span>
-                        <div className="flex items-center gap-1.5 text-xs font-bold text-[#662654] uppercase tracking-wider group-hover:translate-x-1.5 transition-transform">
+                        <div className="flex items-center gap-1 text-[10px] font-bold text-[#662654] uppercase tracking-wider group-hover:translate-x-1 transition-transform">
                           <span>Read</span>
-                          <ArrowRight size={14} strokeWidth={2.5} />
+                          <ArrowRight size={12} strokeWidth={2.5} />
                         </div>
                       </div>
                     </div>
