@@ -91,7 +91,7 @@ const navSlugMap = {
   'BYOC':                        'byoc',
   'Our Own Community':           'our-own-community',
   'Bulk Orders':                 'bulk-orders',
-  'Blogs':                       'blogs',
+  'Blogs':                       '__direct__/blogs',
   'About Us':                    'about-us',
   'Careers':                     '__direct__/careers',
   'Saffron Guidance':            '__direct__/saffron-guidance',
