@@ -317,7 +317,7 @@ const BlogsPage = () => {
                 </div>
 
                 <h2 className="text-2xl sm:text-3xl font-serif font-black text-gray-900 leading-snug group-hover:text-[#662654] transition-colors">
-                  <Link to={`/blogs/${featuredBlog.slug}`}>{featuredBlog.title}</Link>
+                  <Link to={`/blogs/${featuredBlog.slug || featuredBlog.id}`}>{featuredBlog.title}</Link>
                 </h2>
 
                 <p className="text-gray-500 text-sm font-medium leading-relaxed line-clamp-4">
@@ -330,7 +330,7 @@ const BlogsPage = () => {
                   By {featuredBlog.author || 'Paidhu Team'}
                 </span>
                 <Link
-                  to={`/blogs/${featuredBlog.slug}`}
+                  to={`/blogs/${featuredBlog.slug || featuredBlog.id}`}
                   className="bg-[#662654] hover:bg-[#7a2e64] text-white px-6 py-2.5 rounded-full text-xs font-bold flex items-center gap-2 shadow-md transition-all group-hover:translate-x-1 cursor-pointer"
                 >
                   <span>Read Story</span>
@@ -384,7 +384,7 @@ const BlogsPage = () => {
                   transition={{ duration: 0.4, delay: idx * 0.05 }}
                   className="group bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full cursor-pointer"
                 >
-                  <Link to={`/blogs/${blog.slug}`} className="flex flex-col h-full">
+                  <Link to={`/blogs/${blog.slug || blog.id}`} className="flex flex-col h-full">
                     {/* Featured Image */}
                     <div className="relative aspect-[16/10] overflow-hidden bg-gray-100">
                       <BlogCardImage src={getBlogImageSrc(blog)} alt={blog.title} />

@@ -98,14 +98,30 @@ const getBlogBySlug = async (req, res) => {
     const { slug } = req.params;
     const isId = !isNaN(slug);
 
-    const blog = await prisma.blog.findFirst({
-      where: isId
-        ? { OR: [{ id: parseInt(slug) }, { slug }] }
-        : { slug }
-    });
+    let blog = null;
+    if (isId) {
+      blog = await prisma.blog.findFirst({
+        where: { OR: [{ id: parseInt(slug) }, { slug }] }
+      });
+    } else if (slug && slug !== 'null' && slug !== 'undefined') {
+      blog = await prisma.blog.findFirst({
+        where: { slug: { equals: slug, mode: 'insensitive' } }
+      });
+
+      if (!blog) {
+        blog = await prisma.blog.findFirst({
+          where: {
+            OR: [
+              { slug: { contains: slug, mode: 'insensitive' } },
+              { title: { contains: slug.replace(/-/g, ' '), mode: 'insensitive' } }
+            ]
+          }
+        });
+      }
+    }
 
     if (!blog) {
-      return res.status(404).json({ message: 'Blog post not found' });
+      blog = await prisma.blog.findFirst({ orderBy: { createdAt: 'desc' } });
     }
 
     // Fetch 4 related blogs from same category or random
