@@ -296,24 +296,49 @@ const verifyPayment = async (req, res) => {
 
     if (expectedSignature === razorpay_signature) {
       // Payment is successful
-      const existingOrder = await prisma.order.findUnique({ where: { id: parseInt(orderId) } });
+      const targetOrderId = parseInt(orderId);
+      const existingOrder = await prisma.order.findUnique({ where: { id: targetOrderId } });
       const orderAmount = existingOrder ? existingOrder.totalPrice : 0;
 
+      // Safely handle payment record creation/update
+      const existingPayment = await prisma.payment.findFirst({
+        where: {
+          OR: [
+            { razorpayOrderId: razorpay_order_id },
+            { razorpayPaymentId: razorpay_payment_id },
+            { orderId: targetOrderId }
+          ]
+        }
+      });
+
+      if (!existingPayment) {
+        await prisma.payment.create({
+          data: {
+            orderId: targetOrderId,
+            razorpayOrderId: razorpay_order_id,
+            razorpayPaymentId: razorpay_payment_id,
+            razorpaySignature: razorpay_signature,
+            amount: orderAmount,
+            method: 'Online',
+            status: 'SUCCESS'
+          }
+        });
+      } else {
+        await prisma.payment.update({
+          where: { id: existingPayment.id },
+          data: {
+            status: 'SUCCESS',
+            razorpayPaymentId: razorpay_payment_id || existingPayment.razorpayPaymentId,
+            razorpaySignature: razorpay_signature || existingPayment.razorpaySignature
+          }
+        });
+      }
+
       const updatedOrder = await prisma.order.update({
-        where: { id: parseInt(orderId) },
+        where: { id: targetOrderId },
         data: {
           orderStatus: 'CONFIRMED',
-          paymentStatus: 'PAID',
-          payments: {
-            create: {
-              razorpayOrderId: razorpay_order_id,
-              razorpayPaymentId: razorpay_payment_id,
-              razorpaySignature: razorpay_signature,
-              amount: orderAmount,
-              method: 'Online',
-              status: 'SUCCESS'
-            }
-          }
+          paymentStatus: 'PAID'
         },
         include: { items: { include: { product: true } } }
       });
@@ -374,30 +399,45 @@ const razorpayWebhook = async (req, res) => {
           const dbOrderId = parseInt(receipt.split('_')[2]);
           
           if (!isNaN(dbOrderId)) {
-            const existingOrder = await prisma.order.findUnique({
-              where: { id: dbOrderId },
-              include: { payments: true }
+            const existingPayment = await prisma.payment.findFirst({
+              where: {
+                OR: [
+                  { razorpayOrderId: orderEntity.id },
+                  { razorpayPaymentId: paymentEntity.id },
+                  { orderId: dbOrderId }
+                ]
+              }
             });
 
-            if (existingOrder && existingOrder.orderStatus === 'PENDING') {
-              // Update order to CONFIRMED
-              const updatedOrder = await prisma.order.update({
-                where: { id: dbOrderId },
+            if (!existingPayment) {
+              await prisma.payment.create({
                 data: {
-                  orderStatus: 'CONFIRMED',
-                  paymentStatus: 'PAID',
-                  payments: {
-                    create: {
-                      razorpayOrderId: orderEntity.id,
-                      razorpayPaymentId: paymentEntity.id,
-                      amount: paymentEntity.amount / 100, // stored in rupees in DB usually, amount in payload is paise
-                      method: paymentEntity.method || 'Online',
-                      status: 'SUCCESS'
-                    }
-                  }
-                },
-                include: { items: { include: { product: true } } }
+                  orderId: dbOrderId,
+                  razorpayOrderId: orderEntity.id,
+                  razorpayPaymentId: paymentEntity.id,
+                  amount: paymentEntity.amount / 100,
+                  method: paymentEntity.method || 'Online',
+                  status: 'SUCCESS'
+                }
               });
+            } else {
+              await prisma.payment.update({
+                where: { id: existingPayment.id },
+                data: {
+                  status: 'SUCCESS',
+                  razorpayPaymentId: paymentEntity.id || existingPayment.razorpayPaymentId
+                }
+              });
+            }
+
+            const updatedOrder = await prisma.order.update({
+              where: { id: dbOrderId },
+              data: {
+                orderStatus: 'CONFIRMED',
+                paymentStatus: 'PAID'
+              },
+              include: { items: { include: { product: true } } }
+            });
 
               // Deduct reward points if used
               if (updatedOrder.rewardPointsUsed > 0 && updatedOrder.userId) {
