@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, ShoppingCart, User, Menu, X, ChevronDown, Grid3X3, Trash2, Minus, Plus, ArrowRight, Lock, Heart } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import paidhuLogo from '../../assets/paidhulogo.png';
 import { useCart } from '../../context/CartContext';
 import AuthModal from './AuthModal';
@@ -123,6 +123,19 @@ const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearchSuggestions, setShowSearchSuggestions] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const isNavActive = (name) => {
+    const slug = navSlugMap[name];
+    if (!slug) return false;
+    let targetPath = '';
+    if (slug === '/') targetPath = '/';
+    else if (slug.startsWith('__direct__')) targetPath = slug.replace('__direct__', '');
+    else targetPath = `/shop/${slug}`;
+
+    if (targetPath === '/') return location.pathname === '/';
+    return location.pathname === targetPath || location.pathname.startsWith(targetPath + '/');
+  };
 
   const filteredProducts = searchQuery.trim()
     ? allProducts.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -491,7 +504,7 @@ const Navbar = () => {
                         size={13}
                         className={`transition-transform duration-200 ${showCatDropdown ? 'rotate-180' : ''}`}
                       />
-                      <span className="absolute -bottom-0.5 left-0 w-0 h-[2px] bg-[#662654] group-hover:w-full transition-all duration-300 rounded-full" />
+                      <span className={`absolute -bottom-0.5 left-0 h-[2px] bg-[#662654] transition-all duration-300 rounded-full ${isNavActive('Shop by Category') ? 'w-full' : 'w-0 group-hover:w-full'}`} />
                     </button>
 
                     {/* ── Category Dropdown ── */}
@@ -585,11 +598,11 @@ const Navbar = () => {
                     </AnimatePresence>
                   </div>
                 ) : (
-                  <NavItem name={col.top.name} onClick={() => handleNavClick(col.top.name)} />
+                  <NavItem name={col.top.name} onClick={() => handleNavClick(col.top.name)} isActive={isNavActive(col.top.name)} />
                 )}
 
                 {col.bottom && (
-                  <NavItem name={col.bottom.name} onClick={() => handleNavClick(col.bottom.name)} />
+                  <NavItem name={col.bottom.name} onClick={() => handleNavClick(col.bottom.name)} isActive={isNavActive(col.bottom.name)} />
                 )}
               </div>
             ))}
@@ -1076,13 +1089,13 @@ const Navbar = () => {
 };
 
 // Single nav link with hover underline animation
-const NavItem = ({ name, onClick }) => (
+const NavItem = ({ name, onClick, isActive }) => (
   <button
     onClick={onClick}
-    className="relative text-[#662654] font-bold text-[13px] xl:text-[14px] hover:text-[#4a1c3d] transition-colors cursor-pointer whitespace-nowrap text-center group"
+    className={`relative text-[#662654] font-bold text-[13px] xl:text-[14px] hover:text-[#4a1c3d] transition-colors cursor-pointer whitespace-nowrap text-center group ${isActive ? 'font-extrabold text-[#4a1c3d]' : ''}`}
   >
     {name}
-    <span className="absolute -bottom-0.5 left-0 w-0 h-[2px] bg-[#662654] group-hover:w-full transition-all duration-300 rounded-full" />
+    <span className={`absolute -bottom-0.5 left-0 h-[2px] bg-[#662654] transition-all duration-300 rounded-full ${isActive ? 'w-full' : 'w-0 group-hover:w-full'}`} />
   </button>
 );
 
