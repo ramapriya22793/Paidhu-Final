@@ -488,11 +488,11 @@ const Navbar = () => {
                   <button
                     onMouseEnter={() => setShowCatDropdown(true)}
                     onClick={() => setShowCatDropdown(v => !v)}
-                    className="relative flex items-center gap-1 text-[#662654] font-bold text-[13px] xl:text-[14px] hover:text-[#4a1c3d] transition-colors cursor-pointer whitespace-nowrap group py-0.5"
+                    className="relative flex items-center gap-1.5 text-[#662654] font-bold text-[15px] xl:text-[16.5px] hover:text-[#4a1c3d] transition-colors cursor-pointer whitespace-nowrap group py-0.5"
                   >
                     {item.name}
                     <ChevronDown
-                      size={13}
+                      size={15}
                       className={`transition-transform duration-200 ${showCatDropdown ? 'rotate-180' : ''}`}
                     />
                     <span className="absolute -bottom-0.5 left-0 w-0 h-[2px] bg-[#662654] group-hover:w-full transition-all duration-300 rounded-full" />
@@ -1085,7 +1085,7 @@ const Navbar = () => {
 const NavItem = ({ name, onClick }) => (
   <button
     onClick={onClick}
-    className="relative text-[#662654] font-bold text-[13px] xl:text-[14px] leading-snug hover:text-[#4a1c3d] transition-colors cursor-pointer whitespace-nowrap text-center group py-0.5"
+    className="relative text-[#662654] font-bold text-[15px] xl:text-[16.5px] leading-snug hover:text-[#4a1c3d] transition-colors cursor-pointer whitespace-nowrap text-center group py-0.5"
   >
     {name}
     <span className="absolute -bottom-0.5 left-0 w-0 h-[2px] bg-[#662654] group-hover:w-full transition-all duration-300 rounded-full" />
