@@ -478,15 +478,20 @@ const Navbar = () => {
       </div>
 
       {/* Second Row — Desktop Navigation */}
-      <div className="hidden lg:block w-full bg-[#ede7d7] border-b border-[#662654]/10 py-3 overflow-x-auto hide-scrollbar">
+      <div className="hidden lg:block w-full bg-[#ede7d7] border-b border-[#662654]/10 py-3 relative z-40">
         <nav className="max-w-[1400px] mx-auto px-4 xl:px-8 flex flex-col gap-y-2">
           {/* Row 1 — Primary Links */}
-          <div className="flex justify-center items-center gap-x-4 xl:gap-x-7 w-full max-w-full overflow-x-auto hide-scrollbar whitespace-nowrap">
+          <div className="flex justify-center items-center gap-x-4 xl:gap-x-7 w-full max-w-full whitespace-nowrap">
             {navRow1.map((item, i) => (
               item.name === 'Shop by Category' ? (
-                <div key={i} className="relative" ref={catRef}>
+                <div 
+                  key={i} 
+                  className="relative z-50" 
+                  ref={catRef}
+                  onMouseEnter={() => setShowCatDropdown(true)}
+                  onMouseLeave={() => setShowCatDropdown(false)}
+                >
                   <button
-                    onMouseEnter={() => setShowCatDropdown(true)}
                     onClick={() => setShowCatDropdown(v => !v)}
                     className="relative flex items-center gap-1.5 text-[#662654] font-bold text-[15px] xl:text-[16.5px] hover:text-[#4a1c3d] transition-colors cursor-pointer whitespace-nowrap group py-0.5"
                   >
@@ -506,8 +511,7 @@ const Navbar = () => {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.97 }}
                         transition={{ duration: 0.2, ease: 'easeOut' }}
-                        onMouseLeave={() => setShowCatDropdown(false)}
-                        className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[520px] bg-white rounded-2xl shadow-2xl border border-gray-100 z-[999] overflow-hidden"
+                        className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[520px] bg-white rounded-2xl shadow-2xl border border-gray-100 z-[9999] overflow-hidden"
                       >
                         {/* Dropdown Header */}
                         <div className="px-6 pt-5 pb-3 border-b border-gray-100">
@@ -595,7 +599,7 @@ const Navbar = () => {
           </div>
 
           {/* Row 2 — Secondary Links */}
-          <div className="flex justify-center items-center gap-x-6 xl:gap-x-10 w-full max-w-full overflow-x-auto hide-scrollbar whitespace-nowrap pt-0.5">
+          <div className="flex justify-center items-center gap-x-6 xl:gap-x-10 w-full max-w-full whitespace-nowrap pt-0.5">
             {navRow2.map((item, i) => (
               <NavItem key={i} name={item.name} onClick={() => handleNavClick(item.name)} />
             ))}
