@@ -480,7 +480,7 @@ const CheckoutPage = () => {
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.55, ease: 'easeOut' }}
-      className="w-full min-h-screen bg-gradient-to-b from-[#fcfbfa] via-[#faf7f3] to-[#f4f0ea] py-12 px-4 md:px-6 relative overflow-x-hidden font-sans"
+      className="w-full min-h-screen bg-gradient-to-b from-[#fcfbfa] via-[#faf7f3] to-[#f4f0ea] py-12 px-4 md:px-6 relative font-sans"
     >
       
       {/* Background Decorative Rings */}
