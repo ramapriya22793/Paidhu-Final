@@ -91,10 +91,8 @@ exports.getDashboardStats = async (req, res) => {
         totalPrice: true
       },
       where: {
-        OR: [
-          { paymentStatus: 'SUCCESS' },
-          { paymentStatus: 'PAID' }
-        ]
+        orderStatus: { not: 'CANCELLED' },
+        paymentStatus: { notIn: ['FAILED', 'REFUNDED'] }
       }
     });
     
@@ -107,12 +105,10 @@ exports.getDashboardStats = async (req, res) => {
       Jul: 0, Aug: 0, Sep: 0, Oct: 0, Nov: 0, Dec: 0
     };
 
-    const allPaidOrders = await prisma.order.findMany({
+    const allValidOrders = await prisma.order.findMany({
       where: { 
-        OR: [
-          { paymentStatus: 'SUCCESS' },
-          { paymentStatus: 'PAID' }
-        ],
+        orderStatus: { not: 'CANCELLED' },
+        paymentStatus: { notIn: ['FAILED', 'REFUNDED'] },
         createdAt: {
           gte: new Date(`${currentYear}-01-01T00:00:00.000Z`),
           lte: new Date(`${currentYear}-12-31T23:59:59.999Z`)
@@ -121,7 +117,7 @@ exports.getDashboardStats = async (req, res) => {
       select: { totalPrice: true, createdAt: true }
     });
 
-    allPaidOrders.forEach(order => {
+    allValidOrders.forEach(order => {
       const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
       const monthIndex = new Date(order.createdAt).getMonth();
       const monthName = monthNames[monthIndex];

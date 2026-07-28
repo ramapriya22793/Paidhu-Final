@@ -303,6 +303,7 @@ const verifyPayment = async (req, res) => {
         where: { id: parseInt(orderId) },
         data: {
           orderStatus: 'CONFIRMED',
+          paymentStatus: 'PAID',
           payments: {
             create: {
               razorpayOrderId: razorpay_order_id,
@@ -384,6 +385,7 @@ const razorpayWebhook = async (req, res) => {
                 where: { id: dbOrderId },
                 data: {
                   orderStatus: 'CONFIRMED',
+                  paymentStatus: 'PAID',
                   payments: {
                     create: {
                       razorpayOrderId: orderEntity.id,

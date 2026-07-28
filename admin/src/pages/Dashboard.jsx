@@ -93,11 +93,12 @@ const Dashboard = () => {
                   </linearGradient>
                 </defs>
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#6b7280' }} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#6b7280' }} dx={-10} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#6b7280' }} dx={-10} tickFormatter={(val) => `₹${val.toLocaleString()}`} />
                 <CartesianGrid vertical={false} stroke="#f3f4f6" />
                 <Tooltip 
                   contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
                   labelStyle={{ fontWeight: 'bold', color: '#1f2937', marginBottom: '4px' }}
+                  formatter={(val) => [`₹${Number(val).toLocaleString()}`, 'Revenue']}
                 />
                 <Area type="monotone" dataKey="sales" stroke="#662654" strokeWidth={3} fillOpacity={1} fill="url(#colorRevenue)" />
               </AreaChart>
