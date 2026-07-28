@@ -595,7 +595,7 @@ const Navbar = () => {
           </div>
 
           {/* Row 2 — Secondary Links */}
-          <div className="flex justify-center items-center gap-x-6 xl:gap-x-10 w-full max-w-full overflow-x-auto hide-scrollbar whitespace-nowrap pt-1.5 border-t border-[#662654]/10">
+          <div className="flex justify-center items-center gap-x-6 xl:gap-x-10 w-full max-w-full overflow-x-auto hide-scrollbar whitespace-nowrap pt-0.5">
             {navRow2.map((item, i) => (
               <NavItem key={i} name={item.name} onClick={() => handleNavClick(item.name)} />
             ))}
