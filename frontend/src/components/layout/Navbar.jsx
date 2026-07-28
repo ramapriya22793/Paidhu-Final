@@ -473,7 +473,7 @@ const Navbar = () => {
         <nav className="max-w-[1400px] mx-auto px-4 xl:px-8">
           <div className="flex justify-center items-center gap-x-3.5 xl:gap-x-6 w-full max-w-full overflow-x-auto hide-scrollbar whitespace-nowrap">
             {navColumns.map((col, i) => (
-              <div key={i} className="flex flex-col items-center justify-start gap-y-1">
+              <div key={i} className="flex flex-col items-center justify-center min-h-[42px] gap-y-1">
 
 
 
