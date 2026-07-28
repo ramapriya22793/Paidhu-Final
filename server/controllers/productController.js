@@ -145,14 +145,45 @@ const getProducts = async (req, res) => {
 // GET SINGLE PRODUCT
 const getProductById = async (req, res) => {
   try {
-    const isIdNumeric = !isNaN(Number(req.params.id)) && /^\d+$/.test(req.params.id);
-    const p = await prisma.product.findFirst({
-      where: isIdNumeric ? { id: Number(req.params.id) } : { slug: req.params.id },
-      include: {
-        category: true,
-        productImages: true
+    const rawId = req.params.id || '';
+    const isIdNumeric = !isNaN(Number(rawId)) && /^\d+$/.test(rawId);
+    
+    let p;
+    if (isIdNumeric) {
+      p = await prisma.product.findFirst({
+        where: { id: Number(rawId) },
+        include: {
+          category: true,
+          productImages: true
+        }
+      });
+    } else {
+      let decodedParam = rawId;
+      try {
+        decodedParam = decodeURIComponent(rawId).trim();
+      } catch (e) {
+        decodedParam = rawId;
       }
-    });
+
+      const normalizedSlug = decodedParam.toLowerCase().replace(/\s+/g, '-').replace(/–/g, '-');
+      const spaceParam = decodedParam.replace(/-/g, ' ');
+
+      p = await prisma.product.findFirst({
+        where: {
+          OR: [
+            { slug: rawId },
+            { slug: decodedParam },
+            { slug: normalizedSlug },
+            { name: { equals: decodedParam, mode: 'insensitive' } },
+            { name: { contains: spaceParam, mode: 'insensitive' } }
+          ]
+        },
+        include: {
+          category: true,
+          productImages: true
+        }
+      });
+    }
 
     if (!p) {
       return res.status(404).json({ message: 'Product not found' });
@@ -170,6 +201,7 @@ const getProductById = async (req, res) => {
 
     res.json(formattedProduct);
   } catch (error) {
+    console.error("Get product detail error:", error);
     res.status(500).json({
       message: error.message,
     });
