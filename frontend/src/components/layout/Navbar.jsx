@@ -1085,15 +1085,29 @@ const Navbar = () => {
   );
 };
 
+const getNavHref = (name) => {
+  const slug = navSlugMap[name] || '';
+  if (slug.startsWith('__direct__/')) return '/' + slug.replace('__direct__/', '');
+  if (slug === '/') return '/';
+  return `/shop/${slug}`;
+};
+
 // Single nav link with hover underline animation
-const NavItem = ({ name, onClick }) => (
-  <button
-    onClick={onClick}
-    className="relative text-[#662654] font-bold text-[15px] xl:text-[16.5px] leading-snug hover:text-[#4a1c3d] transition-colors cursor-pointer whitespace-nowrap text-center group py-0.5"
-  >
-    {name}
-    <span className="absolute -bottom-0.5 left-0 w-0 h-[2px] bg-[#662654] group-hover:w-full transition-all duration-300 rounded-full" />
-  </button>
-);
+const NavItem = ({ name, onClick }) => {
+  const href = getNavHref(name);
+  return (
+    <a
+      href={href}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick();
+      }}
+      className="relative text-[#662654] font-bold text-[15px] xl:text-[16.5px] leading-snug hover:text-[#4a1c3d] transition-colors cursor-pointer whitespace-nowrap text-center group py-0.5 inline-block"
+    >
+      {name}
+      <span className="absolute -bottom-0.5 left-0 w-0 h-[2px] bg-[#662654] group-hover:w-full transition-all duration-300 rounded-full" />
+    </a>
+  );
+};
 
 export default Navbar;
