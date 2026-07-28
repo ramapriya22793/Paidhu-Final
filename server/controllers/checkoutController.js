@@ -439,30 +439,29 @@ const razorpayWebhook = async (req, res) => {
               include: { items: { include: { product: true } } }
             });
 
-              // Deduct reward points if used
-              if (updatedOrder.rewardPointsUsed > 0 && updatedOrder.userId) {
-                await prisma.user.update({
-                  where: { id: updatedOrder.userId },
-                  data: { rewardPoints: { decrement: updatedOrder.rewardPointsUsed } }
-                });
-              }
-
-              // Increment coupon usage count if used
-              if (updatedOrder.couponId) {
-                await prisma.coupon.update({
-                  where: { id: updatedOrder.couponId },
-                  data: { usageCount: { increment: 1 } }
-                });
-              }
-
-              // Generate invoice
-              await generateInvoice(updatedOrder);
-
-              // Send email
-              await sendOrderConfirmationEmail(updatedOrder, updatedOrder.customerEmail);
-              
-              console.log(`Webhook processed successfully for Order ID: ${dbOrderId}`);
+            // Deduct reward points if used
+            if (updatedOrder.rewardPointsUsed > 0 && updatedOrder.userId) {
+              await prisma.user.update({
+                where: { id: updatedOrder.userId },
+                data: { rewardPoints: { decrement: updatedOrder.rewardPointsUsed } }
+              });
             }
+
+            // Increment coupon usage count if used
+            if (updatedOrder.couponId) {
+              await prisma.coupon.update({
+                where: { id: updatedOrder.couponId },
+                data: { usageCount: { increment: 1 } }
+              });
+            }
+
+            // Generate invoice
+            await generateInvoice(updatedOrder);
+
+            // Send email
+            await sendOrderConfirmationEmail(updatedOrder, updatedOrder.customerEmail);
+            
+            console.log(`Webhook processed successfully for Order ID: ${dbOrderId}`);
           }
         }
       }
