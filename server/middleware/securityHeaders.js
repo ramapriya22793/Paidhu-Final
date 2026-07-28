@@ -10,12 +10,18 @@ const securityHeaders = helmet({
         "'self'", 
         "data:", 
         "blob:", 
+        "https://paidhu.com",
+        "https://www.paidhu.com",
+        "https://admin.paidhu.com",
         "https://szgqtggokqqaoomryljr.supabase.co", 
         "https://images.unsplash.com", 
         "https://res.cloudinary.com"
       ],
       connectSrc: [
         "'self'", 
+        "https://paidhu.com",
+        "https://www.paidhu.com",
+        "https://admin.paidhu.com",
         "https://paidhu-final-anm2.vercel.app", 
         "https://szgqtggokqqaoomryljr.supabase.co", 
         "https://api.razorpay.com"

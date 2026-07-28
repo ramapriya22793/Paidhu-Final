@@ -5,22 +5,22 @@ const prisma = require("../prismaClient");
 const navSectionFilters = {
   'shop-all': () => ({}),
   'deal-of-the-day': () => ({ status: { in: ['ACTIVE', 'PREORDER'] } }),
-  'shop-by-category': (extra) => extra?.category ? { category: { name: extra.category } } : {},
+  'shop-by-category': (extra) => extra?.category ? { category: { name: { equals: extra.category, mode: 'insensitive' } } } : {},
   'for-your-family': () => ({ 
     OR: [
-      { category: { name: 'Combos' } },
-      { category: { name: 'Family Combos' } },
-      { category: { name: 'Saffron' } },
-      { tags: { contains: 'combo' } },
-      { tags: { contains: 'family' } },
-      { tags: { contains: 'saffron' } }
+      { category: { name: { equals: 'Combos', mode: 'insensitive' } } },
+      { category: { name: { equals: 'Family Combos', mode: 'insensitive' } } },
+      { category: { name: { equals: 'Saffron', mode: 'insensitive' } } },
+      { tags: { contains: 'combo', mode: 'insensitive' } },
+      { tags: { contains: 'family', mode: 'insensitive' } },
+      { tags: { contains: 'saffron', mode: 'insensitive' } }
     ] 
   }),
-  'starting-floral-food-habitat': () => ({ tags: { contains: 'floral' } }),
-  'byoc': () => ({ tags: { contains: 'byoc' } }),
-  'our-own-community': () => ({ tags: { contains: 'community' } }),
-  'our-philosophy': () => ({ tags: { contains: 'philosophy' } }),
-  'bulk-orders': () => ({ tags: { contains: 'bulk' } }),
+  'starting-floral-food-habitat': () => ({ tags: { contains: 'floral', mode: 'insensitive' } }),
+  'byoc': () => ({ tags: { contains: 'byoc', mode: 'insensitive' } }),
+  'our-own-community': () => ({ tags: { contains: 'community', mode: 'insensitive' } }),
+  'our-philosophy': () => ({ tags: { contains: 'philosophy', mode: 'insensitive' } }),
+  'bulk-orders': () => ({ tags: { contains: 'bulk', mode: 'insensitive' } }),
   'blogs': null, // handled separately – not products
   'about-us': null,
 };
@@ -58,16 +58,16 @@ const getProducts = async (req, res) => {
     } else {
       // Legacy category / tag filters
       if (category && category !== 'Shop All') {
-        where.category = { name: category };
+        where.category = { name: { equals: category, mode: 'insensitive' } };
       }
       if (tag) {
-        where.tags = { contains: tag };
+        where.tags = { contains: tag, mode: 'insensitive' };
       }
     }
 
     // Apply global category filter if provided and not already applied by nav section smart filter
     if (category && category !== 'Shop All' && !where.category) {
-      where.category = { name: category };
+      where.category = { name: { equals: category, mode: 'insensitive' } };
     }
 
     // Full-text search

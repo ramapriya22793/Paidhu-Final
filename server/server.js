@@ -11,8 +11,11 @@ const compression = require("compression");
 const securityHeaders = require("./middleware/securityHeaders");
 
 app.use(compression());
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 app.use(securityHeaders);
-app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
