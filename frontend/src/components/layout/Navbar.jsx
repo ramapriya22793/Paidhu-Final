@@ -294,17 +294,26 @@ const Navbar = () => {
     }
   };
 
-  const navColumns = [
-    { top: { name: 'Home' } },
-    { top: { name: 'Shop All' } },
-    { top: { name: 'Deal of the Day' } },
-    { top: { name: 'Shop by Category' } },
-    { top: { name: 'For Your Family' }, bottom: { name: 'Bulk Orders' } },
-    { top: { name: 'Starting Floral food habitat' }, bottom: { name: 'Blogs' } },
-    { top: { name: 'BYOC' }, bottom: { name: 'Saffron Guidance' } },
-    { top: { name: 'Our Own Community' }, bottom: { name: 'Careers' } },
-    { top: { name: 'About Us' } },
+  const navRow1 = [
+    { name: 'Home' },
+    { name: 'Shop All' },
+    { name: 'Deal of the Day' },
+    { name: 'Shop by Category' },
+    { name: 'For Your Family' },
+    { name: 'Starting Floral food habitat' },
+    { name: 'BYOC' },
+    { name: 'Our Own Community' },
+    { name: 'About Us' }
   ];
+
+  const navRow2 = [
+    { name: 'Bulk Orders' },
+    { name: 'Blogs' },
+    { name: 'Saffron Guidance' },
+    { name: 'Careers' }
+  ];
+
+  const navColumns = [...navRow1, ...navRow2].map(item => ({ top: item }));
 
 
 
@@ -469,129 +478,126 @@ const Navbar = () => {
       </div>
 
       {/* Second Row — Desktop Navigation */}
-      <div className="hidden lg:block w-full bg-[#ede7d7] border-b border-[#662654]/10 py-3.5 overflow-x-auto hide-scrollbar">
-        <nav className="max-w-[1400px] mx-auto px-4 xl:px-8">
+      <div className="hidden lg:block w-full bg-[#ede7d7] border-b border-[#662654]/10 py-3 overflow-x-auto hide-scrollbar">
+        <nav className="max-w-[1400px] mx-auto px-4 xl:px-8 flex flex-col gap-y-2">
+          {/* Row 1 — Primary Links */}
           <div className="flex justify-center items-center gap-x-4 xl:gap-x-7 w-full max-w-full overflow-x-auto hide-scrollbar whitespace-nowrap">
-            {navColumns.map((col, i) => (
-              <div key={i} className="flex flex-col items-center justify-center min-h-[46px] gap-y-1.5 py-0.5">
+            {navRow1.map((item, i) => (
+              item.name === 'Shop by Category' ? (
+                <div key={i} className="relative" ref={catRef}>
+                  <button
+                    onMouseEnter={() => setShowCatDropdown(true)}
+                    onClick={() => setShowCatDropdown(v => !v)}
+                    className="relative flex items-center gap-1 text-[#662654] font-bold text-[13px] xl:text-[14px] hover:text-[#4a1c3d] transition-colors cursor-pointer whitespace-nowrap group py-0.5"
+                  >
+                    {item.name}
+                    <ChevronDown
+                      size={13}
+                      className={`transition-transform duration-200 ${showCatDropdown ? 'rotate-180' : ''}`}
+                    />
+                    <span className="absolute -bottom-0.5 left-0 w-0 h-[2px] bg-[#662654] group-hover:w-full transition-all duration-300 rounded-full" />
+                  </button>
 
+                  {/* ── Category Dropdown ── */}
+                  <AnimatePresence>
+                    {showCatDropdown && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10, scale: 0.97 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.97 }}
+                        transition={{ duration: 0.2, ease: 'easeOut' }}
+                        onMouseLeave={() => setShowCatDropdown(false)}
+                        className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[520px] bg-white rounded-2xl shadow-2xl border border-gray-100 z-[999] overflow-hidden"
+                      >
+                        {/* Dropdown Header */}
+                        <div className="px-6 pt-5 pb-3 border-b border-gray-100">
+                          <div className="flex items-center gap-2">
+                            <Grid3X3 size={15} className="text-[#662654]" />
+                            <p className="text-[12px] font-bold uppercase tracking-widest text-[#662654]">
+                              Discover Our Range of Floral Foods
+                            </p>
+                          </div>
+                        </div>
 
-
-
-                {/* "Shop by Category" gets the dropdown */}
-                {col.top.name === 'Shop by Category' ? (
-                  <div className="relative" ref={catRef}>
-                    <button
-                      onMouseEnter={() => setShowCatDropdown(true)}
-                      onClick={() => setShowCatDropdown(v => !v)}
-                      className="relative flex items-center gap-1 text-[#662654] font-bold text-[13px] xl:text-[14px] hover:text-[#4a1c3d] transition-colors cursor-pointer whitespace-nowrap group"
-                    >
-                      {col.top.name}
-                      <ChevronDown
-                        size={13}
-                        className={`transition-transform duration-200 ${showCatDropdown ? 'rotate-180' : ''}`}
-                      />
-                      <span className="absolute -bottom-0.5 left-0 w-0 h-[2px] bg-[#662654] group-hover:w-full transition-all duration-300 rounded-full" />
-                    </button>
-
-                    {/* ── Category Dropdown ── */}
-                    <AnimatePresence>
-                      {showCatDropdown && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10, scale: 0.97 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: 10, scale: 0.97 }}
-                          transition={{ duration: 0.2, ease: 'easeOut' }}
-                          onMouseLeave={() => setShowCatDropdown(false)}
-                          className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[520px] bg-white rounded-2xl shadow-2xl border border-gray-100 z-[999] overflow-hidden"
-                        >
-                          {/* Dropdown Header */}
-                          <div className="px-6 pt-5 pb-3 border-b border-gray-100">
-                            <div className="flex items-center gap-2">
-                              <Grid3X3 size={15} className="text-[#662654]" />
-                              <p className="text-[12px] font-bold uppercase tracking-widest text-[#662654]">
-                                Discover Our Range of Floral Foods
-                              </p>
+                        {/* Category Grid */}
+                        <div className="p-4">
+                          {categories.length === 0 ? (
+                            <div className="flex items-center justify-center py-8 text-gray-400 text-sm">
+                              Loading categories…
                             </div>
-                          </div>
-
-                          {/* Category Grid */}
-                          <div className="p-4">
-                            {categories.length === 0 ? (
-                              <div className="flex items-center justify-center py-8 text-gray-400 text-sm">
-                                Loading categories…
-                              </div>
-                            ) : (
-                              <div className="grid grid-cols-2 gap-1">
-                                {categories.map(cat => {
-                                  const catName = typeof cat === 'string' ? cat : (cat.name || '');
-                                  const catImage = (cat && typeof cat === 'object' && cat.image)
-                                    ? cat.image
-                                    : (CATEGORY_FALLBACK_IMAGES[catName.toLowerCase()] || null);
-                                  const iconFallback = getCategoryIcon(catName);
-                                  
-                                  return (
-                                    <button
-                                      key={catName}
-                                      onClick={() => handleCategoryClick(catName)}
-                                      className="flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-[#662654]/5 hover:text-[#662654] text-gray-700 transition-all duration-150 group/cat text-left w-full cursor-pointer"
-                                    >
-                                      <div className="w-6.5 h-6.5 rounded-full overflow-hidden flex-shrink-0 border border-gray-100 bg-gray-50 flex items-center justify-center">
-                                        {catImage ? (
-                                          <img 
-                                            src={catImage.startsWith('http') ? catImage : `${API_BASE}${catImage.startsWith('/') ? '' : '/'}${catImage}`} 
-                                            alt={catName} 
-                                            className="w-full h-full object-cover transition-transform duration-300 group-hover/cat:scale-110"
-                                            onError={(e) => {
-                                              e.target.style.display = 'none';
-                                              e.target.nextSibling.style.display = 'block';
-                                            }}
-                                          />
-                                        ) : null}
-                                        <span 
-                                          className="text-xs font-bold text-[#662654]" 
-                                          style={{ display: catImage ? 'none' : 'block' }}
-                                        >
-                                          {iconFallback}
-                                        </span>
-                                      </div>
-                                      <span className="text-[13.5px] font-semibold group-hover/cat:translate-x-0.5 transition-transform duration-150">
-                                        {catName}
+                          ) : (
+                            <div className="grid grid-cols-2 gap-1">
+                              {categories.map(cat => {
+                                const catName = typeof cat === 'string' ? cat : (cat.name || '');
+                                const catImage = (cat && typeof cat === 'object' && cat.image)
+                                  ? cat.image
+                                  : (CATEGORY_FALLBACK_IMAGES[catName.toLowerCase()] || null);
+                                const iconFallback = getCategoryIcon(catName);
+                                
+                                return (
+                                  <button
+                                    key={catName}
+                                    onClick={() => handleCategoryClick(catName)}
+                                    className="flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-[#662654]/5 hover:text-[#662654] text-gray-700 transition-all duration-150 group/cat text-left w-full cursor-pointer"
+                                  >
+                                    <div className="w-6.5 h-6.5 rounded-full overflow-hidden flex-shrink-0 border border-gray-100 bg-gray-50 flex items-center justify-center">
+                                      {catImage ? (
+                                        <img 
+                                          src={catImage.startsWith('http') ? catImage : `${API_BASE}${catImage.startsWith('/') ? '' : '/'}${catImage}`} 
+                                          alt={catName} 
+                                          className="w-full h-full object-cover transition-transform duration-300 group-hover/cat:scale-110"
+                                          onError={(e) => {
+                                            e.target.style.display = 'none';
+                                            e.target.nextSibling.style.display = 'block';
+                                          }}
+                                        />
+                                      ) : null}
+                                      <span 
+                                        className="text-xs font-bold text-[#662654]" 
+                                        style={{ display: catImage ? 'none' : 'block' }}
+                                      >
+                                        {iconFallback}
                                       </span>
-                                    </button>
-                                  );
-                                })}
-                              </div>
-                            )}
-                          </div>
+                                    </div>
+                                    <span className="text-[13.5px] font-semibold group-hover/cat:translate-x-0.5 transition-transform duration-150">
+                                      {catName}
+                                    </span>
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
 
-                          {/* View All Footer */}
-                          <div className="px-6 py-3 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
-                            <span className="text-[12px] text-gray-400">
-                              {categories.length} categories available
-                            </span>
-                            <button
-                              onClick={() => {
-                                setShowCatDropdown(false);
-                                navigate('/shop/shop-by-category');
-                              }}
-                              className="text-[13px] font-bold text-[#662654] hover:underline flex items-center gap-1"
-                            >
-                              View All →
-                            </button>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ) : (
-                  <NavItem name={col.top.name} onClick={() => handleNavClick(col.top.name)} />
-                )}
+                        {/* View All Footer */}
+                        <div className="px-6 py-3 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
+                          <span className="text-[12px] text-gray-400">
+                            {categories.length} categories available
+                          </span>
+                          <button
+                            onClick={() => {
+                              setShowCatDropdown(false);
+                              navigate('/shop/shop-by-category');
+                            }}
+                            className="text-[13px] font-bold text-[#662654] hover:underline flex items-center gap-1"
+                          >
+                            View All →
+                          </button>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <NavItem key={i} name={item.name} onClick={() => handleNavClick(item.name)} />
+              )
+            ))}
+          </div>
 
-                {col.bottom && (
-                  <NavItem name={col.bottom.name} onClick={() => handleNavClick(col.bottom.name)} />
-                )}
-              </div>
+          {/* Row 2 — Secondary Links */}
+          <div className="flex justify-center items-center gap-x-6 xl:gap-x-10 w-full max-w-full overflow-x-auto hide-scrollbar whitespace-nowrap pt-1.5 border-t border-[#662654]/10">
+            {navRow2.map((item, i) => (
+              <NavItem key={i} name={item.name} onClick={() => handleNavClick(item.name)} />
             ))}
           </div>
         </nav>
