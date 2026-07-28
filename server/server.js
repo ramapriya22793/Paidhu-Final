@@ -115,12 +115,18 @@ app.use((req, res) => {
   res.status(404).json({ message: "API Endpoint not found" });
 });
 
-const { initBlogCron } = require('./cron/syncBlogs');
-initBlogCron();
+if (!process.env.VERCEL) {
+  try {
+    const { initBlogCron } = require('./cron/syncBlogs');
+    initBlogCron();
+  } catch (err) {
+    console.error("Failed to initialize cron on local server:", err);
+  }
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
 
 module.exports = app;
