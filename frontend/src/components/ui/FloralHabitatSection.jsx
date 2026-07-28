@@ -47,6 +47,7 @@ const VideoCard = ({ video, index, onClick }) => {
         playsInline
         muted
         onLoadedData={() => setIsLoading(false)}
+        onError={() => setIsLoading(false)}
         className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
       />
 
