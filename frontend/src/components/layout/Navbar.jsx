@@ -469,9 +469,9 @@ const Navbar = () => {
       </div>
 
       {/* Second Row — Desktop Navigation */}
-      <div className="hidden lg:block w-full bg-[#ede7d7] border-b border-[#662654]/10 py-2">
+      <div className="hidden lg:block w-full bg-[#ede7d7] border-b border-[#662654]/10 py-2 overflow-x-auto hide-scrollbar">
         <nav className="max-w-[1400px] mx-auto px-4 xl:px-8">
-          <div className="flex justify-center gap-x-6 xl:gap-x-8 w-full mt-0">
+          <div className="flex justify-center items-center gap-x-3.5 xl:gap-x-6 w-full max-w-full overflow-x-auto hide-scrollbar whitespace-nowrap">
             {navColumns.map((col, i) => (
               <div key={i} className="flex flex-col items-center justify-start gap-y-1">
 

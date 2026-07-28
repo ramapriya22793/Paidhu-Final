@@ -7,12 +7,15 @@
   --font-serif: "Playfair Display", "Georgia", serif;
 }
 
-body {
+html, body, #root {
   margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden !important;
   font-family: var(--font-sans);
   background-color: var(--color-brand-cream);
   color: #1a1a1a;
-  overflow-x: hidden;
 }
 
 /* Custom scrollbar for premium feel */
