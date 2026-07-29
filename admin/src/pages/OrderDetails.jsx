@@ -199,22 +199,31 @@ const OrderDetails = () => {
             <div className="space-y-3">
               <div>
                 <p className="text-xs text-gray-500">Customer Name</p>
-                <p className="font-medium text-gray-800">{order.customerName}</p>
+                <div className="flex items-center justify-between">
+                  <p className="font-medium text-gray-800">{order.customerName}</p>
+                  {order.user?.id && (
+                    <Link to={`/customers/${order.user.id}`} className="text-xs font-bold text-brand-plum hover:underline">
+                      View Profile →
+                    </Link>
+                  )}
+                </div>
               </div>
               <div>
                 <p className="text-xs text-gray-500">Email Address</p>
                 <p className="font-medium text-gray-800">{order.customerEmail}</p>
               </div>
-              <div>
-                <p className="text-xs text-gray-500">Customer ID</p>
-                <p className="font-medium text-gray-800">{order.user ? `USR-${order.user.id}` : 'Guest'}</p>
-              </div>
-              {order.user && (
+              {(order.phone || order.user?.phone) && (
                 <div>
-                  <p className="text-xs text-gray-500">Account Created</p>
-                  <p className="font-medium text-gray-800">{new Date(order.user.createdAt).toLocaleDateString()}</p>
+                  <p className="text-xs text-gray-500">Phone Number</p>
+                  <p className="font-medium text-gray-800">{order.phone || order.user?.phone}</p>
                 </div>
               )}
+              <div>
+                <p className="text-xs text-gray-500">Customer Account</p>
+                <span className={`inline-block mt-0.5 text-xs px-2 py-0.5 rounded-full font-bold ${order.user ? 'bg-brand-plum/10 text-brand-plum' : 'bg-gray-100 text-gray-600'}`}>
+                  {order.user ? `Registered (USR-${order.user.id})` : 'Guest Customer'}
+                </span>
+              </div>
             </div>
           </div>
 
