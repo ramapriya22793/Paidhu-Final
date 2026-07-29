@@ -10,6 +10,7 @@ const Payments = () => {
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('PAID');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,11 +50,21 @@ const Payments = () => {
     }
   };
 
-  const filteredPayments = payments.filter(p => 
-    p.razorpayPaymentId?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    p.order?.customerName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    p.order?.orderNumber?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredPayments = payments.filter(p => {
+    const searchMatch = 
+      p.razorpayPaymentId?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.order?.customerName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.order?.orderNumber?.toLowerCase().includes(searchTerm.toLowerCase());
+      
+    if (!searchMatch) return false;
+
+    if (statusFilter === 'ALL') return true;
+    if (statusFilter === 'PAID') return p.status === 'SUCCESS' || p.status === 'PAID';
+    if (statusFilter === 'PENDING') return p.status === 'PENDING';
+    if (statusFilter === 'FAILED') return p.status === 'FAILED';
+    if (statusFilter === 'REFUNDED') return p.status === 'REFUNDED';
+    return true;
+  });
 
   if (loading) return <div className="p-8 text-brand-plum font-bold">Loading Payments Dashboard...</div>;
 
@@ -113,7 +124,7 @@ const Payments = () => {
 
       {/* Payments Table */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+        <div className="p-4 border-b border-gray-100 flex flex-wrap justify-between items-center gap-3 bg-gray-50/50">
           <div className="relative w-72">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <FiSearch className="text-gray-400" />
@@ -125,6 +136,50 @@ const Payments = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
+          </div>
+
+          {/* Status Filter Tabs */}
+          <div className="flex items-center space-x-1.5 bg-gray-200/60 p-1 rounded-lg">
+            <button
+              onClick={() => setStatusFilter('PAID')}
+              className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all ${
+                statusFilter === 'PAID'
+                  ? 'bg-green-600 text-white shadow-sm'
+                  : 'text-gray-700 hover:bg-gray-300/50'
+              }`}
+            >
+              Paid Only ({payments.filter(p => p.status === 'SUCCESS' || p.status === 'PAID').length})
+            </button>
+            <button
+              onClick={() => setStatusFilter('ALL')}
+              className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all ${
+                statusFilter === 'ALL'
+                  ? 'bg-[#662654] text-white shadow-sm'
+                  : 'text-gray-700 hover:bg-gray-300/50'
+              }`}
+            >
+              All ({payments.length})
+            </button>
+            <button
+              onClick={() => setStatusFilter('PENDING')}
+              className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all ${
+                statusFilter === 'PENDING'
+                  ? 'bg-yellow-600 text-white shadow-sm'
+                  : 'text-gray-700 hover:bg-gray-300/50'
+              }`}
+            >
+              Pending ({payments.filter(p => p.status === 'PENDING').length})
+            </button>
+            <button
+              onClick={() => setStatusFilter('FAILED')}
+              className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all ${
+                statusFilter === 'FAILED'
+                  ? 'bg-red-600 text-white shadow-sm'
+                  : 'text-gray-700 hover:bg-gray-300/50'
+              }`}
+            >
+              Failed ({payments.filter(p => p.status === 'FAILED').length})
+            </button>
           </div>
         </div>
         
