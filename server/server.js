@@ -81,6 +81,8 @@ app.use("/api/admin", require("./routes/adminRoutes"));
 app.use("/api/saffron-guidance", require("./routes/saffronGuidanceRoutes"));
 app.use("/api/newsletter", require("./routes/newsletterRoutes"));
 app.use("/api/careers", require("./routes/careerRoutes"));
+app.use("/api/sync", require("./routes/woocommerceSyncRoutes"));
+app.use("/api/webhooks", require("./routes/webhookRoutes"));
 
 
 const initializeAdmin = async () => {

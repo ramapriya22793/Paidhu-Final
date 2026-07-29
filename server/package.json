@@ -16,6 +16,7 @@
   "dependencies": {
     "@prisma/client": "^6.4.1",
     "@supabase/supabase-js": "^2.107.0",
+    "@woocommerce/woocommerce-rest-api": "^1.0.2",
     "bcryptjs": "^3.0.3",
     "cloudinary": "^2.10.0",
     "compression": "^1.8.1",
