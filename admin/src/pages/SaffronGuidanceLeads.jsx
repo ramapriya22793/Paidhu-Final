@@ -142,7 +142,6 @@ const SaffronGuidanceLeads = () => {
                 <tr className="bg-gray-50 border-b border-gray-100">
                   <th className="px-5 py-4 font-semibold text-gray-600 text-xs uppercase tracking-wide">Date</th>
                   <th className="px-5 py-4 font-semibold text-gray-600 text-xs uppercase tracking-wide">Names</th>
-                  <th className="px-5 py-4 font-semibold text-gray-600 text-xs uppercase tracking-wide">Phone</th>
                   <th className="px-5 py-4 font-semibold text-gray-600 text-xs uppercase tracking-wide">Purpose</th>
                   <th className="px-5 py-4 font-semibold text-gray-600 text-xs uppercase tracking-wide">Pregnancy</th>
                   <th className="px-5 py-4 font-semibold text-gray-600 text-xs uppercase tracking-wide">Doctor Permission</th>
@@ -162,11 +161,6 @@ const SaffronGuidanceLeads = () => {
                       {lead.purpose === 'Pregnancy Support' && lead.spouseName && lead.spouseName !== 'N/A' && (
                         <div className="text-sm text-gray-500 mt-0.5">Spouse: {lead.spouseName}</div>
                       )}
-                    </td>
-                    <td className="px-5 py-4 align-top">
-                      <a href={`tel:${lead.phone}`} className="text-[#662654] font-semibold text-sm hover:underline">
-                        {lead.phone}
-                      </a>
                     </td>
                     <td className="px-5 py-4 align-top text-sm text-gray-700 max-w-[140px]">
                       {lead.purpose}
