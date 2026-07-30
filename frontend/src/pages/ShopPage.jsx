@@ -607,7 +607,7 @@ const ShopPage = () => {
       .then(r => r.json())
       .then(data => {
         const desiredOrder = ['Bloom Cookies', 'Saffron', 'Petal Jam', 'Medley Teas', 'Brew Flora'];
-        const cats = [...new Set((data.products || []).map(p => p.category).filter(Boolean))];
+        const cats = [...new Set((data.products || []).map(p => p.category).filter(Boolean))].filter(c => !c.toLowerCase().includes('gift box'));
         cats.sort((a, b) => {
           const indexA = desiredOrder.indexOf(a);
           const indexB = desiredOrder.indexOf(b);
