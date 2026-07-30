@@ -145,7 +145,6 @@ const SaffronGuidanceLeads = () => {
                   <th className="px-5 py-4 font-semibold text-gray-600 text-xs uppercase tracking-wide">Purpose</th>
                   <th className="px-5 py-4 font-semibold text-gray-600 text-xs uppercase tracking-wide">Pregnancy</th>
                   <th className="px-5 py-4 font-semibold text-gray-600 text-xs uppercase tracking-wide">Doctor Permission</th>
-                  <th className="px-5 py-4 font-semibold text-gray-600 text-xs uppercase tracking-wide">Status</th>
                   <th className="px-5 py-4 font-semibold text-gray-600 text-xs uppercase tracking-wide text-right">Actions</th>
                 </tr>
               </thead>
@@ -186,17 +185,6 @@ const SaffronGuidanceLeads = () => {
                       ) : (
                         <span className="text-gray-400 text-sm">-</span>
                       )}
-                    </td>
-                    <td className="px-5 py-4 align-top">
-                      <select
-                        value={lead.status}
-                        onChange={e => updateStatus(lead.id, e.target.value)}
-                        className={`text-xs font-semibold rounded-full px-3 py-1.5 border outline-none cursor-pointer ${STATUS_STYLES[lead.status] || STATUS_STYLES.Pending}`}
-                      >
-                        <option value="Pending">Pending</option>
-                        <option value="Contacted">Contacted</option>
-                        <option value="Resolved">Resolved</option>
-                      </select>
                     </td>
                     <td className="px-5 py-4 align-top text-right">
                       <button
