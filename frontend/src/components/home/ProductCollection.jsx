@@ -372,7 +372,7 @@ const ProductCollection = () => {
             badgeColor = "bg-[#662654] text-white";
           } else if (p.tags && p.tags.toLowerCase().includes("bestseller")) {
             badge = "Bestseller";
-            badgeColor = "bg-[#fde047] text-black";
+            badgeColor = "bg-[#662654] text-white";
           } else if (discountPercent > 0) {
             badge = "Sale";
             badgeColor = "bg-[#662654] text-white";
