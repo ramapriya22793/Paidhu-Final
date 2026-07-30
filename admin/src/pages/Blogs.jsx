@@ -18,9 +18,11 @@ const Blogs = () => {
     setLoading(true);
     try {
       const data = await blogService.getAllBlogs();
-      setBlogs(data);
+      const blogList = Array.isArray(data) ? data : (data?.blogs || []);
+      setBlogs(blogList);
     } catch (error) {
       console.error("Failed to fetch blogs", error);
+      setBlogs([]);
     } finally {
       setLoading(false);
     }
@@ -115,14 +117,14 @@ const Blogs = () => {
             <tbody className="divide-y divide-gray-100">
               {loading ? (
                 <tr>
-                  <td colSpan="5" className="px-6 py-12 text-center text-brand-plum">Loading blogs...</td>
+                  <td colSpan="5" className="px-6 py-12 text-center text-brand-plum font-semibold">Loading blogs...</td>
                 </tr>
-              ) : blogs.length === 0 ? (
+              ) : (!Array.isArray(blogs) || blogs.length === 0) ? (
                 <tr>
                   <td colSpan="5" className="px-6 py-12 text-center text-gray-500">No blog posts found. Create your first one!</td>
                 </tr>
               ) : (
-                blogs.map((blog) => (
+                (Array.isArray(blogs) ? blogs : []).map((blog) => (
                   <tr key={blog.id} className="hover:bg-gray-50/50 transition-colors">
                     <td className="px-6 py-4">
                       {blog.image ? (
