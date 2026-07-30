@@ -2,13 +2,15 @@ import { useState, useEffect } from 'react';
 import blogService from '../services/blogService';
 import { FiPlus, FiEdit2, FiTrash2, FiFileText, FiX, FiCamera } from 'react-icons/fi';
 
+const FRONTEND_URL = 'https://paidhu.com';
+
 const resolveBlogImage = (img) => {
   if (!img) return null;
   if (typeof img === 'string' && (img.startsWith('http://') || img.startsWith('https://') || img.startsWith('data:'))) {
     return img;
   }
   const cleanPath = img.startsWith('/') ? img : `/${img}`;
-  return `https://paidhu-final-anm2.vercel.app${cleanPath}`;
+  return `${FRONTEND_URL}${cleanPath}`;
 };
 
 const Blogs = () => {
@@ -143,7 +145,7 @@ const Blogs = () => {
                           className="w-24 h-16 object-cover rounded shadow-sm border border-gray-200" 
                           onError={(e) => {
                             e.currentTarget.onerror = null;
-                            e.currentTarget.src = 'https://paidhu-final-anm2.vercel.app/paidhulogo.png';
+                            e.currentTarget.src = `${FRONTEND_URL}/Paidhulogo.png`;
                           }}
                         />
                       ) : (
