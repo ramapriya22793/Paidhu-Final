@@ -125,21 +125,7 @@ const SaffronGuidanceLeads = () => {
         </div>
       </div>
 
-      {/* Summary Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {[
-          { label: 'Total Leads', value: counts.total, color: 'from-[#662654] to-[#7a2e64]', emoji: '📋' },
-          { label: 'Pending',     value: counts.pending,   color: 'from-yellow-500 to-yellow-400', emoji: '⏳' },
-          { label: 'Contacted',   value: counts.contacted, color: 'from-blue-500 to-blue-400',     emoji: '📞' },
-          { label: 'Resolved',    value: counts.resolved,  color: 'from-emerald-500 to-emerald-400', emoji: '✅' },
-        ].map(card => (
-          <div key={card.label} className={`bg-gradient-to-br ${card.color} rounded-2xl p-5 text-white shadow-lg`}>
-            <div className="text-3xl mb-1">{card.emoji}</div>
-            <div className="text-3xl font-black">{card.value}</div>
-            <div className="text-sm font-semibold opacity-80 mt-1">{card.label}</div>
-          </div>
-        ))}
-      </div>
+
 
       {/* Table */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
