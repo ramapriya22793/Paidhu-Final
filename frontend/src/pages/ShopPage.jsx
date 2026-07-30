@@ -195,15 +195,24 @@ const ProductCard = ({ product, index, navSection }) => {
     }
   };
 
+  const isPreorder = 
+    product.status === 'PREORDER' || 
+    product.tags === 'preorder' || 
+    (typeof product.tags === 'string' && product.tags.includes('preorder')) ||
+    (product.name && (
+      product.name.toLowerCase().includes('hibiscus petal jam') || 
+      product.name.toLowerCase().includes('neem petal')
+    ));
+
   return (
-    <motion.div
-      variants={cardVariants}
-      whileHover={{ y: -8, scale: 1.01, transition: { duration: 0.25, ease: 'easeOut' } }}
-      whileTap={{ scale: 0.98 }}
-      className="group relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-shadow duration-300 overflow-hidden flex flex-col"
+    <motion.div 
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="group relative bg-white rounded-2xl border border-gray-100/80 shadow-[0_2px_10px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_30px_rgba(102,38,84,0.12)] transition-all duration-300 flex flex-col overflow-hidden"
     >
-      {/* Wishlist */}
-      <motion.button
+      {/* Wishlist Button */}
+      <motion.button 
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -221,9 +230,9 @@ const ProductCard = ({ product, index, navSection }) => {
       </motion.button>
 
       {/* Badges */}
-      {product.status === 'PREORDER' ? (
-        <div className="absolute top-3 left-3 z-20 bg-[#662654] text-white text-[10px] font-black px-2.5 py-1 rounded-full shadow flex items-center gap-1 uppercase tracking-wider">
-          PRE-ORDER
+      {isPreorder ? (
+        <div className="absolute top-3 left-3 z-20 bg-amber-600 text-white text-[10px] font-black px-2.5 py-1 rounded-full shadow flex items-center gap-1 uppercase tracking-wider">
+          ⏳ PRE-ORDER
         </div>
       ) : discountPct ? (
         <div className={`absolute top-3 left-3 z-20 ${navSection === 'deal-of-the-day' ? 'bg-gradient-to-r from-[#662654] to-[#d4af37] text-white shadow-lg' : 'bg-green-500 text-white'} text-[10px] font-black px-2.5 py-1 rounded-full shadow flex items-center gap-1`}>
@@ -349,12 +358,12 @@ const ProductCard = ({ product, index, navSection }) => {
           {isAdding ? (
             <>
               <Check size={14} strokeWidth={3} className="text-white animate-bounce" />
-              <span>{product.status === 'PREORDER' ? 'Pre-ordered!' : 'Added!'}</span>
+              <span>{isPreorder ? 'Pre-ordered!' : 'Added!'}</span>
             </>
           ) : (
             <>
               <ShoppingCart size={13} strokeWidth={2.5} className="transform group-hover/btn:scale-110 transition-transform" />
-              <span>{product.status === 'PREORDER' ? 'Pre-order' : 'Add to Cart'}</span>
+              <span>{isPreorder ? 'Pre-order' : 'Add to Cart'}</span>
             </>
           )}
         </motion.button>
