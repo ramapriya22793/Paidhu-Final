@@ -136,13 +136,12 @@ const getAnalytics = async (req, res) => {
 
       if (isPaid) {
         successfulCount++;
+        totalRevenue += amt;
+        if (oDate >= today) todayRevenue += amt;
+        if (oDate >= firstDayOfMonth) monthRevenue += amt;
       } else {
         pendingCount++;
       }
-
-      totalRevenue += amt;
-      if (oDate >= today) todayRevenue += amt;
-      if (oDate >= firstDayOfMonth) monthRevenue += amt;
     });
 
     res.json({
