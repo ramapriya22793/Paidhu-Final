@@ -111,17 +111,28 @@ class WooCommerceSyncService {
       for (const c of wooCustomers) {
         if (!c.email) continue;
         const name = `${c.first_name || ''} ${c.last_name || ''}`.trim() || c.username || 'WooCommerce Customer';
+        const rawPhone = c.billing?.phone ? c.billing.phone.trim() : null;
+        let validPhone = rawPhone;
+
+        if (validPhone) {
+          const existingPhoneUser = await prisma.user.findFirst({
+            where: { phone: validPhone, NOT: { email: c.email } }
+          });
+          if (existingPhoneUser) {
+            validPhone = null; // Prevent unique constraint crash on phone
+          }
+        }
 
         await prisma.user.upsert({
           where: { email: c.email },
           update: {
             name: name,
-            phone: c.billing?.phone || null
+            ...(validPhone ? { phone: validPhone } : {})
           },
           create: {
             name: name,
             email: c.email,
-            phone: c.billing?.phone || null,
+            phone: validPhone,
             password: 'woocommerce_synced_account',
             isAdmin: false
           }
