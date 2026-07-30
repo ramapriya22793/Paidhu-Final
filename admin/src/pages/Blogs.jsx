@@ -2,6 +2,15 @@ import { useState, useEffect } from 'react';
 import blogService from '../services/blogService';
 import { FiPlus, FiEdit2, FiTrash2, FiFileText, FiX, FiCamera } from 'react-icons/fi';
 
+const resolveBlogImage = (img) => {
+  if (!img) return null;
+  if (typeof img === 'string' && (img.startsWith('http://') || img.startsWith('https://') || img.startsWith('data:'))) {
+    return img;
+  }
+  const cleanPath = img.startsWith('/') ? img : `/${img}`;
+  return `https://paidhu-final-anm2.vercel.app${cleanPath}`;
+};
+
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -127,8 +136,16 @@ const Blogs = () => {
                 (Array.isArray(blogs) ? blogs : []).map((blog) => (
                   <tr key={blog.id} className="hover:bg-gray-50/50 transition-colors">
                     <td className="px-6 py-4">
-                      {blog.image ? (
-                        <img src={blog.image} alt={blog.title} className="w-24 h-16 object-cover rounded shadow-sm border border-gray-200" />
+                      {(blog.image || blog.featuredImage) ? (
+                        <img 
+                          src={resolveBlogImage(blog.image || blog.featuredImage)} 
+                          alt={blog.title} 
+                          className="w-24 h-16 object-cover rounded shadow-sm border border-gray-200" 
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = 'https://paidhu-final-anm2.vercel.app/paidhulogo.png';
+                          }}
+                        />
                       ) : (
                         <div className="w-24 h-16 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-400">No Image</div>
                       )}
