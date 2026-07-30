@@ -231,8 +231,8 @@ const ProductCard = ({ product, index, navSection }) => {
 
       {/* Badges */}
       {isPreorder ? (
-        <div className="absolute top-3 left-3 z-20 bg-amber-600 text-white text-[10px] font-black px-2.5 py-1 rounded-full shadow flex items-center gap-1 uppercase tracking-wider">
-          ⏳ PRE-ORDER
+        <div className="absolute top-3 left-3 z-20 bg-[#662654] text-white text-[10px] font-black px-2.5 py-1 rounded-full shadow flex items-center gap-1 uppercase tracking-wider">
+          PRE-ORDER
         </div>
       ) : discountPct ? (
         <div className={`absolute top-3 left-3 z-20 ${navSection === 'deal-of-the-day' ? 'bg-gradient-to-r from-[#662654] to-[#d4af37] text-white shadow-lg' : 'bg-green-500 text-white'} text-[10px] font-black px-2.5 py-1 rounded-full shadow flex items-center gap-1`}>
