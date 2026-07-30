@@ -342,6 +342,21 @@ const ProductCollection = () => {
         
         let fetchedProducts = data.products || [];
 
+        // For Bestsellers, pin the 4 hero products at the top in exact order
+        if (activeCategory === "Bestsellers") {
+          const PRIORITY_ORDER = [20, 8, 3, 31]; // Kashmiri Mongra, White Lotus, Neem Jam, Cassia Fistula
+          const pinned = [];
+          const rest = [];
+          for (const id of PRIORITY_ORDER) {
+            const found = fetchedProducts.find(p => p.id === id);
+            if (found) pinned.push(found);
+          }
+          for (const p of fetchedProducts) {
+            if (!PRIORITY_ORDER.includes(p.id)) rest.push(p);
+          }
+          fetchedProducts = [...pinned, ...rest];
+        }
+
         // If we have fewer than 5 products, backfill with general products to fill the 5-column grid row
         if (fetchedProducts.length < 5) {
           const backfillRes = await fetch(`${API_BASE}/api/products?limit=15`);
