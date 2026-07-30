@@ -187,6 +187,9 @@ class WooCommerceSyncService {
         // Find associated user by email
         const user = await prisma.user.findUnique({ where: { email: customerEmail } });
 
+        // Parse WooCommerce creation date
+        const orderDate = o.date_created ? new Date(o.date_created) : new Date();
+
         const dbOrder = await prisma.order.upsert({
           where: { orderNumber: orderNumber },
           update: {
@@ -199,7 +202,8 @@ class WooCommerceSyncService {
             totalPrice: totalPrice,
             paymentMethod: o.payment_method_title || 'Online',
             paymentStatus: paymentStatus,
-            orderStatus: orderStatus
+            orderStatus: orderStatus,
+            createdAt: orderDate
           },
           create: {
             orderNumber: orderNumber,
@@ -213,9 +217,54 @@ class WooCommerceSyncService {
             totalPrice: totalPrice,
             paymentMethod: o.payment_method_title || 'Online',
             paymentStatus: paymentStatus,
-            orderStatus: orderStatus
+            orderStatus: orderStatus,
+            createdAt: orderDate
           }
         });
+
+        // Sync Line Items for this Order
+        if (o.line_items && Array.isArray(o.line_items)) {
+          // Clear old items for clean sync
+          await prisma.orderItem.deleteMany({ where: { orderId: dbOrder.id } });
+
+          // Default fallback product
+          let defaultProduct = await prisma.product.findFirst();
+          if (!defaultProduct) {
+            let defaultCat = await prisma.category.findFirst();
+            if (!defaultCat) defaultCat = await prisma.category.create({ data: { name: 'General' } });
+            defaultProduct = await prisma.product.create({
+              data: {
+                name: 'WooCommerce Item',
+                slug: 'woocommerce-item',
+                description: 'Synced Item',
+                price: 100,
+                categoryId: defaultCat.id
+              }
+            });
+          }
+
+          for (const item of o.line_items) {
+            let matchedProduct = null;
+            if (item.name) {
+              matchedProduct = await prisma.product.findFirst({
+                where: { name: { equals: item.name, mode: 'insensitive' } }
+              });
+            }
+
+            const productId = matchedProduct ? matchedProduct.id : defaultProduct.id;
+            const quantity = parseInt(item.quantity || 1);
+            const price = parseFloat(item.price || item.total || 0);
+
+            await prisma.orderItem.create({
+              data: {
+                orderId: dbOrder.id,
+                productId: productId,
+                quantity: quantity,
+                price: price
+              }
+            });
+          }
+        }
 
         syncedCount++;
       }
