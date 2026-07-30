@@ -148,20 +148,21 @@ const handleProductWebhook = async (req, res) => {
     const discountPrice = p.sale_price ? parseFloat(p.sale_price) : null;
     const stock = p.stock_quantity !== null && p.stock_quantity !== undefined ? parseInt(p.stock_quantity) : 50;
     const image = p.images && p.images.length > 0 ? p.images[0].src : null;
-    const slug = p.slug || p.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const existingProduct = await prisma.product.findFirst({
+      where: {
+        OR: [
+          { slug: slug },
+          { name: { equals: p.name, mode: 'insensitive' } }
+        ]
+      }
+    });
 
-    await prisma.product.upsert({
-      where: { slug: slug },
-      update: {
-        name: p.name,
-        price: price,
-        discountPrice: discountPrice,
-        stock: stock,
-        image: image,
-        categoryId: categoryId,
-        status: p.status === 'publish' ? 'ACTIVE' : 'DRAFT'
-      },
-      create: {
+    if (existingProduct) {
+      return res.status(200).json({ status: "ignored_existing_admin_product", slug });
+    }
+
+    await prisma.product.create({
+      data: {
         name: p.name,
         slug: slug,
         description: p.description ? p.description.replace(/<[^>]*>?/gm, '') : p.name,
@@ -170,7 +171,7 @@ const handleProductWebhook = async (req, res) => {
         stock: stock,
         image: image,
         categoryId: categoryId,
-        status: p.status === 'publish' ? 'ACTIVE' : 'DRAFT'
+        status: 'ACTIVE'
       }
     });
 

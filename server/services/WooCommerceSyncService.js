@@ -64,20 +64,23 @@ class WooCommerceSyncService {
         const image = p.images && p.images.length > 0 ? p.images[0].src : null;
         const slug = p.slug || p.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
-        await prisma.product.upsert({
-          where: { slug: slug },
-          update: {
-            name: p.name,
-            description: p.description ? p.description.replace(/<[^>]*>?/gm, '') : p.name,
-            shortDescription: p.short_description ? p.short_description.replace(/<[^>]*>?/gm, '') : null,
-            price: price,
-            discountPrice: discountPrice,
-            stock: stock,
-            image: image,
-            categoryId: categoryId,
-            status: p.status === 'publish' ? 'ACTIVE' : 'DRAFT'
-          },
-          create: {
+        // Check if product already exists — DO NOT overwrite existing product details or change active status
+        const existingProduct = await prisma.product.findFirst({
+          where: {
+            OR: [
+              { slug: slug },
+              { name: { equals: p.name, mode: 'insensitive' } }
+            ]
+          }
+        });
+
+        if (existingProduct) {
+          // Keep admin product details and active status completely untouched
+          continue;
+        }
+
+        await prisma.product.create({
+          data: {
             name: p.name,
             slug: slug,
             description: p.description ? p.description.replace(/<[^>]*>?/gm, '') : p.name,
@@ -87,7 +90,7 @@ class WooCommerceSyncService {
             stock: stock,
             image: image,
             categoryId: categoryId,
-            status: p.status === 'publish' ? 'ACTIVE' : 'DRAFT'
+            status: 'ACTIVE'
           }
         });
         syncedCount++;
