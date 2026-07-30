@@ -92,7 +92,7 @@ exports.getDashboardStats = async (req, res) => {
       },
       where: {
         orderStatus: { not: 'CANCELLED' },
-        paymentStatus: { notIn: ['FAILED', 'REFUNDED'] }
+        paymentStatus: { in: ['PAID', 'SUCCESS'] }
       }
     });
     
@@ -108,7 +108,7 @@ exports.getDashboardStats = async (req, res) => {
     const allValidOrders = await prisma.order.findMany({
       where: { 
         orderStatus: { not: 'CANCELLED' },
-        paymentStatus: { notIn: ['FAILED', 'REFUNDED'] },
+        paymentStatus: { in: ['PAID', 'SUCCESS'] },
         createdAt: {
           gte: new Date(`${currentYear}-01-01T00:00:00.000Z`),
           lte: new Date(`${currentYear}-12-31T23:59:59.999Z`)
