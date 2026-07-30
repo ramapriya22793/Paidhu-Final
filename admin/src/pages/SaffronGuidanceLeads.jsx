@@ -145,6 +145,7 @@ const SaffronGuidanceLeads = () => {
                   <th className="px-5 py-4 font-semibold text-gray-600 text-xs uppercase tracking-wide">Purpose</th>
                   <th className="px-5 py-4 font-semibold text-gray-600 text-xs uppercase tracking-wide">Pregnancy</th>
                   <th className="px-5 py-4 font-semibold text-gray-600 text-xs uppercase tracking-wide">Doctor Permission</th>
+                  <th className="px-5 py-4 font-semibold text-gray-600 text-xs uppercase tracking-wide">Approval</th>
                   <th className="px-5 py-4 font-semibold text-gray-600 text-xs uppercase tracking-wide text-right">Actions</th>
                 </tr>
               </thead>
@@ -182,6 +183,21 @@ const SaffronGuidanceLeads = () => {
                         }`}>
                           {lead.doctorPermission === 'Yes' ? '✅ Yes' : '❌ No'}
                         </span>
+                      ) : (
+                        <span className="text-gray-400 text-sm">-</span>
+                      )}
+                    </td>
+                    <td className="px-5 py-4 align-top">
+                      {lead.purpose === 'Pregnancy Support' ? (
+                        lead.doctorPermission === 'Yes' ? (
+                          <span className="inline-flex items-center gap-1.5 text-xs font-bold rounded-full px-3 py-1.5 border bg-emerald-50 text-emerald-700 border-emerald-300">
+                            ✅ Approved
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1.5 text-xs font-bold rounded-full px-3 py-1.5 border bg-rose-50 text-rose-700 border-rose-300">
+                            ❌ Not Approved
+                          </span>
+                        )
                       ) : (
                         <span className="text-gray-400 text-sm">-</span>
                       )}
