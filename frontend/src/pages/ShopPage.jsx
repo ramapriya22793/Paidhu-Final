@@ -200,8 +200,8 @@ const ProductCard = ({ product, index, navSection }) => {
     product.tags === 'preorder' || 
     (typeof product.tags === 'string' && product.tags.includes('preorder')) ||
     (product.name && (
-      product.name.toLowerCase().includes('hibiscus petal jam') || 
-      product.name.toLowerCase().includes('neem petal')
+      product.name.toLowerCase() === 'hibiscus petal jam – natural antioxidant health spread' || 
+      product.name.toLowerCase() === 'neem petal jams'
     ));
 
   return (
