@@ -199,7 +199,10 @@ const ProductCard = ({ product, index, navSection }) => {
     product.status === 'PREORDER' || 
     product.tags === 'preorder' || 
     (typeof product.tags === 'string' && product.tags.includes('preorder')) ||
-    (product.name && product.name.toLowerCase().includes('hibiscus petal jam'));
+    (product.name && (
+      product.name.toLowerCase().includes('hibiscus petal jam') ||
+      product.name.toLowerCase().includes('neem petal')
+    ));
 
   return (
     <motion.div 
