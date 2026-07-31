@@ -8,9 +8,8 @@ const features = [
     title: 'Healthy Kids Snacks',
     description: 'Nutritious and delicious snacks made with premium natural ingredients for growing kids.',
     images: [
-      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1784287035218-WhatsAppImage20260717at44032PMjpeg.jpeg',
-      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1784531589206-WhatsAppImage20260717at44020PMjpeg.jpeg',
-      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1784286773702-WhatsAppImage20260717at43940PMjpeg.jpeg'
+      '/bento/kids_snack_1.jpg',
+      '/bento/kids_snack_2.jpg'
     ]
   },
   {
@@ -18,11 +17,11 @@ const features = [
     title: 'Flower Based Infusions',
     description: 'Discover wellness blends crafted from edible flowers, herbs, and traditional ingredients.',
     images: [
-      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1784114222785-IMG34991jpg.jpg',
-      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780938733725-WhatsAppImage20251113at23302330981866600x800jpg.jpg',
-      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780938385526-WhatsAppImage20251202at80940PM600x600jpeg.jpeg',
-      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780937722325-WhatsAppImage20251113at233024f74fae34600x800jpg.jpg',
-      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780937914670-WhatsAppImage20251113at2330215f60b43f600x800jpg.jpg'
+      '/bento/infusion_1.jpg',
+      '/bento/infusion_2.jpg',
+      '/bento/infusion_3.jpg',
+      '/bento/infusion_4.jpg',
+      '/bento/infusion_5.jpg'
     ]
   },
   {
@@ -40,10 +39,10 @@ const features = [
     title: 'Travel Friendly Foods',
     description: 'Convenient healthy snacks and ready-to-carry products designed for modern families on the go.',
     images: [
-      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png',
-      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780939517153-saffronneign600x600jpg.jpg',
-      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1783510735061-saffronmothersdayjpg.jpg',
-      'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1782210039441-10png.png'
+      '/bento/travel_1.png',
+      '/bento/travel_2.jpg',
+      '/bento/travel_3.jpg',
+      '/bento/travel_4.png'
     ]
   }
 ];
