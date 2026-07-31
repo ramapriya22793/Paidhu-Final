@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import orderService from '../services/orderService';
-import { FiEye, FiCheck, FiTruck, FiX, FiPrinter } from 'react-icons/fi';
+import { FiEye, FiCheck, FiTruck, FiX, FiPrinter, FiDownload } from 'react-icons/fi';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -36,6 +36,77 @@ const Orders = () => {
     }
   };
 
+  const exportToExcel = () => {
+    if (orders.length === 0) {
+      alert("No orders to export!");
+      return;
+    }
+
+    const escapeCSV = (val) => {
+      if (val === null || val === undefined) return '';
+      const str = String(val);
+      if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+        return `"${str.replace(/"/g, '""')}"`;
+      }
+      return str;
+    };
+
+    const headers = [
+      'Order ID',
+      'Customer Name',
+      'Customer Email',
+      'Date',
+      'Total Price',
+      'Subtotal',
+      'Delivery Charge',
+      'Discount',
+      'Order Status',
+      'Payment Status',
+      'Payment Method',
+      'Shipping Address',
+      'Items Ordered'
+    ];
+
+    const rows = orders.map(order => {
+      const dateStr = new Date(order.createdAt).toLocaleDateString();
+      const itemsStr = order.items
+        ? order.items.map(item => `${item.product?.name || 'Product'} (${item.quantity})`).join(', ')
+        : '';
+
+      return [
+        order.orderNumber || `#${order.id.toString().padStart(5, '0')}`,
+        order.customerName,
+        order.customerEmail,
+        dateStr,
+        `₹${order.totalPrice}`,
+        `₹${order.subtotal}`,
+        `₹${order.deliveryCharge}`,
+        `₹${order.discountAmount}`,
+        order.orderStatus,
+        order.paymentStatus,
+        order.paymentMethod,
+        order.shippingAddress,
+        itemsStr
+      ];
+    });
+
+    const csvContent = "\uFEFF" + [
+      headers.join(','),
+      ...rows.map(e => e.map(escapeCSV).join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    const today = new Date().toISOString().slice(0, 10);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `Paidhu_Orders_${today}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const getStatusBadge = (status) => {
     switch (status) {
       case 'PROCESSING':
@@ -57,6 +128,12 @@ const Orders = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-800 font-playfair">Orders Management</h1>
+        <button 
+          onClick={exportToExcel}
+          className="bg-brand-plum hover:bg-brand-plum/90 text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 transition-all cursor-pointer shadow hover:shadow-md"
+        >
+          <FiDownload size={16} /> Export to Excel
+        </button>
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
