@@ -272,7 +272,7 @@ const BlogsPage = () => {
       <SEO 
         title="Paidhu Journal | Edible Flowers, Wellness & Floral Food Stories"
         description="Explore wellness articles, floral recipes, saffron benefits, organic food stories, and holistic lifestyle insights from Paidhu Store."
-        url="https://paidhu.com/blogs"
+        url="https://paidhuethicalfoods.com/blogs"
       />
 
       {/* Hero Header */}

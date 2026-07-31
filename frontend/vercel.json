@@ -21,10 +21,10 @@
       "has": [
         {
           "type": "host",
-          "value": "www.paidhu.com"
+          "value": "www.paidhuethicalfoods.com"
         }
       ],
-      "destination": "https://paidhu.com/$1",
+      "destination": "https://paidhuethicalfoods.com/$1",
       "statusCode": 301
     }
   ],

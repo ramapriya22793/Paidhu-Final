@@ -37,8 +37,8 @@ const SEO = ({
   const siteName = "Paidhu - The Edible Flower Co.";
   const fullTitle = title ? `${title} | ${siteName}` : siteName;
   const defaultDesc = "Discover premium quality edible flowers, saffron, and natural organic products at Paidhu. Enhance your culinary experience with our carefully sourced selection.";
-  const defaultImage = "https://paidhu.com/Paidhulogo.png";
-  const defaultUrl = "https://paidhu.com";
+  const defaultImage = "https://paidhuethicalfoods.com/Paidhulogo.png";
+  const defaultUrl = "https://paidhuethicalfoods.com";
   const currentUrl = url || defaultUrl;
 
   // 1. Organization Schema
@@ -46,8 +46,8 @@ const SEO = ({
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Paidhu",
-    "url": "https://paidhu.com",
-    "logo": "https://paidhu.com/Paidhulogo.png",
+    "url": "https://paidhuethicalfoods.com",
+    "logo": "https://paidhuethicalfoods.com/Paidhulogo.png",
     "email": "info@paidhu.com",
     "telephone": "+91-87547-87774",
     "sameAs": [
@@ -61,10 +61,10 @@ const SEO = ({
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Paidhu",
-    "url": "https://paidhu.com",
+    "url": "https://paidhuethicalfoods.com",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://paidhu.com/shop?q={search_term_string}",
+      "target": "https://paidhuethicalfoods.com/shop?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   };
@@ -74,7 +74,7 @@ const SEO = ({
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "Paidhu Ethical Foods",
-    "image": "https://paidhu.com/Paidhulogo.png",
+    "image": "https://paidhuethicalfoods.com/Paidhulogo.png",
     "telephone": "+91-87547-87774",
     "email": "info@paidhu.com",
     "address": {
@@ -179,7 +179,7 @@ const SEO = ({
               "@type": "ListItem",
               "position": idx + 1,
               "name": item.name,
-              "item": item.url ? `https://paidhu.com${item.url}` : undefined
+              "item": item.url ? `https://paidhuethicalfoods.com${item.url}` : undefined
             }))
           })}
         </script>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import blogService from '../services/blogService';
 import { FiPlus, FiEdit2, FiTrash2, FiFileText, FiX, FiCamera } from 'react-icons/fi';
 
-const FRONTEND_URL = 'https://paidhu.com';
+const FRONTEND_URL = 'https://paidhuethicalfoods.com';
 
 const resolveBlogImage = (img) => {
   if (!img) return null;

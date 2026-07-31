@@ -13,14 +13,14 @@ router.get("/", async (req, res) => {
 
     // Static pages
     const staticUrls = [
-      { loc: "https://paidhu.com/", priority: "1.0", changefreq: "daily" },
-      { loc: "https://paidhu.com/shop", priority: "0.8", changefreq: "daily" },
-      { loc: "https://paidhu.com/shop/about-us", priority: "0.7", changefreq: "weekly" },
-      { loc: "https://paidhu.com/saffron-guidance", priority: "0.8", changefreq: "weekly" },
-      { loc: "https://paidhu.com/shop/byoc", priority: "0.7", changefreq: "weekly" },
-      { loc: "https://paidhu.com/legal/terms-conditions", priority: "0.3", changefreq: "monthly" },
-      { loc: "https://paidhu.com/legal/privacy-policy", priority: "0.3", changefreq: "monthly" },
-      { loc: "https://paidhu.com/legal/shipping-policy", priority: "0.3", changefreq: "monthly" },
+      { loc: "https://paidhuethicalfoods.com/", priority: "1.0", changefreq: "daily" },
+      { loc: "https://paidhuethicalfoods.com/shop", priority: "0.8", changefreq: "daily" },
+      { loc: "https://paidhuethicalfoods.com/shop/about-us", priority: "0.7", changefreq: "weekly" },
+      { loc: "https://paidhuethicalfoods.com/saffron-guidance", priority: "0.8", changefreq: "weekly" },
+      { loc: "https://paidhuethicalfoods.com/shop/byoc", priority: "0.7", changefreq: "weekly" },
+      { loc: "https://paidhuethicalfoods.com/legal/terms-conditions", priority: "0.3", changefreq: "monthly" },
+      { loc: "https://paidhuethicalfoods.com/legal/privacy-policy", priority: "0.3", changefreq: "monthly" },
+      { loc: "https://paidhuethicalfoods.com/legal/shipping-policy", priority: "0.3", changefreq: "monthly" },
     ];
 
     staticUrls.forEach(url => {
@@ -31,7 +31,7 @@ router.get("/", async (req, res) => {
     products.forEach(p => {
       const productSlug = p.slug || p.id;
       const lastMod = p.updatedAt ? new Date(p.updatedAt).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
-      xml += `  <url>\n    <loc>https://paidhu.com/product/${productSlug}</loc>\n    <priority>0.6</priority>\n    <lastmod>${lastMod}</lastmod>\n    <changefreq>weekly</changefreq>\n  </url>\n`;
+      xml += `  <url>\n    <loc>https://paidhuethicalfoods.com/product/${productSlug}</loc>\n    <priority>0.6</priority>\n    <lastmod>${lastMod}</lastmod>\n    <changefreq>weekly</changefreq>\n  </url>\n`;
     });
 
     // Dynamic blogs
@@ -42,7 +42,7 @@ router.get("/", async (req, res) => {
     blogs.forEach(b => {
       const blogSlug = b.slug || b.id;
       const lastMod = b.updatedAt ? new Date(b.updatedAt).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
-      xml += `  <url>\n    <loc>https://paidhu.com/blogs/${blogSlug}</loc>\n    <priority>0.7</priority>\n    <lastmod>${lastMod}</lastmod>\n    <changefreq>weekly</changefreq>\n  </url>\n`;
+      xml += `  <url>\n    <loc>https://paidhuethicalfoods.com/blogs/${blogSlug}</loc>\n    <priority>0.7</priority>\n    <lastmod>${lastMod}</lastmod>\n    <changefreq>weekly</changefreq>\n  </url>\n`;
     });
 
     xml += `</urlset>`;

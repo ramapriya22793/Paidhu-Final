@@ -75,7 +75,7 @@ const BlogDetailPage = () => {
 
   const { blog, relatedBlogs = [], navigation = {} } = blogData;
 
-  const currentUrl = typeof window !== 'undefined' ? window.location.href : `https://paidhu.com/blogs/${blog.slug}`;
+  const currentUrl = typeof window !== 'undefined' ? window.location.href : `https://paidhuethicalfoods.com/blogs/${blog.slug}`;
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(currentUrl);
@@ -215,7 +215,7 @@ const BlogDetailPage = () => {
       "name": "Paidhu Store",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://paidhu.com/logo.png"
+        "url": "https://paidhuethicalfoods.com/logo.png"
       }
     },
     "datePublished": blog.createdAt,

@@ -13,6 +13,9 @@ const securityHeaders = helmet({
         "https://paidhu.com",
         "https://www.paidhu.com",
         "https://admin.paidhu.com",
+        "https://paidhuethicalfoods.com",
+        "https://www.paidhuethicalfoods.com",
+        "https://admin.paidhuethicalfoods.com",
         "https://szgqtggokqqaoomryljr.supabase.co", 
         "https://images.unsplash.com", 
         "https://res.cloudinary.com"
@@ -22,6 +25,9 @@ const securityHeaders = helmet({
         "https://paidhu.com",
         "https://www.paidhu.com",
         "https://admin.paidhu.com",
+        "https://paidhuethicalfoods.com",
+        "https://www.paidhuethicalfoods.com",
+        "https://admin.paidhuethicalfoods.com",
         "https://paidhu-final-anm2.vercel.app", 
         "https://szgqtggokqqaoomryljr.supabase.co", 
         "https://api.razorpay.com"

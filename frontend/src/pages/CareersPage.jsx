@@ -202,7 +202,7 @@ const CareersPage = () => {
         title="Careers - Paidhu Ethical Foods"
         description="Join the Paidhu team and grow your career with a purpose-driven food brand. Explore internship openings in Sales and Digital Marketing."
         slug="careers"
-        url="https://paidhu.com/careers"
+        url="https://paidhuethicalfoods.com/careers"
       />
 
       {/* HERO SECTION */}
