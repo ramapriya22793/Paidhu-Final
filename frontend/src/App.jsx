@@ -129,7 +129,7 @@ function App() {
   // Scroll to top on route navigation
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [location.pathname]);
+  }, [location.pathname, location.search, location.key]);
 
   // Removed redirect logic as it breaks deep links and SEO
 

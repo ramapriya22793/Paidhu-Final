@@ -412,7 +412,7 @@ const Navbar = () => {
           {/* Center: Logo */}
           <div className="flex w-1/2 lg:w-1/3 justify-center z-10">
             <motion.div whileHover={{ scale: 1.05 }} className="flex items-center justify-center">
-              <Link to="/" className="flex items-center justify-center">
+              <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center justify-center">
                 <img
                   src={paidhuLogo}
                   alt="Paidhu The Edible Flower Co."
