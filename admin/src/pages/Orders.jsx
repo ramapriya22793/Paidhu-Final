@@ -5,6 +5,7 @@ import { FiEye, FiCheck, FiTruck, FiX, FiPrinter, FiDownload } from 'react-icons
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
+  const [statusFilter, setStatusFilter] = useState('ALL');
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const navigate = useNavigate();
@@ -36,9 +37,13 @@ const Orders = () => {
     }
   };
 
+  const filteredOrders = statusFilter === 'ALL'
+    ? orders
+    : orders.filter(order => order.orderStatus === statusFilter);
+
   const exportToExcel = () => {
-    if (orders.length === 0) {
-      alert("No orders to export!");
+    if (filteredOrders.length === 0) {
+      alert("No orders to export for the selected filter!");
       return;
     }
 
@@ -67,7 +72,7 @@ const Orders = () => {
       'Items Ordered'
     ];
 
-    const rows = orders.map(order => {
+    const rows = filteredOrders.map(order => {
       const dateStr = new Date(order.createdAt).toLocaleDateString();
       const itemsStr = order.items
         ? order.items.map(item => `${item.product?.name || 'Product'} (${item.quantity})`).join(', ')
@@ -100,7 +105,7 @@ const Orders = () => {
     const link = document.createElement("a");
     const today = new Date().toISOString().slice(0, 10);
     link.setAttribute("href", url);
-    link.setAttribute("download", `Paidhu_Orders_${today}.csv`);
+    link.setAttribute("download", `Paidhu_Orders_${statusFilter.toLowerCase()}_${today}.csv`);
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();
@@ -128,12 +133,27 @@ const Orders = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-800 font-playfair">Orders Management</h1>
-        <button 
-          onClick={exportToExcel}
-          className="bg-brand-plum hover:bg-brand-plum/90 text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 transition-all cursor-pointer shadow hover:shadow-md"
-        >
-          <FiDownload size={16} /> Export to Excel
-        </button>
+        <div className="flex items-center gap-3">
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="border border-gray-200 rounded-lg px-3 py-2 text-sm font-semibold text-gray-700 bg-white focus:outline-none focus:border-brand-plum focus:ring-1 focus:ring-brand-plum cursor-pointer"
+          >
+            <option value="ALL">All Statuses</option>
+            <option value="PENDING">Pending</option>
+            <option value="CONFIRMED">Confirmed</option>
+            <option value="PROCESSING">Processing</option>
+            <option value="SHIPPED">Shipped</option>
+            <option value="DELIVERED">Delivered</option>
+            <option value="CANCELLED">Cancelled</option>
+          </select>
+          <button 
+            onClick={exportToExcel}
+            className="bg-brand-plum hover:bg-brand-plum/90 text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 transition-all cursor-pointer shadow hover:shadow-md"
+          >
+            <FiDownload size={16} /> Export to Excel
+          </button>
+        </div>
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
@@ -150,14 +170,14 @@ const Orders = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {orders.length === 0 ? (
+              {filteredOrders.length === 0 ? (
                 <tr>
                   <td colSpan="6" className="px-6 py-8 text-center text-gray-500">
-                    No orders found.
+                    No orders found matching the filter.
                   </td>
                 </tr>
               ) : (
-                orders.map((order) => (
+                filteredOrders.map((order) => (
                   <tr key={order.id} className="hover:bg-gray-50/50 transition-colors">
                     <td className="px-6 py-4 font-medium text-brand-plum cursor-pointer hover:underline" onClick={() => navigate(`/orders/${order.id}`)}>
                       {order.orderNumber || `#${order.id.toString().padStart(5, '0')}`}
