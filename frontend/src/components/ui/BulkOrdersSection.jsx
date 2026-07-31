@@ -11,7 +11,7 @@ const defaultData = {
   heroSection: {
     heading: 'BUY YOUR PAIDHU\nfavourites in bulk\n& resell ahead!',
     discountBtnText: 'Click Here For Discounts',
-    bannerImage: '/white_lotus_cookies.png',
+    bannerImage: '/white_lotus_cookies_new.png',
     buttons: [
       { id: 1, label: 'Explore Bulk Offers', link: '#offers' },
       { id: 2, label: 'Download catalogue', link: '#catalogue' },

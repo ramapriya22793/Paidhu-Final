@@ -46,7 +46,7 @@ const initialProducts = [
     weight: "200g",
     price: "₹249",
     image: "https://images.unsplash.com/photo-1619535860434-ba1d8fa12536?q=80&w=800&auto=format&fit=crop",
-    image2: "/white_lotus_cookies.png",
+    image2: "/white_lotus_cookies_new.png",
     rawProduct: { id: 24, price: 249, discountPrice: null, category: "Bloom Cookies" }
   },
   {
