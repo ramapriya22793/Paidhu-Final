@@ -12,7 +12,7 @@ const CATEGORY_CONFIG = [
     subtitle: "Floral Artisan Bakes",
     accent: "#c8843a",
     badge: "Bestseller",
-    img: "/bloom_cookies_banner.png",
+    img: "/white_lotus_cookies.png",
     fallback: "https://images.unsplash.com/photo-1558961309-dbdf717a1e4e?auto=format&fit=crop&q=90&w=1200"
   },
   {

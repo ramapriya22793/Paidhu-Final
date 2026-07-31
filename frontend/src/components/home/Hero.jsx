@@ -20,7 +20,7 @@ const FALLBACK_SLIDES = [
   },
   {
     id: 'fallback-3',
-    image: '/bloom_cookies_banner.png',
+    image: '/white_lotus_cookies.png',
     bgColor: '#faf5eb',
     isBackendBanner: false
   }
