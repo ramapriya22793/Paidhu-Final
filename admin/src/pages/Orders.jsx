@@ -6,6 +6,8 @@ import { FiEye, FiCheck, FiTruck, FiX, FiPrinter, FiDownload } from 'react-icons
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [statusFilter, setStatusFilter] = useState('ALL');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const navigate = useNavigate();
@@ -37,9 +39,29 @@ const Orders = () => {
     }
   };
 
-  const filteredOrders = statusFilter === 'ALL'
-    ? orders
-    : orders.filter(order => order.orderStatus === statusFilter);
+  const filteredOrders = orders.filter(order => {
+    // 1. Status Filter
+    const matchesStatus = statusFilter === 'ALL' || order.orderStatus === statusFilter;
+
+    // 2. Date Filter
+    let matchesDate = true;
+    const orderDate = new Date(order.createdAt);
+    const orderTime = new Date(orderDate.getFullYear(), orderDate.getMonth(), orderDate.getDate()).getTime();
+
+    if (startDate) {
+      const start = new Date(startDate);
+      const startTime = new Date(start.getFullYear(), start.getMonth(), start.getDate()).getTime();
+      if (orderTime < startTime) matchesDate = false;
+    }
+
+    if (endDate) {
+      const end = new Date(endDate);
+      const endTime = new Date(end.getFullYear(), end.getMonth(), end.getDate()).getTime();
+      if (orderTime > endTime) matchesDate = false;
+    }
+
+    return matchesStatus && matchesDate;
+  });
 
   const exportToExcel = () => {
     if (filteredOrders.length === 0) {
@@ -131,9 +153,30 @@ const Orders = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
         <h1 className="text-2xl font-bold text-gray-800 font-playfair">Orders Management</h1>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Start Date */}
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold text-gray-500 uppercase">From</span>
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="border border-gray-200 rounded-lg px-2 py-1 text-sm font-semibold text-gray-700 bg-white focus:outline-none focus:border-brand-plum focus:ring-1 focus:ring-brand-plum cursor-pointer"
+            />
+          </div>
+          {/* End Date */}
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold text-gray-500 uppercase">To</span>
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="border border-gray-200 rounded-lg px-2 py-1 text-sm font-semibold text-gray-700 bg-white focus:outline-none focus:border-brand-plum focus:ring-1 focus:ring-brand-plum cursor-pointer"
+            />
+          </div>
+          {/* Status Filter */}
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
@@ -147,12 +190,27 @@ const Orders = () => {
             <option value="DELIVERED">Delivered</option>
             <option value="CANCELLED">Cancelled</option>
           </select>
+          {/* Export Button */}
           <button 
             onClick={exportToExcel}
             className="bg-brand-plum hover:bg-brand-plum/90 text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 transition-all cursor-pointer shadow hover:shadow-md"
           >
             <FiDownload size={16} /> Export to Excel
           </button>
+          
+          {/* Reset Filters Link */}
+          {(startDate || endDate || statusFilter !== 'ALL') && (
+            <button
+              onClick={() => {
+                setStartDate('');
+                setEndDate('');
+                setStatusFilter('ALL');
+              }}
+              className="text-xs font-bold text-red-600 hover:text-red-800 hover:underline cursor-pointer ml-1"
+            >
+              Clear Filters
+            </button>
+          )}
         </div>
       </div>
 
