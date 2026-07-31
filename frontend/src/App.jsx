@@ -126,6 +126,11 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Scroll to top on route navigation
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   // Removed redirect logic as it breaks deep links and SEO
 
   return (
