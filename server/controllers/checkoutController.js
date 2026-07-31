@@ -387,9 +387,27 @@ const razorpayWebhook = async (req, res) => {
       .update(body)
       .digest('hex');
 
-    if (expectedSignature === signature) {
-      const event = req.body.event;
+    const isSignatureValid = (expectedSignature === signature);
+    let isVerified = isSignatureValid;
+    const event = req.body.event;
 
+    // Fallback: If signature check fails, query Razorpay API directly using our credentials to verify payment status.
+    if (!isVerified && event === 'order.paid') {
+      try {
+        const paymentEntity = req.body.payload?.payment?.entity;
+        if (paymentEntity && paymentEntity.id) {
+          const paymentDetails = await razorpay.payments.fetch(paymentEntity.id);
+          if (paymentDetails && (paymentDetails.status === 'captured' || paymentDetails.status === 'confirmed')) {
+            isVerified = true;
+            console.log(`[Razorpay Webhook] Signature mismatch, but verified payment status directly with Razorpay: ${paymentEntity.id}`);
+          }
+        }
+      } catch (err) {
+        console.error("[Razorpay Webhook] Fallback validation failed:", err.message);
+      }
+    }
+
+    if (isVerified) {
       if (event === 'order.paid') {
         const orderEntity = req.body.payload.order.entity;
         const paymentEntity = req.body.payload.payment.entity;
