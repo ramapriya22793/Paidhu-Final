@@ -24,7 +24,7 @@ const ForYourFamilySection = () => {
       howToUse: "Stir 2-3 strands into warm milk, blend in breakfast smoothies, or add to saffron-scented rice (Biryani/Kheer).",
       productName: "Kashmiri Mongra Saffron",
       productSlug: "kashmiri-mongra",
-      productImage: "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780938979730-SuperNeiginbig1600x600jpg.jpg"
+      productImage: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780938979730-SuperNeiginbig1600x600jpg.jpg"
     },
     {
       name: "Hibiscus",
@@ -39,7 +39,7 @@ const ForYourFamilySection = () => {
       howToUse: "Brew as a tart iced tea, cook down into organic petal jams, or use as a natural pink food coloring for bakes.",
       productName: "Hibiscus Petal Jam",
       productSlug: "hibiscus-petal-jam",
-      productImage: "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg"
+      productImage: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg"
     },
     {
       name: "Butterfly Pea",
@@ -54,7 +54,7 @@ const ForYourFamilySection = () => {
       howToUse: "Infuse in hot water to create a magical blue tea. Squeeze in lemon juice to watch it turn into bright purple!",
       productName: "Brew Flora - Blue Pea (30g)",
       productSlug: "brew-flora-blue-pea-30g",
-      productImage: "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780937499230-WhatsAppImage20251113at233020322c5e7d600x800jpg.jpg"
+      productImage: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780937499230-WhatsAppImage20251113at233020322c5e7d600x800jpg.jpg"
     },
     {
       name: "Rose Petals",
@@ -69,7 +69,7 @@ const ForYourFamilySection = () => {
       howToUse: "Mix rose water into desserts, spread organic petal jam on toast, or garnish cookies and cakes with dry petals.",
       productName: "Rose Gulkhand Jam",
       productSlug: "rose-gulkhand-jam",
-      productImage: "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1781535450213-Gulkandfinaljpg.jpg"
+      productImage: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1781535450213-Gulkandfinaljpg.jpg"
     },
     {
       name: "Chamomile",
@@ -84,7 +84,7 @@ const ForYourFamilySection = () => {
       howToUse: "Steep in warm water for 5 minutes before bedtime, sweeten with raw honey, and serve to children and adults alike.",
       productName: "Brew Flora - Chamomile (30g)",
       productSlug: "brew-flora-chamomile-30g",
-      productImage: "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780937914670-WhatsAppImage20251113at2330215f60b43f600x800jpg.jpg"
+      productImage: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780937914670-WhatsAppImage20251113at2330215f60b43f600x800jpg.jpg"
     }
   ];
 
@@ -94,28 +94,28 @@ const ForYourFamilySection = () => {
       title: "Brain & Focus Booster",
       desc: "Supports cognitive function, sharpens focus, and reduces mental fatigue in children and working parents.",
       badge: "Blue Pea & Saffron",
-      pic: "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780937499230-WhatsAppImage20251113at233020322c5e7d600x800jpg.jpg",
+      pic: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780937499230-WhatsAppImage20251113at233020322c5e7d600x800jpg.jpg",
       color: "from-blue-500/10 to-indigo-500/10 border-blue-100 text-blue-900"
     },
     {
       title: "Immunity Shield",
       desc: "Rich in Vitamin C and active bioflavonoids that help protect your children from seasonal coughs and infections.",
       badge: "Hibiscus & Rose",
-      pic: "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg",
+      pic: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg",
       color: "from-rose-500/10 to-red-500/10 border-rose-100 text-rose-900"
     },
     {
       title: "Sleep & Calm Aid",
       desc: "Relieves hyper-activity in kids and creates a relaxing bedtime routine by naturally soothing the nervous system.",
       badge: "Chamomile & Lavender",
-      pic: "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780937914670-WhatsAppImage20251113at2330215f60b43f600x800jpg.jpg",
+      pic: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780937914670-WhatsAppImage20251113at2330215f60b43f600x800jpg.jpg",
       color: "from-amber-500/10 to-yellow-500/10 border-amber-100 text-amber-900"
     },
     {
       title: "Digestive Cooler",
       desc: "Traditional cooling botanicals that soothe internal heat, support gut health, and ease food digestion.",
       badge: "Rose & Calendula",
-      pic: "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1781535450213-Gulkandfinaljpg.jpg",
+      pic: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1781535450213-Gulkandfinaljpg.jpg",
       color: "from-emerald-500/10 to-teal-500/10 border-emerald-100 text-emerald-900"
     }
   ];

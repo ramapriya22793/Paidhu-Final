@@ -20,7 +20,7 @@ const CATEGORY_CONFIG = [
     subtitle: "Pure Floral Preserves",
     accent: "#c45c7c",
     badge: "New Arrival",
-    img: "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png",
+    img: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png",
     fallback: "https://images.unsplash.com/photo-1589535036124-747385202613?auto=format&fit=crop&q=90&w=1200"
   },
   {
@@ -28,7 +28,7 @@ const CATEGORY_CONFIG = [
     subtitle: "Premium Red Gold",
     accent: "#d4821a",
     badge: "Pure & Premium",
-    img: "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780939517153-saffronneign600x600jpg.jpg",
+    img: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780939517153-saffronneign600x600jpg.jpg",
     fallback: "https://images.unsplash.com/photo-1596591606975-97ee5cef3a1e?auto=format&fit=crop&q=90&w=1200"
   },
   {
@@ -36,7 +36,7 @@ const CATEGORY_CONFIG = [
     subtitle: "Botanical Blends",
     accent: "#4a7c59",
     badge: "Hand Blended",
-    img: "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780938733725-WhatsAppImage20251113at23302330981866600x800jpg.jpg",
+    img: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780938733725-WhatsAppImage20251113at23302330981866600x800jpg.jpg",
     fallback: "https://images.unsplash.com/photo-1576092762791-dd9e2220afa1?auto=format&fit=crop&q=90&w=1200"
   },
   {
@@ -44,7 +44,7 @@ const CATEGORY_CONFIG = [
     subtitle: "Floral Infused Drinks",
     accent: "#7b5ea7",
     badge: "Signature Brew",
-    img: "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780937334667-WhatsAppImage20251113at233026a02aaf431600x800jpg.jpg",
+    img: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780937334667-WhatsAppImage20251113at233026a02aaf431600x800jpg.jpg",
     fallback: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&q=90&w=1200"
   }
 ];
@@ -107,9 +107,10 @@ const ExploreCategory = () => {
               );
               const data = await res.json();
 
+              const productImg = (data.products && data.products.length > 0) ? data.products[0].image : null;
               return {
                 ...cat,
-                img: cat.img || cat.fallback,
+                img: productImg || cat.img || cat.fallback,
                 loading: false,
                 productCount: data.total || 0
               };
@@ -195,7 +196,7 @@ const ExploreCategory = () => {
 
               {/* Background Image */}
               <img
-                src={cat.img}
+                src={resolveImage(cat.img)}
                 alt={cat.title}
                 width={600}
                 height={320}
@@ -252,7 +253,7 @@ const ExploreCategory = () => {
 
                 {/* Background Image from backend */}
                 <img
-                  src={cat.img}
+                  src={resolveImage(cat.img)}
                   alt={cat.title}
                   width={600}
                   height={320}

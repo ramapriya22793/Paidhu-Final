@@ -49,11 +49,11 @@ const resolveSingleImage = (img) => {
 };
 
 const CATEGORY_FALLBACK_IMAGES = {
-  'saffron': 'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780939517153-saffronneign600x600jpg.jpg',
-  'medley teas': 'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780938733725-WhatsAppImage20251113at23302330981866600x800jpg.jpg',
-  'brew flora': 'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780937914670-WhatsAppImage20251113at2330215f60b43f600x800jpg.jpg',
+  'saffron': 'https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780939517153-saffronneign600x600jpg.jpg',
+  'medley teas': 'https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780938733725-WhatsAppImage20251113at23302330981866600x800jpg.jpg',
+  'brew flora': 'https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780937914670-WhatsAppImage20251113at2330215f60b43f600x800jpg.jpg',
   'bloom cookies': '/white_lotus_cookies_new.png',
-  'petal jam': 'https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png'
+  'petal jam': 'https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png'
 };
 
 const searchPhrases = [

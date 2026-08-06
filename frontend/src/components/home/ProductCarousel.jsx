@@ -28,7 +28,7 @@ const initialProducts = [
     weight: "250g",
     price: "₹399",
     image: "https://images.unsplash.com/photo-1589535036124-747385202613?q=80&w=800&auto=format&fit=crop",
-    image2: "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png",
+    image2: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png",
     rawProduct: { id: 5, price: 399, discountPrice: null, category: "Petal Jam" }
   },
   {
@@ -37,7 +37,7 @@ const initialProducts = [
     weight: "50g",
     price: "₹899",
     image: "https://images.unsplash.com/photo-1596591606975-97ee5cef3a1e?q=80&w=800&auto=format&fit=crop",
-    image2: "https://szgqtggokqqaoomryljr.supabase.co/storage/v1/object/public/Products/products/1780939517153-saffronneign600x600jpg.jpg",
+    image2: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780939517153-saffronneign600x600jpg.jpg",
     rawProduct: { id: 23, price: 899, discountPrice: null, category: "Saffron" }
   },
   {

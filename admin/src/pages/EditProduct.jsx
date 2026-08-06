@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import productService from '../services/productService';
 import { uploadImage, deleteImage } from '../utils/uploadImage';
-import { FiSave, FiArrowLeft, FiImage, FiPlus, FiTrash2 } from 'react-icons/fi';
+import { FiSave, FiArrowLeft, FiImage, FiPlus, FiTrash2, FiLoader } from 'react-icons/fi';
 
 const categories = [
   'Bloom Cookies',
@@ -32,8 +32,8 @@ const EditProduct = () => {
     image: '',
     imagePath: '',
     images: [],
-    newImageFiles: [],
-    newImagePreviewUrls: [],
+    uploadedNewImages: [], // { publicUrl, imagePath } already uploaded
+    newImagePreviewUrls: [], // preview URLs for display
     imagesToDelete: [], // paths of images to delete
     tags: '',
     seoTitle: '',
@@ -62,7 +62,7 @@ const EditProduct = () => {
           image: product.image || '',
           imagePath: product.imagePath || '',
           images: product.images || [], // { imageUrl, imagePath }
-          newImageFiles: [],
+          uploadedNewImages: [],
           newImagePreviewUrls: [],
           imagesToDelete: [],
           tags: product.tags || '',
@@ -135,25 +135,53 @@ const EditProduct = () => {
     setFormData({ ...formData, variants: newVariants });
   };
 
-  const handleImageUpload = (e) => {
+  const [uploading, setUploading] = useState(false);
+
+  const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
-    if (files.length > 0) {
-      const urls = files.map(file => URL.createObjectURL(file));
-      setFormData(prev => ({
-        ...prev,
-        newImageFiles: [...prev.newImageFiles, ...files],
-        newImagePreviewUrls: [...prev.newImagePreviewUrls, ...urls]
-      }));
+    if (files.length === 0) return;
+    setUploading(true);
+    try {
+      for (const file of files) {
+        // Show placeholder preview immediately
+        const placeholderUrl = URL.createObjectURL(file);
+        setFormData(prev => ({
+          ...prev,
+          newImagePreviewUrls: [...prev.newImagePreviewUrls, placeholderUrl]
+        }));
+        // Upload to Supabase (handles HEIC conversion internally)
+        const { publicUrl, imagePath, error } = await uploadImage(file, 'products');
+        if (error) {
+          alert('Upload failed: ' + error);
+          // Remove the placeholder
+          setFormData(prev => ({
+            ...prev,
+            newImagePreviewUrls: prev.newImagePreviewUrls.filter(u => u !== placeholderUrl)
+          }));
+          continue;
+        }
+        // Replace placeholder with real Supabase URL
+        setFormData(prev => ({
+          ...prev,
+          newImagePreviewUrls: prev.newImagePreviewUrls.map(u => u === placeholderUrl ? publicUrl : u),
+          uploadedNewImages: [...prev.uploadedNewImages, { publicUrl, imagePath }]
+        }));
+      }
+    } finally {
+      setUploading(false);
     }
   };
 
   const removeNewImage = (index) => {
     setFormData(prev => {
-      const newFiles = [...prev.newImageFiles];
+      const newUploaded = [...prev.uploadedNewImages];
       const newUrls = [...prev.newImagePreviewUrls];
-      newFiles.splice(index, 1);
+      // Queue for deletion in Supabase if already uploaded
+      const toDelete = [...prev.imagesToDelete];
+      if (newUploaded[index]?.imagePath) toDelete.push(newUploaded[index].imagePath);
+      newUploaded.splice(index, 1);
       newUrls.splice(index, 1);
-      return { ...prev, newImageFiles: newFiles, newImagePreviewUrls: newUrls };
+      return { ...prev, uploadedNewImages: newUploaded, newImagePreviewUrls: newUrls, imagesToDelete: toDelete };
     });
   };
 
@@ -180,44 +208,36 @@ const EditProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (uploading) { alert('Please wait for images to finish uploading.'); return; }
     setLoading(true);
     try {
-      // 1. Delete old images from Supabase
+      // 1. Delete removed images from Supabase
       for (const path of formData.imagesToDelete) {
         await deleteImage(path);
       }
 
-      // 2. Upload new images
-      let uploadedPrimaryImage = formData.image;
-      let uploadedPrimaryImagePath = formData.imagePath;
-      const uploadedProductImages = [...formData.images]; // keep remaining old ones
+      // 2. Images are already uploaded on selection — just compose the payload
+      let primaryImage = formData.image;
+      let primaryImagePath = formData.imagePath;
+      const allProductImages = [...formData.images]; // keep remaining old gallery images
 
-      for (let i = 0; i < formData.newImageFiles.length; i++) {
-        const file = formData.newImageFiles[i];
-        const { publicUrl, imagePath, error } = await uploadImage(file, 'products');
-        
-        if (error) throw new Error(`Upload failed for ${file.name}: ${error}`);
-
-        // If no primary image exists, make the first new image the primary
-        if (!uploadedPrimaryImage) {
-          uploadedPrimaryImage = publicUrl;
-          uploadedPrimaryImagePath = imagePath;
+      for (const uploaded of formData.uploadedNewImages) {
+        if (!primaryImage) {
+          primaryImage = uploaded.publicUrl;
+          primaryImagePath = uploaded.imagePath;
         } else {
-          uploadedProductImages.push({
-            imageUrl: publicUrl,
-            imagePath: imagePath
-          });
+          allProductImages.push({ imageUrl: uploaded.publicUrl, imagePath: uploaded.imagePath });
         }
       }
 
       const payload = {
         ...formData,
-        image: uploadedPrimaryImage,
-        imagePath: uploadedPrimaryImagePath,
-        productImages: uploadedProductImages
+        image: primaryImage,
+        imagePath: primaryImagePath,
+        productImages: allProductImages
       };
 
-      delete payload.newImageFiles;
+      delete payload.uploadedNewImages;
       delete payload.newImagePreviewUrls;
       delete payload.imagesToDelete;
       delete payload.images;
@@ -396,20 +416,21 @@ const EditProduct = () => {
                 <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:bg-gray-50 transition-colors">
                   <FiImage className="mx-auto h-12 w-12 text-gray-400 mb-3" />
                   <p className="text-sm text-gray-600 mb-2">Drag and drop images here, or click to select files</p>
-                  <p className="text-xs text-gray-500 mb-4">PNG, JPG, WebP up to 5MB</p>
+                  <p className="text-xs text-gray-500 mb-4">PNG, JPG, WebP, HEIC up to 5MB</p>
                   <input
                     type="file"
                     multiple
-                    accept="image/*"
+                    accept="image/*,.heic,.HEIC"
                     onChange={handleImageUpload}
                     className="hidden"
                     id="image-upload"
+                    disabled={uploading}
                   />
                   <label
                     htmlFor="image-upload"
-                    className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer"
+                    className={`inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
                   >
-                    Select New Images
+                    {uploading ? <><span className="animate-spin">⏳</span> Uploading...</> : 'Select New Images'}
                   </label>
                 </div>
 
@@ -588,9 +609,9 @@ const EditProduct = () => {
 
         {/* Submit Button Sticky Footer */}
         <div className="p-6 bg-gray-50 border-t border-gray-200 flex justify-end">
-          <button type="submit" disabled={loading} className="flex items-center space-x-2 bg-brand-plum text-white px-8 py-3 rounded-lg hover:bg-brand-plum/90 transition-colors shadow-md font-medium">
+          <button type="submit" disabled={loading || uploading} className="flex items-center space-x-2 bg-brand-plum text-white px-8 py-3 rounded-lg hover:bg-brand-plum/90 transition-colors shadow-md font-medium disabled:opacity-60">
             <FiSave />
-            <span>{loading ? 'Saving...' : 'Update Product'}</span>
+            <span>{loading ? 'Saving...' : uploading ? 'Uploading Images...' : 'Update Product'}</span>
           </button>
         </div>
       </form>

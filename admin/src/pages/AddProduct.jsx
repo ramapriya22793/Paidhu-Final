@@ -17,7 +17,8 @@ const categories = [
 const AddProduct = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState('basic'); // basic, media, details, nutrition, faq
+  const [uploading, setUploading] = useState(false);
+  const [activeTab, setActiveTab] = useState('basic');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -27,8 +28,9 @@ const AddProduct = () => {
     price: '',
     offerPrice: '',
     stock: '',
-    imageFiles: [],
-    imagePreviewUrls: [],
+    uploadedImages: [],    // { publicUrl, imagePath } — already in Supabase
+    imagePreviewUrls: [],  // URLs for display (may be blob: or supabase URL)
+    imagesToDelete: [],    // paths to clean up if user removes an image
     tags: '',
     seoTitle: '',
     seoDescription: '',
@@ -92,67 +94,78 @@ const AddProduct = () => {
     setFormData({ ...formData, variants: newVariants });
   };
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
-    if (files.length > 0) {
-      const urls = files.map(file => URL.createObjectURL(file));
-      setFormData(prev => ({
-        ...prev,
-        imageFiles: [...prev.imageFiles, ...files],
-        imagePreviewUrls: [...prev.imagePreviewUrls, ...urls]
-      }));
+    if (files.length === 0) return;
+    setUploading(true);
+    try {
+      for (const file of files) {
+        const placeholderUrl = URL.createObjectURL(file);
+        setFormData(prev => ({
+          ...prev,
+          imagePreviewUrls: [...prev.imagePreviewUrls, placeholderUrl]
+        }));
+        const { publicUrl, imagePath, error } = await uploadImage(file, 'products');
+        if (error) {
+          alert('Upload failed: ' + error);
+          setFormData(prev => ({
+            ...prev,
+            imagePreviewUrls: prev.imagePreviewUrls.filter(u => u !== placeholderUrl)
+          }));
+          continue;
+        }
+        setFormData(prev => ({
+          ...prev,
+          imagePreviewUrls: prev.imagePreviewUrls.map(u => u === placeholderUrl ? publicUrl : u),
+          uploadedImages: [...prev.uploadedImages, { publicUrl, imagePath }]
+        }));
+      }
+    } finally {
+      setUploading(false);
     }
   };
 
   const removeImage = (index) => {
     setFormData(prev => {
-      const newFiles = [...prev.imageFiles];
+      const newUploaded = [...prev.uploadedImages];
       const newUrls = [...prev.imagePreviewUrls];
-      newFiles.splice(index, 1);
+      const toDelete = [...prev.imagesToDelete];
+      if (newUploaded[index]?.imagePath) toDelete.push(newUploaded[index].imagePath);
+      newUploaded.splice(index, 1);
       newUrls.splice(index, 1);
-      return { ...prev, imageFiles: newFiles, imagePreviewUrls: newUrls };
+      return { ...prev, uploadedImages: newUploaded, imagePreviewUrls: newUrls, imagesToDelete: toDelete };
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (uploading) { alert('Please wait for images to finish uploading.'); return; }
     setLoading(true);
     try {
-      let uploadedPrimaryImage = null;
-      let uploadedPrimaryImagePath = null;
-      const uploadedProductImages = [];
+      // Images already uploaded to Supabase on selection — just compose payload
+      let primaryImage = null;
+      let primaryImagePath = null;
+      const productImages = [];
 
-      // Upload images to Supabase first
-      for (let i = 0; i < formData.imageFiles.length; i++) {
-        const file = formData.imageFiles[i];
-        const { publicUrl, imagePath, error } = await uploadImage(file, 'products');
-        
-        if (error) {
-          throw new Error(`Upload failed for ${file.name}: ${error}`);
-        }
-
+      formData.uploadedImages.forEach((img, i) => {
         if (i === 0) {
-          uploadedPrimaryImage = publicUrl;
-          uploadedPrimaryImagePath = imagePath;
+          primaryImage = img.publicUrl;
+          primaryImagePath = img.imagePath;
         } else {
-          uploadedProductImages.push({
-            imageUrl: publicUrl,
-            imagePath: imagePath
-          });
+          productImages.push({ imageUrl: img.publicUrl, imagePath: img.imagePath });
         }
-      }
+      });
 
-      // Construct JSON payload
       const payload = {
         ...formData,
-        image: uploadedPrimaryImage,
-        imagePath: uploadedPrimaryImagePath,
-        productImages: uploadedProductImages
+        image: primaryImage,
+        imagePath: primaryImagePath,
+        productImages
       };
 
-      // Remove frontend-only properties
-      delete payload.imageFiles;
+      delete payload.uploadedImages;
       delete payload.imagePreviewUrls;
+      delete payload.imagesToDelete;
 
       await productService.createProduct(payload);
       alert('Product added successfully!');
@@ -340,20 +353,21 @@ const AddProduct = () => {
                 <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:bg-gray-50 transition-colors">
                   <FiImage className="mx-auto h-12 w-12 text-gray-400 mb-3" />
                   <p className="text-sm text-gray-600 mb-2">Drag and drop images here, or click to select files</p>
-                  <p className="text-xs text-gray-500 mb-4">PNG, JPG, WebP up to 5MB</p>
+                  <p className="text-xs text-gray-500 mb-4">PNG, JPG, WebP, HEIC up to 5MB</p>
                   <input
                     type="file"
                     multiple
-                    accept="image/*"
+                    accept="image/*,.heic,.HEIC"
                     onChange={handleImageUpload}
                     className="hidden"
                     id="image-upload"
+                    disabled={uploading}
                   />
                   <label
                     htmlFor="image-upload"
-                    className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer"
+                    className={`inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
                   >
-                    Select Images
+                    {uploading ? <>⏳ Uploading...</> : 'Select Images'}
                   </label>
                 </div>
 
@@ -499,9 +513,9 @@ const AddProduct = () => {
 
         {/* Submit Button Sticky Footer */}
         <div className="p-6 bg-gray-50 border-t border-gray-200 flex justify-end">
-          <button type="submit" disabled={loading} className="flex items-center space-x-2 bg-brand-plum text-white px-8 py-3 rounded-lg hover:bg-brand-plum/90 transition-colors shadow-md font-medium">
+          <button type="submit" disabled={loading || uploading} className="flex items-center space-x-2 bg-brand-plum text-white px-8 py-3 rounded-lg hover:bg-brand-plum/90 transition-colors shadow-md font-medium disabled:opacity-60">
             <FiSave />
-            <span>{loading ? 'Saving...' : 'Save Product'}</span>
+            <span>{loading ? 'Saving...' : uploading ? 'Uploading Images...' : 'Save Product'}</span>
           </button>
         </div>
       </form>
