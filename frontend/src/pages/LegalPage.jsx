@@ -25,7 +25,7 @@ const LegalPage = () => {
             },
             {
               heading: "2. Product Usage",
-              content: "All Paidhu products, including edible flowers, saffron, and floral jams, are intended for personal culinary consumption. We ensure our products are culinary-grade and organically grown. However, customers are advised to consume them responsibly and consult medical professionals if they have specific allergies or pre-existing conditions."
+              content: "All Paidhu products, including edible flowers, saffron, and floral jams, are intended for personal culinary consumption. We ensure our products are culinary-grade and naturally grown. However, customers are advised to consume them responsibly and consult medical professionals if they have specific allergies or pre-existing conditions."
             },
             {
               heading: "3. User Accounts",

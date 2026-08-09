@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const promos = [
   "10% OFF on your first order. Use code: WELCOME10",
-  "Premium Organic Products Directly From Farms"
+  "Premium Ethical Products Directly From Farms"
 ];
 
 const PromoBanner = () => {

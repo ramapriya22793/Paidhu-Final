@@ -34,7 +34,7 @@ const defaultData = {
       {
         id: 2,
         title: 'Good for the Environment',
-        text: 'Ingredients like Millets need a third of the water required by Rice. They are hardy grains which can withstand long periods of drought, and they require little pesticides or fertilisers to thrive. This makes them inherently Organic in nature. Paidhu aims to empower small farmers and help build a sustainable community by encouraging the use of indigenous crops.',
+        text: 'Ingredients like Millets need a third of the water required by Rice. They are hardy grains which can withstand long periods of drought, and they require little pesticides or fertilisers to thrive. This makes them inherently natural in nature. Paidhu aims to empower small farmers and help build a sustainable community by encouraging the use of indigenous crops.',
         icon: 'https://cdn-icons-png.flaticon.com/512/2921/2921822.png'
       }
     ]

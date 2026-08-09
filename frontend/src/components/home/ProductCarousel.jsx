@@ -16,7 +16,7 @@ const CAROUSEL_SLUGS = [
   "rose-gulkhand-jam",
   "pure-kashmiri-saffron-mix",
   "hibiscus-floral-cookies",
-  "organic-peanut-butter",
+  "natural-peanut-butter",
   "traditional-health-mix",
   "premium-raw-honey"
 ];
@@ -51,7 +51,7 @@ const initialProducts = [
   },
   {
     id: 25,
-    name: "Organic Peanut Butter",
+    name: "Natural Peanut Butter",
     weight: "350g",
     price: "₹299",
     image: "https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?q=80&w=800&auto=format&fit=crop",

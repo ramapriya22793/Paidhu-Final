@@ -10,7 +10,7 @@ const StorytellingVideo = () => {
   const [videoData, setVideoData] = useState({
     videoUrl: FALLBACK_VIDEO_URL,
     videoTitle: "Paidhu Family Storytelling",
-    videoSubtitle: "Experience the purity of our handcrafted organic treats",
+    videoSubtitle: "Experience the purity of our handcrafted natural treats",
     videoThumbnail: videoThumbnail
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,7 +24,7 @@ const StorytellingVideo = () => {
           setVideoData({
             videoUrl: data.videoUrl || FALLBACK_VIDEO_URL,
             videoTitle: data.videoTitle || "Paidhu Family Storytelling",
-            videoSubtitle: data.videoSubtitle || "Experience the purity of our handcrafted organic treats",
+            videoSubtitle: data.videoSubtitle || "Experience the purity of our handcrafted natural treats",
             videoThumbnail: data.videoThumbnail || videoThumbnail
           });
         }

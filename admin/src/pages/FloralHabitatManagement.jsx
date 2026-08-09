@@ -17,7 +17,7 @@ const defaultData = {
   whyChooseUs: [
     { title: 'Handcrafted Products', icon: 'Leaf' },
     { title: 'Premium Saffron', icon: 'Sun' },
-    { title: 'Organic Ingredients', icon: 'Droplets' },
+    { title: 'Natural Ingredients', icon: 'Droplets' },
     { title: 'Luxury Packaging', icon: 'Gift' }
   ],
   experienceBanner: {

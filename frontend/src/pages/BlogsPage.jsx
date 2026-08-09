@@ -271,7 +271,7 @@ const BlogsPage = () => {
     <div className="w-full bg-[#faf9f7] min-h-screen font-sans pb-24">
       <SEO 
         title="Paidhu Journal | Edible Flowers, Wellness & Floral Food Stories"
-        description="Explore wellness articles, floral recipes, saffron benefits, organic food stories, and holistic lifestyle insights from Paidhu Store."
+        description="Explore wellness articles, floral recipes, saffron benefits, ethical food stories, and holistic lifestyle insights from Paidhu Store."
         url="https://paidhuethicalfoods.com/blogs"
       />
 

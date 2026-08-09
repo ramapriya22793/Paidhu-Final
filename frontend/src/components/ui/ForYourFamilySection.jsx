@@ -35,8 +35,8 @@ const ForYourFamilySection = () => {
       borderCol: "border-rose-200",
       image: "https://images.unsplash.com/photo-1551248429-40975aa4de74?q=80&w=600&auto=format&fit=crop",
       familyBenefit: "Rich in Vitamin C, supports heart health, improves iron absorption, and maintains excellent digestion.",
-      nutrition: "High concentration of anthocyanins (powerful red antioxidants) and organic acids that fight free radicals.",
-      howToUse: "Brew as a tart iced tea, cook down into organic petal jams, or use as a natural pink food coloring for bakes.",
+      nutrition: "High concentration of anthocyanins (powerful red antioxidants) and natural acids that fight free radicals.",
+      howToUse: "Brew as a tart iced tea, cook down into natural petal jams, or use as a natural pink food coloring for bakes.",
       productName: "Hibiscus Petal Jam",
       productSlug: "hibiscus-petal-jam",
       productImage: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg"
@@ -66,7 +66,7 @@ const ForYourFamilySection = () => {
       image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=600&auto=format&fit=crop",
       familyBenefit: "Cools body heat, relieves stress, cures mild throat soreness, and acts as an elegant digestive aid after heavy meals.",
       nutrition: "Packed with Vitamins A, C, and E, as well as polyphenols that soothe internal inflammation.",
-      howToUse: "Mix rose water into desserts, spread organic petal jam on toast, or garnish cookies and cakes with dry petals.",
+      howToUse: "Mix rose water into desserts, spread natural petal jam on toast, or garnish cookies and cakes with dry petals.",
       productName: "Rose Gulkhand Jam",
       productSlug: "rose-gulkhand-jam",
       productImage: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1781535450213-Gulkandfinaljpg.jpg"

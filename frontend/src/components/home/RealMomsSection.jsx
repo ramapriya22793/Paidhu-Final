@@ -26,7 +26,7 @@ const RealMomsSection = () => {
             Paidhu Moms Community
           </h2>
           <p className="text-lg md:text-xl font-bold text-[#522742]/85 mb-6 max-w-md leading-snug">
-            A supportive space for moms to share tips on clean eating, child nutrition, and organic family wellness.
+            A supportive space for moms to share tips on clean eating, child nutrition, and natural family wellness.
           </p>
           
           <div className="w-full h-px bg-[#522742]/20 mb-6"></div>
@@ -42,7 +42,7 @@ const RealMomsSection = () => {
             </li>
             <li className="flex items-start">
               <span className="text-[#fbc225] mr-3 mt-1 text-xl leading-none">•</span>
-              <span className="text-[#4b3c43] font-medium text-base md:text-lg">Share unique, kids-friendly recipes using floral petal jams and organic ingredients</span>
+              <span className="text-[#4b3c43] font-medium text-base md:text-lg">Share unique, kids-friendly recipes using floral petal jams and natural ingredients</span>
             </li>
             <li className="flex items-start">
               <span className="text-[#fbc225] mr-3 mt-1 text-xl leading-none">•</span>
@@ -71,7 +71,7 @@ const RealMomsSection = () => {
           transition={{ duration: 0.6, delay: 0.15, ease: 'easeOut' }}
           className="w-full md:w-1/2 relative flex justify-end h-[400px] md:h-[600px] lg:h-[700px]"
         >
-          {/* We use a clip-path for the organic wave on the left side of the image */}
+          {/* We use a clip-path for the floral wave on the left side of the image */}
           <div 
             className="w-full h-full bg-transparent"
             style={{
@@ -91,7 +91,7 @@ const RealMomsSection = () => {
         </motion.div>
       </div>
 
-      {/* SVG Clip Path Definition for the right image organic wave */}
+      {/* SVG Clip Path Definition for the right image floral wave */}
       <svg width="0" height="0" className="absolute">
         <defs>
           <clipPath id="paidhu-wave-clip" clipPathUnits="objectBoundingBox">

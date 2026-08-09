@@ -263,7 +263,7 @@ const BlogsSection = () => {
             transition={{ delay: 0.2 }}
             className="text-white/70 max-w-xl mx-auto text-sm md:text-base font-medium"
           >
-            Explore our articles on edible flowers, healthy recipes, organic farming, and holistic floral food lifestyles.
+            Explore our articles on edible flowers, healthy recipes, ethical farming, and holistic floral food lifestyles.
           </motion.p>
         </div>
       </div>

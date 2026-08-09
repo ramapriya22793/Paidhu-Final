@@ -116,7 +116,7 @@ const FloralHabitatSection = () => {
       name: "WhatsApp Video 2026-06-15 at 12.44.35 PM.mp4",
       url: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/starting-floral-food-habitat/WhatsApp%20Video%202026-06-15%20at%2012.44.35%20PM.mp4",
       title: "Nourishing Your Family Naturally 🍯",
-      description: "Wholesome nutrients direct from organic floral habitats, zero preservatives.",
+      description: "Wholesome nutrients direct from natural floral habitats, zero preservatives.",
       likes: 239,
       shares: 103
     },
@@ -124,7 +124,7 @@ const FloralHabitatSection = () => {
       id: "WhatsApp Video 2026-06-15 at 12.49.22 PM.mp4",
       name: "WhatsApp Video 2026-06-15 at 12.49.22 PM.mp4",
       url: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/starting-floral-food-habitat/WhatsApp%20Video%202026-06-15%20at%2012.49.22%20PM.mp4",
-      title: "Rich Organic Flower Medleys 🌺",
+      title: "Rich Natural Flower Medleys 🌺",
       description: "Hand-mixed blossoms and roots curated for premium flavor and nutrition.",
       likes: 376,
       shares: 30
@@ -302,7 +302,7 @@ const FloralHabitatSection = () => {
             transition={{ delay: 0.2 }}
             className="text-white/80 text-[13.5px] md:text-[14.5px] mt-3 leading-relaxed"
           >
-            Discover the magical, healthy world of organic floral foods. Watch our curated reels below to learn how we blend nature's finest petals into premium nutrition for your family.
+            Discover the magical, healthy world of natural floral foods. Watch our curated reels below to learn how we blend nature's finest petals into premium nutrition for your family.
           </motion.p>
         </div>
       </div>
@@ -312,7 +312,7 @@ const FloralHabitatSection = () => {
         {loading ? (
           <div className="flex flex-col items-center justify-center py-32 gap-3">
             <Loader2 className="w-10 h-10 text-[#662654] animate-spin" />
-            <p className="text-[13px] font-semibold text-gray-500">Loading organic videos…</p>
+            <p className="text-[13px] font-semibold text-gray-500">Loading natural videos…</p>
           </div>
         ) : error ? (
           <div className="text-center py-24 max-w-md mx-auto">

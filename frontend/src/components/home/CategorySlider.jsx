@@ -8,7 +8,7 @@ const categories = [
   { name: 'Floral Jams', image: 'https://picsum.photos/seed/jams/150/150' },
   { name: 'Gift Boxes', image: 'https://picsum.photos/seed/gifts/150/150' },
   { name: 'Herbal Collection', image: 'https://picsum.photos/seed/herbal/150/150' },
-  { name: 'Organic Essentials', image: 'https://picsum.photos/seed/essentials/150/150' },
+  { name: 'Natural Essentials', image: 'https://picsum.photos/seed/essentials/150/150' },
 ];
 
 const CategorySlider = () => {

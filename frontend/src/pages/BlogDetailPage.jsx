@@ -428,7 +428,7 @@ const BlogDetailPage = () => {
               Love Floral Wellness Stories?
             </h3>
             <p className="text-white/80 text-xs sm:text-sm font-medium">
-              Subscribe to get seasonal recipes, edible flower guides, and exclusive organic store discounts delivered to your inbox.
+              Subscribe to get seasonal recipes, edible flower guides, and exclusive ethical store discounts delivered to your inbox.
             </p>
             <div className="pt-2 flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
               <input
