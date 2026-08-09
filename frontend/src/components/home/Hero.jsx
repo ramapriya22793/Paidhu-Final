@@ -174,7 +174,7 @@ const Hero = () => {
   return (
     <div className="w-full bg-[#f8f4ef] py-3 md:py-4 px-3 sm:px-4 lg:px-6">
       {/* SEO H1 Heading (Visually Hidden) */}
-      <h1 className="sr-only">Paidhu - The Edible Flower Co. | Natural & Organic Products</h1>
+      <h1 className="sr-only">Paidhu - The Edible Flower Co. | Natural & Ethical Products</h1>
       
       {/* Banner container — aspect ratio auto-fits to image dimensions */}
       <div 

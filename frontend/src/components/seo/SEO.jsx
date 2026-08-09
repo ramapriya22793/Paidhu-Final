@@ -36,7 +36,7 @@ const SEO = ({
 
   const siteName = "Paidhu - The Edible Flower Co.";
   const fullTitle = title ? `${title} | ${siteName}` : siteName;
-  const defaultDesc = "Discover premium quality edible flowers, saffron, and natural organic products at Paidhu. Enhance your culinary experience with our carefully sourced selection.";
+  const defaultDesc = "Discover premium quality edible flowers, saffron, and natural ethical products at Paidhu. Enhance your culinary experience with our carefully sourced selection.";
   const defaultImage = "https://paidhuethicalfoods.com/Paidhulogo.png";
   const defaultUrl = "https://paidhuethicalfoods.com";
   const currentUrl = url || defaultUrl;
