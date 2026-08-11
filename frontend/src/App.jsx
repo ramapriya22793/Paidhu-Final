@@ -106,8 +106,9 @@ const HomePage = () => (
   >
     <SEO 
       slug="home"
-      url="https://paidhuethicalfoods.com/"
+      url="https://www.paidhuethicalfoods.com/"
     />
+
     <Hero />
     <ProductCollection />
     

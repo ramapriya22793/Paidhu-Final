@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const prisma = require("../prismaClient");
 
+const DOMAIN = "https://www.paidhuethicalfoods.com";
+
 router.get("/", async (req, res) => {
   try {
     const products = await prisma.product.findMany({
@@ -13,25 +15,30 @@ router.get("/", async (req, res) => {
 
     // Static pages
     const staticUrls = [
-      { loc: "https://paidhuethicalfoods.com/", priority: "1.0", changefreq: "daily" },
-      { loc: "https://paidhuethicalfoods.com/shop", priority: "0.8", changefreq: "daily" },
-      { loc: "https://paidhuethicalfoods.com/shop/about-us", priority: "0.7", changefreq: "weekly" },
-      { loc: "https://paidhuethicalfoods.com/saffron-guidance", priority: "0.8", changefreq: "weekly" },
-      { loc: "https://paidhuethicalfoods.com/shop/byoc", priority: "0.7", changefreq: "weekly" },
-      { loc: "https://paidhuethicalfoods.com/legal/terms-conditions", priority: "0.3", changefreq: "monthly" },
-      { loc: "https://paidhuethicalfoods.com/legal/privacy-policy", priority: "0.3", changefreq: "monthly" },
-      { loc: "https://paidhuethicalfoods.com/legal/shipping-policy", priority: "0.3", changefreq: "monthly" },
+      { loc: `${DOMAIN}/`, lastmod: new Date().toISOString().split('T')[0] },
+      { loc: `${DOMAIN}/shop`, lastmod: new Date().toISOString().split('T')[0] },
+      { loc: `${DOMAIN}/shop/about-us`, lastmod: new Date().toISOString().split('T')[0] },
+      { loc: `${DOMAIN}/shop/bulk-orders`, lastmod: new Date().toISOString().split('T')[0] },
+      { loc: `${DOMAIN}/shop/byoc`, lastmod: new Date().toISOString().split('T')[0] },
+      { loc: `${DOMAIN}/saffron-guidance`, lastmod: new Date().toISOString().split('T')[0] },
+      { loc: `${DOMAIN}/careers`, lastmod: new Date().toISOString().split('T')[0] },
+      { loc: `${DOMAIN}/blogs`, lastmod: new Date().toISOString().split('T')[0] },
+      { loc: `${DOMAIN}/legal/terms-conditions`, lastmod: new Date().toISOString().split('T')[0] },
+      { loc: `${DOMAIN}/legal/privacy-policy`, lastmod: new Date().toISOString().split('T')[0] },
+      { loc: `${DOMAIN}/legal/shipping-policy`, lastmod: new Date().toISOString().split('T')[0] },
+      { loc: `${DOMAIN}/legal/refund-policy`, lastmod: new Date().toISOString().split('T')[0] },
+      { loc: `${DOMAIN}/legal/contact-us`, lastmod: new Date().toISOString().split('T')[0] },
     ];
 
     staticUrls.forEach(url => {
-      xml += `  <url>\n    <loc>${url.loc}</loc>\n    <priority>${url.priority}</priority>\n    <changefreq>${url.changefreq}</changefreq>\n  </url>\n`;
+      xml += `  <url>\n    <loc>${url.loc}</loc>\n    <lastmod>${url.lastmod}</lastmod>\n  </url>\n`;
     });
 
     // Dynamic products
     products.forEach(p => {
       const productSlug = p.slug || p.id;
       const lastMod = p.updatedAt ? new Date(p.updatedAt).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
-      xml += `  <url>\n    <loc>https://paidhuethicalfoods.com/product/${productSlug}</loc>\n    <priority>0.6</priority>\n    <lastmod>${lastMod}</lastmod>\n    <changefreq>weekly</changefreq>\n  </url>\n`;
+      xml += `  <url>\n    <loc>${DOMAIN}/product/${productSlug}</loc>\n    <lastmod>${lastMod}</lastmod>\n  </url>\n`;
     });
 
     // Dynamic blogs
@@ -42,7 +49,7 @@ router.get("/", async (req, res) => {
     blogs.forEach(b => {
       const blogSlug = b.slug || b.id;
       const lastMod = b.updatedAt ? new Date(b.updatedAt).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
-      xml += `  <url>\n    <loc>https://paidhuethicalfoods.com/blogs/${blogSlug}</loc>\n    <priority>0.7</priority>\n    <lastmod>${lastMod}</lastmod>\n    <changefreq>weekly</changefreq>\n  </url>\n`;
+      xml += `  <url>\n    <loc>${DOMAIN}/blogs/${blogSlug}</loc>\n    <lastmod>${lastMod}</lastmod>\n  </url>\n`;
     });
 
     xml += `</urlset>`;

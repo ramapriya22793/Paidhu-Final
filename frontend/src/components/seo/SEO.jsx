@@ -41,8 +41,8 @@ const SEO = ({
   const siteName = "Paidhu - The Edible Flower Co.";
   const fullTitle = title ? `${title.includes('Paidhu') ? title : `${title} | ${siteName}`}` : siteName;
   const defaultDesc = "Discover premium quality edible flowers, saffron, and natural ethical products at Paidhu. Enhance your culinary experience with our carefully sourced selection.";
-  const defaultImage = "https://paidhuethicalfoods.com/Paidhulogo.png";
-  const defaultUrl = "https://paidhuethicalfoods.com";
+  const defaultImage = "https://www.paidhuethicalfoods.com/Paidhulogo.png";
+  const defaultUrl = "https://www.paidhuethicalfoods.com";
   const currentUrl = canonicalUrl || url || defaultUrl;
   const robotsString = initialRobots || `${robotsIndex}, ${robotsFollow}`;
 
@@ -51,8 +51,8 @@ const SEO = ({
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Paidhu",
-    "url": "https://paidhuethicalfoods.com",
-    "logo": "https://paidhuethicalfoods.com/Paidhulogo.png",
+    "url": "https://www.paidhuethicalfoods.com",
+    "logo": "https://www.paidhuethicalfoods.com/Paidhulogo.png",
     "email": "info@paidhu.com",
     "telephone": "+91-87547-87774",
     "sameAs": [
@@ -66,10 +66,10 @@ const SEO = ({
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Paidhu",
-    "url": "https://paidhuethicalfoods.com",
+    "url": "https://www.paidhuethicalfoods.com",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://paidhuethicalfoods.com/shop?q={search_term_string}",
+      "target": "https://www.paidhuethicalfoods.com/shop?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   };
@@ -79,7 +79,7 @@ const SEO = ({
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "Paidhu Ethical Foods",
-    "image": "https://paidhuethicalfoods.com/Paidhulogo.png",
+    "image": "https://www.paidhuethicalfoods.com/Paidhulogo.png",
     "telephone": "+91-87547-87774",
     "email": "info@paidhu.com",
     "address": {
@@ -90,6 +90,7 @@ const SEO = ({
     },
     "priceRange": "$$"
   };
+
 
   return (
     <Helmet>
@@ -190,8 +191,9 @@ const SEO = ({
               "@type": "ListItem",
               "position": idx + 1,
               "name": item.name,
-              "item": item.url ? `https://paidhuethicalfoods.com${item.url}` : undefined
+              "item": item.url ? `https://www.paidhuethicalfoods.com${item.url}` : undefined
             }))
+
           })}
         </script>
       )}

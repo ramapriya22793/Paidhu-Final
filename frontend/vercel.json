@@ -1,5 +1,26 @@
 {
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "paidhuethicalfoods.com"
+        }
+      ],
+      "destination": "https://www.paidhuethicalfoods.com/:path*",
+      "permanent": true
+    }
+  ],
   "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    },
     {
       "source": "/index.html",
       "headers": [
@@ -17,17 +38,8 @@
   ],
   "rewrites": [
     {
-      "source": "/sitemap.xml",
-      "destination": "https://paidhu-final-anm2.vercel.app/sitemap.xml"
-    },
-    {
-      "source": "/robots.txt",
-      "destination": "https://paidhu-final-anm2.vercel.app/robots.txt"
-    },
-    {
-      "source": "/((?!assets/|favicon\\.ico|manifest\\.json|robots\\.txt|.*\\..*).*)",
+      "source": "/((?!assets/|favicon\\.ico|manifest\\.json|robots\\.txt|sitemap\\.xml|.*\\..*).*)",
       "destination": "/index.html"
     }
   ]
 }
-
