@@ -290,7 +290,8 @@ const EditProduct = () => {
           <TabButton id="media" label="Media & Gallery" />
           <TabButton id="details" label="Ingredients & Highlights" />
           <TabButton id="nutrition" label="Nutrition" />
-          <TabButton id="faq" label="FAQs & SEO" />
+          <TabButton id="faq" label="SEO Management Suite 🚀" />
+
         </div>
 
         <div className="p-8">
