@@ -247,7 +247,10 @@ const ProductDetailPage = () => {
   // Parse rich text / JSON lists safely
   const benefitsList = parseJsonField(product.benefits);
   const highlightsList = parseJsonField(product.highlights);
-  const faqs = parseJsonField(product.faqData);
+  const faqs = (product.productSeo?.faqs && Array.isArray(product.productSeo.faqs) && product.productSeo.faqs.length > 0)
+    ? product.productSeo.faqs
+    : parseJsonField(product.faqData);
+
   const variantsRaw = parseJsonField(product.variants);
   const isJam = product.name?.toLowerCase().includes('jam');
   const variants = Array.isArray(variantsRaw) ? [...variantsRaw].sort((a, b) => {
@@ -281,10 +284,15 @@ const ProductDetailPage = () => {
       className="w-full min-h-screen bg-[#fcfbfa] py-8 font-sans"
     >
       <SEO 
-        title={product.seoTitle || product.name}
-        description={product.seoDescription || product.shortDescription || (product.description ? product.description.substring(0, 160) : '')}
-        keywords={product.seoKeywords}
+        title={product.productSeo?.seoTitle || product.productSeo?.seoFriendlyPageTitle || product.seoTitle || product.name}
+        description={product.productSeo?.metaDescription || product.seoDescription || product.shortDescription || (product.description ? product.description.substring(0, 160) : '')}
+        keywords={product.productSeo?.secondaryKeywords ? (Array.isArray(product.productSeo.secondaryKeywords) ? product.productSeo.secondaryKeywords.join(', ') : product.productSeo.secondaryKeywords) : product.seoKeywords}
         image={productImage}
+        canonicalUrl={product.productSeo?.canonicalUrl}
+        robotsIndex={product.productSeo?.robotsIndex || 'index'}
+        robotsFollow={product.productSeo?.robotsFollow || 'follow'}
+        customSchema={product.productSeo?.productSchema}
+        faqData={faqs}
         productData={{
           name: product.name,
           image: productImage,
@@ -294,6 +302,7 @@ const ProductDetailPage = () => {
         }}
         breadcrumbData={breadcrumbItems}
       />
+
       <div className="max-w-[1400px] mx-auto px-4 md:px-8">
         
         {/* Breadcrumbs Navigation */}
@@ -716,7 +725,27 @@ const ProductDetailPage = () => {
 
         </div>
 
+        {/* ── Internal Links Section (SEO) ── */}
+        {product.productSeo?.internalLinks && product.productSeo.internalLinks.length > 0 && (
+          <div className="mt-8 bg-white p-6 rounded-2xl border border-gray-100 shadow-xs">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">Explore Related Categories & Pages</h4>
+            <div className="flex flex-wrap gap-2">
+              {product.productSeo.internalLinks.map((link, idx) => (
+                <Link
+                  key={idx}
+                  to={link.url || '/shop'}
+                  className="px-3.5 py-1.5 bg-[#faf9f7] hover:bg-[#662654] hover:text-white border border-gray-200/80 rounded-xl text-xs font-bold text-[#662654] transition-all flex items-center gap-1"
+                >
+                  <span>{link.anchorText}</span>
+                  <span>→</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* ── Category-Based Similar Products Section (Carousel Scroller) ── */}
+
         {similarProducts.length > 0 && (
           <div className="mt-12 mb-8 max-w-6xl mx-auto px-4">
             <div className="flex items-center justify-between mb-5 border-b border-gray-100 pb-3">

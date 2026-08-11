@@ -3,6 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import productService from '../services/productService';
 import { uploadImage, deleteImage } from '../utils/uploadImage';
 import { FiSave, FiArrowLeft, FiImage, FiPlus, FiTrash2, FiLoader } from 'react-icons/fi';
+import ProductSeoManager from '../components/ProductSeoManager';
+
 
 const categories = [
   'Bloom Cookies',
@@ -566,44 +568,11 @@ const EditProduct = () => {
 
           {/* TAB: FAQ & SEO */}
           {activeTab === 'faq' && (
-            <div className="space-y-8 animate-fadeIn">
-              
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <label className="text-sm font-medium text-gray-700">Frequently Asked Questions</label>
-                  <button type="button" onClick={() => handleArrayAdd('faqData')} className="text-sm text-brand-plum font-medium flex items-center">
-                    <FiPlus className="mr-1"/> Add FAQ
-                  </button>
-                </div>
-                {formData.faqData.map((item, idx) => (
-                  <div key={idx} className="flex items-start gap-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
-                    <div className="flex-1 space-y-3">
-                      <input type="text" value={item.question} onChange={(e) => handleArrayChange('faqData', idx, e.target.value, 'question')} className="w-full border border-gray-200 rounded-lg px-4 py-2 outline-none" placeholder="Question..." />
-                      <textarea value={item.answer} onChange={(e) => handleArrayChange('faqData', idx, e.target.value, 'answer')} className="w-full border border-gray-200 rounded-lg px-4 py-2 outline-none" placeholder="Answer..." rows="2"></textarea>
-                    </div>
-                    <button type="button" onClick={() => handleArrayRemove('faqData', idx)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg mt-1"><FiTrash2 /></button>
-                  </div>
-                ))}
-              </div>
-
-              <hr className="border-gray-100" />
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">SEO Title</label>
-                  <input type="text" name="seoTitle" value={formData.seoTitle} onChange={handleChange} className="w-full border border-gray-200 rounded-lg px-4 py-2 outline-none" />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">SEO Description</label>
-                  <input type="text" name="seoDescription" value={formData.seoDescription} onChange={handleChange} className="w-full border border-gray-200 rounded-lg px-4 py-2 outline-none" />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Keywords</label>
-                  <input type="text" name="seoKeywords" value={formData.seoKeywords} onChange={handleChange} placeholder="Comma separated keywords" className="w-full border border-gray-200 rounded-lg px-4 py-2 outline-none" />
-                </div>
-              </div>
+            <div className="space-y-6 animate-fadeIn">
+              <ProductSeoManager productId={id} initialProduct={formData} />
             </div>
           )}
+
 
         </div>
 

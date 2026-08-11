@@ -10,12 +10,16 @@ const SEO = ({
   keywords: initialKeywords, 
   image, 
   url, 
+  canonicalUrl,
   type = 'website', 
-  robots = 'index, follow',
+  robots: initialRobots,
+  robotsIndex = 'index',
+  robotsFollow = 'follow',
   productData,
   faqData,
   breadcrumbData,
-  articleData
+  articleData,
+  customSchema
 }) => {
   const [dbSeo, setDbSeo] = useState(null);
 
@@ -35,11 +39,12 @@ const SEO = ({
   const keywords = initialKeywords || dbSeo?.keywords;
 
   const siteName = "Paidhu - The Edible Flower Co.";
-  const fullTitle = title ? `${title} | ${siteName}` : siteName;
+  const fullTitle = title ? `${title.includes('Paidhu') ? title : `${title} | ${siteName}`}` : siteName;
   const defaultDesc = "Discover premium quality edible flowers, saffron, and natural ethical products at Paidhu. Enhance your culinary experience with our carefully sourced selection.";
   const defaultImage = "https://paidhuethicalfoods.com/Paidhulogo.png";
   const defaultUrl = "https://paidhuethicalfoods.com";
-  const currentUrl = url || defaultUrl;
+  const currentUrl = canonicalUrl || url || defaultUrl;
+  const robotsString = initialRobots || `${robotsIndex}, ${robotsFollow}`;
 
   // 1. Organization Schema
   const organizationSchema = {
@@ -93,7 +98,8 @@ const SEO = ({
       <meta name="title" content={fullTitle} />
       <meta name="description" content={description || defaultDesc} />
       {keywords && <meta name="keywords" content={keywords} />}
-      <meta name="robots" content={robots} />
+      <meta name="robots" content={robotsString} />
+      <link rel="canonical" href={currentUrl} />
       <meta name="theme-color" content="#522742" />
 
       {/* Open Graph / Facebook */}
@@ -116,8 +122,13 @@ const SEO = ({
       <script type="application/ld+json">{JSON.stringify(websiteSchema)}</script>
       <script type="application/ld+json">{JSON.stringify(localBusinessSchema)}</script>
 
-      {/* Product JSON-LD Structured Data with Review/Rating fallbacks */}
-      {productData && (
+      {/* Custom Product Schema (from Database SEO module) */}
+      {customSchema && (
+        <script type="application/ld+json">{JSON.stringify(customSchema)}</script>
+      )}
+
+      {/* Fallback Product JSON-LD Structured Data */}
+      {!customSchema && productData && (
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org/",

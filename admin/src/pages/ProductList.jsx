@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FiEdit2, FiTrash2, FiPlus, FiBox } from 'react-icons/fi';
+import { FiEdit2, FiTrash2, FiPlus, FiBox, FiGlobe } from 'react-icons/fi';
+
 import productService from '../services/productService';
 import { deleteImage } from '../utils/uploadImage';
 import { toast } from 'react-toastify';
@@ -179,14 +180,18 @@ const ProductList = () => {
                       {new Date(product.createdAt).toLocaleDateString()}
                     </td>
                     <td className="p-4 text-right">
-                      <div className="flex items-center justify-end space-x-3">
-                        <Link to={`/products/edit/${product.id}`} className="text-blue-500 hover:text-blue-700 bg-blue-50 p-2 rounded transition-colors">
+                      <div className="flex items-center justify-end space-x-2">
+                        <Link to={`/seo?productId=${product.id}`} title="Manage SEO" className="text-emerald-600 hover:text-emerald-800 bg-emerald-50 p-2 rounded transition-colors font-bold text-xs flex items-center gap-1">
+                          <FiGlobe size={16} /> <span className="hidden lg:inline">SEO</span>
+                        </Link>
+                        <Link to={`/products/edit/${product.id}`} title="Edit Product" className="text-blue-500 hover:text-blue-700 bg-blue-50 p-2 rounded transition-colors">
                           <FiEdit2 size={16} />
                         </Link>
-                        <button onClick={() => handleDelete(product.id)} className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded transition-colors">
+                        <button onClick={() => handleDelete(product.id)} title="Delete Product" className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded transition-colors">
                           <FiTrash2 size={16} />
                         </button>
                       </div>
+
                     </td>
                   </tr>
                 ))

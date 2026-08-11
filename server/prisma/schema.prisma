@@ -114,11 +114,13 @@ model Product {
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt @default(now())
   
+  productSeo       ProductSeo?
   orderItems       OrderItem[]
   reviews          Review[]
   wishlistItems    WishlistItem[]
   cartItems        CartItem[]
 }
+
 
 model Order {
   id               Int          @id @default(autoincrement())
@@ -268,6 +270,31 @@ model SeoData {
   keywords        String?
   updatedAt       DateTime  @updatedAt
 }
+
+model ProductSeo {
+  id                    Int       @id @default(autoincrement())
+  productId             Int       @unique
+  product               Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  primaryKeyword        String?
+  secondaryKeywords     Json?     // Array of strings
+  seoFriendlyPageTitle  String?
+  seoTitle              String?
+  metaDescription       String?
+  seoSlug               String?
+  seoProductDescription String?
+  internalLinks         Json?     // Array of objects [{ anchorText, targetId, targetType, url }]
+  imageSeo              Json?     // Array of objects [{ imageId, altText, title, caption, description }]
+  productSchema         Json?     // JSON-LD Object
+  faqs                  Json?     // Array of objects [{ question, answer, order }]
+  seoScore              Int?      @default(0)
+  canonicalUrl          String?
+  robotsIndex           String?   @default("index")
+  robotsFollow          String?   @default("follow")
+  lastUpdatedBy         String?   @default("Admin")
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt @default(now())
+}
+
 
 model Banner {
   id              Int       @id @default(autoincrement())

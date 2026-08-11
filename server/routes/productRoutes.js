@@ -24,7 +24,13 @@ router.post("/", verifyToken, verifyAdmin, createProduct);
 // UPDATE PRODUCT
 router.put("/:id", verifyToken, verifyAdmin, updateProduct);
 
-// DELETE PRODUCT
-router.delete("/:id", verifyToken, verifyAdmin, deleteProduct);
+const { getProductSeo, upsertProductSeo, deleteProductSeo } = require("../controllers/seoController");
+
+// GET PRODUCT SEO
+router.get("/:productId/seo", getProductSeo);
+router.post("/:productId/seo", verifyToken, verifyAdmin, upsertProductSeo);
+router.put("/:productId/seo", verifyToken, verifyAdmin, upsertProductSeo);
+router.delete("/:productId/seo", verifyToken, verifyAdmin, deleteProductSeo);
 
 module.exports = router;
+
