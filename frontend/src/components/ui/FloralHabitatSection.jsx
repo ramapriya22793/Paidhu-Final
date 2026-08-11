@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+
 import {
   Play, Pause, Volume2, VolumeX, X, Heart, Share2,
   ShoppingBag, ChevronLeft, ChevronRight, Loader2
@@ -487,18 +489,17 @@ const FloralHabitatSection = () => {
 
                 {/* Direct Shop button */}
                 <div className="flex flex-col items-center gap-1">
-                  <motion.a
-                    href="/shop/shop-all"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                  <Link
+                    to="/shop"
                     className="w-11 h-11 rounded-full bg-gradient-to-r from-[#662654] to-[#d4af37] border border-[#d4af37]/30 text-white flex items-center justify-center shadow-lg transition-all animate-bounce"
                   >
                     <ShoppingBag className="w-5 h-5" />
-                  </motion.a>
+                  </Link>
                   <span className="text-[9px] text-[#d4af37] font-black uppercase tracking-wider">
                     Shop
                   </span>
                 </div>
+
               </div>
 
               {/* Bottom Video metadata info overlays */}

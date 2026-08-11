@@ -85,6 +85,41 @@ const LegalPage = () => {
             }
           ]
         };
+      case 'refund-policy':
+      case 'cancellation-policy':
+        return {
+          title: "Refund & Cancellation Policy",
+          icon: <ShieldAlert className="w-12 h-12 text-[#662654]" />,
+          seoDesc: "Read about our return, refund, and cancellation policies at Paidhu.",
+          sections: [
+            {
+              heading: "1. Return Eligibility",
+              content: "Due to the natural and food-grade nature of our edible flower and floral products, unopened items damaged upon delivery are eligible for replacement or full refund within 48 hours of delivery."
+            },
+            {
+              heading: "2. Refunds Process",
+              content: "Approved refunds will be processed back to the original payment method within 5 to 7 business days."
+            },
+            {
+              heading: "3. Order Cancellations",
+              content: "Orders can be cancelled before dispatch by contacting customer support at info@paidhu.com or via WhatsApp (+91-87547-87774)."
+            }
+          ]
+        };
+      case 'contact-us':
+      case 'contact':
+        return {
+          title: "Contact Us",
+          icon: <FileText className="w-12 h-12 text-[#662654]" />,
+          seoDesc: "Get in touch with Paidhu Ethical Foods.",
+          sections: [
+            {
+              heading: "Customer Support & Inquiries",
+              content: "Email: info@paidhu.com | Phone / WhatsApp: +91-87547-87774 | Location: Pollachi, Tamil Nadu, India."
+            }
+          ]
+        };
+
       default:
         return {
           title: "Legal Policy",

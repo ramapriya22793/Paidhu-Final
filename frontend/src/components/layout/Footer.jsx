@@ -72,11 +72,14 @@ const Footer = () => {
 
           {/* Legal */}
           <div className="flex flex-col space-y-4">
-            <h4 className="font-bold text-xl mb-4 font-serif text-[#ede7d7]">Legal</h4>
+            <h4 className="font-bold text-xl mb-4 font-serif text-[#ede7d7]">Legal & Policies</h4>
             <Link to="/legal/terms-conditions" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Terms & Conditions</Link>
             <Link to="/legal/privacy-policy" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Privacy Policy</Link>
             <Link to="/legal/shipping-policy" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Shipping Policy</Link>
+            <Link to="/legal/refund-policy" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Refund & Cancellation Policy</Link>
+            <Link to="/legal/contact-us" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Contact Us</Link>
           </div>
+
 
           {/* Newsletter */}
           <div className="flex flex-col space-y-4">

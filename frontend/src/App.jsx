@@ -1,5 +1,6 @@
 import React, { lazy, Suspense, useEffect } from 'react';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation, Link } from 'react-router-dom';
+
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Hero from './components/home/Hero';
@@ -159,14 +160,49 @@ function App() {
               <Route path="/order-success/:orderNumber" element={<OrderSuccessPage />} />
               <Route path="/saffron-guidance" element={<SaffronGuidancePage />} />
               <Route path="/careers" element={<CareersPage />} />
+              
+              {/* Direct Route Aliases to avoid any broken links */}
+              <Route path="/about" element={<ShopPage navSection="about-us" />} />
+              <Route path="/about-us" element={<ShopPage navSection="about-us" />} />
+              <Route path="/bulk-orders" element={<ShopPage navSection="bulk-orders" />} />
+              <Route path="/contact" element={<LegalPage type="contact-us" />} />
+              <Route path="/contact-us" element={<LegalPage type="contact-us" />} />
+              <Route path="/privacy-policy" element={<LegalPage type="privacy-policy" />} />
+              <Route path="/privacy" element={<LegalPage type="privacy-policy" />} />
+              <Route path="/terms-conditions" element={<LegalPage type="terms-conditions" />} />
+              <Route path="/terms-and-conditions" element={<LegalPage type="terms-conditions" />} />
+              <Route path="/terms" element={<LegalPage type="terms-conditions" />} />
+              <Route path="/shipping-policy" element={<LegalPage type="shipping-policy" />} />
+              <Route path="/refund-policy" element={<LegalPage type="refund-policy" />} />
+              <Route path="/cancellation-policy" element={<LegalPage type="refund-policy" />} />
+
               <Route path="/legal/:type" element={<LegalPage />} />
               <Route path="/blogs" element={<BlogsPage />} />
               <Route path="/blogs/:slug" element={<BlogDetailPage />} />
               <Route path="/journal" element={<BlogsPage />} />
 
+              {/* Catch-all 404 Page */}
+              <Route path="*" element={
+                <div className="min-h-[60vh] flex flex-col items-center justify-center p-8 text-center bg-[#fcfbfa]">
+                  <span className="text-6xl font-black text-[#662654] font-serif mb-2">404</span>
+                  <h1 className="text-2xl font-black text-gray-900 mb-2">Page Not Found</h1>
+                  <p className="text-sm text-gray-500 max-w-md mb-6 font-semibold">
+                    The page you are looking for does not exist or may have been moved.
+                  </p>
+                  <div className="flex gap-3">
+                    <Link to="/" className="px-6 py-2.5 bg-[#662654] text-white text-xs font-extrabold rounded-full hover:bg-[#7a2e64] shadow-md transition-all">
+                      Return to Home
+                    </Link>
+                    <Link to="/shop" className="px-6 py-2.5 bg-gray-100 text-gray-800 text-xs font-extrabold rounded-full hover:bg-gray-200 transition-all">
+                      Explore Shop
+                    </Link>
+                  </div>
+                </div>
+              } />
             </Routes>
           </Suspense>
         </ErrorBoundary>
+
 
 
         <Footer />

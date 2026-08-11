@@ -289,7 +289,8 @@ const OrderSuccessPage = () => {
         {/* Customer Notification Footer info */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 text-xs font-semibold text-gray-500 bg-gray-50/80 p-4 rounded-2xl border border-gray-100 text-center">
           <Mail size={16} className="text-[#662654] shrink-0" />
-          <span>If you have any questions regarding your payment, email us at <a href="mailto:support@paidhustore.com" className="text-[#662654] underline font-bold">support@paidhustore.com</a></span>
+          <span>If you have any questions regarding your payment, email us at <a href="mailto:info@paidhu.com" className="text-[#662654] underline font-bold">info@paidhu.com</a></span>
+
         </div>
 
         {/* Action Buttons */}
