@@ -33,8 +33,10 @@ const ProductDetailPage = () => {
   const navigate = useNavigate();
   const stateProduct = location.state?.product;
 
+  // Always fetch fresh from API so faqData, nutritionInfo etc. are always up to date.
+  // stateProduct is only used for a quick initial preview (image/name) while we load.
   const [product, setProduct] = useState(() => stateProduct || null);
-  const [loading, setLoading] = useState(() => !stateProduct);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [mainImgLoading, setMainImgLoading] = useState(true);
   
@@ -101,9 +103,7 @@ const ProductDetailPage = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      if (!product) {
-        setLoading(true);
-      }
+      setLoading(true);
       setError(null);
       try {
         const res = await fetch(`${API_BASE}/api/products/${id}`);
