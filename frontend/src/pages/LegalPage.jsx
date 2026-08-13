@@ -17,7 +17,7 @@ const LegalPage = () => {
         return {
           title: "Terms & Conditions",
           icon: <ShieldAlert className="w-12 h-12 text-[#662654]" />,
-          seoDesc: "Read the Terms & Conditions of PaidhuEthicalFoods.",
+          seoDesc: "Read the Terms & Conditions of Paidhu Ethical Foods.",
           sections: [
             {
               heading: "1. Acceptance of Terms",
@@ -111,7 +111,7 @@ const LegalPage = () => {
         return {
           title: "Contact Us",
           icon: <FileText className="w-12 h-12 text-[#662654]" />,
-          seoDesc: "Get in touch with PaidhuEthicalFoods.",
+          seoDesc: "Get in touch with Paidhu Ethical Foods.",
           sections: [
             {
               heading: "Customer Support & Inquiries",
@@ -124,7 +124,7 @@ const LegalPage = () => {
         return {
           title: "Legal Policy",
           icon: <FileText className="w-12 h-12 text-[#662654]" />,
-          seoDesc: "PaidhuEthicalFoods Legal Policies.",
+          seoDesc: "Paidhu Ethical Foods Legal Policies.",
           sections: []
         };
     }
