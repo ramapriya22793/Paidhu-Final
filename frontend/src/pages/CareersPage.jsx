@@ -199,7 +199,7 @@ const CareersPage = () => {
   return (
     <div className="min-h-screen bg-[#fdfaf6] text-gray-800 font-sans pb-16">
       <SEO 
-        title="Careers - Paidhu Ethical Foods"
+        title="Careers - PaidhuEthicalFoods"
         description="Join the Paidhu team and grow your career with a purpose-driven food brand. Explore internship openings in Sales and Digital Marketing."
         slug="careers"
         url="https://paidhuethicalfoods.com/careers"
@@ -433,7 +433,7 @@ const CareersPage = () => {
 
               <h3 className="text-2xl font-bold">Application Submitted!</h3>
               <p className="text-sm text-emerald-700 max-w-md mx-auto">
-                Thank you for applying to Paidhu Ethical Foods. We have received your application and will get back to you soon.
+                Thank you for applying to PaidhuEthicalFoods. We have received your application and will get back to you soon.
               </p>
               <button 
                 onClick={() => setSubmitSuccess(false)}

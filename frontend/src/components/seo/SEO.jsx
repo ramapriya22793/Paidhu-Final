@@ -38,9 +38,9 @@ const SEO = ({
   const description = initialDescription || dbSeo?.description;
   const keywords = initialKeywords || dbSeo?.keywords;
 
-  const siteName = "Paidhu - The Edible Flower Co.";
-  const fullTitle = title ? `${title.includes('Paidhu') ? title : `${title} | ${siteName}`}` : siteName;
-  const defaultDesc = "Discover premium quality edible flowers, saffron, and natural ethical products at Paidhu. Enhance your culinary experience with our carefully sourced selection.";
+  const siteName = "PaidhuEthicalFoods";
+  const fullTitle = title ? `${title.includes('Paidhu') ? title : `${title} | ${siteName}`}` : "PaidhuEthicalFoods | Premium Edible Flowers, Saffron & Floral Foods";
+  const defaultDesc = "Discover premium edible flowers, authentic saffron, floral foods and natural ingredients from PaidhuEthicalFoods, thoughtfully crafted for modern kitchens.";
   const defaultImage = "https://www.paidhuethicalfoods.com/Paidhulogo.png";
   const defaultUrl = "https://www.paidhuethicalfoods.com";
   const currentUrl = canonicalUrl || url || defaultUrl;
@@ -50,7 +50,7 @@ const SEO = ({
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Paidhu",
+    "name": "PaidhuEthicalFoods",
     "url": "https://www.paidhuethicalfoods.com",
     "logo": "https://www.paidhuethicalfoods.com/Paidhulogo.png",
     "email": "info@paidhu.com",
@@ -65,7 +65,7 @@ const SEO = ({
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "Paidhu",
+    "name": "PaidhuEthicalFoods",
     "url": "https://www.paidhuethicalfoods.com",
     "potentialAction": {
       "@type": "SearchAction",
@@ -78,7 +78,7 @@ const SEO = ({
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": "Paidhu Ethical Foods",
+    "name": "PaidhuEthicalFoods",
     "image": "https://www.paidhuethicalfoods.com/Paidhulogo.png",
     "telephone": "+91-87547-87774",
     "email": "info@paidhu.com",

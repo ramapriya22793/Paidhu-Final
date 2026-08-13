@@ -1,7 +1,7 @@
 {
   "name": "paidhu-monorepo",
   "version": "1.0.0",
-  "description": "Paidhu Ethical Foods - Monorepo (Frontend, Admin, Server)",
+  "description": "PaidhuEthicalFoods - Monorepo (Frontend, Admin, Server)",
   "scripts": {
     "build": "npm run build --prefix frontend && npm run build --prefix admin",
     "build:frontend": "npm run build --prefix frontend",

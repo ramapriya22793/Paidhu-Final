@@ -415,7 +415,7 @@ const Navbar = () => {
               <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center justify-center">
                 <img
                   src={paidhuLogo}
-                  alt="Paidhu The Edible Flower Co."
+                  alt="PaidhuEthicalFoods"
                   width={142}
                   height={64}
                   className="h-10 md:h-12 lg:h-14 w-auto object-contain"

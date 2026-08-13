@@ -360,7 +360,7 @@ const OrderDetails = () => {
                 <img src="/Paidhulogo.png" alt="Paidhu Logo" className="w-64 h-auto object-contain brightness-0" />
               </div>
               <div className="mt-2 text-sm font-semibold text-gray-800 leading-tight">
-                Paidhu Ethical Foods<br />Pvt Ltd
+                PaidhuEthicalFoods<br />Pvt Ltd
               </div>
             </div>
           </div>

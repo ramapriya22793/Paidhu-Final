@@ -200,7 +200,7 @@ const Footer = () => {
             />
           </div>
           <p className="text-sm opacity-85 tracking-wide text-[#fdfaf6] font-medium">
-            © Paidhu Ethical Foods - All rights reserved.
+            © PaidhuEthicalFoods - All rights reserved.
           </p>
         </div>
       </div>

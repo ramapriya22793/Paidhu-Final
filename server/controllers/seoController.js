@@ -213,7 +213,7 @@ const getProductSeo = async (req, res) => {
       seo = {
         productId: product.id,
         primaryKeyword: product.name.toLowerCase().replace(/[^a-z0-9\s]/g, "").trim(),
-        secondaryKeywords: [product.category?.name || "Edible Flowers", "Paidhu Ethical Foods", "Organic Edible Flowers"],
+        secondaryKeywords: [product.category?.name || "Edible Flowers", "PaidhuEthicalFoods", "Premium Edible Flowers"],
         seoFriendlyPageTitle: `${product.name} | Premium Quality Paidhu`,
         seoTitle: `Buy ${product.name} Online | Paidhu`,
         metaDescription: `Buy premium ${product.name} online from Paidhu. High quality, food grade, natural floral products with fast delivery across India.`,
