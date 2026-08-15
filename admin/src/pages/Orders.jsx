@@ -45,8 +45,9 @@ const Orders = () => {
       setUpdating(true);
       try {
         await orderService.deleteOrder(id);
-        setOrders(prev => prev.filter(o => o.id !== id));
+        await fetchOrders();
       } catch (error) {
+
         alert("Failed to delete order");
       } finally {
         setUpdating(false);

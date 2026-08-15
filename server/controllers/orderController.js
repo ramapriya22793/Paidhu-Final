@@ -1,7 +1,27 @@
-const prisma = require("../prismaClient");
+const resequenceOrders = async () => {
+  try {
+    const allOrders = await prisma.order.findMany({
+      orderBy: { createdAt: 'asc' },
+      select: { id: true, orderNumber: true }
+    });
+
+    for (let i = 0; i < allOrders.length; i++) {
+      const seqNum = `P${(i + 1).toString().padStart(4, '0')}`;
+      if (allOrders[i].orderNumber !== seqNum) {
+        await prisma.order.update({
+          where: { id: allOrders[i].id },
+          data: { orderNumber: seqNum }
+        });
+      }
+    }
+  } catch (err) {
+    console.error("Resequence orders error:", err);
+  }
+};
 
 const getOrders = async (req, res) => {
   try {
+    await resequenceOrders();
     const orders = await prisma.order.findMany({
       include: {
         items: {
@@ -19,6 +39,7 @@ const getOrders = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 const getOrderById = async (req, res) => {
   try {
@@ -145,7 +166,9 @@ const deleteOrder = async (req, res) => {
     await prisma.refund.deleteMany({ where: { orderId: id } });
 
     await prisma.order.delete({ where: { id } });
-    res.json({ success: true, message: "Order deleted successfully" });
+    await resequenceOrders();
+    res.json({ success: true, message: "Order deleted and order numbers re-sequenced successfully" });
+
   } catch (error) {
     console.error("Delete order error:", error);
     res.status(500).json({ message: error.message || "Failed to delete order" });
