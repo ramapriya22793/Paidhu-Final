@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { FiChevronLeft, FiPrinter, FiDownload, FiTruck, FiBox, FiCheckCircle, FiClock, FiCreditCard } from 'react-icons/fi';
+import { FiChevronLeft, FiPrinter, FiDownload, FiTruck, FiBox, FiCheckCircle, FiClock, FiCreditCard, FiTrash2 } from 'react-icons/fi';
+
 
 const API_URL = (import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/orders';
 
@@ -58,6 +59,25 @@ const OrderDetails = () => {
     }
   };
 
+  const navigate = useNavigate();
+
+  const handleDelete = async () => {
+    const displayNum = order?.orderNumber || `#${order?.id.toString().padStart(5, '0')}`;
+    if (window.confirm(`Are you sure you want to permanently delete order ${displayNum}? This action cannot be undone.`)) {
+      try {
+        const token = localStorage.getItem('paidhu_token');
+        await axios.delete(`${API_URL}/${id}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        alert("Order deleted successfully!");
+        navigate('/orders');
+      } catch (error) {
+        console.error("Error deleting order", error);
+        alert("Failed to delete order");
+      }
+    }
+  };
+
   if (loading) return <div className="p-8 text-brand-plum font-bold">Loading Order Details...</div>;
   if (!order) return <div className="p-8 text-red-500 font-bold">Order Not Found.</div>;
 
@@ -79,8 +99,12 @@ const OrderDetails = () => {
           <button onClick={() => window.print()} className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 flex items-center font-medium transition-colors">
             <FiPrinter size={16} className="mr-2" /> Print Invoice
           </button>
+          <button onClick={handleDelete} className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg flex items-center font-medium transition-colors shadow-sm">
+            <FiTrash2 size={16} className="mr-2" /> Delete Order
+          </button>
         </div>
       </div>
+
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         

@@ -17,10 +17,21 @@ const updateOrderStatus = async (id, statusData) => {
   return response.data;
 };
 
+const deleteOrder = async (id) => {
+  const token = localStorage.getItem('paidhu_token');
+  const response = await axios.delete(`${API_URL}/${id}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  return response.data;
+};
+
 const orderService = {
   getOrders,
   getOrderById,
-  updateOrderStatus
+  updateOrderStatus,
+  deleteOrder
 };
 
+
 export default orderService;
+

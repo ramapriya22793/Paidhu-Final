@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import orderService from '../services/orderService';
-import { FiEye, FiCheck, FiTruck, FiX, FiPrinter, FiDownload } from 'react-icons/fi';
+import { FiEye, FiCheck, FiTruck, FiX, FiPrinter, FiDownload, FiTrash2 } from 'react-icons/fi';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -38,6 +38,22 @@ const Orders = () => {
       setUpdating(false);
     }
   };
+
+  const handleDeleteOrder = async (id, orderNum) => {
+    const displayNum = orderNum || `#${id.toString().padStart(5, '0')}`;
+    if (window.confirm(`Are you sure you want to permanently delete order ${displayNum}? This action cannot be undone.`)) {
+      setUpdating(true);
+      try {
+        await orderService.deleteOrder(id);
+        setOrders(prev => prev.filter(o => o.id !== id));
+      } catch (error) {
+        alert("Failed to delete order");
+      } finally {
+        setUpdating(false);
+      }
+    }
+  };
+
 
   const filteredOrders = orders.filter(order => {
     // 1. Status Filter
@@ -285,6 +301,15 @@ const Orders = () => {
                       >
                         <FiEye size={18} />
                       </button>
+                      <button 
+                        onClick={(e) => { e.stopPropagation(); handleDeleteOrder(order.id, order.orderNumber); }}
+                        disabled={updating}
+                        title="Delete Order"
+                        className="text-red-600 hover:bg-red-50 p-2 rounded transition-colors disabled:opacity-30"
+                      >
+                        <FiTrash2 size={18} />
+                      </button>
+
                     </td>
                   </tr>
                 ))

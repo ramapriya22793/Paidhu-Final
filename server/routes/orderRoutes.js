@@ -10,6 +10,8 @@ router.get("/", verifyToken, verifyAdmin, orderController.getOrders);
 router.get("/:id", verifyToken, verifyAdmin, orderController.getOrderById);
 router.put("/:id/status", verifyToken, verifyAdmin, orderController.updateOrderStatus);
 router.put("/:id/details", verifyToken, verifyAdmin, orderController.updateOrderDetails);
+router.delete("/:id", verifyToken, verifyAdmin, orderController.deleteOrder);
+
 
 // Customer routes
 router.get("/user/my-orders", authMiddleware, orderController.getMyOrders);

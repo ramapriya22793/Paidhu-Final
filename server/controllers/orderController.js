@@ -132,10 +132,32 @@ const getMyOrders = async (req, res) => {
   }
 };
 
+const deleteOrder = async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    if (!id || isNaN(id)) {
+      return res.status(400).json({ message: "Invalid order ID" });
+    }
+
+    // Delete related records first if any exist
+    await prisma.orderItem.deleteMany({ where: { orderId: id } });
+    await prisma.payment.deleteMany({ where: { orderId: id } });
+    await prisma.refund.deleteMany({ where: { orderId: id } });
+
+    await prisma.order.delete({ where: { id } });
+    res.json({ success: true, message: "Order deleted successfully" });
+  } catch (error) {
+    console.error("Delete order error:", error);
+    res.status(500).json({ message: error.message || "Failed to delete order" });
+  }
+};
+
 module.exports = {
   getOrders,
   getOrderById,
   updateOrderStatus,
   updateOrderDetails,
-  getMyOrders
+  getMyOrders,
+  deleteOrder
 };
+
