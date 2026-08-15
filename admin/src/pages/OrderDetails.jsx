@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FiChevronLeft, FiPrinter, FiDownload, FiTruck, FiBox, FiCheckCircle, FiClock, FiCreditCard, FiTrash2 } from 'react-icons/fi';
+import { FaWhatsapp } from 'react-icons/fa';
+
+
 
 
 const API_URL = (import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/orders';
@@ -78,6 +81,26 @@ const OrderDetails = () => {
     }
   };
 
+  const handleWhatsAppConfirm = async () => {
+    const displayNum = order?.orderNumber || `#${order?.id.toString().padStart(5, '0')}`;
+    if (window.confirm(`Confirm order ${displayNum} as WhatsApp Order? Status will change to CONFIRMED.`)) {
+      setUpdating(true);
+      try {
+        await axios.put(`${API_URL}/${id}/details`, {
+          orderStatus: 'CONFIRMED',
+          paymentStatus: paymentStatus || 'PENDING'
+        });
+        alert("Order confirmed as WhatsApp Order!");
+        fetchOrderDetails();
+      } catch (error) {
+        console.error("Error confirming WhatsApp order", error);
+        alert("Failed to confirm WhatsApp order");
+      } finally {
+        setUpdating(false);
+      }
+    }
+  };
+
   if (loading) return <div className="p-8 text-brand-plum font-bold">Loading Order Details...</div>;
   if (!order) return <div className="p-8 text-red-500 font-bold">Order Not Found.</div>;
 
@@ -96,6 +119,13 @@ const OrderDetails = () => {
           <p className="text-gray-500 text-sm">{new Date(order.createdAt).toLocaleString()}</p>
         </div>
         <div className="flex space-x-3">
+          <button 
+            onClick={handleWhatsAppConfirm} 
+            disabled={updating || order.orderStatus === 'CONFIRMED' || order.orderStatus === 'DELIVERED'}
+            className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white rounded-lg flex items-center font-medium transition-colors shadow-sm cursor-pointer"
+          >
+            <FaWhatsapp size={16} className="mr-2" /> Confirm WhatsApp Order
+          </button>
           <button onClick={() => window.print()} className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 flex items-center font-medium transition-colors">
             <FiPrinter size={16} className="mr-2" /> Print Invoice
           </button>
@@ -104,6 +134,7 @@ const OrderDetails = () => {
           </button>
         </div>
       </div>
+
 
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import orderService from '../services/orderService';
 import { FiEye, FiCheck, FiTruck, FiX, FiPrinter, FiDownload, FiTrash2 } from 'react-icons/fi';
+import { FaWhatsapp } from 'react-icons/fa';
+
+
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -38,6 +41,25 @@ const Orders = () => {
       setUpdating(false);
     }
   };
+
+  const handleWhatsAppConfirm = async (id, orderNum) => {
+    const displayNum = orderNum || `#${id.toString().padStart(5, '0')}`;
+    if (window.confirm(`Confirm order ${displayNum} as WhatsApp Order? Status will change to CONFIRMED.`)) {
+      setUpdating(true);
+      try {
+        await orderService.updateOrderStatus(id, { 
+          orderStatus: 'CONFIRMED',
+          paymentMethod: 'WhatsApp Order'
+        });
+        fetchOrders();
+      } catch (error) {
+        alert("Failed to confirm WhatsApp order");
+      } finally {
+        setUpdating(false);
+      }
+    }
+  };
+
 
   const handleDeleteOrder = async (id, orderNum) => {
     const displayNum = orderNum || `#${id.toString().padStart(5, '0')}`;
@@ -271,6 +293,17 @@ const Orders = () => {
                       {getStatusBadge(order.orderStatus)}
                     </td>
                     <td className="px-6 py-4 text-right space-x-2">
+
+
+                      <button 
+                        onClick={(e) => { e.stopPropagation(); handleWhatsAppConfirm(order.id, order.orderNumber); }}
+                        disabled={updating || order.orderStatus === 'CONFIRMED' || order.orderStatus === 'DELIVERED'}
+                        title="Confirm as WhatsApp Order"
+                        className="text-emerald-600 hover:bg-emerald-50 p-2 rounded transition-colors disabled:opacity-30"
+                      >
+                        <FaWhatsapp size={18} />
+                      </button>
+
                       <button 
                         onClick={(e) => { e.stopPropagation(); handleStatusChange(order.id, 'SHIPPED'); }}
                         disabled={updating || order.orderStatus === 'SHIPPED' || order.orderStatus === 'DELIVERED'}
@@ -279,6 +312,7 @@ const Orders = () => {
                       >
                         <FiTruck size={18} />
                       </button>
+
                       <button 
                         onClick={(e) => { e.stopPropagation(); handleStatusChange(order.id, 'DELIVERED'); }}
                         disabled={updating || order.orderStatus === 'DELIVERED'}
