@@ -2,22 +2,30 @@ const resequenceOrders = async () => {
   try {
     const allOrders = await prisma.order.findMany({
       orderBy: { createdAt: 'asc' },
-      select: { id: true, orderNumber: true }
+      select: { id: true }
     });
 
+    // Step 1: Set temporary order numbers to avoid unique constraint collisions
+    for (let i = 0; i < allOrders.length; i++) {
+      await prisma.order.update({
+        where: { id: allOrders[i].id },
+        data: { orderNumber: `TEMP_${allOrders[i].id}_${i}` }
+      });
+    }
+
+    // Step 2: Set final sequential order numbers
     for (let i = 0; i < allOrders.length; i++) {
       const seqNum = `P${(i + 1).toString().padStart(4, '0')}`;
-      if (allOrders[i].orderNumber !== seqNum) {
-        await prisma.order.update({
-          where: { id: allOrders[i].id },
-          data: { orderNumber: seqNum }
-        });
-      }
+      await prisma.order.update({
+        where: { id: allOrders[i].id },
+        data: { orderNumber: seqNum }
+      });
     }
   } catch (err) {
     console.error("Resequence orders error:", err);
   }
 };
+
 
 const getOrders = async (req, res) => {
   try {

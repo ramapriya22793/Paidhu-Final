@@ -193,38 +193,91 @@ const initiateCheckout = async (req, res) => {
 
     // summary should have { subtotal, deliveryCharge, discountAmount, rewardPointsUsed, totalPrice, couponId }
 
-    // 1. Create Order Record
-    let order = await prisma.order.create({
-      data: {
-        userId: finalUserId,
-        customerName,
-        customerEmail,
-        shippingAddress,
-        subtotal: summary.subtotal || 0,
-        deliveryCharge: summary.deliveryCharge || 0,
-        discountAmount: summary.discountAmount || 0,
-        rewardPointsUsed: summary.rewardPointsUsed || 0,
-        totalPrice: summary.totalPrice || 0,
-        paymentMethod,
-        couponId: summary.couponId || null,
-        items: {
-          create: items.map(item => ({
-            productId: item.productId,
-            quantity: item.quantity,
-            price: item.price
-          }))
-        }
-      }
+    // 1. Check for an existing PENDING order for this customer created recently (last 24h)
+    const cleanEmail = customerEmail.trim().toLowerCase();
+    const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+
+    const existingPendingOrder = await prisma.order.findFirst({
+      where: {
+        orderStatus: "PENDING",
+        paymentStatus: "PENDING",
+        createdAt: { gte: oneDayAgo },
+        OR: [
+          ...(finalUserId ? [{ userId: finalUserId }] : []),
+          { customerEmail: { equals: cleanEmail, mode: 'insensitive' } }
+        ]
+      },
+      orderBy: { createdAt: 'desc' }
     });
 
-    // Format Order Number: P0001
-    const formattedId = String(order.id).padStart(4, '0');
-    const orderNumber = `P${formattedId}`;
+    let order;
 
-    order = await prisma.order.update({
-      where: { id: order.id },
-      data: { orderNumber }
-    });
+    if (existingPendingOrder) {
+      // Reuse & update existing PENDING order to prevent duplicate rows in admin table
+      await prisma.orderItem.deleteMany({ where: { orderId: existingPendingOrder.id } });
+
+      order = await prisma.order.update({
+        where: { id: existingPendingOrder.id },
+        data: {
+          userId: finalUserId,
+          customerName,
+          customerEmail: cleanEmail,
+          shippingAddress,
+          subtotal: summary.subtotal || 0,
+          deliveryCharge: summary.deliveryCharge || 0,
+          discountAmount: summary.discountAmount || 0,
+          rewardPointsUsed: summary.rewardPointsUsed || 0,
+          totalPrice: summary.totalPrice || 0,
+          paymentMethod,
+          couponId: summary.couponId || null,
+          updatedAt: new Date(),
+          items: {
+            create: items.map(item => ({
+              productId: item.productId,
+              quantity: item.quantity,
+              price: item.price
+            }))
+          }
+        },
+        include: { items: { include: { product: true } } }
+      });
+    } else {
+      // Create new Order Record
+      order = await prisma.order.create({
+        data: {
+          userId: finalUserId,
+          customerName,
+          customerEmail: cleanEmail,
+          shippingAddress,
+          subtotal: summary.subtotal || 0,
+          deliveryCharge: summary.deliveryCharge || 0,
+          discountAmount: summary.discountAmount || 0,
+          rewardPointsUsed: summary.rewardPointsUsed || 0,
+          totalPrice: summary.totalPrice || 0,
+          paymentMethod,
+          couponId: summary.couponId || null,
+          items: {
+            create: items.map(item => ({
+              productId: item.productId,
+              quantity: item.quantity,
+              price: item.price
+            }))
+          }
+        },
+        include: { items: { include: { product: true } } }
+      });
+
+      // Format Order Number: P0001
+      const formattedId = String(order.id).padStart(4, '0');
+      const orderNumber = `P${formattedId}`;
+
+      order = await prisma.order.update({
+        where: { id: order.id },
+        data: { orderNumber },
+        include: { items: { include: { product: true } } }
+      });
+    }
+
 
     // 2. Handle Razorpay Order Creation (if online payment)
     if (paymentMethod !== 'COD') {
