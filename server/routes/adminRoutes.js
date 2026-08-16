@@ -8,5 +8,7 @@ router.get('/profile', verifyToken, verifyAdmin, adminController.getProfile);
 router.get('/stats', verifyToken, verifyAdmin, adminController.getDashboardStats);
 router.get('/tiffin-registrations', verifyToken, verifyAdmin, adminController.getTiffinRegistrations);
 router.get('/login-history', verifyToken, verifyAdmin, adminController.getLoginHistory);
+router.delete('/login-history', verifyToken, verifyAdmin, adminController.clearLoginHistory);
 
 module.exports = router;
+

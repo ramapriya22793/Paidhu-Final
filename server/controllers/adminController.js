@@ -166,10 +166,10 @@ exports.getLoginHistory = async (req, res) => {
   try {
     const history = await prisma.loginHistory.findMany({
       include: {
-        user: { select: { name: true, email: true, phone: true } }
+        user: { select: { id: true, name: true, email: true, phone: true, isAdmin: true } }
       },
       orderBy: { loginTime: 'desc' },
-      take: 200 // Limit to latest 200 for performance
+      take: 500
     });
     res.json(history);
   } catch (error) {
@@ -177,3 +177,14 @@ exports.getLoginHistory = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+exports.clearLoginHistory = async (req, res) => {
+  try {
+    await prisma.loginHistory.deleteMany();
+    res.json({ success: true, message: "Login history cleared successfully" });
+  } catch (error) {
+    console.error("Error clearing login history:", error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+

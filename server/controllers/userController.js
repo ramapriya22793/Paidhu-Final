@@ -5,17 +5,32 @@ const jwt = require('jsonwebtoken');
 const adminLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
+    const rawIp = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'Unknown';
+    const ipAddress = typeof rawIp === 'string' ? rawIp.split(',')[0].trim() : 'Unknown';
+    const userAgent = req.headers['user-agent'] || 'Unknown';
 
     const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user || !user.isAdmin) {
+      if (user) {
+        await prisma.loginHistory.create({
+          data: { userId: user.id, ipAddress, userAgent, status: 'FAILED' }
+        });
+      }
       return res.status(401).json({ message: 'Invalid credentials or unauthorized' });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
+      await prisma.loginHistory.create({
+        data: { userId: user.id, ipAddress, userAgent, status: 'FAILED' }
+      });
       return res.status(401).json({ message: 'Invalid credentials or unauthorized' });
     }
+
+    await prisma.loginHistory.create({
+      data: { userId: user.id, ipAddress, userAgent, status: 'SUCCESS' }
+    });
 
     const token = jwt.sign(
       { id: user.id, isAdmin: user.isAdmin },
@@ -38,6 +53,7 @@ const adminLogin = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
 
 const register = async (req, res) => {
   try {
@@ -353,6 +369,14 @@ const guestLogin = async (req, res) => {
       }
     }
 
+    const rawIp = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'Unknown';
+    const ipAddress = typeof rawIp === 'string' ? rawIp.split(',')[0].trim() : 'Unknown';
+    const userAgent = req.headers['user-agent'] || 'Unknown';
+
+    await prisma.loginHistory.create({
+      data: { userId: user.id, ipAddress, userAgent, status: 'SUCCESS' }
+    });
+
     const token = jwt.sign(
       { id: user.id, isAdmin: user.isAdmin },
       process.env.JWT_SECRET || 'fallback_secret_key',
@@ -360,6 +384,7 @@ const guestLogin = async (req, res) => {
     );
 
     res.json({ token, user: { id: user.id, name: user.name, email: user.email, isAdmin: user.isAdmin } });
+
   } catch (error) {
     console.error("Guest login error:", error);
     res.status(500).json({ message: 'Server error' });
