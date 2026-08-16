@@ -124,10 +124,31 @@ const getWishlistInsights = async (req, res) => {
   }
 };
 
+const adminDeleteWishlistItem = async (req, res) => {
+  try {
+    const productId = parseInt(req.params.productId);
+    if (isNaN(productId)) {
+      return res.status(400).json({ message: 'Invalid product ID' });
+    }
+
+    // Delete all WishlistItems for this product
+    await prisma.wishlistItem.deleteMany({
+      where: { productId }
+    });
+
+    res.json({ success: true, message: 'Product removed from all customer wishlists' });
+  } catch (error) {
+    console.error('Error admin deleting wishlist item:', error);
+    res.status(500).json({ message: 'Failed to delete wishlist item' });
+  }
+};
+
 module.exports = {
   getWishlist,
   toggleWishlistItem,
   removeWishlistItem,
   syncWishlist,
-  getWishlistInsights
+  getWishlistInsights,
+  adminDeleteWishlistItem
 };
+
