@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FiShoppingCart, FiUser, FiClock, FiPhone } from 'react-icons/fi';
+import { FaWhatsapp } from 'react-icons/fa';
 
 const ActiveCarts = () => {
   const [carts, setCarts] = useState([]);
@@ -50,27 +51,56 @@ const ActiveCarts = () => {
       ) : (
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
           {carts.map((cart) => {
-            const timeAgo = new Date(cart.lastUpdated).toLocaleString();
+            const rawPhone = cart.user?.phone || '';
+            const isRealPhone = rawPhone && !rawPhone.startsWith('GUEST-');
+            const cleanPhone = isRealPhone ? rawPhone.replace(/\D/g, '') : '';
+            const waPhone = cleanPhone.length === 10 ? `91${cleanPhone}` : cleanPhone;
+            const customerName = cart.user?.name && !cart.user.name.startsWith('Guest') ? cart.user.name : 'Customer';
+
             return (
               <div key={cart.user.id} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 flex flex-col">
                 {/* User Info Header */}
                 <div className="flex justify-between items-start mb-6 border-b border-gray-100 pb-4">
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 bg-brand-plum/10 rounded-full flex items-center justify-center text-brand-plum font-bold text-lg">
-                      {cart.user.name.charAt(0)}
+                      {customerName.charAt(0)}
                     </div>
                     <div>
                       <h3 className="font-bold text-gray-800 flex items-center">
                         <FiUser className="mr-2 text-gray-400" />
-                        {cart.user.name}
+                        {customerName}
                       </h3>
                       <p className="text-sm text-gray-500">{cart.user.email}</p>
-                      {cart.user.phone && (
-                        <p className="text-sm text-gray-500 flex items-center mt-1">
-                          <FiPhone className="mr-1 text-gray-400" size={14} />
-                          {cart.user.phone}
-                        </p>
-                      )}
+                      
+                      {/* Phone Number & Direct Contact Action Buttons */}
+                      <div className="mt-2 flex flex-wrap items-center gap-2">
+                        {isRealPhone ? (
+                          <>
+                            <span className="text-xs font-bold text-brand-plum bg-brand-plum/10 px-2.5 py-1 rounded-lg flex items-center gap-1">
+                              <FiPhone size={12} />
+                              {rawPhone}
+                            </span>
+                            <a
+                              href={`https://wa.me/${waPhone}?text=Hi%20${encodeURIComponent(customerName)},%20we%20noticed%20you%20have%20items%20in%20your%20Paidhu%20cart.%20Can%20we%20help%20you%20complete%20your%20order?`}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-2.5 py-1 rounded-lg flex items-center gap-1 transition-all shadow-sm"
+                            >
+                              <FaWhatsapp size={14} /> WhatsApp
+                            </a>
+                            <a
+                              href={`tel:${rawPhone}`}
+                              className="text-xs font-bold text-gray-700 bg-gray-100 hover:bg-gray-200 px-2.5 py-1 rounded-lg flex items-center gap-1 transition-all"
+                            >
+                              <FiPhone size={12} /> Call
+                            </a>
+                          </>
+                        ) : (
+                          <span className="text-xs font-semibold text-gray-400 bg-gray-100 px-2.5 py-1 rounded-lg">
+                            Phone not provided yet
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
                   <div className="text-right">
@@ -78,6 +108,7 @@ const ActiveCarts = () => {
                     <p className="text-xl font-bold text-brand-plum">₹{cart.totalValue.toFixed(2)}</p>
                   </div>
                 </div>
+
 
                 {/* Cart Items */}
                 <div className="flex-1 overflow-y-auto max-h-[300px] pr-2 space-y-4">

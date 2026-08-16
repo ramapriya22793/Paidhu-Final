@@ -398,6 +398,35 @@ const registerTiffin = async (req, res) => {
   }
 };
 
+const updateUserPhone = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+    const { phone, name } = req.body;
+    if (!userId) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+    if (!phone) {
+      return res.status(400).json({ message: 'Phone is required' });
+    }
+
+    const updateData = { phone: phone.trim() };
+    if (name && name.trim() && !name.startsWith('Guest')) {
+      updateData.name = name.trim();
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: updateData,
+      select: { id: true, name: true, email: true, phone: true }
+    });
+
+    res.json({ success: true, user: updatedUser });
+  } catch (error) {
+    console.error("Update phone error:", error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 module.exports = {
   adminLogin,
   register,
@@ -412,5 +441,7 @@ module.exports = {
   guestLogin,
   registerTiffin,
   forgotPassword,
-  resetPassword
+  resetPassword,
+  updateUserPhone
 };
+

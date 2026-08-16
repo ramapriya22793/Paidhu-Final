@@ -11,7 +11,9 @@ router.post('/forgot-password', userController.forgotPassword);
 router.post('/reset-password', userController.resetPassword);
 router.get('/profile', authMiddleware, userController.getProfile);
 router.put('/profile', authMiddleware, userController.updateProfile);
+router.put('/update-phone', authMiddleware, userController.updateUserPhone);
 router.put('/preferences', authMiddleware, userController.updatePreferences);
+
 router.post('/tiffin-register', userController.registerTiffin);
 
 // Admin Routes

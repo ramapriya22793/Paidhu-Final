@@ -192,12 +192,50 @@ const getAllActiveCarts = async (req, res) => {
       orderBy: { updatedAt: 'desc' }
     });
 
+    // Fetch orders to cross-reference customer phone numbers
+    const recentOrders = await prisma.order.findMany({
+      select: { userId: true, customerEmail: true, customerName: true, shippingAddress: true },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    const emailToPhone = {};
+    const emailToName = {};
+    for (const ord of recentOrders) {
+      const email = ord.customerEmail ? ord.customerEmail.toLowerCase().trim() : null;
+      if (!email) continue;
+      if (ord.shippingAddress && !emailToPhone[email]) {
+        const match = ord.shippingAddress.match(/Phone:\s*([+\d\s-]+)/i);
+        if (match && match[1]) {
+          emailToPhone[email] = match[1].trim();
+        }
+      }
+      if (ord.customerName && !emailToName[email]) {
+        emailToName[email] = ord.customerName.trim();
+      }
+    }
+
     // Group by user
     const grouped = allCarts.reduce((acc, item) => {
       const uId = item.userId;
       if (!acc[uId]) {
+        const uEmail = item.user?.email ? item.user.email.toLowerCase().trim() : '';
+        let displayPhone = item.user?.phone;
+        let displayName = item.user?.name;
+
+        // Fallback to order history phone if dummy GUEST-XX or missing
+        if ((!displayPhone || displayPhone.startsWith('GUEST-')) && emailToPhone[uEmail]) {
+          displayPhone = emailToPhone[uEmail];
+        }
+        if ((!displayName || displayName.startsWith('Guest')) && emailToName[uEmail]) {
+          displayName = emailToName[uEmail];
+        }
+
         acc[uId] = {
-          user: item.user,
+          user: {
+            ...item.user,
+            name: displayName || item.user?.name,
+            phone: displayPhone
+          },
           items: [],
           totalValue: 0,
           lastUpdated: item.updatedAt
@@ -217,6 +255,7 @@ const getAllActiveCarts = async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 };
+
 
 module.exports = {
   getCart,

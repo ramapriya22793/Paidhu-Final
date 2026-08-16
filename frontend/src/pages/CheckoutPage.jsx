@@ -166,6 +166,12 @@ const CheckoutPage = () => {
     const updatedData = { ...formData, [name]: numericValue };
     setFormData(updatedData);
 
+    // Real-time phone number capture to update user profile & Active Carts
+    if (name === 'phone' && numericValue.length === 10) {
+      api.put('/users/update-phone', { phone: numericValue, name: updatedData.fullName })
+        .catch(() => {}); // silent catch if unauthenticated guest
+    }
+
     // If pincode just became exactly 6 digits, fetch summary immediately (no debounce delay).
     // If pincode is shortened from 6 digits, immediately clear/reset the delivery charge.
     if (name === 'pincode') {
@@ -176,6 +182,7 @@ const CheckoutPage = () => {
       }
     }
   };
+
 
   // Trigger backend calculation when coupon or address changes
   const fetchSummary = async (couponToApply = appliedCoupon, customData = formData) => {
