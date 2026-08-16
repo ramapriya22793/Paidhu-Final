@@ -56,6 +56,8 @@ const ActiveCarts = () => {
             const cleanPhone = isRealPhone ? rawPhone.replace(/\D/g, '') : '';
             const waPhone = cleanPhone.length === 10 ? `91${cleanPhone}` : cleanPhone;
             const customerName = cart.user?.name && !cart.user.name.startsWith('Guest') ? cart.user.name : 'Customer';
+            const timeAgo = cart.lastUpdated ? new Date(cart.lastUpdated).toLocaleString() : 'Recently';
+
 
             return (
               <div key={cart.user.id} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 flex flex-col">
