@@ -24,6 +24,13 @@ const getCustomers = async (req, res) => {
 
     const whereClause = Object.keys(dateFilter).length > 0 ? { createdAt: dateFilter } : {};
 
+    // Helper: check if email is a real customer email (not temporary guest token)
+    const isRealEmail = (email) => {
+      if (!email) return false;
+      const lower = email.toLowerCase().trim();
+      return !lower.endsWith('@paidhu.local') && !lower.startsWith('guest_');
+    };
+
     // Fetch registered users
     const users = await prisma.user.findMany({
       where: {
@@ -33,47 +40,68 @@ const getCustomers = async (req, res) => {
       orderBy: { createdAt: 'desc' }
     });
 
-    // Fetch orders matching the timeframe (or all time to get accurate lifetime values)
-    const orders = await prisma.order.findMany();
+    const orders = await prisma.order.findMany({
+      orderBy: { createdAt: 'desc' }
+    });
 
     const customersMap = {};
 
-    // First populate from registered users
+    // First populate from registered users with real emails
     users.forEach(user => {
-      customersMap[user.email] = {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        totalOrders: 0,
-        totalSpent: 0,
-        cancelledOrders: 0,
-        lastOrderDate: user.createdAt, // Fallback to join date
-        isRegistered: true
-      };
+      if (isRealEmail(user.email)) {
+        customersMap[user.email.toLowerCase().trim()] = {
+          id: user.id,
+          name: user.name && !user.name.startsWith('Guest') ? user.name : 'Registered User',
+          email: user.email,
+          phone: user.phone || null,
+          totalOrders: 0,
+          totalSpent: 0,
+          cancelledOrders: 0,
+          lastOrderDate: user.createdAt,
+          isRegistered: true
+        };
+      }
     });
 
     // Then process orders
     orders.forEach(order => {
-      if (!customersMap[order.customerEmail]) {
-        customersMap[order.customerEmail] = {
-          name: order.customerName,
+      const orderEmail = order.customerEmail ? order.customerEmail.toLowerCase().trim() : '';
+      if (!orderEmail) return;
+
+      const isRegisteredAccount = isRealEmail(orderEmail);
+
+      if (!customersMap[orderEmail]) {
+        let phone = null;
+        if (order.shippingAddress) {
+          const match = order.shippingAddress.match(/Phone:\s*([+\d\s-]+)/i);
+          if (match && match[1]) phone = match[1].trim();
+        }
+
+        customersMap[orderEmail] = {
+          id: null,
+          name: order.customerName || 'Customer',
           email: order.customerEmail,
+          phone,
           totalOrders: 0,
           totalSpent: 0,
           cancelledOrders: 0,
           lastOrderDate: order.createdAt,
-          isRegistered: false
+          isRegistered: isRegisteredAccount
         };
       }
-      
-      const customer = customersMap[order.customerEmail];
-      
-      // If timeframe filter applies, should we only count orders in timeframe?
-      // For now, if a user is returned, we show lifetime stats. 
-      // Wait, the timeframe filter was originally applied to orders.
-      // Let's just calculate lifetime stats for these customers.
+
+      const customer = customersMap[orderEmail];
       customer.totalOrders += 1;
       
+      if (order.customerName && (customer.name === 'Customer' || customer.name === 'Registered User')) {
+        customer.name = order.customerName;
+      }
+
+      if (!customer.phone && order.shippingAddress) {
+        const match = order.shippingAddress.match(/Phone:\s*([+\d\s-]+)/i);
+        if (match && match[1]) customer.phone = match[1].trim();
+      }
+
       if (order.orderStatus === 'CANCELLED') {
         customer.cancelledOrders += 1;
       } else {
@@ -85,15 +113,17 @@ const getCustomers = async (req, res) => {
       }
     });
 
-    // Filter by timeframe if applied
-    let customers = Object.values(customersMap);
-    
+    // Filter out 0-order temporary guest tokens
+    let customers = Object.values(customersMap).filter(c => {
+      return isRealEmail(c.email) || c.totalOrders > 0;
+    });
+
     if (Object.keys(dateFilter).length > 0) {
       const gteDate = dateFilter.gte;
       customers = customers.filter(c => new Date(c.lastOrderDate) >= gteDate);
     }
 
-    // Sort by most recent
+    // Sort by most recent activity
     customers.sort((a, b) => new Date(b.lastOrderDate) - new Date(a.lastOrderDate));
 
     res.json(customers);
