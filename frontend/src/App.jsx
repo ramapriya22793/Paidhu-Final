@@ -114,13 +114,13 @@ const HomePage = () => (
     
     <Suspense fallback={null}>
       <ExploreCategory />
-      <BenefitsMarquee />
       <FeaturedBento />
       <PaidhuSpotlight />
       <StorytellingVideo />
       <RealMomsSection />
       <BrandCharactersBanner />
     </Suspense>
+
   </motion.main>
 );
 
