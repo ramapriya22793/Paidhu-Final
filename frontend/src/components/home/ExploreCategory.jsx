@@ -141,11 +141,12 @@ const ExploreCategory = () => {
   }, []);
 
   return (
-    <section className="w-full bg-[#fcfbfa] pt-4 pb-4 md:pt-6 md:pb-6">
+    <section className="w-full bg-[#fcfbfa] pt-2 pb-2 md:pt-4 md:pb-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Section Heading */}
-        <div className="flex flex-col items-center text-center mb-8 md:mb-12">
+        <div className="flex flex-col items-center text-center mb-4 md:mb-6">
+
           <motion.span
             initial={{ opacity: 0, y: -10 }}
             whileInView={{ opacity: 1, y: 0 }}

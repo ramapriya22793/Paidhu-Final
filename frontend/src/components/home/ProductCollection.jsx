@@ -433,7 +433,8 @@ const ProductCollection = () => {
   }, [activeCategory]);
 
   return (
-    <section className="w-full bg-white pt-4 pb-2 md:pt-8 md:pb-4">
+    <section className="w-full bg-white pt-2 pb-2 md:pt-4 md:pb-3">
+
       <div className="max-w-[1600px] mx-auto px-4 md:px-8">
         
         {/* Category Tabs */}

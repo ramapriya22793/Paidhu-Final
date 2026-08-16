@@ -67,7 +67,8 @@ const FeaturedBento = () => {
   }, [activeIndex]);
 
   return (
-    <section className="w-full bg-[#fcfbfa] pt-12 pb-6 md:pt-20 md:pb-8">
+    <section className="w-full bg-[#fcfbfa] pt-2 pb-6 md:pt-4 md:pb-8">
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
