@@ -87,6 +87,26 @@ app.use("/api/webhooks", require("./routes/webhookRoutes"));
 
 const initializeAdmin = async () => {
   try {
+    // Run schema push programmatically on Vercel startup
+    if (process.env.VERCEL) {
+      const { execSync } = require('child_process');
+      try {
+        console.log("Startup: Running database schema synchronization...");
+        const env = { ...process.env };
+        if (env.DATABASE_URL && env.DATABASE_URL.startsWith('prisma://') && env.DIRECT_URL) {
+          env.DATABASE_URL = env.DIRECT_URL;
+        }
+        execSync('npx prisma db push --skip-generate', {
+          env,
+          stdio: 'inherit',
+          cwd: __dirname
+        });
+        console.log("Startup: Database schema synchronized successfully.");
+      } catch (dbError) {
+        console.error("Startup: Database schema synchronization failed:", dbError.message);
+      }
+    }
+
     const adminEmail = "ecompaidhu@gmail.com";
     const existingAdmin = await prisma.user.findUnique({ where: { email: adminEmail } });
     if (!existingAdmin) {
