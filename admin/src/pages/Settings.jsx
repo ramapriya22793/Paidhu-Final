@@ -1,12 +1,36 @@
 import { useState, useEffect } from 'react';
 import { FiSave, FiSettings, FiPlus, FiTrash2, FiMenu, FiChevronUp, FiChevronDown } from 'react-icons/fi';
 import axios from 'axios';
+import authService from '../services/authService';
 
 const Settings = () => {
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
-  
+  const [clearing, setClearing] = useState(false);
+
+  const handleClearTestData = async () => {
+    if (!window.confirm("WARNING: This will permanently delete all orders, payments, and refunds from the database. Are you sure you want to proceed and reset to go live?")) {
+      return;
+    }
+    
+    setClearing(true);
+    setMessage('');
+    try {
+      const config = { headers: { Authorization: `Bearer ${authService.getToken()}` } };
+      await axios.delete((import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/admin/clear-test-data', config);
+      setMessage('Test transaction data successfully cleared! Refreshing page...');
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    } catch (error) {
+      console.error("Failed to clear test data:", error);
+      setMessage('Failed to clear test data: ' + (error.response?.data?.message || error.message));
+    } finally {
+      setClearing(false);
+    }
+  };
+
   // Using the updated navItems as our default fallback
   const defaultLinks = [
     { name: 'Shop All', path: '/shop' },
@@ -187,6 +211,34 @@ const Settings = () => {
         </div>
 
       </form>
+
+      {/* Go Live / Danger Zone Card */}
+      <div className="bg-white rounded-xl shadow-sm border border-red-100 p-8 space-y-6">
+        <div className="flex items-center gap-3">
+          <div className="bg-red-50 p-3 rounded-lg text-red-600">
+            <FiTrash2 size={24} />
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-gray-800">Danger Zone (Go Live Reset)</h2>
+            <p className="text-gray-500 text-sm">Clear test records before opening the store to real customers</p>
+          </div>
+        </div>
+
+        <div className="border-t border-red-50 pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h4 className="font-semibold text-gray-800 text-sm">Clear Test Transactions</h4>
+            <p className="text-gray-500 text-xs mt-0.5">Permanently deletes all Orders, Payments, and Refunds from the database.</p>
+          </div>
+          <button
+            type="button"
+            onClick={handleClearTestData}
+            disabled={clearing}
+            className="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-2.5 rounded-lg transition-colors text-sm shadow-sm disabled:opacity-70"
+          >
+            {clearing ? 'Clearing Data...' : 'Clear Test Transactions'}
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

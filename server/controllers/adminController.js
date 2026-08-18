@@ -252,3 +252,34 @@ exports.clearLoginHistory = async (req, res) => {
   }
 };
 
+exports.clearTestData = async (req, res) => {
+  try {
+    // Check if the user is an admin
+    if (!req.user || !req.user.isAdmin) {
+      return res.status(403).json({ message: "Unauthorized. Admin privileges required." });
+    }
+
+    // Delete transaction tables
+    const deletedRefunds = await prisma.refund.deleteMany();
+    const deletedPayments = await prisma.payment.deleteMany();
+    const deletedOrders = await prisma.order.deleteMany();
+
+    // Reset stats cache
+    cachedStats = null;
+    cacheTimestamp = 0;
+
+    res.json({
+      success: true,
+      message: "Test transaction data cleared successfully",
+      details: {
+        refundsDeletedCount: deletedRefunds.count,
+        paymentsDeletedCount: deletedPayments.count,
+        ordersDeletedCount: deletedOrders.count
+      }
+    });
+  } catch (error) {
+    console.error("Error clearing test data:", error);
+    res.status(500).json({ message: error.message || "Server error clearing test data" });
+  }
+};
+
