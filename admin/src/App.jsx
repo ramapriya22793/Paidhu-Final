@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AdminLayout from './layouts/AdminLayout';
 import ProtectedRoute from './components/ProtectedRoute';
+import authService from './services/authService';
 
 // Error boundary and safe lazy-loading helper to auto-recover when deployment chunks update
 class ErrorBoundary extends React.Component {
@@ -71,6 +72,8 @@ const safeLazy = (importFn) => {
 
 const Login = safeLazy(() => import('./pages/Login'));
 const ForgotPassword = safeLazy(() => import('./pages/ForgotPassword'));
+const ChangePassword = safeLazy(() => import('./pages/ChangePassword'));
+const Profile = safeLazy(() => import('./pages/Profile'));
 const Dashboard = safeLazy(() => import('./pages/Dashboard'));
 const ProductList = safeLazy(() => import('./pages/ProductList'));
 const AddProduct = safeLazy(() => import('./pages/AddProduct'));
@@ -110,6 +113,41 @@ const LoginHistory = safeLazy(() => import('./pages/LoginHistory'));
 
 
 
+const PermissionGuard = ({ module, children }) => {
+  const user = authService.getCurrentUser();
+  const role = user?.role || 'SUPER_ADMIN';
+
+  if (role === 'SUPER_ADMIN') {
+    return children;
+  }
+
+  const roleModules = {
+    ECOMMERCE_ADMIN: [
+      'blogs', 'saffron_guidance', 'bulk_enquiry', 'banners', 
+      'products', 'orders', 'active_carts', 'whatsapp_leads_byoc',
+      'profile', 'customers'
+    ],
+    ACCOUNTS_ADMIN: [
+      'orders', 'payments', 'stock_management', 'profile'
+    ]
+  };
+
+  const allowedModules = roleModules[role] || [];
+  if (allowedModules.includes(module)) {
+    return children;
+  }
+
+  return (
+    <div className="p-8 text-center bg-white rounded-xl shadow-sm border border-red-100 max-w-lg mx-auto mt-12">
+      <h2 className="text-xl font-bold text-red-600 mb-2">Access Denied</h2>
+      <p className="text-gray-600 mb-4">You do not have permission to access this module.</p>
+      <a href="/" className="px-5 py-2.5 bg-brand-plum text-white font-semibold rounded-lg hover:bg-brand-plum/90 transition-all text-sm shadow">
+        Back to Dashboard
+      </a>
+    </div>
+  );
+};
+
 const App = () => {
   // Keep the Render free tier server awake while the admin panel is open
   useEffect(() => {
@@ -143,47 +181,72 @@ const App = () => {
               {/* Public Routes */}
               <Route path="/login" element={<Login />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/change-password" element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />
 
               {/* Protected Admin Routes */}
               <Route path="/" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
                 <Route index element={<Dashboard />} />
-                <Route path="products" element={<ProductList />} />
-                <Route path="products/add" element={<AddProduct />} />
-                <Route path="products/edit/:id" element={<EditProduct />} />
-                <Route path="orders" element={<Orders />} />
-                <Route path="orders/:id" element={<OrderDetails />} />
-                <Route path="customers" element={<Customers />} />
-                <Route path="customers/:id" element={<CustomerDetails />} />
-                <Route path="payments" element={<Payments />} />
-                <Route path="payments/:id" element={<PaymentDetails />} />
-                <Route path="coupons" element={<Coupons />} />
-                <Route path="delivery-charges" element={<DeliveryManagement />} />
-                <Route path="reviews" element={<Reviews />} />
-                <Route path="blogs" element={<Blogs />} />
-                <Route path="seo" element={<SeoManagement />} />
-                <Route path="banners" element={<Banners />} />
-                <Route path="deals-management" element={<DealsManagement />} />
-                <Route path="category-grid-management" element={<CategoryGridManagement />} />
-                <Route path="family-management" element={<FamilyManagement />} />
-                <Route path="floral-habitat-management" element={<FloralHabitatManagement />} />
-                <Route path="byoc-management" element={<ByocManagement />} />
-                <Route path="community-management" element={<OurCommunityManagement />} />
-                <Route path="philosophy-management" element={<OurPhilosophyManagement />} />
-                <Route path="bulk-orders-management" element={<BulkOrdersManagement />} />
-                <Route path="bulk-order-inquiries" element={<BulkOrderInquiries />} />
-                <Route path="about-us-management" element={<AboutUsManagement />} />
-                <Route path="active-carts" element={<ActiveCarts />} />
-                <Route path="wishlists" element={<WishlistInsights />} />
-                <Route path="tiffin-leads" element={<TiffinLeads />} />
-                <Route path="whatsapp-leads" element={<TiffinLeads />} />
-                <Route path="saffron-guidance-leads" element={<SaffronGuidanceLeads />} />
-                <Route path="career-applications" element={<CareerApplications />} />
-                <Route path="login-history" element={<LoginHistory />} />
+                
+                {/* Products Module */}
+                <Route path="products" element={<PermissionGuard module="products"><ProductList /></PermissionGuard>} />
+                <Route path="products/add" element={<PermissionGuard module="products"><AddProduct /></PermissionGuard>} />
+                <Route path="products/edit/:id" element={<PermissionGuard module="products"><EditProduct /></PermissionGuard>} />
+                
+                {/* Orders Module */}
+                <Route path="orders" element={<PermissionGuard module="orders"><Orders /></PermissionGuard>} />
+                <Route path="orders/:id" element={<PermissionGuard module="orders"><OrderDetails /></PermissionGuard>} />
+                
+                {/* Customers Module */}
+                <Route path="customers" element={<PermissionGuard module="customers"><Customers /></PermissionGuard>} />
+                <Route path="customers/:id" element={<PermissionGuard module="customers"><CustomerDetails /></PermissionGuard>} />
+                
+                {/* Payments Module */}
+                <Route path="payments" element={<PermissionGuard module="payments"><Payments /></PermissionGuard>} />
+                <Route path="payments/:id" element={<PermissionGuard module="payments"><PaymentDetails /></PermissionGuard>} />
+                
+                {/* Blogs Module */}
+                <Route path="blogs" element={<PermissionGuard module="blogs"><Blogs /></PermissionGuard>} />
+                
+                {/* Banners Module */}
+                <Route path="banners" element={<PermissionGuard module="banners"><Banners /></PermissionGuard>} />
+                
+                {/* BYOC / WhatsApp Leads Module */}
+                <Route path="byoc-management" element={<PermissionGuard module="whatsapp_leads_byoc"><ByocManagement /></PermissionGuard>} />
+                <Route path="whatsapp-leads" element={<PermissionGuard module="whatsapp_leads_byoc"><TiffinLeads /></PermissionGuard>} />
+                
+                {/* Bulk Enquiry Module */}
+                <Route path="bulk-order-inquiries" element={<PermissionGuard module="bulk_enquiry"><BulkOrderInquiries /></PermissionGuard>} />
+                
+                {/* Saffron Guidance Module */}
+                <Route path="saffron-guidance-leads" element={<PermissionGuard module="saffron_guidance"><SaffronGuidanceLeads /></PermissionGuard>} />
+                
+                {/* Active Carts Module */}
+                <Route path="active-carts" element={<PermissionGuard module="active_carts"><ActiveCarts /></PermissionGuard>} />
+                
+                {/* Profile (General access for all roles) */}
+                <Route path="profile" element={<Profile />} />
 
-                <Route path="settings" element={<Settings />} />
-                <Route path="tracking" element={<TrackingScripts />} />
-                <Route path="pages" element={<PagesList />} />
-                <Route path="pages/:pageId" element={<PageEditor />} />
+                {/* Restricted Super Admin Only Modules */}
+                <Route path="coupons" element={<PermissionGuard module="super_only"><Coupons /></PermissionGuard>} />
+                <Route path="delivery-charges" element={<PermissionGuard module="super_only"><DeliveryManagement /></PermissionGuard>} />
+                <Route path="reviews" element={<PermissionGuard module="super_only"><Reviews /></PermissionGuard>} />
+                <Route path="seo" element={<PermissionGuard module="super_only"><SeoManagement /></PermissionGuard>} />
+                <Route path="deals-management" element={<PermissionGuard module="super_only"><DealsManagement /></PermissionGuard>} />
+                <Route path="category-grid-management" element={<PermissionGuard module="super_only"><CategoryGridManagement /></PermissionGuard>} />
+                <Route path="family-management" element={<PermissionGuard module="super_only"><FamilyManagement /></PermissionGuard>} />
+                <Route path="floral-habitat-management" element={<PermissionGuard module="super_only"><FloralHabitatManagement /></PermissionGuard>} />
+                <Route path="community-management" element={<PermissionGuard module="super_only"><OurCommunityManagement /></PermissionGuard>} />
+                <Route path="philosophy-management" element={<PermissionGuard module="super_only"><OurPhilosophyManagement /></PermissionGuard>} />
+                <Route path="bulk-orders-management" element={<PermissionGuard module="super_only"><BulkOrdersManagement /></PermissionGuard>} />
+                <Route path="about-us-management" element={<PermissionGuard module="super_only"><AboutUsManagement /></PermissionGuard>} />
+                <Route path="wishlists" element={<PermissionGuard module="super_only"><WishlistInsights /></PermissionGuard>} />
+                <Route path="tiffin-leads" element={<PermissionGuard module="super_only"><TiffinLeads /></PermissionGuard>} />
+                <Route path="career-applications" element={<PermissionGuard module="super_only"><CareerApplications /></PermissionGuard>} />
+                <Route path="login-history" element={<PermissionGuard module="super_only"><LoginHistory /></PermissionGuard>} />
+                <Route path="settings" element={<PermissionGuard module="super_only"><Settings /></PermissionGuard>} />
+                <Route path="tracking" element={<PermissionGuard module="super_only"><TrackingScripts /></PermissionGuard>} />
+                <Route path="pages" element={<PermissionGuard module="super_only"><PagesList /></PermissionGuard>} />
+                <Route path="pages/:pageId" element={<PermissionGuard module="super_only"><PageEditor /></PermissionGuard>} />
               </Route>
               
               {/* Catch-all 404 Route */}

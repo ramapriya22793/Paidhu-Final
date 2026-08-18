@@ -96,17 +96,60 @@ const initializeAdmin = async () => {
           name: "Admin",
           email: adminEmail,
           password: hashedPassword,
-          isAdmin: true
+          isAdmin: true,
+          role: "SUPER_ADMIN"
         }
       });
       console.log("Static Admin user created successfully.");
+    } else if (!existingAdmin.role || existingAdmin.role === 'CUSTOMER') {
+      await prisma.user.update({
+        where: { email: adminEmail },
+        data: { role: "SUPER_ADMIN" }
+      });
+      console.log("Admin user role updated to SUPER_ADMIN.");
+    }
+
+    // Seed E-Commerce Admin
+    const ecomEmail = "ecommerce.admin@yourdomain.com";
+    const existingEcom = await prisma.user.findUnique({ where: { email: ecomEmail } });
+    if (!existingEcom) {
+      const hashedPassword = await bcrypt.hash("Ecom@2026#Admin", 10);
+      await prisma.user.create({
+        data: {
+          name: "E-Commerce Admin",
+          email: ecomEmail,
+          password: hashedPassword,
+          isAdmin: true,
+          role: "ECOMMERCE_ADMIN",
+          mustChangePassword: true
+        }
+      });
+      console.log("E-Commerce Admin user created successfully.");
+    }
+
+    // Seed Accounts Admin
+    const accountsEmail = "accounts.admin@yourdomain.com";
+    const existingAccounts = await prisma.user.findUnique({ where: { email: accountsEmail } });
+    if (!existingAccounts) {
+      const hashedPassword = await bcrypt.hash("Accounts@2026#Admin", 10);
+      await prisma.user.create({
+        data: {
+          name: "Accounts Admin",
+          email: accountsEmail,
+          password: hashedPassword,
+          isAdmin: true,
+          role: "ACCOUNTS_ADMIN",
+          mustChangePassword: true
+        }
+      });
+      console.log("Accounts Admin user created successfully.");
     }
   } catch (error) {
-    console.error("Failed to initialize admin user:", error);
+    console.error("Failed to initialize admin users:", error);
   }
 };
 
-// initializeAdmin();
+initializeAdmin();
 
 app.get("/", (req, res) => {
   res.send("Paidhu API Running");

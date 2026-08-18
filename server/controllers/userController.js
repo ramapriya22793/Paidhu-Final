@@ -32,8 +32,28 @@ const adminLogin = async (req, res) => {
       data: { userId: user.id, ipAddress, userAgent, status: 'SUCCESS' }
     });
 
+    if (user.mustChangePassword) {
+      const tempToken = jwt.sign(
+        { id: user.id, isAdmin: user.isAdmin, role: user.role || 'SUPER_ADMIN', mustChangePassword: true },
+        process.env.JWT_SECRET || 'fallback_secret_key',
+        { expiresIn: '15m' }
+      );
+      return res.json({
+        mustChangePassword: true,
+        token: tempToken,
+        email: user.email,
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          isAdmin: user.isAdmin,
+          role: user.role || 'SUPER_ADMIN'
+        }
+      });
+    }
+
     const token = jwt.sign(
-      { id: user.id, isAdmin: user.isAdmin },
+      { id: user.id, isAdmin: user.isAdmin, role: user.role || 'SUPER_ADMIN' },
       process.env.JWT_SECRET || 'fallback_secret_key',
       { expiresIn: '1d' }
     );
@@ -44,7 +64,8 @@ const adminLogin = async (req, res) => {
         id: user.id,
         name: user.name,
         email: user.email,
-        isAdmin: user.isAdmin
+        isAdmin: user.isAdmin,
+        role: user.role || 'SUPER_ADMIN'
       }
     });
 

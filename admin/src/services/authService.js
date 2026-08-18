@@ -6,7 +6,11 @@ const login = async (email, password) => {
   const response = await axios.post(`${API_URL}/admin-login`, { email, password });
   if (response.data.token) {
     localStorage.setItem('adminToken', response.data.token);
-    localStorage.setItem('adminUser', JSON.stringify(response.data.user));
+    const userData = response.data.user || {};
+    if (response.data.mustChangePassword) {
+      userData.mustChangePassword = true;
+    }
+    localStorage.setItem('adminUser', JSON.stringify(userData));
   }
   return response.data;
 };

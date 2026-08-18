@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const prisma = require('../prismaClient');
-const authMiddleware = require('../middleware/authMiddleware'); // Admin auth
+const { verifyToken, verifyAdmin, checkPermission } = require('../middleware/authMiddleware'); // Admin auth
 
 // PUBLIC: Submit a new bulk order inquiry
 router.post('/', async (req, res) => {
@@ -32,7 +32,7 @@ router.post('/', async (req, res) => {
 });
 
 // ADMIN: Get all bulk order inquiries
-router.get('/', authMiddleware, async (req, res) => {
+router.get('/', verifyToken, verifyAdmin, checkPermission('bulk_enquiry'), async (req, res) => {
   try {
     const inquiries = await prisma.bulkOrderInquiry.findMany({
       orderBy: { createdAt: 'desc' }
@@ -45,7 +45,7 @@ router.get('/', authMiddleware, async (req, res) => {
 });
 
 // ADMIN: Update inquiry status
-router.patch('/:id/status', authMiddleware, async (req, res) => {
+router.patch('/:id/status', verifyToken, verifyAdmin, checkPermission('bulk_enquiry'), async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
@@ -63,7 +63,7 @@ router.patch('/:id/status', authMiddleware, async (req, res) => {
 });
 
 // ADMIN: Delete an inquiry
-router.delete('/:id', authMiddleware, async (req, res) => {
+router.delete('/:id', verifyToken, verifyAdmin, checkPermission('bulk_enquiry'), async (req, res) => {
   try {
     const { id } = req.params;
     await prisma.bulkOrderInquiry.delete({

@@ -23,6 +23,8 @@ model User {
   referralCode       String?   @unique
   communicationPrefs Json?
   isAdmin            Boolean   @default(false)
+  role               String    @default("CUSTOMER") // "SUPER_ADMIN", "ECOMMERCE_ADMIN", "ACCOUNTS_ADMIN", "CUSTOMER"
+  mustChangePassword Boolean   @default(false)
   createdAt          DateTime  @default(now())
   
   addresses          Address[]

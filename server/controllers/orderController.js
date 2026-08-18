@@ -65,6 +65,12 @@ const getOrderById = async (req, res) => {
       }
     });
     if (!order) return res.status(404).json({ message: "Order not found" });
+
+    // Redact financial payment transactions for E-Commerce Admin
+    if (req.user.role === 'ECOMMERCE_ADMIN') {
+      order.payments = [];
+    }
+
     res.json(order);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -74,7 +80,14 @@ const getOrderById = async (req, res) => {
 const updateOrderStatus = async (req, res) => {
   try {
     const { orderStatus } = req.body;
+    
+    // Accounts admin cannot update order delivery status
+    if (req.user.role === 'ACCOUNTS_ADMIN') {
+      return res.status(403).json({ message: "Access denied. Accounts Admin cannot update order delivery status." });
+    }
+
     const order = await prisma.order.findUnique({ where: { id: Number(req.params.id) } });
+    if (!order) return res.status(404).json({ message: "Order not found" });
     
     let updatedTimeline = order.timeline ? (Array.isArray(order.timeline) ? [...order.timeline] : []) : [];
     updatedTimeline.push({
@@ -98,7 +111,18 @@ const updateOrderDetails = async (req, res) => {
     const { orderStatus, paymentStatus, trackingNumber, courierPartner, estimatedDeliveryDate } = req.body;
     
     const order = await prisma.order.findUnique({ where: { id: Number(req.params.id) } });
+    if (!order) return res.status(404).json({ message: "Order not found" });
     
+    // Role field-level checks
+    if (req.user.role === 'ECOMMERCE_ADMIN' && paymentStatus !== undefined && paymentStatus !== order.paymentStatus) {
+      return res.status(403).json({ message: "Access denied. E-Commerce Admin cannot update payment status." });
+    }
+    if (req.user.role === 'ACCOUNTS_ADMIN') {
+      if (orderStatus !== undefined || trackingNumber !== undefined || courierPartner !== undefined || estimatedDeliveryDate !== undefined) {
+        return res.status(403).json({ message: "Access denied. Accounts Admin can only update payment status." });
+      }
+    }
+
     let updatedTimeline = order.timeline ? (Array.isArray(order.timeline) ? [...order.timeline] : []) : [];
     
     // Add timeline events if status changed
