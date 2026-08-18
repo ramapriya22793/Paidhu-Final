@@ -10,6 +10,7 @@ router.get('/tiffin-registrations', verifyToken, verifyAdmin, adminController.ge
 router.get('/login-history', verifyToken, verifyAdmin, adminController.getLoginHistory);
 router.delete('/login-history', verifyToken, verifyAdmin, adminController.clearLoginHistory);
 router.delete('/clear-test-data', verifyToken, verifyAdmin, adminController.clearTestData);
+router.put('/change-password', verifyToken, verifyAdmin, adminController.changePassword);
 
 module.exports = router;
 

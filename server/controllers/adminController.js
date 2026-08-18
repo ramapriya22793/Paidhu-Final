@@ -19,8 +19,29 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
+    // Force password change on temporary passwords
+    if (user.mustChangePassword) {
+      const tempToken = jwt.sign(
+        { userId: user.id, isAdmin: true, role: user.role, mustChangePassword: true },
+        process.env.JWT_SECRET || 'fallback_secret_key',
+        { expiresIn: '15m' }
+      );
+      return res.json({
+        mustChangePassword: true,
+        token: tempToken,
+        email: user.email,
+        admin: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          avatar: user.avatar,
+          role: user.role || 'SUPER_ADMIN'
+        }
+      });
+    }
+
     const token = jwt.sign(
-      { userId: user.id, isAdmin: true },
+      { userId: user.id, isAdmin: true, role: user.role || 'SUPER_ADMIN' },
       process.env.JWT_SECRET || 'fallback_secret_key',
       { expiresIn: '7d' }
     );
@@ -31,7 +52,8 @@ exports.login = async (req, res) => {
         id: user.id,
         name: user.name,
         email: user.email,
-        avatar: user.avatar
+        avatar: user.avatar,
+        role: user.role || 'SUPER_ADMIN'
       }
     });
 
@@ -280,6 +302,30 @@ exports.clearTestData = async (req, res) => {
   } catch (error) {
     console.error("Error clearing test data:", error);
     res.status(500).json({ message: error.message || "Server error clearing test data" });
+  }
+};
+
+exports.changePassword = async (req, res) => {
+  try {
+    const { newPassword } = req.body;
+    if (!newPassword || newPassword.trim().length < 6) {
+      return res.status(400).json({ message: "Password must be at least 6 characters long." });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    
+    await prisma.user.update({
+      where: { id: req.user.id },
+      data: {
+        password: hashedPassword,
+        mustChangePassword: false
+      }
+    });
+
+    res.json({ success: true, message: "Password updated successfully!" });
+  } catch (error) {
+    console.error("Change password error:", error);
+    res.status(500).json({ message: "Server error updating password" });
   }
 };
 

@@ -1,6 +1,18 @@
 const jwt = require('jsonwebtoken');
 const prisma = require('../prismaClient');
 
+const PERMISSIONS = {
+  SUPER_ADMIN: '*',
+  ECOMMERCE_ADMIN: [
+    'blogs', 'saffron_guidance', 'bulk_enquiry', 'banners', 
+    'products', 'orders', 'active_carts', 'whatsapp_leads_byoc',
+    'profile'
+  ],
+  ACCOUNTS_ADMIN: [
+    'orders', 'payments', 'stock_management', 'profile'
+  ]
+};
+
 const verifyToken = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization || req.headers.Authorization;
@@ -13,6 +25,15 @@ const verifyToken = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret_key');
+    
+    // If user is flagged as needing password change, block all routes except change-password
+    if (decoded.mustChangePassword && req.baseUrl + req.path !== '/api/admin/change-password') {
+      return res.status(403).json({
+        message: 'Password change required. You must change your temporary password before accessing other features.',
+        mustChangePassword: true
+      });
+    }
+
     const userId = decoded.id || decoded.userId;
     if (!userId) {
       console.log("No user ID found in token payload");
@@ -26,7 +47,11 @@ const verifyToken = async (req, res, next) => {
       return res.status(401).json({ message: 'Invalid token: user not found' });
     }
 
-    req.user = { id: userId, isAdmin: decoded.isAdmin }; // { id, isAdmin }
+    req.user = { 
+      id: userId, 
+      isAdmin: userExists.isAdmin, 
+      role: userExists.role || 'CUSTOMER'
+    };
     next();
   } catch (error) {
     console.log("JWT Verification Error:", error.message);
@@ -42,9 +67,29 @@ const verifyAdmin = (req, res, next) => {
   }
 };
 
-// Export verifyToken as the main function, but attach verifyAdmin and verifyToken to it
-// so that both `const authMiddleware = require('...')` and `const { verifyAdmin } = require('...')` work.
+const checkPermission = (moduleName) => {
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+    
+    const role = req.user.role;
+    
+    if (role === 'SUPER_ADMIN') {
+      return next();
+    }
+    
+    const allowedModules = PERMISSIONS[role];
+    if (allowedModules && allowedModules.includes(moduleName)) {
+      return next();
+    }
+    
+    res.status(403).json({ message: `Access denied. Permission for module '${moduleName}' is required.` });
+  };
+};
+
 verifyToken.verifyAdmin = verifyAdmin;
 verifyToken.verifyToken = verifyToken;
+verifyToken.checkPermission = checkPermission;
 
 module.exports = verifyToken;
