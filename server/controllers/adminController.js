@@ -98,12 +98,11 @@ exports.getDashboardStats = async (req, res) => {
     
     const totalRevenue = revenueAggregate._sum.totalPrice || 0;
 
-    // Real-time weekly comparison stats
-    const currentDate = new Date();
-    const oneWeekAgo = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000);
-    const twoWeeksAgo = new Date(currentDate.getTime() - 14 * 24 * 60 * 60 * 1000);
+    // Calculate weekly trends
+    const dateNow = new Date();
+    const oneWeekAgo = new Date(dateNow.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const twoWeeksAgo = new Date(dateNow.getTime() - 14 * 24 * 60 * 60 * 1000);
 
-    // Users this week vs last week
     const usersThisWeek = await prisma.user.count({
       where: { createdAt: { gte: oneWeekAgo } }
     });
@@ -111,7 +110,6 @@ exports.getDashboardStats = async (req, res) => {
       where: { createdAt: { gte: twoWeeksAgo, lt: oneWeekAgo } }
     });
 
-    // Orders this week vs last week
     const ordersThisWeek = await prisma.order.count({
       where: { createdAt: { gte: oneWeekAgo } }
     });
@@ -119,8 +117,7 @@ exports.getDashboardStats = async (req, res) => {
       where: { createdAt: { gte: twoWeeksAgo, lt: oneWeekAgo } }
     });
 
-    // Revenue this week vs last week
-    const revThisWeek = await prisma.order.aggregate({
+    const revenueThisWeekAggregate = await prisma.order.aggregate({
       _sum: { totalPrice: true },
       where: {
         orderStatus: { not: 'CANCELLED' },
@@ -128,7 +125,7 @@ exports.getDashboardStats = async (req, res) => {
         createdAt: { gte: oneWeekAgo }
       }
     });
-    const revLastWeek = await prisma.order.aggregate({
+    const revenueLastWeekAggregate = await prisma.order.aggregate({
       _sum: { totalPrice: true },
       where: {
         orderStatus: { not: 'CANCELLED' },
@@ -136,10 +133,9 @@ exports.getDashboardStats = async (req, res) => {
         createdAt: { gte: twoWeeksAgo, lt: oneWeekAgo }
       }
     });
-    const revenueThisWeek = revThisWeek._sum.totalPrice || 0;
-    const revenueLastWeek = revLastWeek._sum.totalPrice || 0;
+    const revenueThisWeek = revenueThisWeekAggregate._sum.totalPrice || 0;
+    const revenueLastWeek = revenueLastWeekAggregate._sum.totalPrice || 0;
 
-    // Pending orders this week vs last week
     const pendingThisWeek = await prisma.order.count({
       where: { orderStatus: 'PENDING', createdAt: { gte: oneWeekAgo } }
     });
@@ -147,20 +143,18 @@ exports.getDashboardStats = async (req, res) => {
       where: { orderStatus: 'PENDING', createdAt: { gte: twoWeeksAgo, lt: oneWeekAgo } }
     });
 
-    const calculateTrend = (curr, prev) => {
-      if (prev === 0) {
-        return curr > 0 ? '+100%' : '+0%';
+    const calculateTrend = (current, previous) => {
+      if (previous === 0) {
+        return current > 0 ? `+100.0%` : `+0.0%`;
       }
-      const pct = ((curr - prev) / prev) * 100;
-      return pct >= 0 ? `+${pct.toFixed(1)}%` : `${pct.toFixed(1)}%`;
+      const change = ((current - previous) / previous) * 100;
+      return change >= 0 ? `+${change.toFixed(1)}%` : `${change.toFixed(1)}%`;
     };
 
-    const trends = {
-      revenueTrend: calculateTrend(revenueThisWeek, revenueLastWeek),
-      ordersTrend: calculateTrend(ordersThisWeek, ordersLastWeek),
-      usersTrend: calculateTrend(usersThisWeek, usersLastWeek),
-      pendingTrend: calculateTrend(pendingThisWeek, pendingLastWeek)
-    };
+    const revenueTrend = calculateTrend(revenueThisWeek, revenueLastWeek);
+    const ordersTrend = calculateTrend(ordersThisWeek, ordersLastWeek);
+    const usersTrend = calculateTrend(usersThisWeek, usersLastWeek);
+    const pendingTrend = calculateTrend(pendingThisWeek, pendingLastWeek);
 
     // Calculate real monthly revenue from orders
     const currentYear = new Date().getFullYear();
@@ -204,7 +198,12 @@ exports.getDashboardStats = async (req, res) => {
       recentOrders,
       totalRevenue,
       chartData,
-      trends
+      trends: {
+        revenueTrend,
+        ordersTrend,
+        usersTrend,
+        pendingTrend
+      }
     };
     cacheTimestamp = now;
 
