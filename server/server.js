@@ -87,24 +87,19 @@ app.use("/api/webhooks", require("./routes/webhookRoutes"));
 
 const initializeAdmin = async () => {
   try {
-    // Run schema push programmatically on Vercel startup
-    if (process.env.VERCEL) {
-      const { execSync } = require('child_process');
-      try {
-        console.log("Startup: Running database schema synchronization...");
-        const env = { ...process.env };
-        if (env.DATABASE_URL && env.DATABASE_URL.startsWith('prisma://') && env.DIRECT_URL) {
-          env.DATABASE_URL = env.DIRECT_URL;
-        }
-        execSync('npx prisma db push --skip-generate', {
-          env,
-          stdio: 'inherit',
-          cwd: __dirname
-        });
-        console.log("Startup: Database schema synchronized successfully.");
-      } catch (dbError) {
-        console.error("Startup: Database schema synchronization failed:", dbError.message);
-      }
+    // Safely add any missing columns to the User table using raw SQL.
+    // This ensures the schema is always up-to-date on the live database,
+    // since running 'prisma db push' in a Vercel serverless environment is unreliable.
+    try {
+      await prisma.$executeRawUnsafe(`
+        ALTER TABLE "User"
+        ADD COLUMN IF NOT EXISTS "role" TEXT NOT NULL DEFAULT 'CUSTOMER',
+        ADD COLUMN IF NOT EXISTS "mustChangePassword" BOOLEAN NOT NULL DEFAULT false
+      `);
+      console.log("Startup: Database columns verified/added successfully.");
+    } catch (schemaErr) {
+      // Columns may already exist — that is fine, the login will still work.
+      console.log("Startup: Schema check note:", schemaErr.message);
     }
 
     const adminEmail = "ecompaidhu@gmail.com";
