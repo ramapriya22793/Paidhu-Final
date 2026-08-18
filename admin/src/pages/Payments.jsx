@@ -66,6 +66,45 @@ const Payments = () => {
     return true;
   });
 
+  const calculatedAnalytics = (() => {
+    if (!payments || payments.length === 0) return {
+      totalRevenue: 0,
+      monthRevenue: 0,
+      successfulCount: 0,
+      refundedAmount: 0
+    };
+
+    const totalRevenue = payments
+      .filter(p => p.status === 'SUCCESS' || p.status === 'PAID')
+      .reduce((sum, p) => sum + (p.amount || 0), 0);
+
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+
+    const monthRevenue = payments
+      .filter(p => {
+        if (p.status !== 'SUCCESS' && p.status !== 'PAID') return false;
+        const pDate = new Date(p.createdAt);
+        return pDate.getMonth() === currentMonth && pDate.getFullYear() === currentYear;
+      })
+      .reduce((sum, p) => sum + (p.amount || 0), 0);
+
+    const successfulCount = payments.filter(p => p.status === 'SUCCESS' || p.status === 'PAID').length;
+
+    const refundedAmount = payments
+      .flatMap(p => p.refunds || [])
+      .filter(r => r.status === 'PROCESSED' || r.status === 'APPROVED')
+      .reduce((sum, r) => sum + (r.refundAmount || 0), 0);
+
+    return {
+      totalRevenue,
+      monthRevenue,
+      successfulCount,
+      refundedAmount
+    };
+  })();
+
   if (loading) return <div className="p-8 text-brand-plum font-bold">Loading Payments Dashboard...</div>;
 
   return (
@@ -78,7 +117,7 @@ const Payments = () => {
       </div>
 
       {/* Analytics Cards */}
-      {analytics && (
+      {calculatedAnalytics && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex items-center space-x-4">
             <div className="w-12 h-12 rounded-full bg-brand-cream flex items-center justify-center text-brand-plum">
@@ -86,7 +125,7 @@ const Payments = () => {
             </div>
             <div>
               <p className="text-sm text-gray-500 font-medium">Total Revenue</p>
-              <p className="text-2xl font-bold text-gray-800">₹{analytics.totalRevenue.toLocaleString()}</p>
+              <p className="text-2xl font-bold text-gray-800">₹{calculatedAnalytics.totalRevenue.toLocaleString()}</p>
             </div>
           </div>
           
@@ -96,7 +135,7 @@ const Payments = () => {
             </div>
             <div>
               <p className="text-sm text-gray-500 font-medium">This Month</p>
-              <p className="text-2xl font-bold text-gray-800">₹{analytics.monthRevenue.toLocaleString()}</p>
+              <p className="text-2xl font-bold text-gray-800">₹{calculatedAnalytics.monthRevenue.toLocaleString()}</p>
             </div>
           </div>
 
@@ -106,7 +145,7 @@ const Payments = () => {
             </div>
             <div>
               <p className="text-sm text-gray-500 font-medium">Successful Payments</p>
-              <p className="text-2xl font-bold text-gray-800">{analytics.successfulCount}</p>
+              <p className="text-2xl font-bold text-gray-800">{calculatedAnalytics.successfulCount}</p>
             </div>
           </div>
 
@@ -116,7 +155,7 @@ const Payments = () => {
             </div>
             <div>
               <p className="text-sm text-gray-500 font-medium">Refunded Amount</p>
-              <p className="text-2xl font-bold text-gray-800">₹{analytics.refundedAmount.toLocaleString()}</p>
+              <p className="text-2xl font-bold text-gray-800">₹{calculatedAnalytics.refundedAmount.toLocaleString()}</p>
             </div>
           </div>
         </div>

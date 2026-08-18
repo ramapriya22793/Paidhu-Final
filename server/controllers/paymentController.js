@@ -97,9 +97,59 @@ const getPaymentById = async (req, res) => {
 
 const getAnalytics = async (req, res) => {
   try {
-    const orders = await prisma.order.findMany({
-      include: { payments: true }
+    const payments = await prisma.payment.findMany({
+      include: {
+        order: {
+          select: {
+            orderNumber: true,
+            customerName: true,
+            customerEmail: true,
+            orderStatus: true,
+            totalPrice: true
+          }
+        },
+        refunds: true
+      },
+      orderBy: { createdAt: 'desc' }
     });
+
+    const paymentOrderIds = new Set(payments.map(p => p.orderId));
+    const ordersWithoutPayment = await prisma.order.findMany({
+      where: {
+        id: { notIn: Array.from(paymentOrderIds) }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    const formattedOrders = ordersWithoutPayment.map(o => ({
+      id: `order_${o.id}`,
+      orderId: o.id,
+      userId: o.userId,
+      gateway: o.paymentMethod || 'COD',
+      razorpayOrderId: null,
+      razorpayPaymentId: o.orderNumber || `P${String(o.id).padStart(4, '0')}`,
+      razorpaySignature: null,
+      amount: o.totalPrice || 0,
+      method: o.paymentMethod || 'COD',
+      status: (o.paymentStatus === 'PAID' || o.paymentStatus === 'SUCCESS') ? 'PAID' : (o.orderStatus === 'CANCELLED' ? 'FAILED' : 'PENDING'),
+      createdAt: o.createdAt,
+      updatedAt: o.updatedAt,
+      order: {
+        orderNumber: o.orderNumber,
+        customerName: o.customerName,
+        customerEmail: o.customerEmail,
+        orderStatus: o.orderStatus,
+        totalPrice: o.totalPrice
+      },
+      refunds: []
+    }));
+
+    const sanitizedPayments = payments.map(p => ({
+      ...p,
+      amount: (p.amount && p.amount > 0) ? p.amount : (p.order ? p.order.totalPrice : 0)
+    }));
+
+    const combined = [...sanitizedPayments, ...formattedOrders];
 
     const refunds = await prisma.refund.findMany();
 
@@ -122,23 +172,17 @@ const getAnalytics = async (req, res) => {
       }
     });
 
-    orders.forEach(order => {
-      if (order.orderStatus === 'CANCELLED') {
-        failedCount++;
-        return;
-      }
-
-      const oDate = new Date(order.createdAt);
-      const amt = order.totalPrice || 0;
-
-      const isPaid = order.paymentStatus === 'PAID' || order.paymentStatus === 'SUCCESS' || 
-                     order.payments.some(p => p.status === 'SUCCESS' || p.status === 'PAID');
+    combined.forEach(p => {
+      const pDate = new Date(p.createdAt);
+      const isPaid = p.status === 'SUCCESS' || p.status === 'PAID';
 
       if (isPaid) {
         successfulCount++;
-        totalRevenue += amt;
-        if (oDate >= today) todayRevenue += amt;
-        if (oDate >= firstDayOfMonth) monthRevenue += amt;
+        totalRevenue += p.amount;
+        if (pDate >= today) todayRevenue += p.amount;
+        if (pDate >= firstDayOfMonth) monthRevenue += p.amount;
+      } else if (p.status === 'FAILED') {
+        failedCount++;
       } else {
         pendingCount++;
       }
