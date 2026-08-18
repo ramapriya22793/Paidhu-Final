@@ -98,6 +98,70 @@ exports.getDashboardStats = async (req, res) => {
     
     const totalRevenue = revenueAggregate._sum.totalPrice || 0;
 
+    // Real-time weekly comparison stats
+    const currentDate = new Date();
+    const oneWeekAgo = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const twoWeeksAgo = new Date(currentDate.getTime() - 14 * 24 * 60 * 60 * 1000);
+
+    // Users this week vs last week
+    const usersThisWeek = await prisma.user.count({
+      where: { createdAt: { gte: oneWeekAgo } }
+    });
+    const usersLastWeek = await prisma.user.count({
+      where: { createdAt: { gte: twoWeeksAgo, lt: oneWeekAgo } }
+    });
+
+    // Orders this week vs last week
+    const ordersThisWeek = await prisma.order.count({
+      where: { createdAt: { gte: oneWeekAgo } }
+    });
+    const ordersLastWeek = await prisma.order.count({
+      where: { createdAt: { gte: twoWeeksAgo, lt: oneWeekAgo } }
+    });
+
+    // Revenue this week vs last week
+    const revThisWeek = await prisma.order.aggregate({
+      _sum: { totalPrice: true },
+      where: {
+        orderStatus: { not: 'CANCELLED' },
+        paymentStatus: { in: ['PAID', 'SUCCESS'] },
+        createdAt: { gte: oneWeekAgo }
+      }
+    });
+    const revLastWeek = await prisma.order.aggregate({
+      _sum: { totalPrice: true },
+      where: {
+        orderStatus: { not: 'CANCELLED' },
+        paymentStatus: { in: ['PAID', 'SUCCESS'] },
+        createdAt: { gte: twoWeeksAgo, lt: oneWeekAgo }
+      }
+    });
+    const revenueThisWeek = revThisWeek._sum.totalPrice || 0;
+    const revenueLastWeek = revLastWeek._sum.totalPrice || 0;
+
+    // Pending orders this week vs last week
+    const pendingThisWeek = await prisma.order.count({
+      where: { orderStatus: 'PENDING', createdAt: { gte: oneWeekAgo } }
+    });
+    const pendingLastWeek = await prisma.order.count({
+      where: { orderStatus: 'PENDING', createdAt: { gte: twoWeeksAgo, lt: oneWeekAgo } }
+    });
+
+    const calculateTrend = (curr, prev) => {
+      if (prev === 0) {
+        return curr > 0 ? '+100%' : '+0%';
+      }
+      const pct = ((curr - prev) / prev) * 100;
+      return pct >= 0 ? `+${pct.toFixed(1)}%` : `${pct.toFixed(1)}%`;
+    };
+
+    const trends = {
+      revenueTrend: calculateTrend(revenueThisWeek, revenueLastWeek),
+      ordersTrend: calculateTrend(ordersThisWeek, ordersLastWeek),
+      usersTrend: calculateTrend(usersThisWeek, usersLastWeek),
+      pendingTrend: calculateTrend(pendingThisWeek, pendingLastWeek)
+    };
+
     // Calculate real monthly revenue from orders
     const currentYear = new Date().getFullYear();
     const monthlySales = {
@@ -139,7 +203,8 @@ exports.getDashboardStats = async (req, res) => {
       pendingOrdersCount,
       recentOrders,
       totalRevenue,
-      chartData
+      chartData,
+      trends
     };
     cacheTimestamp = now;
 

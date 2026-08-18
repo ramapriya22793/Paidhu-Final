@@ -2,10 +2,14 @@ import { useState, useEffect } from 'react';
 import { FiDollarSign, FiShoppingBag, FiUsers, FiClock } from 'react-icons/fi';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
 
-const StatCard = ({ title, value, icon, trend }) => (
-  <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between group hover:shadow-md transition-shadow">
+const StatCard = ({ title, value, icon, trend, onClick }) => (
+  <div 
+    onClick={onClick} 
+    className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between group hover:shadow-md transition-shadow cursor-pointer"
+  >
     <div>
       <p className="text-sm font-medium text-gray-500 mb-1">{title}</p>
       <h3 className="text-2xl font-bold text-gray-800 font-playfair">{value}</h3>
@@ -20,6 +24,7 @@ const StatCard = ({ title, value, icon, trend }) => (
 );
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalProducts: 0,
@@ -27,7 +32,13 @@ const Dashboard = () => {
     totalRevenue: 0,
     pendingOrdersCount: 0,
     chartData: [],
-    recentOrders: []
+    recentOrders: [],
+    trends: {
+      revenueTrend: '+0.0%',
+      ordersTrend: '+0.0%',
+      usersTrend: '+0.0%',
+      pendingTrend: '+0.0%'
+    }
   });
   const [loading, setLoading] = useState(true);
 
@@ -73,10 +84,34 @@ const Dashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-        <StatCard title="Total Revenue" value={`₹${stats.totalRevenue.toLocaleString()}`} icon={<FiDollarSign />} trend="+12.5%" />
-        <StatCard title="Total Orders" value={stats.totalOrders} icon={<FiShoppingBag />} trend="+8.2%" />
-        <StatCard title="Total Customers" value={stats.totalUsers} icon={<FiUsers />} trend="+4.1%" />
-        <StatCard title="Pending Orders" value={stats.pendingOrdersCount} icon={<FiClock />} trend="-2.4%" />
+        <StatCard 
+          title="Total Revenue" 
+          value={`₹${stats.totalRevenue.toLocaleString()}`} 
+          icon={<FiDollarSign />} 
+          trend={stats.trends?.revenueTrend || '+0.0%'} 
+          onClick={() => navigate('/payments')}
+        />
+        <StatCard 
+          title="Total Orders" 
+          value={stats.totalOrders} 
+          icon={<FiShoppingBag />} 
+          trend={stats.trends?.ordersTrend || '+0.0%'} 
+          onClick={() => navigate('/orders')}
+        />
+        <StatCard 
+          title="Total Customers" 
+          value={stats.totalUsers} 
+          icon={<FiUsers />} 
+          trend={stats.trends?.usersTrend || '+0.0%'} 
+          onClick={() => navigate('/customers')}
+        />
+        <StatCard 
+          title="Pending Orders" 
+          value={stats.pendingOrdersCount} 
+          icon={<FiClock />} 
+          trend={stats.trends?.pendingTrend || '+0.0%'} 
+          onClick={() => navigate('/orders')}
+        />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
