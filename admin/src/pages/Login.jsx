@@ -15,28 +15,8 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await authService.login(email, password);
-      const userObj = response.user || response.admin || {};
-      const role = userObj.role || 'SUPER_ADMIN';
-      const hostname = window.location.hostname;
-
-      if (hostname === 'ecommerce.paidhuethicalfoods.com' && role === 'ACCOUNTS_ADMIN') {
-        authService.logout();
-        setError("Access Denied: Accounts Admin must log in at accounts.paidhuethicalfoods.com");
-        return;
-      }
-
-      if (hostname === 'accounts.paidhuethicalfoods.com' && role === 'ECOMMERCE_ADMIN') {
-        authService.logout();
-        setError("Access Denied: E-Commerce Admin must log in at ecommerce.paidhuethicalfoods.com");
-        return;
-      }
-
-      if (response.mustChangePassword) {
-        navigate('/change-password');
-      } else {
-        navigate('/'); // Redirect to dashboard
-      }
+      await authService.login(email, password);
+      navigate('/'); // Redirect to dashboard
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed. Please check your credentials.');
     } finally {

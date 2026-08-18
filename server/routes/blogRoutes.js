@@ -17,16 +17,14 @@ router.get('/', getAllBlogs);
 router.get('/sync-status', getSyncLogs);
 router.get('/:slug', getBlogBySlug);
 
-const { verifyToken, verifyAdmin, checkPermission } = require('../middleware/authMiddleware');
-
 // Import & Sync Routes
-router.post('/import', verifyToken, verifyAdmin, checkPermission('blogs'), importBlogsManual);
-router.post('/sync', verifyToken, verifyAdmin, checkPermission('blogs'), syncBlogsManual);
-router.delete('/imported/all', verifyToken, verifyAdmin, checkPermission('blogs'), deleteAllImportedBlogs);
+router.post('/import', importBlogsManual);
+router.post('/sync', syncBlogsManual);
+router.delete('/imported/all', deleteAllImportedBlogs);
 
 // Admin Custom CRUD Routes
-router.post('/', verifyToken, verifyAdmin, checkPermission('blogs'), createBlog);
-router.put('/:id', verifyToken, verifyAdmin, checkPermission('blogs'), updateBlog);
-router.delete('/:id', verifyToken, verifyAdmin, checkPermission('blogs'), deleteBlog);
+router.post('/', createBlog);
+router.put('/:id', updateBlog);
+router.delete('/:id', deleteBlog);
 
 module.exports = router;

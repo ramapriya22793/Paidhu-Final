@@ -87,26 +87,6 @@ app.use("/api/webhooks", require("./routes/webhookRoutes"));
 
 const initializeAdmin = async () => {
   try {
-    // Run schema push programmatically on Vercel startup
-    if (process.env.VERCEL) {
-      const { execSync } = require('child_process');
-      try {
-        console.log("Startup: Running database schema synchronization...");
-        const env = { ...process.env };
-        if (env.DATABASE_URL && env.DATABASE_URL.startsWith('prisma://') && env.DIRECT_URL) {
-          env.DATABASE_URL = env.DIRECT_URL;
-        }
-        execSync('npx prisma db push --skip-generate', {
-          env,
-          stdio: 'inherit',
-          cwd: __dirname
-        });
-        console.log("Startup: Database schema synchronized successfully.");
-      } catch (dbError) {
-        console.error("Startup: Database schema synchronization failed:", dbError.message);
-      }
-    }
-
     const adminEmail = "ecompaidhu@gmail.com";
     const existingAdmin = await prisma.user.findUnique({ where: { email: adminEmail } });
     if (!existingAdmin) {
@@ -116,60 +96,17 @@ const initializeAdmin = async () => {
           name: "Admin",
           email: adminEmail,
           password: hashedPassword,
-          isAdmin: true,
-          role: "SUPER_ADMIN"
+          isAdmin: true
         }
       });
       console.log("Static Admin user created successfully.");
-    } else if (!existingAdmin.role || existingAdmin.role === 'CUSTOMER') {
-      await prisma.user.update({
-        where: { email: adminEmail },
-        data: { role: "SUPER_ADMIN" }
-      });
-      console.log("Admin user role updated to SUPER_ADMIN.");
-    }
-
-    // Seed E-Commerce Admin
-    const ecomEmail = "ecommerce.admin@yourdomain.com";
-    const existingEcom = await prisma.user.findUnique({ where: { email: ecomEmail } });
-    if (!existingEcom) {
-      const hashedPassword = await bcrypt.hash("Ecom@2026#Admin", 10);
-      await prisma.user.create({
-        data: {
-          name: "E-Commerce Admin",
-          email: ecomEmail,
-          password: hashedPassword,
-          isAdmin: true,
-          role: "ECOMMERCE_ADMIN",
-          mustChangePassword: true
-        }
-      });
-      console.log("E-Commerce Admin user created successfully.");
-    }
-
-    // Seed Accounts Admin
-    const accountsEmail = "accounts.admin@yourdomain.com";
-    const existingAccounts = await prisma.user.findUnique({ where: { email: accountsEmail } });
-    if (!existingAccounts) {
-      const hashedPassword = await bcrypt.hash("Accounts@2026#Admin", 10);
-      await prisma.user.create({
-        data: {
-          name: "Accounts Admin",
-          email: accountsEmail,
-          password: hashedPassword,
-          isAdmin: true,
-          role: "ACCOUNTS_ADMIN",
-          mustChangePassword: true
-        }
-      });
-      console.log("Accounts Admin user created successfully.");
     }
   } catch (error) {
-    console.error("Failed to initialize admin users:", error);
+    console.error("Failed to initialize admin user:", error);
   }
 };
 
-initializeAdmin();
+// initializeAdmin();
 
 app.get("/", (req, res) => {
   res.send("Paidhu API Running");

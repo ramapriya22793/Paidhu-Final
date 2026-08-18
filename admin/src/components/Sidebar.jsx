@@ -3,8 +3,7 @@ import authService from '../services/authService';
 import { 
   FiHome, FiBox, FiShoppingCart, FiUsers, 
   FiTag, FiStar, FiFileText, FiSearch, 
-  FiSettings, FiLogOut, FiImage, FiLayout, FiFeather, FiGrid, FiBookOpen, FiHeart, FiActivity,
-  FiUser
+  FiSettings, FiLogOut, FiImage, FiLayout, FiFeather, FiGrid, FiBookOpen, FiHeart, FiActivity
 } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 
@@ -38,43 +37,16 @@ const menuItems = [
   { name: 'About Us', path: '/about-us-management', icon: <FiUsers /> },
   { name: 'Saffron Guidance Leads', path: '/saffron-guidance-leads', icon: <FiFileText /> },
   { name: 'Career Applications', path: '/career-applications', icon: <FiUsers /> },
-  { name: 'Profile', path: '/profile', icon: <FiUser /> },
 ];
 
 
 const Sidebar = () => {
   const navigate = useNavigate();
-  const user = authService.getCurrentUser();
-  const role = user?.role || 'SUPER_ADMIN';
 
   const handleLogout = () => {
     authService.logout();
     navigate('/login');
   };
-
-  const getFilteredMenuItems = () => {
-    if (role === 'SUPER_ADMIN') {
-      return menuItems;
-    }
-    if (role === 'ECOMMERCE_ADMIN') {
-      return menuItems.filter(item => 
-        ['Dashboard', 'Products', 'Orders', 'Active Carts', 'WhatsApp Leads', 'Blogs', 'Banners', 'BYOC Management', 'Bulk Inquiries', 'Saffron Guidance Leads', 'Profile'].includes(item.name)
-      );
-    }
-    if (role === 'ACCOUNTS_ADMIN') {
-      return menuItems.map(item => {
-        if (item.name === 'Products') {
-          return { ...item, name: 'Stock Management' };
-        }
-        return item;
-      }).filter(item => 
-        ['Dashboard', 'Orders', 'Payments', 'Stock Management', 'Profile'].includes(item.name)
-      );
-    }
-    return [];
-  };
-
-  const filteredItems = getFilteredMenuItems();
 
   return (
     <aside className="w-64 bg-white border-r border-gray-200 h-screen flex flex-col fixed left-0 top-0 shadow-sm z-50">
@@ -84,14 +56,14 @@ const Sidebar = () => {
       
       <div className="flex-1 overflow-y-auto py-4 custom-scrollbar">
         <nav className="px-4 space-y-1">
-          {filteredItems.map((item) => (
+          {menuItems.map((item) => (
             <NavLink
               key={item.name}
               to={item.path}
               className={({ isActive }) =>
                 `flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
                   isActive 
-                     ? 'bg-brand-plum text-brand-cream shadow-md' 
+                    ? 'bg-brand-plum text-brand-cream shadow-md' 
                     : 'text-gray-600 hover:bg-brand-cream/50 hover:text-brand-plum'
                 }`
               }
@@ -104,12 +76,10 @@ const Sidebar = () => {
       </div>
 
       <div className="p-4 border-t border-gray-100 space-y-1">
-        {role === 'SUPER_ADMIN' && (
-          <NavLink to="/settings" className={({ isActive }) => `flex w-full items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${isActive ? 'bg-brand-plum text-brand-cream' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'}`}>
-            <span className="text-lg"><FiSettings /></span>
-            <span className="font-medium text-sm tracking-wide">Settings</span>
-          </NavLink>
-        )}
+        <NavLink to="/settings" className={({ isActive }) => `flex w-full items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${isActive ? 'bg-brand-plum text-brand-cream' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'}`}>
+          <span className="text-lg"><FiSettings /></span>
+          <span className="font-medium text-sm tracking-wide">Settings</span>
+        </NavLink>
         <button 
           onClick={handleLogout}
           className="flex w-full items-center space-x-3 px-4 py-3 rounded-lg text-red-500 hover:bg-red-50 transition-colors"

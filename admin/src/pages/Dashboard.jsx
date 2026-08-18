@@ -62,9 +62,6 @@ const Dashboard = () => {
     }
   };
 
-  const user = authService.getCurrentUser();
-  const role = user?.role || 'SUPER_ADMIN';
-
   // Remove blocking loading screen. We will render the UI immediately and show loading states inside.
   return (
     <div className="space-y-8">
@@ -82,47 +79,41 @@ const Dashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-        {role !== 'ECOMMERCE_ADMIN' && (
-          <StatCard title="Total Revenue" value={`₹${stats.totalRevenue.toLocaleString()}`} icon={<FiDollarSign />} trend={stats.trends?.revenueTrend || "+0.0%"} onClick={() => navigate('/payments')} />
-        )}
+        <StatCard title="Total Revenue" value={`₹${stats.totalRevenue.toLocaleString()}`} icon={<FiDollarSign />} trend={stats.trends?.revenueTrend || "+0.0%"} onClick={() => navigate('/payments')} />
         <StatCard title="Total Orders" value={stats.totalOrders} icon={<FiShoppingBag />} trend={stats.trends?.ordersTrend || "+0.0%"} onClick={() => navigate('/orders')} />
-        {role !== 'ACCOUNTS_ADMIN' && (
-          <StatCard title="Total Customers" value={stats.totalUsers} icon={<FiUsers />} trend={stats.trends?.usersTrend || "+0.0%"} onClick={() => navigate('/customers')} />
-        )}
+        <StatCard title="Total Customers" value={stats.totalUsers} icon={<FiUsers />} trend={stats.trends?.usersTrend || "+0.0%"} onClick={() => navigate('/customers')} />
         <StatCard title="Pending Orders" value={stats.pendingOrdersCount} icon={<FiClock />} trend={stats.trends?.pendingTrend || "+0.0%"} onClick={() => navigate('/orders')} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Chart */}
-        {role !== 'ECOMMERCE_ADMIN' && (
-          <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <h2 className="text-lg font-semibold text-gray-800 mb-6 font-playfair">Revenue Overview</h2>
-            <div className="h-72 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={stats.chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                  <defs>
-                    <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#662654" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#662654" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#6b7280' }} dy={10} />
-                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#6b7280' }} dx={-10} tickFormatter={(val) => `₹${val.toLocaleString()}`} />
-                  <CartesianGrid vertical={false} stroke="#f3f4f6" />
-                  <Tooltip 
-                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
-                    labelStyle={{ fontWeight: 'bold', color: '#1f2937', marginBottom: '4px' }}
-                    formatter={(val) => [`₹${Number(val).toLocaleString()}`, 'Revenue']}
-                  />
-                  <Area type="monotone" dataKey="sales" stroke="#662654" strokeWidth={3} fillOpacity={1} fill="url(#colorRevenue)" />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
+        <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <h2 className="text-lg font-semibold text-gray-800 mb-6 font-playfair">Revenue Overview</h2>
+          <div className="h-72 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={stats.chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#662654" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#662654" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#6b7280' }} dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#6b7280' }} dx={-10} tickFormatter={(val) => `₹${val.toLocaleString()}`} />
+                <CartesianGrid vertical={false} stroke="#f3f4f6" />
+                <Tooltip 
+                  contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
+                  labelStyle={{ fontWeight: 'bold', color: '#1f2937', marginBottom: '4px' }}
+                  formatter={(val) => [`₹${Number(val).toLocaleString()}`, 'Revenue']}
+                />
+                <Area type="monotone" dataKey="sales" stroke="#662654" strokeWidth={3} fillOpacity={1} fill="url(#colorRevenue)" />
+              </AreaChart>
+            </ResponsiveContainer>
           </div>
-        )}
+        </div>
 
         {/* Recent Orders List */}
-        <div className={`${role === 'ECOMMERCE_ADMIN' ? 'lg:col-span-3' : 'lg:col-span-1'} bg-white p-6 rounded-xl shadow-sm border border-gray-100`}>
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
           <h2 className="text-lg font-semibold text-gray-800 mb-6 font-playfair">Recent Orders</h2>
           <div className="space-y-4">
             {stats.recentOrders.length === 0 ? (
@@ -142,9 +133,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="text-right">
-                      {role !== 'ECOMMERCE_ADMIN' && (
-                        <p className="text-sm font-semibold text-gray-800 font-mono">₹{order.totalPrice}</p>
-                      )}
+                      <p className="text-sm font-semibold text-gray-800">₹{order.totalPrice}</p>
                       <p className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded mt-1 ${
                         order.orderStatus === 'PENDING' ? 'text-yellow-600 bg-yellow-50' : 
                         order.orderStatus === 'CONFIRMED' ? 'text-blue-600 bg-blue-50' :
