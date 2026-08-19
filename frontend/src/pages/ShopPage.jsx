@@ -251,15 +251,21 @@ const ProductCard = ({ product, index, navSection }) => {
               <span className="text-[10px] text-[#662654]/40 font-medium tracking-wide uppercase">Paidhu</span>
             </div>
 
-            {/* Product image — hides on error, gentle scale on hover */}
             <img
               src={(product.image && typeof product.image === 'string' && product.image.startsWith('http')) ? product.image : (product.image ? `${API_BASE}${product.image}` : '/mascot.png')}
               alt={product.name}
               className="absolute inset-0 w-full h-full object-contain p-3 transition-transform duration-500 ease-out group-hover:scale-105"
-              onError={e => { e.currentTarget.style.display = 'none'; }}
+              onError={e => { 
+                if (e.currentTarget.src && e.currentTarget.src.includes('wp.paidhu.com')) {
+                  e.currentTarget.src = `${API_BASE}/api/products/image-proxy?url=${encodeURIComponent(product.image)}`;
+                } else {
+                  e.currentTarget.style.display = 'none';
+                }
+              }}
               loading={index < 4 ? "eager" : "lazy"}
               fetchPriority={index < 4 ? "high" : "low"}
             />
+
           </>
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-[#f5efe8] to-[#ede0d4] gap-2">
