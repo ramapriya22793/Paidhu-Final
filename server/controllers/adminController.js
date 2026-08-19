@@ -78,7 +78,7 @@ exports.getProfile = async (req, res) => {
 };
 let cachedStats = null;
 let cacheTimestamp = 0;
-const CACHE_DURATION = 120000; // 2 minutes cache
+const CACHE_DURATION = 30000; // 30 seconds — near real-time sync
 
 exports.getDashboardStats = async (req, res) => {
   try {

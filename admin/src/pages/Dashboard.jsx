@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiDollarSign, FiShoppingBag, FiUsers, FiClock, FiArrowUpRight, FiArrowDownRight } from 'react-icons/fi';
+import { FiDollarSign, FiShoppingBag, FiUsers, FiClock, FiArrowUpRight, FiArrowDownRight, FiRefreshCw } from 'react-icons/fi';
 import {
   AreaChart, Area, BarChart, Bar,
   LineChart, Line,
@@ -83,30 +83,44 @@ const Dashboard = () => {
     trends: null
   });
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState(null);
   const [loadingMsg, setLoadingMsg] = useState('Loading Dashboard...');
 
-  useEffect(() => {
-    fetchStats();
-    const timer = setTimeout(() => {
-      setLoadingMsg('Waking up server (this may take 30-60 seconds on free hosting)...');
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async (isManual = false) => {
     try {
+      if (isManual) setRefreshing(true);
       const config = { headers: { Authorization: `Bearer ${authService.getToken()}` } };
       const response = await axios.get(
         (import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/admin/stats',
         config
       );
       setStats(response.data);
+      setLastUpdated(new Date());
     } catch (error) {
       console.error('Failed to fetch dashboard stats', error);
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchStats();
+
+    // Cold start warning
+    const timer = setTimeout(() => {
+      setLoadingMsg('Waking up server (this may take 30-60 seconds on free hosting)...');
+    }, 3000);
+
+    // Auto-refresh every 30 seconds for near real-time sync
+    const interval = setInterval(() => fetchStats(), 30000);
+
+    return () => {
+      clearTimeout(timer);
+      clearInterval(interval);
+    };
+  }, [fetchStats]);
 
   const user = authService.getCurrentUser();
   const role = user?.role || 'SUPER_ADMIN';
@@ -117,14 +131,37 @@ const Dashboard = () => {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-gray-800 font-playfair">Dashboard Overview</h1>
-          <p className="text-sm text-gray-500 mt-1">Welcome back to Paidhu management.</p>
-        </div>
-        {loading && (
-          <div className="flex items-center text-brand-plum text-sm font-medium">
-            <div className="w-4 h-4 border-2 border-brand-plum/20 border-t-brand-plum rounded-full animate-spin mr-2"></div>
-            {loadingMsg}
+          <div className="flex items-center gap-3 mt-1">
+            <p className="text-sm text-gray-500">Welcome back to Paidhu management.</p>
+            {lastUpdated && (
+              <span className="text-xs text-gray-400">
+                · Updated {lastUpdated.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+              </span>
+            )}
           </div>
-        )}
+        </div>
+        <div className="flex items-center gap-3">
+          {/* Live indicator */}
+          <div className="flex items-center gap-1.5 text-xs font-semibold text-green-600 bg-green-50 px-3 py-1.5 rounded-full">
+            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+            Live
+          </div>
+          {/* Manual Refresh */}
+          <button
+            onClick={() => fetchStats(true)}
+            disabled={refreshing}
+            className="flex items-center gap-2 text-sm font-semibold text-brand-plum bg-brand-plum/10 hover:bg-brand-plum/20 px-4 py-2 rounded-xl transition-all disabled:opacity-60"
+          >
+            <FiRefreshCw size={14} className={refreshing ? 'animate-spin' : ''} />
+            {refreshing ? 'Syncing...' : 'Refresh'}
+          </button>
+          {loading && !refreshing && (
+            <div className="flex items-center text-brand-plum text-sm font-medium">
+              <div className="w-4 h-4 border-2 border-brand-plum/20 border-t-brand-plum rounded-full animate-spin mr-2"></div>
+              {loadingMsg}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Stat Cards */}
