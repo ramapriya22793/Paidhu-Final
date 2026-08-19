@@ -212,29 +212,6 @@ exports.getDashboardStats = async (req, res) => {
       sales: monthlySales[name]
     }));
 
-    // Product-wise revenue: aggregate revenue by product from OrderItem joins
-    const productRevenueRaw = await prisma.orderItem.groupBy({
-      by: ['productId'],
-      _sum: { price: true },
-      _count: { id: true },
-      orderBy: { _sum: { price: 'desc' } },
-      take: 8
-    });
-
-    // Fetch product names for those IDs
-    const productIds = productRevenueRaw.map(r => r.productId);
-    const products = await prisma.product.findMany({
-      where: { id: { in: productIds } },
-      select: { id: true, name: true }
-    });
-    const productMap = Object.fromEntries(products.map(p => [p.id, p.name]));
-
-    const productRevenueData = productRevenueRaw.map(r => ({
-      name: (productMap[r.productId] || `Product #${r.productId}`).substring(0, 20),
-      value: Math.round(r._sum.price || 0),
-      orders: r._count.id
-    }));
-
     cachedStats = {
       totalUsers,
       totalProducts,
@@ -243,7 +220,6 @@ exports.getDashboardStats = async (req, res) => {
       recentOrders,
       totalRevenue,
       chartData,
-      productRevenueData,
       trends: {
         revenueTrend,
         ordersTrend,
