@@ -341,18 +341,23 @@ const ProductDetailPage = () => {
                   transformOrigin: isZooming ? `${zoomPos.x}% ${zoomPos.y}%` : 'center'
                 }}
                 transition={isZooming ? { type: 'tween', duration: 0.1 } : { type: 'spring', damping: 25, stiffness: 120 }}
-                src={productImage} 
+                src={productImage || '/white_lotus_cookies_new.png'} 
                 alt={product.name} 
                 title={product.name}
                 width="600"
                 height="600"
                 loading="eager"
-                srcSet={`${productImage}?w=300 300w, ${productImage}?w=600 600w`}
-                sizes="(max-width: 600px) 300px, 600px"
                 className="w-full h-full object-contain p-6 pointer-events-none"
                 style={{ imageRendering: 'high-quality', WebkitBackfaceVisibility: 'hidden', WebkitTransform: 'translateZ(0)' }}
                 onLoad={() => setMainImgLoading(false)}
+                onError={(e) => {
+                  setMainImgLoading(false);
+                  if (e.currentTarget.src !== 'https://paidhuethicalfoods.com/white_lotus_cookies_new.png') {
+                    e.currentTarget.src = 'https://paidhuethicalfoods.com/white_lotus_cookies_new.png';
+                  }
+                }}
               />
+
               {mainImgLoading && (
                 <div className="absolute inset-0 bg-gradient-to-br from-[#faf9f7] via-[#f5f3ef] to-[#faf9f7] animate-pulse flex items-center justify-center">
                   <div className="flex flex-col items-center gap-3">
