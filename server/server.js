@@ -10,13 +10,28 @@ const path = require("path");
 const compression = require("compression");
 const securityHeaders = require("./middleware/securityHeaders");
 
+const ALLOWED_ORIGINS = [
+  'https://www.paidhuethicalfoods.com',
+  'https://paidhuethicalfoods.com',
+  'https://admin.paidhuethicalfoods.com',
+  'https://accounts.paidhuethicalfoods.com',
+  'https://ecommerce.paidhuethicalfoods.com',
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:3000',
+];
+
 app.use((req, res, next) => {
-  const origin = req.headers.origin || '*';
-  res.setHeader('Access-Control-Allow-Origin', origin);
+  const origin = req.headers.origin;
+  if (!origin || ALLOWED_ORIGINS.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin || '*');
+  } else {
+    res.setHeader('Access-Control-Allow-Origin', 'https://www.paidhuethicalfoods.com');
+  }
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Access-Control-Allow-Origin, X-HTTP-Method-Override, Content-Type, Authorization, Accept');
-  
+
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
@@ -25,7 +40,13 @@ app.use((req, res, next) => {
 
 app.use(compression());
 app.use(cors({
-  origin: true,
+  origin: (origin, callback) => {
+    if (!origin || ALLOWED_ORIGINS.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(null, false);
+    }
+  },
   credentials: true
 }));
 app.use(securityHeaders);
