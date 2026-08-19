@@ -2,7 +2,10 @@ const prisma = require("../prismaClient");
 
 const getAllBanners = async (req, res) => {
   try {
-    const banners = await prisma.banner.findMany();
+    const banners = await prisma.banner.findMany({
+      orderBy: { id: 'desc' }
+    });
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0');
     res.json(banners);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -16,6 +19,7 @@ const getActiveBannerByPage = async (req, res) => {
       where: { pageSlug, isActive: true },
       orderBy: { id: 'desc' }
     });
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0');
     res.json(banners);
   } catch (error) {
     res.status(500).json({ message: error.message });
