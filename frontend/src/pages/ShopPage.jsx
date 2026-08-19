@@ -252,19 +252,19 @@ const ProductCard = ({ product, index, navSection }) => {
             </div>
 
             <img
-              src={(product.image && typeof product.image === 'string' && product.image.startsWith('http')) ? product.image : (product.image ? `${API_BASE}${product.image}` : '/mascot.png')}
+              src={product.image || getCategoryIcon(product.category)}
               alt={product.name}
               className="absolute inset-0 w-full h-full object-contain p-3 transition-transform duration-500 ease-out group-hover:scale-105"
               onError={e => { 
-                if (e.currentTarget.src && e.currentTarget.src.includes('wp.paidhu.com')) {
-                  e.currentTarget.src = `${API_BASE}/api/products/image-proxy?url=${encodeURIComponent(product.image)}`;
-                } else {
-                  e.currentTarget.style.display = 'none';
+                const fallback = getCategoryIcon(product.category);
+                if (e.currentTarget.src !== window.location.origin + fallback && e.currentTarget.src !== fallback) {
+                  e.currentTarget.src = fallback;
                 }
               }}
               loading={index < 4 ? "eager" : "lazy"}
               fetchPriority={index < 4 ? "high" : "low"}
             />
+
 
           </>
         ) : (
