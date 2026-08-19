@@ -411,6 +411,15 @@ const ProductCollection = () => {
           };
         });
 
+        // Deduplicate mapped products by title to avoid rendering duplicates
+        const seen = new Set();
+        mappedProducts = mappedProducts.filter(p => {
+          const key = (p.title || '').trim().toLowerCase();
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+
         productsCache[activeCategory] = mappedProducts;
 
         if (isMounted) {

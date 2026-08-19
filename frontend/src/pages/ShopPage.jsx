@@ -680,6 +680,15 @@ const ShopPage = () => {
             fetchedPages = Math.ceil(fetchedTotal / LIMIT);
           }
 
+          // Deduplicate fetched products by name/slug to prevent duplicates
+          const seen = new Set();
+          fetchedList = fetchedList.filter(p => {
+            const key = (p.slug || p.name || '').trim().toLowerCase();
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+          });
+
           // Sort category-wise (cookies first)
           const categoryOrder = ['Bloom Cookies', 'Saffron', 'Petal Jam', 'Medley Teas', 'Brew Flora'];
           const getCategoryIndex = (cat) => {
