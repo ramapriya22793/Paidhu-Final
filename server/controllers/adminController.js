@@ -204,12 +204,48 @@ exports.getDashboardStats = async (req, res) => {
       monthlySales[monthName] += (order.totalPrice || 0);
     });
 
-    // Create array up to the current month to avoid empty future months looking weird, or just show all
+    // Create array up to the current month
     const currentMonthIndex = new Date().getMonth();
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const chartData = monthNames.slice(0, currentMonthIndex + 1).map(name => ({
       name,
       sales: monthlySales[name]
+    }));
+
+    // Order status breakdown for donut chart
+    const [deliveredCount, confirmedCount, cancelledCount, shippedCount] = await Promise.all([
+      prisma.order.count({ where: { orderStatus: 'DELIVERED' } }),
+      prisma.order.count({ where: { orderStatus: 'CONFIRMED' } }),
+      prisma.order.count({ where: { orderStatus: 'CANCELLED' } }),
+      prisma.order.count({ where: { orderStatus: 'SHIPPED' } }),
+    ]);
+    const orderStatusData = [
+      { name: 'Delivered', value: deliveredCount, color: '#10b981' },
+      { name: 'Pending',   value: pendingOrdersCount, color: '#f59e0b' },
+      { name: 'Confirmed', value: confirmedCount, color: '#3b82f6' },
+      { name: 'Shipped',   value: shippedCount, color: '#8b5cf6' },
+      { name: 'Cancelled', value: cancelledCount, color: '#ef4444' },
+    ].filter(d => d.value > 0);
+
+    // Monthly orders count for bar chart
+    const monthlyOrderCounts = { Jan:0,Feb:0,Mar:0,Apr:0,May:0,Jun:0,Jul:0,Aug:0,Sep:0,Oct:0,Nov:0,Dec:0 };
+    const allYearOrders = await prisma.order.findMany({
+      where: {
+        createdAt: {
+          gte: new Date(`${currentYear}-01-01T00:00:00.000Z`),
+          lte: new Date(`${currentYear}-12-31T23:59:59.999Z`)
+        }
+      },
+      select: { createdAt: true }
+    });
+    allYearOrders.forEach(o => {
+      const mn = monthNames[new Date(o.createdAt).getMonth()];
+      monthlyOrderCounts[mn]++;
+    });
+    const ordersChartData = monthNames.slice(0, currentMonthIndex + 1).map(name => ({
+      name,
+      orders: monthlyOrderCounts[name],
+      revenue: monthlySales[name]
     }));
 
     cachedStats = {
@@ -220,6 +256,8 @@ exports.getDashboardStats = async (req, res) => {
       recentOrders,
       totalRevenue,
       chartData,
+      ordersChartData,
+      orderStatusData,
       trends: {
         revenueTrend,
         ordersTrend,
