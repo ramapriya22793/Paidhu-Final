@@ -92,7 +92,7 @@ const Dashboard = () => {
       if (isManual) setRefreshing(true);
       const config = { headers: { Authorization: `Bearer ${authService.getToken()}` } };
       const response = await axios.get(
-        (import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/admin/stats',
+        (import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/admin/stats' + (isManual ? '?refresh=true' : ''),
         config
       );
       setStats(response.data);

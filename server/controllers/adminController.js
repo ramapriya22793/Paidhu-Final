@@ -83,7 +83,8 @@ const CACHE_DURATION = 30000; // 30 seconds — near real-time sync
 exports.getDashboardStats = async (req, res) => {
   try {
     const now = Date.now();
-    if (cachedStats && (now - cacheTimestamp < CACHE_DURATION)) {
+    const forceRefresh = req.query.refresh === 'true';
+    if (!forceRefresh && cachedStats && (now - cacheTimestamp < CACHE_DURATION)) {
       return res.json(cachedStats);
     }
 
