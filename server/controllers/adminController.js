@@ -248,6 +248,55 @@ exports.getDashboardStats = async (req, res) => {
       revenue: monthlySales[name]
     }));
 
+    // Top 5 products by revenue from order items
+    const topProductsRaw = await prisma.orderItem.groupBy({
+      by: ['productId'],
+      _sum: { price: true },
+      _count: { id: true },
+      orderBy: { _sum: { price: 'desc' } },
+      take: 5,
+      where: {
+        order: {
+          orderStatus: { not: 'CANCELLED' },
+          paymentStatus: { in: ['PAID', 'SUCCESS'] }
+        }
+      }
+    });
+    const productIds = topProductsRaw.map(p => p.productId);
+    const productDetails = await prisma.product.findMany({
+      where: { id: { in: productIds } },
+      select: { id: true, name: true }
+    });
+    const topProducts = topProductsRaw.map(p => {
+      const detail = productDetails.find(d => d.id === p.productId);
+      return {
+        name: detail ? (detail.name.length > 20 ? detail.name.slice(0, 18) + '…' : detail.name) : `Product #${p.productId}`,
+        revenue: Math.round(p._sum.price || 0),
+        orders: p._count.id
+      };
+    });
+
+    // Monthly new customers growth
+    const customerGrowthCounts = { Jan:0,Feb:0,Mar:0,Apr:0,May:0,Jun:0,Jul:0,Aug:0,Sep:0,Oct:0,Nov:0,Dec:0 };
+    const allYearUsers = await prisma.user.findMany({
+      where: {
+        isAdmin: false,
+        createdAt: {
+          gte: new Date(`${currentYear}-01-01T00:00:00.000Z`),
+          lte: new Date(`${currentYear}-12-31T23:59:59.999Z`)
+        }
+      },
+      select: { createdAt: true }
+    });
+    allYearUsers.forEach(u => {
+      const mn = monthNames[new Date(u.createdAt).getMonth()];
+      customerGrowthCounts[mn]++;
+    });
+    const customerGrowth = monthNames.slice(0, currentMonthIndex + 1).map(name => ({
+      name,
+      customers: customerGrowthCounts[name]
+    }));
+
     cachedStats = {
       totalUsers,
       totalProducts,
@@ -258,6 +307,8 @@ exports.getDashboardStats = async (req, res) => {
       chartData,
       ordersChartData,
       orderStatusData,
+      topProducts,
+      customerGrowth,
       trends: {
         revenueTrend,
         ordersTrend,

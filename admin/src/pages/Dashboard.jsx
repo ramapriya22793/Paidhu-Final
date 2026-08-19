@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { FiDollarSign, FiShoppingBag, FiUsers, FiClock, FiArrowUpRight, FiArrowDownRight } from 'react-icons/fi';
 import {
   AreaChart, Area, BarChart, Bar,
+  LineChart, Line,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell, Legend
+  PieChart, Pie, Cell
 } from 'recharts';
 import axios from 'axios';
 import authService from '../services/authService';
@@ -76,6 +77,8 @@ const Dashboard = () => {
     chartData: [],
     ordersChartData: [],
     orderStatusData: [],
+    topProducts: [],
+    customerGrowth: [],
     recentOrders: [],
     trends: null
   });
@@ -315,6 +318,74 @@ const Dashboard = () => {
             )}
           </div>
         </div>
+      </div>
+
+      {/* Charts Row 3: Top Products + Customer Growth */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        {/* Top Products by Revenue — Progress Bars */}
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+          <div className="mb-5">
+            <h2 className="text-lg font-semibold text-gray-800 font-playfair">Top Products by Revenue</h2>
+            <p className="text-xs text-gray-400 mt-0.5">Best performing products this year</p>
+          </div>
+          {stats.topProducts && stats.topProducts.length > 0 ? (
+            <div className="space-y-4">
+              {stats.topProducts.map((product, i) => {
+                const maxRevenue = stats.topProducts[0]?.revenue || 1;
+                const pct = Math.round((product.revenue / maxRevenue) * 100);
+                const colors = ['#662654','#8b3a6b','#a05080','#c47aaa','#e8b8d4'];
+                return (
+                  <div key={i}>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-sm font-medium text-gray-700 truncate max-w-[200px]">{product.name}</span>
+                      <div className="flex items-center gap-3 shrink-0">
+                        <span className="text-xs text-gray-400">{product.orders} orders</span>
+                        <span className="text-sm font-bold text-gray-800">₹{product.revenue.toLocaleString()}</span>
+                      </div>
+                    </div>
+                    <div className="w-full bg-gray-100 rounded-full h-2.5">
+                      <div className="h-2.5 rounded-full transition-all duration-700" style={{ width: `${pct}%`, backgroundColor: colors[i] }} />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="h-40 flex items-center justify-center text-gray-400 text-sm">No product sales data yet</div>
+          )}
+        </div>
+
+        {/* Customer Growth — Line Chart */}
+        {role !== 'ACCOUNTS_ADMIN' && (
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <div className="flex items-center justify-between mb-5">
+              <div>
+                <h2 className="text-lg font-semibold text-gray-800 font-playfair">Customer Growth</h2>
+                <p className="text-xs text-gray-400 mt-0.5">New registrations monthly</p>
+              </div>
+              <div className="text-right">
+                <p className="text-2xl font-bold text-gray-800 font-playfair">{stats.totalUsers.toLocaleString()}</p>
+                <p className="text-xs text-gray-400">Total customers</p>
+              </div>
+            </div>
+            <div className="h-52 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={stats.customerGrowth} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
+                  <CartesianGrid vertical={false} stroke="#f3f4f6" />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#9ca3af' }} dy={8} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#9ca3af' }} dx={-8} allowDecimals={false} />
+                  <Tooltip
+                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', padding: '10px 14px' }}
+                    formatter={v => [v, 'New Customers']}
+                    labelStyle={{ fontWeight: 700, color: '#1f2937', marginBottom: 4 }}
+                  />
+                  <Line type="monotone" dataKey="customers" stroke="#10b981" strokeWidth={3} dot={{ r: 5, fill: '#10b981', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 7, fill: '#10b981', strokeWidth: 0 }} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
