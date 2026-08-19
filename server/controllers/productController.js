@@ -174,6 +174,7 @@ const getProductById = async (req, res) => {
             { slug: rawId },
             { slug: decodedParam },
             { slug: normalizedSlug },
+            { slug: { contains: normalizedSlug, mode: 'insensitive' } },
             { name: { equals: decodedParam, mode: 'insensitive' } },
             { name: { contains: spaceParam, mode: 'insensitive' } }
           ]
@@ -181,9 +182,11 @@ const getProductById = async (req, res) => {
         include: {
           category: true,
           productImages: true
-        }
+        },
+        orderBy: { updatedAt: 'desc' }
       });
     }
+
 
     if (!p) {
       return res.status(404).json({ message: 'Product not found' });
