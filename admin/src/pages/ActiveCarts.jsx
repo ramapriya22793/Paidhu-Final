@@ -1,25 +1,31 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FiShoppingCart, FiUser, FiClock, FiPhone } from 'react-icons/fi';
+import { FiShoppingCart, FiUser, FiClock, FiPhone, FiRefreshCcw } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 
 const ActiveCarts = () => {
   const [carts, setCarts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchCarts = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const token = localStorage.getItem('adminToken') || localStorage.getItem('paidhu_token') || '';
+      const res = await axios.get((import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/cart/admin/all', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setCarts(res.data);
+    } catch (error) {
+      console.error('Failed to fetch active carts', error);
+      setError(error.response?.data?.message || error.message || 'Failed to fetch active carts');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchCarts = async () => {
-      try {
-        const res = await axios.get((import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/cart/admin/all', {
-          headers: { Authorization: `Bearer ${localStorage.getItem('adminToken')}` }
-        });
-        setCarts(res.data);
-      } catch (error) {
-        console.error('Failed to fetch active carts', error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchCarts();
   }, []);
 
@@ -28,6 +34,20 @@ const ActiveCarts = () => {
       <div className="w-5 h-5 border-2 border-brand-plum border-t-transparent rounded-full animate-spin"></div>
       <span>Loading active carts...</span>
     </div>;
+  }
+
+  if (error) {
+    return (
+      <div className="p-8 text-center max-w-md mx-auto">
+        <p className="text-red-500 font-semibold mb-4">Error loading active carts: {error}</p>
+        <button
+          onClick={fetchCarts}
+          className="px-6 py-2.5 bg-brand-plum text-white font-bold rounded-lg hover:bg-brand-plum/90 transition-all shadow flex items-center justify-center gap-2 mx-auto"
+        >
+          <FiRefreshCcw /> Retry
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -50,7 +70,7 @@ const ActiveCarts = () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-          {carts.map((cart) => {
+          {carts.map((cart, index) => {
             const rawPhone = cart.user?.phone || '';
             const isRealPhone = rawPhone && !rawPhone.startsWith('GUEST-');
             const cleanPhone = isRealPhone ? rawPhone.replace(/\D/g, '') : '';
@@ -58,9 +78,8 @@ const ActiveCarts = () => {
             const customerName = cart.user?.name && !cart.user.name.startsWith('Guest') ? cart.user.name : 'Customer';
             const timeAgo = cart.lastUpdated ? new Date(cart.lastUpdated).toLocaleString() : 'Recently';
 
-
             return (
-              <div key={cart.user.id} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 flex flex-col">
+              <div key={cart.user?.id || `cart-${index}`} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 flex flex-col">
                 {/* User Info Header */}
                 <div className="flex justify-between items-start mb-6 border-b border-gray-100 pb-4">
                   <div className="flex items-center space-x-4">
@@ -72,7 +91,7 @@ const ActiveCarts = () => {
                         <FiUser className="mr-2 text-gray-400" />
                         {customerName}
                       </h3>
-                      <p className="text-sm text-gray-500">{cart.user.email}</p>
+                      <p className="text-sm text-gray-500">{cart.user?.email || 'N/A'}</p>
                       
                       {/* Phone Number & Direct Contact Action Buttons */}
                       <div className="mt-2 flex flex-wrap items-center gap-2">
@@ -107,7 +126,7 @@ const ActiveCarts = () => {
                   </div>
                   <div className="text-right">
                     <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1">Total Value</p>
-                    <p className="text-xl font-bold text-brand-plum">₹{cart.totalValue.toFixed(2)}</p>
+                    <p className="text-xl font-bold text-brand-plum">₹{(cart.totalValue || 0).toFixed(2)}</p>
                   </div>
                 </div>
 
