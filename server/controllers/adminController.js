@@ -87,7 +87,9 @@ exports.getDashboardStats = async (req, res) => {
       return res.json(cachedStats);
     }
 
-    const totalUsers = await prisma.user.count();
+    const totalUsers = await prisma.user.count({
+      where: { isAdmin: false }
+    });
     const totalProducts = await prisma.product.count();
     const totalOrders = await prisma.order.count();
     
@@ -126,10 +128,10 @@ exports.getDashboardStats = async (req, res) => {
     const twoWeeksAgo = new Date(dateNow.getTime() - 14 * 24 * 60 * 60 * 1000);
 
     const usersThisWeek = await prisma.user.count({
-      where: { createdAt: { gte: oneWeekAgo } }
+      where: { isAdmin: false, createdAt: { gte: oneWeekAgo } }
     });
     const usersLastWeek = await prisma.user.count({
-      where: { createdAt: { gte: twoWeeksAgo, lt: oneWeekAgo } }
+      where: { isAdmin: false, createdAt: { gte: twoWeeksAgo, lt: oneWeekAgo } }
     });
 
     const ordersThisWeek = await prisma.order.count({
@@ -248,33 +250,48 @@ exports.getDashboardStats = async (req, res) => {
       revenue: monthlySales[name]
     }));
 
-    // Top 5 products by revenue from order items
-    const topProductsRaw = await prisma.orderItem.groupBy({
-      by: ['productId'],
-      _sum: { price: true },
-      _count: { id: true },
-      orderBy: { _sum: { price: 'desc' } },
-      take: 5,
+    // Top 5 products by revenue from order items (calculated correctly: price * quantity)
+    const allPaidOrderItems = await prisma.orderItem.findMany({
       where: {
         order: {
           orderStatus: { not: 'CANCELLED' },
           paymentStatus: { in: ['PAID', 'SUCCESS'] }
         }
+      },
+      include: {
+        product: { select: { name: true } }
       }
     });
-    const productIds = topProductsRaw.map(p => p.productId);
-    const productDetails = await prisma.product.findMany({
-      where: { id: { in: productIds } },
-      select: { id: true, name: true }
+
+    const productSales = {};
+    const productOrders = {};
+    allPaidOrderItems.forEach(item => {
+      const pId = item.productId;
+      const revenue = (item.price || 0) * (item.quantity || 1);
+      if (!productSales[pId]) {
+        productSales[pId] = {
+          name: item.product?.name || `Product #${pId}`,
+          revenue: 0,
+          orders: 0
+        };
+        productOrders[pId] = new Set();
+      }
+      productSales[pId].revenue += revenue;
+      productOrders[pId].add(item.orderId);
     });
-    const topProducts = topProductsRaw.map(p => {
-      const detail = productDetails.find(d => d.id === p.productId);
-      return {
-        name: detail ? (detail.name.length > 20 ? detail.name.slice(0, 18) + '…' : detail.name) : `Product #${p.productId}`,
-        revenue: Math.round(p._sum.price || 0),
-        orders: p._count.id
-      };
+
+    Object.keys(productSales).forEach(pId => {
+      productSales[pId].orders = productOrders[pId].size;
     });
+
+    const topProducts = Object.values(productSales)
+      .sort((a, b) => b.revenue - a.revenue)
+      .slice(0, 5)
+      .map(p => ({
+        name: p.name.length > 20 ? p.name.slice(0, 18) + '…' : p.name,
+        revenue: Math.round(p.revenue),
+        orders: p.orders
+      }));
 
     // Monthly new customers growth
     const customerGrowthCounts = { Jan:0,Feb:0,Mar:0,Apr:0,May:0,Jun:0,Jul:0,Aug:0,Sep:0,Oct:0,Nov:0,Dec:0 };
