@@ -39,16 +39,7 @@ app.use((req, res, next) => {
 });
 
 app.use(compression());
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || ALLOWED_ORIGINS.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(null, false);
-    }
-  },
-  credentials: true
-}));
+// NOTE: cors() package is intentionally removed — the manual CORS middleware above handles all origins correctly.
 app.use(securityHeaders);
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
