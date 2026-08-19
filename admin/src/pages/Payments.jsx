@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FiDollarSign, FiTrendingUp, FiActivity, FiRefreshCcw, FiEye, FiDownload, FiSearch } from 'react-icons/fi';
+import authService from '../services/authService';
 
 const API_URL = (import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/payments';
 
@@ -9,6 +10,7 @@ const Payments = () => {
   const [payments, setPayments] = useState([]);
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('PAID');
   const navigate = useNavigate();
@@ -20,15 +22,17 @@ const Payments = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
+      setError(null);
+      const config = { headers: { Authorization: `Bearer ${authService.getToken()}` } };
       const [paymentsRes, analyticsRes] = await Promise.all([
-        axios.get(API_URL),
-        axios.get(`${API_URL}/analytics`)
+        axios.get(API_URL, config),
+        axios.get(`${API_URL}/analytics`, config)
       ]);
       setPayments(paymentsRes.data);
       setAnalytics(analyticsRes.data);
     } catch (error) {
       console.error("Error fetching payments data", error);
-      alert("Failed to load payment data");
+      setError("Failed to load payment data. Please try refreshing.");
     } finally {
       setLoading(false);
     }
@@ -106,6 +110,18 @@ const Payments = () => {
   })();
 
   if (loading) return <div className="p-8 text-brand-plum font-bold">Loading Payments Dashboard...</div>;
+
+  if (error) return (
+    <div className="p-8 flex flex-col items-center justify-center space-y-4">
+      <p className="text-red-500 font-semibold text-lg">{error}</p>
+      <button
+        onClick={fetchData}
+        className="flex items-center gap-2 bg-brand-plum text-white px-6 py-2 rounded-lg font-semibold hover:bg-brand-plum/90 transition"
+      >
+        <FiRefreshCcw /> Retry
+      </button>
+    </div>
+  );
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-12">
