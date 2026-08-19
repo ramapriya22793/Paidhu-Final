@@ -375,7 +375,7 @@ const Dashboard = () => {
                 return (
                   <div key={i}>
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-sm font-medium text-gray-700 truncate max-w-[200px]">{product.name}</span>
+                      <span className="text-sm font-medium text-gray-700 truncate flex-1 pr-4" title={product.name}>{product.name}</span>
                       <div className="flex items-center gap-3 shrink-0">
                         <span className="text-xs text-gray-400">{product.orders} orders</span>
                         <span className="text-sm font-bold text-gray-800">₹{product.revenue.toLocaleString()}</span>

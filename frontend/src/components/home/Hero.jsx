@@ -86,25 +86,8 @@ const Hero = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Fetch ALL active banners for the 'home' page slug with 4h caching
+  // Fetch ALL active banners for the 'home' page slug
   useEffect(() => {
-    let cachedBanners = null;
-    let cachedTime = null;
-    try {
-      cachedBanners = localStorage.getItem('paidhu_home_banners');
-      cachedTime = localStorage.getItem('paidhu_home_banners_time');
-    } catch (e) {
-      console.error("Failed to read banners from localStorage", e);
-    }
-    const cachingDuration = 4 * 60 * 60 * 1000; // Cache for 4 hours
-
-    if (cachedBanners && cachedTime && (Date.now() - Number(cachedTime) < cachingDuration)) {
-      try {
-        setSlides(JSON.parse(cachedBanners));
-        return;
-      } catch (e) {}
-    }
-
     fetch(`${API_BASE}/api/banners/active/home`)
       .then(r => r.ok ? r.json() : [])
       .then(homeBanners => {
@@ -118,10 +101,6 @@ const Hero = () => {
             isBackendBanner: true,
           }));
           setSlides(backendSlides);
-          try {
-            localStorage.setItem('paidhu_home_banners', JSON.stringify(backendSlides));
-            localStorage.setItem('paidhu_home_banners_time', String(Date.now()));
-          } catch (e) {}
         } else {
           setSlides(FALLBACK_SLIDES);
         }

@@ -289,7 +289,7 @@ exports.getDashboardStats = async (req, res) => {
       .sort((a, b) => b.revenue - a.revenue)
       .slice(0, 5)
       .map(p => ({
-        name: p.name.length > 20 ? p.name.slice(0, 18) + '…' : p.name,
+        name: p.name,
         revenue: Math.round(p.revenue),
         orders: p.orders
       }));

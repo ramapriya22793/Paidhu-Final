@@ -41,12 +41,12 @@ const PageBanner = ({ pageSlug }) => {
     return () => window.removeEventListener('resize', check);
   }, []);
 
-  // ── Fetch: slug → home → local fallback ──────────────────────────────────
+  // ── Fetch: slug → shop-all/shop → home → local fallback ──────────────────
   useEffect(() => {
     if (!pageSlug) return;
     setCurrentSlide(0);
 
-    const resolvedSlug = pageSlug === 'shop-all' ? 'shop' : pageSlug;
+    const resolvedSlug = pageSlug;
 
     const fetchSlug = (slug) =>
       fetch(`${API_BASE}/api/banners/active/${slug}`)
@@ -57,9 +57,18 @@ const PageBanner = ({ pageSlug }) => {
       // 1. Slug-specific banners
       let data = await fetchSlug(resolvedSlug);
 
-      // 2. Fallback to main shop banners (if not already on main shop)
-      if ((!data || data.length === 0) && resolvedSlug !== 'shop') {
-        data = await fetchSlug('shop');
+      // 2. Fallback to main shop-all / shop banners if not found
+      if (!data || data.length === 0) {
+        if (resolvedSlug !== 'shop-all' && resolvedSlug !== 'shop') {
+          data = await fetchSlug('shop-all');
+          if (!data || data.length === 0) {
+            data = await fetchSlug('shop');
+          }
+        } else if (resolvedSlug === 'shop-all') {
+          data = await fetchSlug('shop');
+        } else if (resolvedSlug === 'shop') {
+          data = await fetchSlug('shop-all');
+        }
       }
 
       // 3. Fallback to home banners (same carousel as the homepage)

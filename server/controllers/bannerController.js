@@ -14,7 +14,7 @@ const getActiveBannerByPage = async (req, res) => {
     const { pageSlug } = req.params;
     const banners = await prisma.banner.findMany({
       where: { pageSlug, isActive: true },
-      orderBy: { updatedAt: 'desc' }
+      orderBy: { id: 'desc' }
     });
     res.json(banners);
   } catch (error) {
