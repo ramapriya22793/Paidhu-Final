@@ -80,14 +80,15 @@ const cardVariants = {
 const getCategoryIcon = (category) => {
   const map = {
     'Bloom Cookies': '/white_lotus_cookies_new.png',
-    'Petal Jam': 'https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png',
-    'Saffron': 'https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780939517153-saffronneign600x600jpg.jpg',
-    'Medley Teas': 'https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780938733725-WhatsAppImage20251113at23302330981866600x800jpg.jpg',
-    'Brew Flora': 'https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780937914670-WhatsAppImage20251113at2330215f60b43f600x800jpg.jpg',
+    'Petal Jam': '/banner_jam.jpeg',
+    'Saffron': '/white_lotus_cookies_new.png',
+    'Medley Teas': '/banner_tea.jpeg',
+    'Brew Flora': '/banner_tea.jpeg',
     'Bloom Powder': '/white_lotus_cookies_new.png'
   };
-  return map[category] || '/mascot.png';
+  return map[category] || '/white_lotus_cookies_new.png';
 };
+
 
 // ---------- DEAL COUNTDOWN TIMER ----------
 const DealCountdown = () => {
@@ -251,15 +252,21 @@ const ProductCard = ({ product, index, navSection }) => {
               <span className="text-[10px] text-[#662654]/40 font-medium tracking-wide uppercase">Paidhu</span>
             </div>
 
-            {/* Product image — hides on error, gentle scale on hover */}
             <img
-              src={(product.image && typeof product.image === 'string' && product.image.startsWith('http')) ? product.image : (product.image ? `${API_BASE}${product.image}` : '/mascot.png')}
+              src={product.image || getCategoryIcon(product.category)}
               alt={product.name}
               className="absolute inset-0 w-full h-full object-contain p-3 transition-transform duration-500 ease-out group-hover:scale-105"
-              onError={e => { e.currentTarget.style.display = 'none'; }}
+              onError={e => { 
+                const fallback = getCategoryIcon(product.category);
+                if (e.currentTarget.src !== window.location.origin + fallback && e.currentTarget.src !== fallback) {
+                  e.currentTarget.src = fallback;
+                }
+              }}
               loading={index < 4 ? "eager" : "lazy"}
               fetchPriority={index < 4 ? "high" : "low"}
             />
+
+
           </>
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-[#f5efe8] to-[#ede0d4] gap-2">

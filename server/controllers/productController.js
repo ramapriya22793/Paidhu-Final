@@ -1,7 +1,50 @@
 const prisma = require("../prismaClient");
+const https = require("https");
+const http = require("http");
+
+const formatImageUrl = (url) => {
+  if (!url) return null;
+  if (url.includes('wp.paidhu.com')) {
+    return `https://paidhu-final-anm2.vercel.app/api/products/image-proxy?url=${encodeURIComponent(url)}`;
+  }
+  return url;
+};
+
+const getImageProxy = (req, res) => {
+  const imageUrl = req.query.url;
+  if (!imageUrl) {
+    return res.status(400).send('Image URL is required');
+  }
+
+  try {
+    const parsedUrl = new URL(imageUrl);
+    const client = parsedUrl.protocol === 'https:' ? https : http;
+
+    client.get(imageUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      }
+    }, (response) => {
+      if (response.statusCode >= 400) {
+        return res.status(response.statusCode).send('Failed to fetch image');
+      }
+
+      res.setHeader('Content-Type', response.headers['content-type'] || 'image/jpeg');
+      res.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=86400');
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      response.pipe(res);
+    }).on('error', (err) => {
+      console.error('Image proxy error:', err.message);
+      res.status(502).send('Proxy error');
+    });
+  } catch (err) {
+    res.status(400).send('Invalid URL');
+  }
+};
 
 // NAV SECTION → FILTER MAPPING
 // Maps each navbar header to a Prisma where-clause builder
+
 const navSectionFilters = {
   'shop-all': () => ({}),
   'deal-of-the-day': () => ({ status: { in: ['ACTIVE', 'PREORDER'] } }),
@@ -109,19 +152,23 @@ const getProducts = async (req, res) => {
 
     // Map to keep frontend compatible
     const formattedProducts = products.map(p => {
+      const rawImg = p.image || (p.productImages && p.productImages.length > 0 ? p.productImages[0].imageUrl : null);
+      const imgUrl = formatImageUrl(rawImg);
+
       const allImages = [];
-      if (p.image) allImages.push(p.image);
+      if (imgUrl) allImages.push(imgUrl);
       if (p.productImages && p.productImages.length > 0) {
         p.productImages.forEach(img => {
-          if (img.imageUrl && img.imageUrl !== p.image) {
-            allImages.push(img.imageUrl);
+          const formatted = formatImageUrl(img.imageUrl);
+          if (formatted && formatted !== imgUrl) {
+            allImages.push(formatted);
           }
         });
       }
       return {
         ...p,
         category: p.category?.name || 'Uncategorized',
-        image: p.image || (p.productImages && p.productImages.length > 0 ? p.productImages[0].imageUrl : null),
+        image: imgUrl,
         images: allImages,
         offerPrice: p.discountPrice,
         keywords: p.seoKeywords
@@ -174,6 +221,7 @@ const getProductById = async (req, res) => {
             { slug: rawId },
             { slug: decodedParam },
             { slug: normalizedSlug },
+            { slug: { contains: normalizedSlug, mode: 'insensitive' } },
             { name: { equals: decodedParam, mode: 'insensitive' } },
             { name: { contains: spaceParam, mode: 'insensitive' } }
           ]
@@ -181,25 +229,31 @@ const getProductById = async (req, res) => {
         include: {
           category: true,
           productImages: true
-        }
+        },
+        orderBy: { updatedAt: 'desc' }
       });
     }
+
 
     if (!p) {
       return res.status(404).json({ message: 'Product not found' });
     }
 
+    const rawImg = p.image || (p.productImages && p.productImages.length > 0 ? p.productImages[0].imageUrl : null);
+    const imgUrl = formatImageUrl(rawImg);
+
     const formattedProduct = {
       ...p,
       category: p.category?.name || 'Uncategorized',
-      image: p.image || (p.productImages && p.productImages.length > 0 ? p.productImages[0].imageUrl : null),
+      image: imgUrl,
       imagePath: p.imagePath || (p.productImages && p.productImages.length > 0 ? p.productImages[0].imagePath : null),
-      images: p.productImages ? p.productImages.map(img => ({ imageUrl: img.imageUrl, imagePath: img.imagePath })) : [],
+      images: p.productImages ? p.productImages.map(img => ({ imageUrl: formatImageUrl(img.imageUrl), imagePath: img.imagePath })) : [],
       offerPrice: p.discountPrice,
       keywords: p.seoKeywords
     };
 
     res.json(formattedProduct);
+
   } catch (error) {
     console.error("Get product detail error:", error);
     res.status(500).json({
@@ -424,4 +478,6 @@ module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
+  getImageProxy,
 };
+

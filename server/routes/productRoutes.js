@@ -8,15 +8,20 @@ const {
   createProduct,
   updateProduct,
   deleteProduct,
+  getImageProxy,
 } = require("../controllers/productController");
 
 const { verifyToken, verifyAdmin, checkPermission } = require("../middleware/authMiddleware");
+
+// IMAGE PROXY
+router.get("/image-proxy", getImageProxy);
 
 // GET ALL PRODUCTS
 router.get("/", getProducts);
 
 // GET SINGLE PRODUCT
 router.get("/:id", getProductById);
+
 
 // ADD PRODUCT
 router.post("/", verifyToken, verifyAdmin, checkPermission('products'), createProduct);
