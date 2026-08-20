@@ -50,6 +50,19 @@ const OrderSuccessPage = () => {
     }
   }, [orderNumber, order]);
 
+  // Fire Meta Pixel Purchase event for catalogue matching when order is loaded
+  useEffect(() => {
+    if (order && typeof window !== 'undefined' && window.fbq) {
+      const contentIds = order.items ? order.items.map(item => String(item.productId || item.id || item.product?.id)).filter(Boolean) : [];
+      window.fbq('track', 'Purchase', {
+        content_ids: contentIds,
+        content_type: 'product',
+        value: Number(order.totalAmount || order.total || 0),
+        currency: 'INR'
+      });
+    }
+  }, [order?.id, order?.orderNumber]);
+
   const latestPayment = order?.payments && order.payments.length > 0 
     ? order.payments[order.payments.length - 1] 
     : null;

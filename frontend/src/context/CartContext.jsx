@@ -202,6 +202,18 @@ export const CartProvider = ({ children }) => {
     const previousCart = [...cart];
     const variantSize = selectedVariant?.size || 'default';
     
+    // Fire Meta Pixel AddToCart event for catalogue matching
+    if (typeof window !== 'undefined' && window.fbq && product) {
+      const unitPrice = Number(selectedVariant?.offerPrice || selectedVariant?.price || product.discountPrice || product.price || 0);
+      window.fbq('track', 'AddToCart', {
+        content_ids: [String(product.id)],
+        content_type: 'product',
+        content_name: product.name,
+        value: unitPrice * quantity,
+        currency: 'INR'
+      });
+    }
+
     // Prevent duplicate concurrent requests for the same product+variant
     const itemKey = `${Number(product.id)}-${variantSize}`;
     if (isAddingRef.current.has(itemKey)) return;

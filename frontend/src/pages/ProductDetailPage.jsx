@@ -116,6 +116,17 @@ const ProductDetailPage = () => {
         const data = await res.json();
         setProduct(data);
 
+        // Fire Meta Pixel ViewContent event for catalogue matching
+        if (typeof window !== 'undefined' && window.fbq) {
+          window.fbq('track', 'ViewContent', {
+            content_ids: [String(data.id)],
+            content_type: 'product',
+            content_name: data.name,
+            value: Number(data.discountPrice || data.price || 0),
+            currency: 'INR'
+          });
+        }
+
         // Fetch similar products in same category or matching keywords
         try {
           const listRes = await fetch(`${API_BASE}/api/products?limit=50`);

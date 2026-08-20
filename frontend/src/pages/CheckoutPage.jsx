@@ -132,10 +132,19 @@ const CheckoutPage = () => {
     });
   }, [cartTotal, formData.pincode]);
 
-  // Fetch summary when cart changes
+  // Fetch summary when cart changes and fire InitiateCheckout Meta Pixel event
   useEffect(() => {
     if (cart.length > 0) {
       fetchSummary();
+      if (typeof window !== 'undefined' && window.fbq) {
+        window.fbq('track', 'InitiateCheckout', {
+          content_ids: cart.map(item => String(item.id)),
+          content_type: 'product',
+          value: Number(cartTotal || 0),
+          currency: 'INR',
+          num_items: cart.reduce((sum, item) => sum + (item.quantity || 1), 0)
+        });
+      }
     }
   }, [cart]);
 
