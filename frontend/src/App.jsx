@@ -128,9 +128,12 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Scroll to top on route navigation
+  // Scroll to top and track Meta Pixel PageView on route navigation
   useEffect(() => {
     window.scrollTo(0, 0);
+    if (typeof window !== 'undefined' && window.fbq) {
+      window.fbq('track', 'PageView');
+    }
   }, [location.pathname, location.search, location.key]);
 
   // Removed redirect logic as it breaks deep links and SEO
