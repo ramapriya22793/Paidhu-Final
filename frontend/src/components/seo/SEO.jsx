@@ -104,6 +104,7 @@ const SEO = ({
       <meta name="theme-color" content="#522742" />
 
       {/* Open Graph / Facebook */}
+      <meta name="facebook-domain-verification" content="6uk8fpav8dzspgcpqyegb6islvchzm" />
       <meta property="og:type" content={type} />
       <meta property="og:url" content={currentUrl} />
       <meta property="og:title" content={fullTitle} />
