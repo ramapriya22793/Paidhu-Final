@@ -373,7 +373,7 @@ const ProductCollection = () => {
         }
 
         // Map products to UI format
-        const mappedProducts = fetchedProducts.map(p => {
+        let mappedProducts = fetchedProducts.map(p => {
           const originalPrice = p.price;
           const discountedPrice = p.discountPrice || p.price;
           const discountPercent = originalPrice > discountedPrice 
