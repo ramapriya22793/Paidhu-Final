@@ -468,6 +468,17 @@ export const CartProvider = ({ children }) => {
       };
       setWishlist([...wishlist, newItem]);
       showToast('Added to wishlist', 'success');
+
+      // Fire Meta Pixel AddToWishlist event
+      if (typeof window !== 'undefined' && window.fbq) {
+        window.fbq('track', 'AddToWishlist', {
+          content_ids: [String(product.id)],
+          content_type: 'product',
+          content_name: product.name,
+          value: Number(product.offerPrice || product.price || 0),
+          currency: 'INR'
+        });
+      }
     }
 
     try {

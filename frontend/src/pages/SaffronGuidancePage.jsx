@@ -87,6 +87,11 @@ const SaffronGuidancePage = () => {
 
       if (!res.ok) throw new Error(data.error || 'Submission failed');
       setSubmitted(true);
+
+      // Fire Meta Pixel Lead event
+      if (typeof window !== 'undefined' && window.fbq) {
+        window.fbq('track', 'Lead');
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {
       setError(err.message || 'Something went wrong. Please try again.');

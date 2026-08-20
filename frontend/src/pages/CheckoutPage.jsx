@@ -354,6 +354,16 @@ const CheckoutPage = () => {
     setSubmitting(true);
     isSubmittingRef.current = true;
 
+    // Fire Meta Pixel AddPaymentInfo event
+    if (typeof window !== 'undefined' && window.fbq) {
+      window.fbq('track', 'AddPaymentInfo', {
+        content_ids: cart.map(item => String(item.id)),
+        content_type: 'product',
+        value: Number(summary.totalPrice || 0),
+        currency: 'INR'
+      });
+    }
+
     try {
       const checkoutItems = cart.map(item => ({
         productId: item.id,

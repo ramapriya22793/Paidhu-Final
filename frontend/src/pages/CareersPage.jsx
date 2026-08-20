@@ -89,6 +89,14 @@ const CareersPage = () => {
       const data = await response.json();
       if (response.ok) {
         setSubmitSuccess(true);
+
+        // Fire Meta Pixel SubmitApplication & Lead events
+        if (typeof window !== 'undefined' && window.fbq) {
+          window.fbq('track', 'SubmitApplication', {
+            content_name: formData.position
+          });
+          window.fbq('track', 'Lead');
+        }
         setFormData({
           fullName: '',
           email: '',

@@ -9,6 +9,9 @@ const LegalPage = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    if ((type === 'contact' || type === 'contact-us') && typeof window !== 'undefined' && window.fbq) {
+      window.fbq('track', 'Contact');
+    }
   }, [type]);
 
   const getContent = () => {

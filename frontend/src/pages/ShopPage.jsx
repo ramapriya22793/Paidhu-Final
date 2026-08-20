@@ -530,6 +530,15 @@ const ShopPage = () => {
 
   const [search, setSearch]         = useState(searchParams.get('q') || '');
   const [debouncedSearch, setDebouncedSearch] = useState(search);
+  
+  // Fire Meta Pixel Search event when user searches for products
+  useEffect(() => {
+    if (debouncedSearch && debouncedSearch.trim() !== '' && typeof window !== 'undefined' && window.fbq) {
+      window.fbq('track', 'Search', {
+        search_string: debouncedSearch.trim()
+      });
+    }
+  }, [debouncedSearch]);
   const [sort, setSort]             = useState('newest');
   const [minPrice, setMinPrice]     = useState('');
   const [maxPrice, setMaxPrice]     = useState('');

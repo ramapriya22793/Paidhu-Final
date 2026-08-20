@@ -44,6 +44,10 @@ const Footer = () => {
       if (res.ok) {
         setMessage(data.message || 'Subscribed successfully!');
         setEmail('');
+        if (typeof window !== 'undefined' && window.fbq) {
+          window.fbq('track', 'Subscribe');
+          window.fbq('track', 'CompleteRegistration');
+        }
       } else {
         setMessage(data.error || 'Failed to subscribe.');
       }
