@@ -533,9 +533,7 @@ const Navbar = () => {
                             <div className="grid grid-cols-2 gap-1">
                               {categories.map(cat => {
                                 const catName = typeof cat === 'string' ? cat : (cat.name || '');
-                                const catImage = (cat && typeof cat === 'object' && cat.image)
-                                  ? cat.image
-                                  : (CATEGORY_FALLBACK_IMAGES[catName.toLowerCase()] || null);
+                                const catImage = CATEGORY_FALLBACK_IMAGES[catName.toLowerCase()] || ((cat && typeof cat === 'object' && cat.image) ? cat.image : null);
                                 const iconFallback = getCategoryIcon(catName);
                                 
                                 return (
@@ -715,9 +713,7 @@ const Navbar = () => {
                             <div className="pl-4 pb-2 pt-1 grid grid-cols-2 gap-1">
                               {categories.map(cat => {
                                 const catName = typeof cat === 'string' ? cat : (cat.name || '');
-                                const catImage = (cat && typeof cat === 'object' && cat.image)
-                                  ? cat.image
-                                  : (CATEGORY_FALLBACK_IMAGES[catName.toLowerCase()] || null);
+                                const catImage = CATEGORY_FALLBACK_IMAGES[catName.toLowerCase()] || ((cat && typeof cat === 'object' && cat.image) ? cat.image : null);
                                 const iconFallback = getCategoryIcon(catName);
                                 
                                 return (
