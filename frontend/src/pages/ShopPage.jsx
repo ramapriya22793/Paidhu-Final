@@ -80,13 +80,13 @@ const cardVariants = {
 const getCategoryIcon = (category) => {
   const map = {
     'Bloom Cookies': '/white_lotus_cookies_new.png',
-    'Petal Jam': '/banner_jam.jpeg',
-    'Saffron': '/white_lotus_cookies_new.png',
+    'Saffron': '/saffron_icon.png',
+    'Petal Jam': 'https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/products/products/1787137460717-ChatGPTImageApr242026105405AM180x180png.png',
     'Medley Teas': '/banner_tea.jpeg',
-    'Brew Flora': '/banner_tea.jpeg',
+    'Brew Flora': '/hibiscus_tea.png',
     'Bloom Powder': '/white_lotus_cookies_new.png'
   };
-  return map[category] || '/white_lotus_cookies_new.png';
+  return map[category] || '/mascot.png';
 };
 
 
