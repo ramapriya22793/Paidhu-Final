@@ -106,7 +106,7 @@ const Navbar = () => {
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const defaultCategoriesList = [
     { name: 'Bloom Cookies', image: '/white_lotus_cookies_new.png' },
-    { name: 'Saffron', image: '/saffron_icon.png' },
+    { name: 'Saffron', image: '/saffron_flower_icon.png' },
     { name: 'Petal Jam', image: 'https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/products/products/1787137460717-ChatGPTImageApr242026105405AM180x180png.png' },
     { name: 'Medley Teas', image: '/banner_tea.jpeg' },
     { name: 'Brew Flora', image: '/hibiscus_tea.png' }
