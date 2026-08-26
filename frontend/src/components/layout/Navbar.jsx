@@ -49,11 +49,11 @@ const resolveSingleImage = (img) => {
 };
 
 const CATEGORY_FALLBACK_IMAGES = {
-  'saffron': 'https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780939517153-saffronneign600x600jpg.jpg',
-  'medley teas': 'https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780938733725-WhatsAppImage20251113at23302330981866600x800jpg.jpg',
-  'brew flora': 'https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780937914670-WhatsAppImage20251113at2330215f60b43f600x800jpg.jpg',
-  'bloom cookies': '/white_lotus_cookies_new.png',
-  'petal jam': 'https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780896914793-ChatGPTImageApr272026024630PM300x300png.png'
+  'saffron': '/cat_saffron.jpg',
+  'medley teas': '/cat_medley_teas.png',
+  'brew flora': '/cat_brew_flora.jpg',
+  'bloom cookies': '/cat_bloom_cookies.jpg',
+  'petal jam': '/cat_petal_jam.jpg'
 };
 
 const searchPhrases = [
@@ -547,12 +547,12 @@ const Navbar = () => {
                                     <div className="w-6.5 h-6.5 rounded-full overflow-hidden flex-shrink-0 border border-gray-100 bg-gray-50 flex items-center justify-center">
                                       {catImage ? (
                                         <img 
-                                          src={catImage.startsWith('http') ? catImage : `${API_BASE}${catImage.startsWith('/') ? '' : '/'}${catImage}`} 
+                                          src={catImage.startsWith('http') || catImage.startsWith('/') ? catImage : `${API_BASE}/${catImage}`} 
                                           alt={catName} 
                                           className="w-full h-full object-cover transition-transform duration-300 group-hover/cat:scale-110"
                                           onError={(e) => {
                                             e.target.style.display = 'none';
-                                            e.target.nextSibling.style.display = 'block';
+                                            if (e.target.nextSibling) e.target.nextSibling.style.display = 'block';
                                           }}
                                         />
                                       ) : null}
@@ -729,12 +729,12 @@ const Navbar = () => {
                                     <div className="w-5.5 h-5.5 rounded-full overflow-hidden flex-shrink-0 border border-[#ede7d7]/10 bg-white/5 flex items-center justify-center">
                                       {catImage ? (
                                         <img 
-                                          src={catImage.startsWith('http') ? catImage : `${API_BASE}${catImage.startsWith('/') ? '' : '/'}${catImage}`} 
+                                          src={catImage.startsWith('http') || catImage.startsWith('/') ? catImage : `${API_BASE}/${catImage}`} 
                                           alt={catName} 
                                           className="w-full h-full object-cover"
                                           onError={(e) => {
                                             e.target.style.display = 'none';
-                                            e.target.nextSibling.style.display = 'block';
+                                            if (e.target.nextSibling) e.target.nextSibling.style.display = 'block';
                                           }}
                                         />
                                       ) : null}
