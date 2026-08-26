@@ -107,7 +107,7 @@ const Navbar = () => {
   const defaultCategoriesList = [
     { name: 'Bloom Cookies', image: '/cat_bloom_cookies.jpg' },
     { name: 'Saffron', image: '/cat_saffron.jpg' },
-    { name: 'Petal Jam', image: '/cat_petal_jam.png' },
+    { name: 'Petal Jam', image: '/cat_petal_jam.jpg' },
     { name: 'Medley Teas', image: '/cat_medley_teas.png' },
     { name: 'Brew Flora', image: '/cat_brew_flora.png' }
   ];

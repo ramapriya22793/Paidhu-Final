@@ -82,7 +82,7 @@ const getCategoryIcon = (category) => {
     'Bloom Cookies': '/cat_bloom_cookies.jpg',
     'Saffron': '/cat_saffron.jpg',
     'Saffron Giftbox': '/cat_saffron_giftbox.png',
-    'Petal Jam': '/cat_petal_jam.png',
+    'Petal Jam': '/cat_petal_jam.jpg',
     'Medley Teas': '/cat_medley_teas.png',
     'Brew Flora': '/cat_brew_flora.png',
     'Combos': '/cat_combos.png',
