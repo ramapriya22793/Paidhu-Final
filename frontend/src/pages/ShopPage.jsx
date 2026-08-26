@@ -79,14 +79,14 @@ const cardVariants = {
 
 const getCategoryIcon = (category) => {
   const map = {
-    'Bloom Cookies': '/cat_bloom_cookies.png',
+    'Bloom Cookies': '/cat_bloom_cookies.jpg',
     'Saffron': '/cat_saffron.png',
     'Saffron Giftbox': '/cat_saffron_giftbox.png',
     'Petal Jam': '/cat_petal_jam.png',
     'Medley Teas': '/cat_medley_teas.png',
     'Brew Flora': '/cat_brew_flora.png',
     'Combos': '/cat_combos.png',
-    'Bloom Powder': '/cat_bloom_cookies.png'
+    'Bloom Powder': '/cat_bloom_cookies.jpg'
   };
   return map[category] || '/mascot.png';
 };

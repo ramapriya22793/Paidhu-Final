@@ -105,7 +105,7 @@ const Navbar = () => {
   const [isDeleting, setIsDeleting]           = useState(false);
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const defaultCategoriesList = [
-    { name: 'Bloom Cookies', image: '/cat_bloom_cookies.png' },
+    { name: 'Bloom Cookies', image: '/cat_bloom_cookies.jpg' },
     { name: 'Saffron', image: '/cat_saffron.png' },
     { name: 'Petal Jam', image: '/cat_petal_jam.png' },
     { name: 'Medley Teas', image: '/cat_medley_teas.png' },
