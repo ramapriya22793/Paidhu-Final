@@ -80,7 +80,7 @@ const cardVariants = {
 const getCategoryIcon = (category) => {
   const map = {
     'Bloom Cookies': '/cat_bloom_cookies.jpg',
-    'Saffron': '/cat_saffron.png',
+    'Saffron': '/cat_saffron.jpg',
     'Saffron Giftbox': '/cat_saffron_giftbox.png',
     'Petal Jam': '/cat_petal_jam.png',
     'Medley Teas': '/cat_medley_teas.png',
