@@ -105,11 +105,11 @@ const Navbar = () => {
   const [isDeleting, setIsDeleting]           = useState(false);
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const defaultCategoriesList = [
-    { name: 'Bloom Cookies', image: '/white_lotus_cookies_new.png' },
-    { name: 'Saffron', image: '/saffron_flower_icon.png' },
-    { name: 'Petal Jam', image: 'https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/products/products/1787137460717-ChatGPTImageApr242026105405AM180x180png.png' },
-    { name: 'Medley Teas', image: '/banner_tea.jpeg' },
-    { name: 'Brew Flora', image: '/hibiscus_tea.png' }
+    { name: 'Bloom Cookies', image: '/cat_bloom_cookies.png' },
+    { name: 'Saffron', image: '/cat_saffron.png' },
+    { name: 'Petal Jam', image: '/cat_petal_jam.png' },
+    { name: 'Medley Teas', image: '/cat_medley_teas.png' },
+    { name: 'Brew Flora', image: '/cat_brew_flora.png' }
   ];
   const [categories, setCategories]           = useState(defaultCategoriesList);
   const [showCatDropdown, setShowCatDropdown] = useState(false);
