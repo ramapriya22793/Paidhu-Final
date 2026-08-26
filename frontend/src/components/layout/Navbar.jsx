@@ -109,7 +109,7 @@ const Navbar = () => {
     { name: 'Saffron', image: '/cat_saffron.jpg' },
     { name: 'Petal Jam', image: '/cat_petal_jam.jpg' },
     { name: 'Medley Teas', image: '/cat_medley_teas.png' },
-    { name: 'Brew Flora', image: '/cat_brew_flora.png' }
+    { name: 'Brew Flora', image: '/cat_brew_flora.jpg' }
   ];
   const [categories, setCategories]           = useState(defaultCategoriesList);
   const [showCatDropdown, setShowCatDropdown] = useState(false);
