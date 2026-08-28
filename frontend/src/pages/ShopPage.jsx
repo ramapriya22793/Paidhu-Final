@@ -479,6 +479,29 @@ const ShopPage = () => {
   // Read category from URL (e.g. /shop/shop-by-category?category=Saffron)
   const activeCategory = searchParams.get('category') || '';
 
+  const isFirstMount = useRef(true);
+  const productsSectionRef = useRef(null);
+
+  // Automatically scroll to products section when category or page changes (or on mount if category/page is present)
+  useEffect(() => {
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      const urlPage = parseInt(searchParams.get('page')) || 1;
+      if (activeCategory || urlPage > 1) {
+        const timer = setTimeout(() => {
+          productsSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 150);
+        return () => clearTimeout(timer);
+      }
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      productsSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [activeCategory, searchParams.get('page')]);
+
   // Build page meta — if a specific category is active, show its name
   const baseMeta = NAV_META[navSection] || NAV_META['shop-all'];
 
@@ -892,6 +915,9 @@ const ShopPage = () => {
           ══════════════════════════════════════════════════ */}
       <PageBanner pageSlug={navSection} />
 
+
+      {/* Scroll anchor to avoid buggy scrolling on sticky elements */}
+      <div ref={productsSectionRef} className="scroll-mt-20 md:scroll-mt-36" />
 
       {/* ══════════════════════════════════════════════════
           STICKY TOOLBAR — filters, sort, category pills

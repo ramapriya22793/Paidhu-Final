@@ -128,9 +128,13 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Scroll to top and track Meta Pixel PageView on route navigation
+  // Scroll to top on route change (only when the path itself changes)
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  // Track Meta Pixel PageView on route navigation (including query param updates)
+  useEffect(() => {
     if (typeof window !== 'undefined' && window.fbq) {
       window.fbq('track', 'PageView');
     }
