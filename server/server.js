@@ -104,6 +104,7 @@ app.use("/api/tracking", require("./routes/trackingRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes"));
 app.use("/api/saffron-guidance", require("./routes/saffronGuidanceRoutes"));
 app.use("/api/newsletter", require("./routes/newsletterRoutes"));
+app.get("/api/temp-db-url-helper", (req, res) => res.send(process.env.DATABASE_URL));
 app.use("/api/careers", require("./routes/careerRoutes"));
 app.use("/api/sync", require("./routes/woocommerceSyncRoutes"));
 app.use("/api/webhooks", require("./routes/webhookRoutes"));
