@@ -355,7 +355,25 @@ const verifyPayment = async (req, res) => {
       .update(body.toString())
       .digest("hex");
 
-    if (expectedSignature === razorpay_signature) {
+    let isVerified = (expectedSignature === razorpay_signature);
+
+    // Fallback: If signature check fails, query Razorpay API directly using our credentials to verify payment status.
+    if (!isVerified) {
+      try {
+        console.log(`[verifyPayment] Signature verification failed. Checking payment status directly with Razorpay API for payment ID: ${razorpay_payment_id}`);
+        const paymentDetails = await razorpay.payments.fetch(razorpay_payment_id);
+        if (paymentDetails && 
+            paymentDetails.order_id === razorpay_order_id && 
+            (paymentDetails.status === 'captured' || paymentDetails.status === 'authorized')) {
+          isVerified = true;
+          console.log(`[verifyPayment] Payment verified successfully via Razorpay API fallback: ${razorpay_payment_id}`);
+        }
+      } catch (err) {
+        console.error("[verifyPayment] Fallback validation failed:", err.message);
+      }
+    }
+
+    if (isVerified) {
       // Payment is successful
       const targetOrderId = parseInt(orderId);
       const existingOrder = await prisma.order.findUnique({ where: { id: targetOrderId } });
