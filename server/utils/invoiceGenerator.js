@@ -1,12 +1,16 @@
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
 const generateInvoice = async (order) => {
   return new Promise((resolve, reject) => {
     try {
       const doc = new PDFDocument({ margin: 50 });
-      const invoicesDir = path.join(__dirname, '..', 'uploads', 'invoices');
+      const isVercel = process.env.VERCEL || process.env.NOW_BUILDER;
+      const invoicesDir = isVercel
+        ? path.join(os.tmpdir(), 'uploads', 'invoices')
+        : path.join(__dirname, '..', 'uploads', 'invoices');
       
       // Ensure directory exists
       if (!fs.existsSync(invoicesDir)) {

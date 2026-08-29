@@ -45,6 +45,18 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Cache control headers for static uploads
+app.use("/uploads", (req, res, next) => {
+  const isVercel = process.env.VERCEL || process.env.NOW_BUILDER;
+  if (isVercel) {
+    const fs = require('fs');
+    const os = require('os');
+    const tmpPath = path.join(os.tmpdir(), 'uploads', req.path);
+    if (fs.existsSync(tmpPath)) {
+      return res.sendFile(tmpPath);
+    }
+  }
+  next();
+});
 app.use("/uploads", express.static(path.join(__dirname, "uploads"), {
   maxAge: '1d',
   setHeaders: (res, filePath) => {

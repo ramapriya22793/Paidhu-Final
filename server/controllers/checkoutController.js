@@ -312,9 +312,17 @@ const initiateCheckout = async (req, res) => {
       });
     }
 
-    // Generate Invoice and Send Email
-    await generateInvoice(confirmedOrder);
-    await sendOrderConfirmationEmail(confirmedOrder, confirmedOrder.customerEmail);
+    // Generate Invoice and Send Email (non-blocking)
+    try {
+      await generateInvoice(confirmedOrder);
+    } catch (invoiceErr) {
+      console.error('Invoice generation failed during COD initiateOrder:', invoiceErr);
+    }
+    try {
+      await sendOrderConfirmationEmail(confirmedOrder, confirmedOrder.customerEmail);
+    } catch (emailErr) {
+      console.error('Email sending failed during COD initiateOrder:', emailErr);
+    }
 
     res.json({ order: confirmedOrder, success: true });
 
@@ -412,11 +420,19 @@ const verifyPayment = async (req, res) => {
         });
       }
 
-      // Generate invoice
-      await generateInvoice(updatedOrder);
+      // Generate invoice (non-blocking)
+      try {
+        await generateInvoice(updatedOrder);
+      } catch (invoiceErr) {
+        console.error('Invoice generation failed during verifyPayment:', invoiceErr);
+      }
 
-      // Send email
-      await sendOrderConfirmationEmail(updatedOrder, updatedOrder.customerEmail);
+      // Send email (non-blocking)
+      try {
+        await sendOrderConfirmationEmail(updatedOrder, updatedOrder.customerEmail);
+      } catch (emailErr) {
+        console.error('Email sending failed during verifyPayment:', emailErr);
+      }
 
       res.json({ success: true, order: updatedOrder });
     } else {
@@ -526,11 +542,19 @@ const razorpayWebhook = async (req, res) => {
               });
             }
 
-            // Generate invoice
-            await generateInvoice(updatedOrder);
+            // Generate invoice (non-blocking)
+            try {
+              await generateInvoice(updatedOrder);
+            } catch (invoiceErr) {
+              console.error('Invoice generation failed during webhook:', invoiceErr);
+            }
 
-            // Send email
-            await sendOrderConfirmationEmail(updatedOrder, updatedOrder.customerEmail);
+            // Send email (non-blocking)
+            try {
+              await sendOrderConfirmationEmail(updatedOrder, updatedOrder.customerEmail);
+            } catch (emailErr) {
+              console.error('Email sending failed during webhook:', emailErr);
+            }
             
             console.log(`Webhook processed successfully for Order ID: ${dbOrderId}`);
           }
