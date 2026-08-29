@@ -478,13 +478,15 @@ const razorpayWebhook = async (req, res) => {
     let isVerified = isSignatureValid;
     const event = req.body.event;
 
+    const allowedEvents = ['order.paid', 'payment.captured'];
+
     // Fallback: If signature check fails, query Razorpay API directly using our credentials to verify payment status.
-    if (!isVerified && event === 'order.paid') {
+    if (!isVerified && allowedEvents.includes(event)) {
       try {
         const paymentEntity = req.body.payload?.payment?.entity;
         if (paymentEntity && paymentEntity.id) {
           const paymentDetails = await razorpay.payments.fetch(paymentEntity.id);
-          if (paymentDetails && (paymentDetails.status === 'captured' || paymentDetails.status === 'confirmed')) {
+          if (paymentDetails && (paymentDetails.status === 'captured' || paymentDetails.status === 'confirmed' || paymentDetails.status === 'authorized')) {
             isVerified = true;
             console.log(`[Razorpay Webhook] Signature mismatch, but verified payment status directly with Razorpay: ${paymentEntity.id}`);
           }
@@ -494,89 +496,101 @@ const razorpayWebhook = async (req, res) => {
       }
     }
 
-    if (isVerified) {
+    if (isVerified && allowedEvents.includes(event)) {
+      const paymentEntity = req.body.payload.payment.entity;
+      let dbOrderId = NaN;
+      let rzpOrderId = paymentEntity.order_id;
+
       if (event === 'order.paid') {
         const orderEntity = req.body.payload.order.entity;
-        const paymentEntity = req.body.payload.payment.entity;
-
+        rzpOrderId = orderEntity.id;
         const receipt = orderEntity.receipt;
         if (receipt && receipt.startsWith('receipt_order_')) {
-          const dbOrderId = parseInt(receipt.split('_')[2]);
-          
-          if (!isNaN(dbOrderId)) {
-            const existingPayment = await prisma.payment.findFirst({
-              where: {
-                OR: [
-                  { razorpayOrderId: orderEntity.id },
-                  { razorpayPaymentId: paymentEntity.id },
-                  { orderId: dbOrderId }
-                ]
-              }
-            });
-
-            if (!existingPayment) {
-              await prisma.payment.create({
-                data: {
-                  orderId: dbOrderId,
-                  razorpayOrderId: orderEntity.id,
-                  razorpayPaymentId: paymentEntity.id,
-                  amount: paymentEntity.amount / 100,
-                  method: paymentEntity.method || 'Online',
-                  status: 'SUCCESS'
-                }
-              });
-            } else {
-              await prisma.payment.update({
-                where: { id: existingPayment.id },
-                data: {
-                  status: 'SUCCESS',
-                  razorpayPaymentId: paymentEntity.id || existingPayment.razorpayPaymentId
-                }
-              });
-            }
-
-            const updatedOrder = await prisma.order.update({
-              where: { id: dbOrderId },
-              data: {
-                orderStatus: 'CONFIRMED',
-                paymentStatus: 'PAID'
-              },
-              include: { items: { include: { product: true } } }
-            });
-
-            // Deduct reward points if used
-            if (updatedOrder.rewardPointsUsed > 0 && updatedOrder.userId) {
-              await prisma.user.update({
-                where: { id: updatedOrder.userId },
-                data: { rewardPoints: { decrement: updatedOrder.rewardPointsUsed } }
-              });
-            }
-
-            // Increment coupon usage count if used
-            if (updatedOrder.couponId) {
-              await prisma.coupon.update({
-                where: { id: updatedOrder.couponId },
-                data: { usageCount: { increment: 1 } }
-              });
-            }
-
-            // Generate invoice (non-blocking)
-            try {
-              await generateInvoice(updatedOrder);
-            } catch (invoiceErr) {
-              console.error('Invoice generation failed during webhook:', invoiceErr);
-            }
-
-            // Send email (non-blocking)
-            try {
-              await sendOrderConfirmationEmail(updatedOrder, updatedOrder.customerEmail);
-            } catch (emailErr) {
-              console.error('Email sending failed during webhook:', emailErr);
-            }
-            
-            console.log(`Webhook processed successfully for Order ID: ${dbOrderId}`);
+          dbOrderId = parseInt(receipt.split('_')[2]);
+        }
+      } else if (event === 'payment.captured') {
+        if (rzpOrderId) {
+          const order = await prisma.order.findFirst({
+            where: { razorpayOrderId: rzpOrderId }
+          });
+          if (order) {
+            dbOrderId = order.id;
           }
         }
+      }
+
+      if (!isNaN(dbOrderId)) {
+        const existingPayment = await prisma.payment.findFirst({
+          where: {
+            OR: [
+              { razorpayOrderId: rzpOrderId },
+              { razorpayPaymentId: paymentEntity.id },
+              { orderId: dbOrderId }
+            ]
+          }
+        });
+
+        if (!existingPayment) {
+          await prisma.payment.create({
+            data: {
+              orderId: dbOrderId,
+              razorpayOrderId: rzpOrderId,
+              razorpayPaymentId: paymentEntity.id,
+              amount: paymentEntity.amount / 100,
+              method: paymentEntity.method || 'Online',
+              status: 'SUCCESS'
+            }
+          });
+        } else {
+          await prisma.payment.update({
+            where: { id: existingPayment.id },
+            data: {
+              status: 'SUCCESS',
+              razorpayPaymentId: paymentEntity.id || existingPayment.razorpayPaymentId
+            }
+          });
+        }
+
+        const updatedOrder = await prisma.order.update({
+          where: { id: dbOrderId },
+          data: {
+            orderStatus: 'CONFIRMED',
+            paymentStatus: 'PAID'
+          },
+          include: { items: { include: { product: true } } }
+        });
+
+        // Deduct reward points if used
+        if (updatedOrder.rewardPointsUsed > 0 && updatedOrder.userId) {
+          await prisma.user.update({
+            where: { id: updatedOrder.userId },
+            data: { rewardPoints: { decrement: updatedOrder.rewardPointsUsed } }
+          });
+        }
+
+        // Increment coupon usage count if used
+        if (updatedOrder.couponId) {
+          await prisma.coupon.update({
+            where: { id: updatedOrder.couponId },
+            data: { usageCount: { increment: 1 } }
+          });
+        }
+
+        // Generate invoice (non-blocking)
+        try {
+          await generateInvoice(updatedOrder);
+        } catch (invoiceErr) {
+          console.error('Invoice generation failed during webhook:', invoiceErr);
+        }
+
+        // Send email (non-blocking)
+        try {
+          await sendOrderConfirmationEmail(updatedOrder, updatedOrder.customerEmail);
+        } catch (emailErr) {
+          console.error('Email sending failed during webhook:', emailErr);
+        }
+        
+        console.log(`Webhook processed successfully for Order ID: ${dbOrderId}`);
       }
       res.status(200).json({ status: 'ok' });
     } else {
