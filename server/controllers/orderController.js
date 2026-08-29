@@ -144,7 +144,25 @@ const updateOrderDetails = async (req, res) => {
 
     const dataToUpdate = {};
     if (orderStatus !== undefined) dataToUpdate.orderStatus = orderStatus;
-    if (paymentStatus !== undefined) dataToUpdate.paymentStatus = paymentStatus;
+    if (paymentStatus !== undefined) {
+      dataToUpdate.paymentStatus = paymentStatus;
+      
+      // Auto-confirm order if paymentStatus is updated to PAID and orderStatus is PENDING
+      const currentOrderStatus = orderStatus !== undefined ? orderStatus : order.orderStatus;
+      if (paymentStatus === 'PAID' && currentOrderStatus === 'PENDING') {
+        dataToUpdate.orderStatus = 'CONFIRMED';
+        
+        // Add confirmation to the timeline if not already present
+        const hasConfirmedEvent = updatedTimeline.some(event => event.status === 'CONFIRMED');
+        if (!hasConfirmedEvent) {
+          updatedTimeline.push({
+            status: 'CONFIRMED',
+            date: new Date().toISOString(),
+            note: 'Order status auto-confirmed upon payment verification'
+          });
+        }
+      }
+    }
     if (trackingNumber !== undefined) dataToUpdate.trackingNumber = trackingNumber;
     if (courierPartner !== undefined) dataToUpdate.courierPartner = courierPartner;
     if (estimatedDeliveryDate !== undefined) dataToUpdate.estimatedDeliveryDate = estimatedDeliveryDate ? new Date(estimatedDeliveryDate) : null;
