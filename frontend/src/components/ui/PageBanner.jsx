@@ -51,7 +51,7 @@ const PageBanner = ({ pageSlug }) => {
     const resolvedSlug = pageSlug;
 
     const fetchSlug = (slug) =>
-      fetch(`${API_BASE}/api/banners/active/${slug}`)
+      fetch(`${API_BASE}/api/banners/active/${slug}?t=${Date.now()}`)
         .then(r => (r.ok ? r.json() : []))
         .catch(() => []);
 
@@ -79,7 +79,12 @@ const PageBanner = ({ pageSlug }) => {
       }
 
       if (data && data.length > 0) {
-        setSlides(data.map(toSlide).filter(s => s.image));
+        const activeData = data.filter(b => b.isActive === true || b.isActive === 'true');
+        if (activeData.length > 0) {
+          setSlides(activeData.map(toSlide).filter(s => s.image));
+        } else {
+          setSlides([{ id: 'local-1', image: LOCAL_FALLBACK, bgColor: '#f0ede6' }]);
+        }
       } else {
         // 4. Last resort — local image
         setSlides([{ id: 'local-1', image: LOCAL_FALLBACK, bgColor: '#f0ede6' }]);

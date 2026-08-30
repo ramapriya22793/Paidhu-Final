@@ -92,23 +92,26 @@ const Hero = () => {
 
   // Fetch ALL active banners for the 'home' page slug
   useEffect(() => {
-    fetch(`${API_BASE}/api/banners/active/home`)
+    fetch(`${API_BASE}/api/banners/active/home?t=${Date.now()}`)
       .then(r => r.ok ? r.json() : [])
       .then(homeBanners => {
         if (homeBanners && homeBanners.length > 0) {
-          // Map backend banners to slide format
-          const backendSlides = homeBanners.map(b => ({
-            id: `banner-${b.id}`,
-            image: resolveUrl(b.webImage || b.webImagePath),
-            mobileImage: resolveUrl(b.mobileImage || b.mobileImagePath),
-            bgColor: 'bg-[#faf5eb]',
-            isBackendBanner: true,
-            category: b.category || null,
-          }));
-          setSlides(backendSlides);
-        } else {
-          setSlides(FALLBACK_SLIDES);
+          const activeBanners = homeBanners.filter(b => b.isActive === true || b.isActive === 'true');
+          if (activeBanners.length > 0) {
+            // Map backend banners to slide format
+            const backendSlides = activeBanners.map(b => ({
+              id: `banner-${b.id}`,
+              image: resolveUrl(b.webImage || b.webImagePath),
+              mobileImage: resolveUrl(b.mobileImage || b.mobileImagePath),
+              bgColor: 'bg-[#faf5eb]',
+              isBackendBanner: true,
+              category: b.category || null,
+            }));
+            setSlides(backendSlides);
+            return;
+          }
         }
+        setSlides(FALLBACK_SLIDES);
       })
       .catch(() => {
         setSlides(FALLBACK_SLIDES);
