@@ -115,12 +115,24 @@ const PageBanner = ({ pageSlug }) => {
   const prev = () => setCurrentSlide(p => (p === 0 ? slides.length - 1 : p - 1));
 
   // ── Skeleton ──────────────────────────────────────────────────────────────
+  const isShopAll = pageSlug === 'shop-all';
+
   if (!ready) {
     return (
-      <div className="w-full bg-[#f8f4ef] py-3 md:py-4 px-3 sm:px-4 lg:px-6">
+      <div 
+        className={
+          isShopAll
+            ? "w-full bg-[#faf9f7] pt-0 pb-6 md:pb-8 px-0"
+            : "w-full bg-[#f8f4ef] py-3 md:py-4 px-3 sm:px-4 lg:px-6"
+        }
+      >
         <div
-          className="w-full rounded-[28px] md:rounded-[36px] overflow-hidden animate-pulse bg-gradient-to-r from-[#e8e0d5] via-[#f0e8db] to-[#e8e0d5]"
-          style={{ aspectRatio: 2 }}
+          className={
+            isShopAll
+              ? "w-full rounded-none overflow-hidden animate-pulse bg-gradient-to-r from-[#e8e0d5] via-[#f0e8db] to-[#e8e0d5]"
+              : "w-full rounded-[28px] md:rounded-[36px] overflow-hidden animate-pulse bg-gradient-to-r from-[#e8e0d5] via-[#f0e8db] to-[#e8e0d5]"
+          }
+          style={{ aspectRatio: isShopAll ? (isMobile ? 1 : 1920 / 427) : 2 }}
         />
       </div>
     );
@@ -130,7 +142,9 @@ const PageBanner = ({ pageSlug }) => {
 
   const current  = slides[currentSlide];
   const cacheKey = `${current.id}-${(isMobile && current.mobileImage) ? 'm' : 'w'}`;
-  const aspect   = aspectRatios[cacheKey] || 2; // 2:1 default matches 1600×800 home banners
+  const aspect = isShopAll
+    ? (isMobile ? 1 : 1920 / 427)
+    : (aspectRatios[cacheKey] || 2);
   const imgSrc   = (isMobile && current.mobileImage) ? current.mobileImage : current.image;
 
   const handleLoad = (e) => {
@@ -145,17 +159,25 @@ const PageBanner = ({ pageSlug }) => {
   };
 
   return (
-    // ── Same outer padding as Hero.jsx ────────────────────────────────────
-    <div className="w-full bg-[#f8f4ef] py-3 md:py-4 px-3 sm:px-4 lg:px-6">
-      {/* Container — height driven by image aspect ratio, same as home Hero */}
+    <div 
+      className={
+        isShopAll
+          ? "w-full bg-[#faf9f7] pt-0 pb-6 md:pb-8 px-0"
+          : "w-full bg-[#f8f4ef] py-3 md:py-4 px-3 sm:px-4 lg:px-6"
+      }
+    >
       <div
-        className={[
-          'relative w-full overflow-hidden',
-          'rounded-[28px] md:rounded-[36px]',
-          'shadow-[0_8px_40px_rgba(0,0,0,0.10)]',
-          'hover:shadow-[0_14px_50px_rgba(212,175,55,0.18)]',
-          'transition-shadow duration-500 group',
-        ].join(' ')}
+        className={
+          isShopAll
+            ? "relative w-full overflow-hidden rounded-none transition-shadow duration-500 group"
+            : [
+                'relative w-full overflow-hidden',
+                'rounded-[28px] md:rounded-[36px]',
+                'shadow-[0_8px_40px_rgba(0,0,0,0.10)]',
+                'hover:shadow-[0_14px_50px_rgba(212,175,55,0.18)]',
+                'transition-shadow duration-500 group',
+              ].join(' ')
+        }
         style={{ aspectRatio: aspect }}
       >
         {/* ── Slides ──────────────────────────────────────────────────── */}
