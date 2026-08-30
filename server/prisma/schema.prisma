@@ -69,6 +69,7 @@ model Category {
   id          Int       @id @default(autoincrement())
   name        String    @unique
   products    Product[]
+  banners     Banner[]
   createdAt   DateTime  @default(now())
 }
 
@@ -307,6 +308,8 @@ model Banner {
   mobileImagePath String?   // Supabase storage path
   size            String    @default("medium") // 'small', 'medium', 'large', 'fullscreen'
   isActive        Boolean   @default(true)
+  category        String?
+  categoryRef     Category? @relation(fields: [category], references: [name], onDelete: SetNull)
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 }

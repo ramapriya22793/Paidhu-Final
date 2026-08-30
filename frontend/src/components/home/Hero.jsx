@@ -33,7 +33,11 @@ const resolveUrl = (path) => {
 };
 
 const getBannerLink = (slide) => {
-  if (!slide || !slide.image) return '/shop';
+  if (!slide) return '/shop';
+  if (slide.category) {
+    return `/shop/shop-by-category?category=${encodeURIComponent(slide.category)}`;
+  }
+  if (!slide.image) return '/shop';
   const imgUrl = slide.image.toLowerCase();
   
   if (imgUrl.includes('banner1') || imgUrl.includes('cookie')) {
@@ -99,6 +103,7 @@ const Hero = () => {
             mobileImage: resolveUrl(b.mobileImage || b.mobileImagePath),
             bgColor: 'bg-[#faf5eb]',
             isBackendBanner: true,
+            category: b.category || null,
           }));
           setSlides(backendSlides);
         } else {

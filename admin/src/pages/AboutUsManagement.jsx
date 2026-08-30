@@ -5,20 +5,20 @@ import { uploadImage } from '../utils/uploadImage';
 
 const defaultData = {
   hero: {
-    image: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=1200&auto=format&fit=crop'
+    image: '/hero_family_banner.png'
   },
   foodLabels: {
     title: 'Time to read food labels we understand',
     text1: 'Globally, children\'s diets are loaded with nutrient-poor foods made with Refined Wheat Flour (Maida), Trans fats, and excess Sugar and Salt.',
     text2: 'An alarming number of children are developing health problems and allergies related to unhealthy diets. Childhood obesity is on the rise and children are at a greater risk of developing lifestyle disorders.',
     text3: 'Our pattern of eating and the nutrition content of our meals have dramatically changed, adversely affecting our health and our planet\'s health.',
-    image: 'https://images.unsplash.com/photo-1506368249639-73a05d6f6488?q=80&w=800&auto=format&fit=crop'
+    image: '/mom_drinking_tea.png'
   },
   needToChange: {
     title: 'Something needs to change',
     text1: 'To solve this we must start by addressing our daily food choices.',
-    text2: 'Paidhu was born from the concern of two mothers who realised that the current food system is broken, and requires innovation and creativity to re-introduce sustainable, nutrient dense and diverse ingredients back into our children\'s diet. This we thought is the best way to ensure that kids, farmers and the planet stay happy.',
-    image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=800&auto=format&fit=crop'
+    text2: 'Paidhu was born from the concern of parents who realised that the current food system is broken, and requires innovation and creativity to re-introduce sustainable, nutrient dense and diverse ingredients back into our children\'s diet. This we thought is the best way to ensure that kids, farmers and the planet stay happy.',
+    image: '/moms_sharing_cookies.png'
   },
   startNow: {
     title: 'Start now',
@@ -26,13 +26,13 @@ const defaultData = {
       {
         id: 1,
         title: 'Choose food which is Good for you.',
-        text: 'At Paidhu we love using a diverse range of superfoods! A variety of nutrient dense ingredients like Ragi, Jowar, Foxtail Millet, Lentils, Oats, Amaranth, Nuts, combined with good fats like real Butter, real Fruits and Vegetable, natural sweeteners like Jaggery and Honey go into making our products.',
+        text: 'At Paidhu we love using a diverse range of superfoods! A variety of nutrient dense ingredients like edible flowers, herbal infusions, premium saffron, oats, combined with good fats like real butter and natural sweeteners, go into making our products.',
         icon: 'https://cdn-icons-png.flaticon.com/512/2917/2917629.png'
       },
       {
         id: 2,
         title: 'Good for the Environment',
-        text: 'Ingredients like Millets need a third of the water required by Rice. They are hardy grains which can withstand long periods of drought, and they require little pesticides or fertilisers to thrive. This makes them inherently natural in nature. Paidhu aims to empower small farmers and help build a sustainable community by encouraging the use of indigenous crops.',
+        text: 'Our ingredients are ethically sourced directly from small farmers who practice organic and clean farming. By focusing on sustainable crops, Paidhu aims to empower local agricultural communities and help build a healthier planet.',
         icon: 'https://cdn-icons-png.flaticon.com/512/2921/2921822.png'
       }
     ]
@@ -42,23 +42,23 @@ const defaultData = {
     list: [
       {
         id: 1,
-        name: 'Meghana Narayan',
-        bio: 'Meghana is passionate about children\'s nutrition and health. She is committed to make a positive change to childhood malnutrition statistics. Her efforts to feed her daughter healthy, tasty food is what led her to starting this venture. Before starting Paidhu, Meghana led the Public Health practise at McKinsey & Company. She holds an MBA from Harvard Business School, a BA in Computation as a Rhodes Scholar from Oxford University and a BE with Distinction in Computer Engineering from Bangalore University.\n\nMeghana swam for India for eight years, including at the Asian Games. She has more than 400 national gold medals in her kitty and her dream is to help India have a more golden Olympic table.',
-        image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop'
+        name: 'Ramapriya',
+        bio: 'Ramapriya is the visionary founder of Paidhu. Passionate about children\'s nutrition and reclaiming traditional, wholesome foods, her journey began with her own search for healthy, chemical-free, and natural food options for her family. She is committed to making a positive difference in kids\' daily nutrition by introducing sustainable, nutrient-dense, and colorful floral ingredients. Ramapriya holds a strong vision of restoring pure, clean eating habits for the modern generation.',
+        image: '/ramapriya.jpg'
       },
       {
         id: 2,
-        name: 'Shauravi Malik',
-        bio: 'Shauravi\'s passion is to get her own children to gobble up all the exciting and healthy food she makes. She loves food, eating it and making it! Shauravi brings over a decade of finance experience. She worked in the Consumer, Healthcare, and Retail Advisory team and the Leveraged Finance team at J.P.Morgan. She was an Investment Manager at Sir Richard Branson\'s Group Holding entity at the Virgin Group in London. She holds a Master\'s degree in Economics from Cambridge University and a BA in Economics from St. Stephen\'s College, Delhi University.',
-        image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=400&auto=format&fit=crop'
+        name: 'Vikram',
+        bio: 'Vikram is the co-founder of Paidhu, leading product innovation and sustainable sourcing. Driven by a mission to build clean food products, Vikram works closely with local, small-holder farmers to source authentic edible flowers and premium ingredients ethically. He is dedicated to establishing a transparent, fair-trade supply chain that benefits both children\'s health and the local agricultural ecosystem.',
+        image: '/vikram.jpg'
       }
     ]
   },
   communityCta: {
     title: 'Connect with a community that cares\nabout your child\'s nutrition as you do!',
     buttonText: 'Join Our Community',
-    buttonLink: '/our-community',
-    illustration: 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=1000&auto=format&fit=crop'
+    buttonLink: '/shop/our-own-community',
+    illustration: '/moms_garden_gathering.png'
   }
 };
 

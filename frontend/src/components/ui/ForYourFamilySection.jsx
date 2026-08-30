@@ -18,13 +18,13 @@ const ForYourFamilySection = () => {
       bgLight: "bg-amber-50",
       textDark: "text-amber-900",
       borderCol: "border-amber-200",
-      image: "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?q=80&w=600&auto=format&fit=crop",
+      image: "/cat_saffron.jpg",
       familyBenefit: "Improves children's memory, enhances vision health, boosts mood, and builds strong defense against seasonal colds.",
       nutrition: "Loaded with Crocin, Safranal, and Riboflavin (Vitamin B2) which support cellular regeneration and brain health.",
       howToUse: "Stir 2-3 strands into warm milk, blend in breakfast smoothies, or add to saffron-scented rice (Biryani/Kheer).",
       productName: "Kashmiri Mongra Saffron",
       productSlug: "kashmiri-mongra",
-      productImage: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780938979730-SuperNeiginbig1600x600jpg.jpg"
+      productImage: "/cat_saffron.jpg"
     },
     {
       name: "Hibiscus",
@@ -33,13 +33,13 @@ const ForYourFamilySection = () => {
       bgLight: "bg-rose-50",
       textDark: "text-rose-900",
       borderCol: "border-rose-200",
-      image: "https://images.unsplash.com/photo-1551248429-40975aa4de74?q=80&w=600&auto=format&fit=crop",
+      image: "/hibiscus running.jpg",
       familyBenefit: "Rich in Vitamin C, supports heart health, improves iron absorption, and maintains excellent digestion.",
       nutrition: "High concentration of anthocyanins (powerful red antioxidants) and natural acids that fight free radicals.",
       howToUse: "Brew as a tart iced tea, cook down into natural petal jams, or use as a natural pink food coloring for bakes.",
       productName: "Hibiscus Petal Jam",
       productSlug: "hibiscus-petal-jam",
-      productImage: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg"
+      productImage: "/cat_petal_jam.jpg"
     },
     {
       name: "Butterfly Pea",
@@ -48,13 +48,13 @@ const ForYourFamilySection = () => {
       bgLight: "bg-blue-50",
       textDark: "text-blue-900",
       borderCol: "border-blue-200",
-      image: "https://images.unsplash.com/photo-1599388836585-7833075c3db0?q=80&w=600&auto=format&fit=crop",
+      image: "/cat_brew_flora.jpg",
       familyBenefit: "Enhances cognitive function, relieves stress, promotes healthy skin, and stimulates natural hair growth.",
       nutrition: "Contains high amounts of 'Proanthocyanidin' which increases blood flow in capillaries, and acts as a brain tonic.",
       howToUse: "Infuse in hot water to create a magical blue tea. Squeeze in lemon juice to watch it turn into bright purple!",
       productName: "Brew Flora - Blue Pea (30g)",
       productSlug: "brew-flora-blue-pea-30g",
-      productImage: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780937499230-WhatsAppImage20251113at233020322c5e7d600x800jpg.jpg"
+      productImage: "/cat_brew_flora.jpg"
     },
     {
       name: "Rose Petals",
@@ -63,13 +63,13 @@ const ForYourFamilySection = () => {
       bgLight: "bg-pink-50",
       textDark: "text-pink-900",
       borderCol: "border-pink-200",
-      image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=600&auto=format&fit=crop",
+      image: "/cat_petal_jam.jpg",
       familyBenefit: "Cools body heat, relieves stress, cures mild throat soreness, and acts as an elegant digestive aid after heavy meals.",
       nutrition: "Packed with Vitamins A, C, and E, as well as polyphenols that soothe internal inflammation.",
       howToUse: "Mix rose water into desserts, spread natural petal jam on toast, or garnish cookies and cakes with dry petals.",
       productName: "Rose Gulkhand Jam",
       productSlug: "rose-gulkhand-jam",
-      productImage: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1781535450213-Gulkandfinaljpg.jpg"
+      productImage: "/cat_petal_jam.jpg"
     },
     {
       name: "Chamomile",
@@ -78,13 +78,13 @@ const ForYourFamilySection = () => {
       bgLight: "bg-yellow-50",
       textDark: "text-yellow-900",
       borderCol: "border-yellow-200",
-      image: "https://images.unsplash.com/photo-1563822249548-9a72b6353cd1?q=80&w=600&auto=format&fit=crop",
+      image: "/cat_brew_flora.jpg",
       familyBenefit: "Relieves hyper-activity in kids, calms anxiety, relaxes tense muscles, and induces deep, restful sleep.",
       nutrition: "Rich in 'Apigenin', an antioxidant that binds to specific receptors in the brain to decrease insomnia and promote peace.",
       howToUse: "Steep in warm water for 5 minutes before bedtime, sweeten with raw honey, and serve to children and adults alike.",
       productName: "Brew Flora - Chamomile (30g)",
       productSlug: "brew-flora-chamomile-30g",
-      productImage: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780937914670-WhatsAppImage20251113at2330215f60b43f600x800jpg.jpg"
+      productImage: "/cat_brew_flora.jpg"
     }
   ];
 
@@ -94,28 +94,28 @@ const ForYourFamilySection = () => {
       title: "Brain & Focus Booster",
       desc: "Supports cognitive function, sharpens focus, and reduces mental fatigue in children and working parents.",
       badge: "Blue Pea & Saffron",
-      pic: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780937499230-WhatsAppImage20251113at233020322c5e7d600x800jpg.jpg",
+      pic: "/cat_brew_flora.jpg",
       color: "from-blue-500/10 to-indigo-500/10 border-blue-100 text-blue-900"
     },
     {
       title: "Immunity Shield",
       desc: "Rich in Vitamin C and active bioflavonoids that help protect your children from seasonal coughs and infections.",
       badge: "Hibiscus & Rose",
-      pic: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780856723641-WhatsAppImage20260417at10558PM600x750jpeg.jpeg",
+      pic: "/cat_petal_jam.jpg",
       color: "from-rose-500/10 to-red-500/10 border-rose-100 text-rose-900"
     },
     {
       title: "Sleep & Calm Aid",
       desc: "Relieves hyper-activity in kids and creates a relaxing bedtime routine by naturally soothing the nervous system.",
       badge: "Chamomile & Lavender",
-      pic: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1780937914670-WhatsAppImage20251113at2330215f60b43f600x800jpg.jpg",
+      pic: "/cat_brew_flora.jpg",
       color: "from-amber-500/10 to-yellow-500/10 border-amber-100 text-amber-900"
     },
     {
       title: "Digestive Cooler",
       desc: "Traditional cooling botanicals that soothe internal heat, support gut health, and ease food digestion.",
       badge: "Rose & Calendula",
-      pic: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/Products/products/1781535450213-Gulkandfinaljpg.jpg",
+      pic: "/cat_petal_jam.jpg",
       color: "from-emerald-500/10 to-teal-500/10 border-emerald-100 text-emerald-900"
     }
   ];
@@ -128,7 +128,7 @@ const ForYourFamilySection = () => {
       {/* 1. HERO BANNER */}
       <section className="relative w-full h-[300px] md:h-[480px] bg-white overflow-hidden">
         <img
-          src="/hero_family_banner.png"
+          src="/banner_tea.jpeg"
           alt="Family Floral Wellness"
           className="w-full h-full object-cover brightness-[0.95]"
         />

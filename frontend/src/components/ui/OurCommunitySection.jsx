@@ -1,316 +1,203 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { MessageSquare, Users, BookOpen, Heart, ArrowRight, Play } from 'lucide-react';
-import TiffinModal from '../home/TiffinModal';
+import { motion, AnimatePresence } from 'framer-motion';
+import { MessageSquare, Calendar, Award, Sparkles } from 'lucide-react';
 
-const API_BASE = 'https://paidhu-final-anm2.vercel.app';
-const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/EDlauzE5x1B6U23RamfCej?s=sh&p=a&ilr=0";
+const InstagramIcon = ({ size = 20 }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+  </svg>
+);
 
-const defaultData = {
-  hero: {
-    image: '/hero_family.png',
-    title: 'WELCOME TO THE PAIDHU COMMUNITY!',
-    subtitle: 'Your supportive space for elegant living and floral wellness, together.'
-  },
-  findYourTribe: {
-    image: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=2070&auto=format&fit=crop'
-  },
-  connect: [
-    { id: 1, image: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=800&auto=format&fit=crop', text: 'Share experiences, recipes and wellness insights' },
-    { id: 2, image: 'https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=800&auto=format&fit=crop', text: 'Meet fellow enthusiasts in your city' },
-    { id: 3, image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop', text: 'Get invited to exclusive meet-ups and tasting sessions' }
-  ],
-  learn: [
-    { id: 1, image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop', name: 'ZAINAB GINWALA', title: 'FLORAL WELLNESS EXPERT', text: 'Get your questions answered by experts who have been there' },
-    { id: 2, image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=800&auto=format&fit=crop', name: 'DR BHAVYA', title: 'NUTRITIONIST', text: 'Real solutions for modern holistic living and immunity' },
-    { id: 3, image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=800&auto=format&fit=crop', name: 'DR VIDYA TANEJA', title: 'AYURVEDIC EXPERT', text: 'Live sessions with nutritionists and holistic experts' }
-  ],
-  nourish: [
-    { id: 1, image: 'https://images.unsplash.com/photo-1490818387583-1b0570f550ce?q=80&w=800&auto=format&fit=crop', text: 'Help your family develop a positive relationship with wellness' },
-    { id: 2, image: 'https://images.unsplash.com/photo-1495474472207-464a4d9435b6?q=80&w=800&auto=format&fit=crop', text: 'Get easy, healthy and yummy floral recipes' },
-    { id: 3, image: 'https://images.unsplash.com/photo-1556910103-1c02745a872e?q=80&w=800&auto=format&fit=crop', text: 'Tips on how to make healthy eating easy and delicious' }
-  ],
-  highlights: {
-    image: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=2070&auto=format&fit=crop',
-    videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-  }
-};
+const FlowerIcon = () => (
+  <svg 
+    width="120" 
+    height="120" 
+    viewBox="0 0 100 100" 
+    fill="currentColor"
+    className="text-[#662654]/5 absolute right-4 bottom-4 pointer-events-none"
+  >
+    <path d="M50 35c-3.3-9-13.5-9-16.8 0-3.3-9-13.5-9-16.8 0C6.6 40.4 12 55 24.8 55c2.3 0 4.4-.5 6.2-1.4 1.8.9 3.9 1.4 6.2 1.4 12.8 0 18.2-14.6 8.4-20zM50 35c3.3-9 13.5-9 16.8 0 3.3-9 13.5-9 16.8 0 9.8 5.4 4.4 20-8.4 20-2.3 0-4.4-.5-6.2-1.4-1.8.9-3.9 1.4-6.2 1.4-12.8 0-18.2-14.6-9.2-20z" />
+    <circle cx="50" cy="50" r="10" />
+  </svg>
+);
+
+const sliderImages = [
+  "/wp_community_1.jpg",
+  "/wp_community_2.jpg",
+  "/wp_community_3.jpg"
+];
 
 const OurCommunitySection = () => {
-  const [data, setData] = useState(defaultData);
-  const [loading, setLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeSlide, setActiveSlide] = useState(0);
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/settings?t=${new Date().getTime()}`)
-      .then((res) => (res.ok ? res.json() : {}))
-      .then((settings) => {
-        if (settings && settings.ourCommunityData) {
-          setData({
-            hero: { ...defaultData.hero, ...settings.ourCommunityData.hero },
-            findYourTribe: { ...defaultData.findYourTribe, ...settings.ourCommunityData.findYourTribe },
-            connect: settings.ourCommunityData.connect || defaultData.connect,
-            learn: settings.ourCommunityData.learn || defaultData.learn,
-            nourish: settings.ourCommunityData.nourish || defaultData.nourish,
-            highlights: { ...defaultData.highlights, ...settings.ourCommunityData.highlights }
-          });
-        }
-      })
-      .catch((err) => console.warn('Failed to load community content:', err))
-      .finally(() => setLoading(false));
+    const timer = setInterval(() => {
+      setActiveSlide(prev => (prev + 1) % sliderImages.length);
+    }, 4000);
+    return () => clearInterval(timer);
   }, []);
 
-
-
-
-  if (loading) {
-    return (
-      <div className="w-full min-h-screen bg-[#faf9f7] flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-[#522742]/20 border-t-[#522742] rounded-full animate-spin"></div>
-      </div>
-    );
-  }
-
   return (
-    <div className="font-sans text-gray-800 bg-[#faf9f7] overflow-hidden">
-      {/* ══════════════════════════════════════════════════
-          HERO BANNER
-          ══════════════════════════════════════════════════ */}
-      <section className="relative w-full h-[460px] flex items-center justify-center bg-[#522742]">
-        <div className="absolute inset-0 z-0">
-          <img
-            src={data.hero.image}
-            alt="Paidhu Community"
-            className="w-full h-full object-cover brightness-[0.4]"
-          />
-        </div>
+    <div className="font-sans text-gray-800 bg-[#faf9f7] py-6 sm:py-12 overflow-hidden">
+      <div className="max-w-[1250px] mx-auto px-4 md:px-8">
         
-        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-[#fdfaf6]">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="font-serif italic text-3xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tight mb-4 text-[#fbc225]"
-          >
-            {data.hero.title}
-          </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-sm sm:text-base md:text-xl font-medium max-w-2xl mx-auto leading-relaxed text-[#fdfaf6]/90 mb-8"
-          >
-            {data.hero.subtitle}
-          </motion.p>
+        {/* Main Grid Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           
-          <motion.button 
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            onClick={() => setIsModalOpen(true)}
-            className="inline-flex items-center gap-2 bg-[#fbc225] hover:bg-[#e0ad20] text-[#522742] font-black text-sm md:text-base uppercase tracking-wider py-4 px-8 rounded-full shadow-lg transition-transform hover:scale-105 active:scale-95 cursor-pointer"
-          >
-            <MessageSquare size={18} strokeWidth={2.5} />
-            Join Our WhatsApp Community
-          </motion.button>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════
-          WHATSAPP PROMINENT CALL TO ACTION
-          ══════════════════════════════════════════════════ */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 -mt-16 relative z-20">
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, type: 'spring', damping: 25 }}
-          className="bg-white rounded-3xl border border-emerald-100 p-8 md:p-10 shadow-xl max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 justify-between relative overflow-hidden"
-        >
-          {/* Subtle background decoration */}
-          <div className="absolute right-0 top-0 w-32 h-32 bg-emerald-50/50 rounded-full blur-3xl z-0"></div>
-
-          <div className="space-y-4 flex-1 z-10">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full text-xs font-black uppercase tracking-wider">
-              <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-              Fastest Growing Community
-            </span>
-            <h2 className="text-xl md:text-2xl font-black text-gray-800 font-serif leading-tight">
-              Follow this link to join my WhatsApp group
-            </h2>
-            <p className="text-gray-500 text-xs md:text-sm leading-relaxed max-w-xl font-medium">
-              Join local, health-conscious moms sharing recipes, kid nutrition tips, and direct advice on natural wellness and edible floral foods.
-            </p>
-          </div>
-
-          <div className="w-full md:w-auto shrink-0 z-10 text-center">
-            <button 
-              onClick={() => setIsModalOpen(true)}
-              className="w-full md:w-auto inline-flex items-center justify-center gap-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm uppercase tracking-wider py-4 px-8 rounded-xl transition-all shadow-md shadow-emerald-600/10 hover:shadow-lg active:scale-[0.98] cursor-pointer"
-            >
-              <MessageSquare size={16} strokeWidth={2.5} />
-              Join WhatsApp Group
-              <ArrowRight size={16} />
-            </button>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════
-          CONNECT SECTION
-          ══════════════════════════════════════════════════ */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center space-y-3 mb-12">
-          <span className="text-[#662654] font-black tracking-[0.2em] text-xs uppercase block">
-            Find Your Tribe
-          </span>
-          <h2 className="text-2xl md:text-4xl font-black text-[#5a2141] uppercase tracking-tight font-serif">
-            CONNECT WITH LIKE-MINDED MOMS
-          </h2>
-          <div className="w-20 h-1 bg-[#662654] mx-auto rounded-full"></div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {data.connect.map((item, index) => (
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
-            >
-              <div className="h-48 relative overflow-hidden">
-                <img
-                  src={item.image}
-                  alt="Connect card"
-                  className="w-full h-full object-cover transition-transform hover:scale-105 duration-500"
+          {/* Left Column: Slideshow, Heading, Subtitle, and Primary CTAs */}
+          <div className="lg:col-span-7 space-y-8">
+            
+            {/* ── Slideshow Banner ── */}
+            <div className="relative w-full h-[220px] sm:h-[350px] rounded-[24px] md:rounded-[36px] overflow-hidden shadow-xl bg-gray-100 border border-white/40">
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={activeSlide}
+                  src={sliderImages[activeSlide]}
+                  alt={`Paidhu Community Slide ${activeSlide + 1}`}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  initial={{ opacity: 0, scale: 1.02 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.98 }}
+                  transition={{ duration: 0.8 }}
                 />
+              </AnimatePresence>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent z-0" />
+              
+              {/* Indicators */}
+              <div className="absolute bottom-4 left-6 flex gap-2.5 z-10">
+                {sliderImages.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveSlide(i)}
+                    className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                      activeSlide === i ? 'bg-[#fbc225] w-7' : 'bg-white/60 hover:bg-white/80'
+                    }`}
+                    aria-label={`Go to slide ${i + 1}`}
+                  />
+                ))}
               </div>
-              <div className="p-6">
-                <p className="text-gray-600 font-semibold text-sm leading-relaxed">
-                  {item.text}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-
-
-      {/* ══════════════════════════════════════════════════
-          NOURISH SECTION
-          ══════════════════════════════════════════════════ */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="text-center space-y-3 mb-12">
-          <span className="text-[#662654] font-black tracking-[0.2em] text-xs uppercase block">
-            Health & Nutrition
-          </span>
-          <h2 className="text-2xl md:text-4xl font-black text-[#5a2141] uppercase tracking-tight font-serif">
-            NOURISH YOUR FAMILY NATURALLY
-          </h2>
-          <div className="w-20 h-1 bg-[#662654] mx-auto rounded-full"></div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {data.nourish.map((item, index) => (
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
-            >
-              <div className="h-48 relative overflow-hidden">
-                <img
-                  src={item.image}
-                  alt="Nourish card"
-                  className="w-full h-full object-cover transition-transform hover:scale-105 duration-500"
-                />
-              </div>
-              <div className="p-6">
-                <p className="text-gray-600 font-semibold text-sm leading-relaxed">
-                  {item.text}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════
-          HIGHLIGHTS & VIDEO
-          ══════════════════════════════════════════════════ */}
-      <section className="bg-white border-t border-gray-100 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
-          <div className="lg:col-span-6 space-y-6">
-            <span className="text-[#662654] font-black tracking-[0.2em] text-xs uppercase block">
-              Community Highlights
-            </span>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-[#5a2141] uppercase tracking-tight font-serif">
-              WATCH OUR EXCLUSIVE COMMMUNITY HIGHLIGHTS
-            </h2>
-            <p className="text-gray-500 font-medium text-sm md:text-base leading-relaxed">
-              Witness how mothers across major cities connect, learn, and nourish their families through Paidhu workshops, group meets, and collaborative recipe sharing.
-            </p>
-            <div className="pt-2">
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="inline-flex items-center gap-2 bg-[#662654] hover:bg-[#7e3068] text-white font-bold text-sm uppercase tracking-wider py-3.5 px-7 rounded-xl shadow-md cursor-pointer"
-              >
-                Join India's Moms Tribe
-                <ArrowRight size={16} />
-              </button>
             </div>
+
+            {/* Title & Subtitle Info */}
+            <div className="space-y-4 text-left">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#662654]/5 text-[#662654] rounded-full text-xs font-black uppercase tracking-[0.15em] shadow-sm">
+                <Sparkles size={12} className="fill-[#662654] text-[#662654]" />
+                Join the Tribe
+              </span>
+              
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#662654] leading-tight font-serif">
+                Family Tales by Paidhu
+              </h1>
+              
+              <p className="text-base sm:text-[18px] font-bold text-gray-500 leading-relaxed max-w-2xl">
+                A supportive community for parents to connect, share &amp; learn how to nourish their kids better.
+              </p>
+            </div>
+
+            {/* CTAs Row */}
+            <div className="flex flex-wrap gap-3.5 pt-2">
+              <a
+                href="https://chat.whatsapp.com/H1ECUmlOhe1IVuf2X9F9lE"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#662654] hover:bg-[#521e42] text-white font-extrabold text-[13px] uppercase tracking-wider px-7 py-3.5 rounded-full shadow-[0_6px_20px_rgba(102,38,84,0.22)] hover:scale-[1.03] active:scale-95 transition-all cursor-pointer"
+              >
+                <MessageSquare size={15} />
+                Join On WhatsApp
+              </a>
+              <a
+                href="https://www.instagram.com/paidhu_edibleflowerco/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white border-2 border-[#662654] text-[#662654] hover:bg-[#662654] hover:text-white font-extrabold text-[13px] uppercase tracking-wider px-7 py-3.5 rounded-full hover:scale-[1.03] active:scale-95 transition-all cursor-pointer"
+              >
+                <InstagramIcon size={15} />
+                Join On Instagram
+              </a>
+            </div>
+
           </div>
 
-          <div className="lg:col-span-6">
-            <motion.div 
-              whileHover={{ scale: 1.01 }}
-              className="relative w-full h-[240px] sm:h-[350px] rounded-3xl overflow-hidden shadow-xl border border-gray-100 group"
-            >
-              <img
-                src={data.highlights.image}
-                alt="Community Highlight"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-              />
-            </motion.div>
+          {/* Right Column: "Dear Mommies / Flower Recipes" Card and Events info */}
+          <div className="lg:col-span-5 space-y-8">
+            
+            {/* ── Dear Mommies Card ── */}
+            <div className="relative bg-gradient-to-br from-white via-[#fdfcfb] to-[#fcfaf7] rounded-[28px] border border-[#662654]/10 shadow-[0_15px_40px_rgba(102,38,84,0.03)] p-6 sm:p-8 overflow-hidden before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1.5 before:bg-gradient-to-b before:from-[#662654] before:to-[#d4af37]">
+              <FlowerIcon />
+              
+              <div className="space-y-4 relative z-10">
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full text-[9px] font-black uppercase tracking-wider">
+                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span>
+                    Active
+                  </span>
+                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-[#662654]/5 text-[#662654] rounded-full text-[9px] font-black uppercase tracking-wider">
+                    Flower Recipes
+                  </span>
+                </div>
+
+                <h2 className="text-xl sm:text-2xl font-black text-gray-900 font-serif leading-snug">
+                  Dear Mommies
+                </h2>
+                
+                <div className="space-y-4 text-gray-600 text-xs sm:text-sm leading-relaxed font-sans">
+                  <p className="font-extrabold text-[#662654] text-[15px] sm:text-[16px] leading-snug">
+                    Looking to make your kids’ everyday meals colourful, fun, naturally healthy and tasty with edible flowers?
+                  </p>
+                  <p className="font-semibold text-gray-500">
+                    Join our Flower Recipes group by Family Tales community where we share kid-friendly floral recipes, playful food ideas, and simple ways to add natural colour, flavour, and nutrition to your child’s plate.
+                  </p>
+                  <p className="font-bold text-gray-750">
+                    Tap below and bring fresh floral magic into your kids’ meals! 🌸🍽
+                  </p>
+                </div>
+
+                <div className="pt-4">
+                  <a
+                    href="https://chat.whatsapp.com/DTuA8M5Z9GZ2QdupKw9zmy?mode=hqrc"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-[13px] uppercase tracking-wider px-8 py-3.5 rounded-full shadow-[0_6px_20px_rgba(16,185,129,0.25)] hover:scale-[1.02] active:scale-98 transition-all cursor-pointer"
+                  >
+                    <MessageSquare size={16} strokeWidth={2.5} />
+                    Click to Join Group
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* ── Upcoming Events Card ── */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-[#662654]">
+                <Calendar size={18} className="stroke-[2.5]" />
+                <h3 className="text-lg sm:text-xl font-black font-serif uppercase tracking-tight">
+                  Upcoming Events
+                </h3>
+              </div>
+              
+              <div className="bg-white rounded-[20px] border border-gray-100 p-5 text-center text-gray-450 text-xs sm:text-sm font-semibold shadow-sm flex items-center justify-center gap-2">
+                <span>🌸</span>
+                <p>No upcoming events scheduled. Stay tuned!</p>
+              </div>
+            </div>
+
           </div>
 
         </div>
-      </section>
 
-      {/* ══════════════════════════════════════════════════
-          FINAL BIG CTA
-          ══════════════════════════════════════════════════ */}
-      <section className="bg-[#522742] py-16 text-center text-[#fdfaf6]">
-        <div className="max-w-4xl mx-auto px-4 space-y-6">
-          <Heart size={48} className="text-[#fbc225] fill-[#fbc225] mx-auto animate-pulse" />
-          <h2 className="font-serif italic text-2xl sm:text-4xl font-bold uppercase tracking-tight text-[#fbc225]">
-            BE A PART OF THE PAIDHU FAMILY
-          </h2>
-          <p className="text-sm sm:text-base font-medium max-w-xl mx-auto leading-relaxed opacity-95">
-            Follow this link to join my WhatsApp group: Connect with elegant living and natural floral wellness with thousands of health-conscious mothers.
-          </p>
-          <div className="pt-4">
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="inline-flex items-center gap-2 bg-[#fbc225] hover:bg-[#e0ad20] text-[#522742] font-black text-base uppercase tracking-widest py-4 px-10 rounded-full shadow-lg transition-transform hover:scale-105 active:scale-95 cursor-pointer"
-            >
-              Join Group Now
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <TiffinModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-        title="Join the Paidhu WhatsApp Community" 
-        subtitle="Get healthy recipe ideas, expert wellness advice, and connect with other moms." 
-      />
+      </div>
     </div>
   );
 };

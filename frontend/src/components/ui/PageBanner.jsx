@@ -5,6 +5,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const API_BASE = 'https://paidhu-final-anm2.vercel.app';
 
@@ -21,6 +22,7 @@ const toSlide = (b) => ({
   mobileImage: resolveUrl(b.mobileImage || b.mobileImagePath) || null,
   bgColor:     '#f8f4ef',
   isBackend:   true,
+  category:    b.category || null,
 });
 
 // Local fallback per section (used only when DB + home fallback both return nothing)
@@ -132,7 +134,7 @@ const PageBanner = ({ pageSlug }) => {
               ? "w-full rounded-none overflow-hidden animate-pulse bg-gradient-to-r from-[#e8e0d5] via-[#f0e8db] to-[#e8e0d5]"
               : "w-full rounded-[28px] md:rounded-[36px] overflow-hidden animate-pulse bg-gradient-to-r from-[#e8e0d5] via-[#f0e8db] to-[#e8e0d5]"
           }
-          style={{ aspectRatio: isShopAll ? (isMobile ? 1 : 1920 / 427) : 2 }}
+          style={{ aspectRatio: isShopAll ? (isMobile ? 2 : 1920 / 427) : 2 }}
         />
       </div>
     );
@@ -143,7 +145,7 @@ const PageBanner = ({ pageSlug }) => {
   const current  = slides[currentSlide];
   const cacheKey = `${current.id}-${(isMobile && current.mobileImage) ? 'm' : 'w'}`;
   const aspect = isShopAll
-    ? (isMobile ? 1 : 1920 / 427)
+    ? (isMobile ? 2 : 1920 / 427)
     : (aspectRatios[cacheKey] || 2);
   const imgSrc   = (isMobile && current.mobileImage) ? current.mobileImage : current.image;
 
@@ -191,28 +193,51 @@ const PageBanner = ({ pageSlug }) => {
             className="absolute inset-0 w-full h-full"
             style={{ background: current.bgColor || '#f8f4ef' }}
           >
-            {/* Mobile image */}
-            {current.mobileImage && (
-              <img
-                src={current.mobileImage}
-                alt="Paidhu Banner"
-                className="md:hidden absolute inset-0 w-full h-full object-cover object-center"
-                onLoad={handleLoad}
-              />
+            {current.category ? (
+              <Link to={`/shop/shop-by-category?category=${encodeURIComponent(current.category)}`} className="absolute inset-0 w-full h-full block cursor-pointer z-10">
+                {current.mobileImage && (
+                  <img
+                    src={current.mobileImage}
+                    alt="Paidhu Banner"
+                    className="md:hidden absolute inset-0 w-full h-full object-cover object-center"
+                    onLoad={handleLoad}
+                  />
+                )}
+                <img
+                  src={imgSrc}
+                  alt="Paidhu Banner"
+                  className={[
+                    current.mobileImage ? 'hidden md:block' : 'block',
+                    'absolute inset-0 w-full h-full object-cover object-center',
+                    'transition-transform duration-700 group-hover:scale-[1.015]',
+                  ].join(' ')}
+                  onLoad={handleLoad}
+                  onError={e => { e.currentTarget.style.display = 'none'; }}
+                />
+              </Link>
+            ) : (
+              <>
+                {current.mobileImage && (
+                  <img
+                    src={current.mobileImage}
+                    alt="Paidhu Banner"
+                    className="md:hidden absolute inset-0 w-full h-full object-cover object-center"
+                    onLoad={handleLoad}
+                  />
+                )}
+                <img
+                  src={imgSrc}
+                  alt="Paidhu Banner"
+                  className={[
+                    current.mobileImage ? 'hidden md:block' : 'block',
+                    'absolute inset-0 w-full h-full object-cover object-center',
+                    'transition-transform duration-700 group-hover:scale-[1.015]',
+                  ].join(' ')}
+                  onLoad={handleLoad}
+                  onError={e => { e.currentTarget.style.display = 'none'; }}
+                />
+              </>
             )}
-
-            {/* Web / main image */}
-            <img
-              src={imgSrc}
-              alt="Paidhu Banner"
-              className={[
-                current.mobileImage ? 'hidden md:block' : 'block',
-                'absolute inset-0 w-full h-full object-cover object-center',
-                'transition-transform duration-700 group-hover:scale-[1.015]',
-              ].join(' ')}
-              onLoad={handleLoad}
-              onError={e => { e.currentTarget.style.display = 'none'; }}
-            />
 
             {/* Subtle gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none" />

@@ -28,7 +28,7 @@ const getActiveBannerByPage = async (req, res) => {
 
 const createBanner = async (req, res) => {
   try {
-    const { pageSlug, webImage, webImagePath, mobileImage, mobileImagePath, size, isActive } = req.body;
+    const { pageSlug, webImage, webImagePath, mobileImage, mobileImagePath, size, isActive, category } = req.body;
     const banner = await prisma.banner.create({
       data: {
         pageSlug,
@@ -37,7 +37,8 @@ const createBanner = async (req, res) => {
         mobileImage,
         mobileImagePath,
         size: size || "medium",
-        isActive: isActive !== undefined ? (isActive === true || isActive === 'true') : true
+        isActive: isActive !== undefined ? (isActive === true || isActive === 'true') : true,
+        category: category || null
       }
     });
     res.status(201).json(banner);
@@ -49,7 +50,7 @@ const createBanner = async (req, res) => {
 const updateBanner = async (req, res) => {
   try {
     const { id } = req.params;
-    const { pageSlug, webImage, webImagePath, mobileImage, mobileImagePath, size, isActive } = req.body;
+    const { pageSlug, webImage, webImagePath, mobileImage, mobileImagePath, size, isActive, category } = req.body;
     
     const updateData = {
       pageSlug,
@@ -57,7 +58,8 @@ const updateBanner = async (req, res) => {
       webImagePath,
       mobileImage,
       mobileImagePath,
-      size
+      size,
+      category: category === undefined ? undefined : (category || null)
     };
     
     if (isActive !== undefined) {

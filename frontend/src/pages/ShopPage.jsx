@@ -470,6 +470,141 @@ const ProductCarouselRow = ({ products, navSection }) => {
   );
 };
 
+// ---------- CATEGORY HORIZONTAL NAVIGATION FILTER ----------
+const CategoryNavigation = ({ categories, activeCategory, onCategoryChange }) => {
+  const scrollRef = useRef(null);
+  const [canLeft, setCanLeft] = useState(false);
+  const [canRight, setCanRight] = useState(false);
+
+  const checkScroll = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanLeft(el.scrollLeft > 5);
+    setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 5);
+  };
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    checkScroll();
+
+    window.addEventListener('resize', checkScroll);
+    el.addEventListener('scroll', checkScroll, { passive: true });
+
+    const timer = setTimeout(checkScroll, 300);
+
+    return () => {
+      window.removeEventListener('resize', checkScroll);
+      el.removeEventListener('scroll', checkScroll);
+      clearTimeout(timer);
+    };
+  }, [categories]);
+
+  const scroll = (dir) => {
+    const el = scrollRef.current;
+    if (el) {
+      el.scrollBy({ left: dir * 200, behavior: 'smooth' });
+    }
+  };
+
+  const getCategoryIcon = (category) => {
+    const map = {
+      'Bloom Cookies': '/cat_bloom_cookies.jpg',
+      'Saffron': '/cat_saffron.jpg',
+      'Saffron Giftbox': '/cat_saffron_giftbox.png',
+      'Petal Jam': '/cat_petal_jam.jpg',
+      'Medley Teas': '/cat_medley_teas.png',
+      'Brew Flora': '/cat_brew_flora.jpg',
+      'Combos': '/cat_combos.png',
+      'Bloom Powder': '/cat_bloom_cookies.jpg'
+    };
+    return map[category] || '/mascot.png';
+  };
+
+  const list = [
+    { id: '', name: 'All Categories', image: '/mascot.png' },
+    ...categories.map(cat => ({
+      id: cat.name,
+      name: cat.name,
+      image: cat.image || getCategoryIcon(cat.name)
+    }))
+  ];
+
+  return (
+    <div className="w-full bg-[#faf9f7] border-b border-gray-100 py-6 relative">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-8 relative flex items-center">
+        {/* Left Arrow Button */}
+        {canLeft && (
+          <button
+            onClick={() => scroll(-1)}
+            aria-label="Scroll categories left"
+            className="absolute left-1 sm:left-4 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white shadow-[0_2px_10px_rgba(0,0,0,0.1)] border border-gray-200 flex items-center justify-center text-[#662654] hover:bg-[#662654] hover:text-white transition-colors cursor-pointer"
+          >
+            <ChevronLeft size={20} />
+          </button>
+        )}
+
+        {/* Scrollable Container */}
+        <div
+          ref={scrollRef}
+          onScroll={checkScroll}
+          className="flex items-start justify-start lg:justify-center gap-6 sm:gap-10 overflow-x-auto w-full py-1 snap-x scroll-smooth hide-scrollbar px-6"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {list.map(cat => {
+            const isActive = activeCategory === cat.id;
+            return (
+              <button
+                key={cat.id}
+                onClick={() => onCategoryChange(cat.id)}
+                className="flex flex-col items-center flex-shrink-0 w-20 sm:w-24 focus:outline-none group cursor-pointer snap-start"
+              >
+                <div 
+                  className={`w-16 h-16 sm:w-[76px] sm:h-[76px] rounded-full flex items-center justify-center p-0.5 border-2 transition-all duration-300 ${
+                    isActive 
+                      ? 'border-[#662654] bg-white scale-105 shadow-[0_4px_14px_rgba(102,38,84,0.15)]' 
+                      : 'border-gray-100 group-hover:border-gray-300'
+                  }`}
+                >
+                  <img
+                    src={cat.image}
+                    alt={cat.name}
+                    className={`w-full h-full rounded-full bg-white ${
+                      cat.id === '' ? 'object-contain p-1.5' : 'object-cover'
+                    }`}
+                    onError={e => { e.currentTarget.src = '/mascot.png'; }}
+                  />
+                </div>
+                <span 
+                  className={`mt-3 text-[11px] sm:text-[12px] font-bold text-center leading-tight transition-colors duration-300 max-w-full truncate ${
+                    isActive 
+                      ? 'text-[#662654] font-black' 
+                      : 'text-gray-500 group-hover:text-gray-800 font-semibold'
+                  }`}
+                  style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', whiteSpace: 'normal' }}
+                >
+                  {cat.name}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Right Arrow Button */}
+        {canRight && (
+          <button
+            onClick={() => scroll(1)}
+            aria-label="Scroll categories right"
+            className="absolute right-1 sm:right-4 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white shadow-[0_2px_10px_rgba(0,0,0,0.1)] border border-gray-200 flex items-center justify-center text-[#662654] hover:bg-[#662654] hover:text-white transition-colors cursor-pointer"
+          >
+            <ChevronRight size={20} />
+          </button>
+        )}
+      </div>
+    </div>
+  );
+};
+
 // ---------- MAIN SHOP PAGE ----------
 
 const ShopPage = () => {
@@ -519,7 +654,7 @@ const ShopPage = () => {
     }
 
     // Sort category-wise (cookies first)
-    const categoryOrder = ['Bloom Cookies', 'Saffron', 'Petal Jam', 'Medley Teas', 'Brew Flora'];
+    const categoryOrder = ['Combos', 'Saffron Giftbox', 'Saffron', 'Bloom Cookies', 'Petal Jam', 'Medley Teas', 'Brew Flora'];
     const getCategoryIndex = (cat) => {
       const name = cat && typeof cat === 'object' ? cat.name : cat;
       const idx = categoryOrder.indexOf(name);
@@ -647,18 +782,24 @@ const ShopPage = () => {
     fetch(`${API_BASE}/api/products?limit=200`)
       .then(r => r.json())
       .then(data => {
-        const desiredOrder = ['Bloom Cookies', 'Saffron', 'Petal Jam', 'Medley Teas', 'Brew Flora'];
-        const cats = desiredOrder.filter(c => 
-          (data.products || []).some(p => p.category === c)
-        );
-        cats.sort((a, b) => {
-          const indexA = desiredOrder.indexOf(a);
-          const indexB = desiredOrder.indexOf(b);
-          if (indexA === -1 && indexB === -1) return a.localeCompare(b);
-          if (indexA === -1) return 1;
-          if (indexB === -1) return -1;
-          return indexA - indexB;
+        const productsList = data.products || [];
+        const desiredOrder = ['Combos', 'Saffron Giftbox', 'Saffron', 'Bloom Cookies', 'Petal Jam', 'Medley Teas', 'Brew Flora'];
+        
+        const categoryMap = {};
+        productsList.forEach(p => {
+          if (p.category && !categoryMap[p.category]) {
+            categoryMap[p.category] = p.image || (p.productImages && p.productImages.length > 0 ? p.productImages[0].imageUrl : null);
+          }
         });
+
+        // Filter and map to objects with names and images
+        const cats = desiredOrder
+          .filter(c => productsList.some(p => p.category === c))
+          .map(name => ({
+            name,
+            image: categoryMap[name]
+          }));
+
         setCategories(cats);
       })
       .catch(() => {});
@@ -724,7 +865,7 @@ const ShopPage = () => {
           });
 
           // Sort category-wise (cookies first)
-          const categoryOrder = ['Bloom Cookies', 'Saffron', 'Petal Jam', 'Medley Teas', 'Brew Flora'];
+          const categoryOrder = ['Combos', 'Saffron Giftbox', 'Saffron', 'Bloom Cookies', 'Petal Jam', 'Medley Teas', 'Brew Flora'];
           const getCategoryIndex = (cat) => {
             const name = cat && typeof cat === 'object' ? cat.name : cat;
             const idx = categoryOrder.indexOf(name);
@@ -1022,36 +1163,11 @@ const ShopPage = () => {
 
       {/* ── Category Quick Filter Strip ── */}
       {['shop-all', 'shop-by-category', 'deal-of-the-day'].includes(navSection) && categories.length > 0 && (
-        <div className="w-full bg-[#faf9f7] border-b border-gray-100 py-3">
-          <div className="max-w-[1400px] mx-auto px-4 md:px-8 flex items-center gap-2.5 overflow-x-auto hide-scrollbar">
-            <button
-              onClick={() => handleCategoryChange('')}
-              className={`whitespace-nowrap px-4 py-2 rounded-full text-[12px] font-extrabold tracking-wide transition-all shadow-sm flex items-center gap-2 ${!activeCategory ? 'bg-[#662654] text-white shadow-[0_4px_14px_rgba(102,38,84,0.35)] scale-105' : 'bg-white text-gray-500 hover:text-gray-800 hover:bg-gray-50'}`}
-            >
-              <img 
-                src="/mascot.png" 
-                alt="All Categories" 
-                className="w-6 h-6 rounded-full object-cover shadow-sm bg-white p-0.5"
-              />
-              <span>All Categories</span>
-            </button>
-            {categories.map(cat => (
-              <button
-                key={cat}
-                onClick={() => handleCategoryChange(cat)}
-                className={`whitespace-nowrap px-4 py-2 rounded-full text-[12px] font-extrabold tracking-wide transition-all shadow-sm flex items-center gap-2 ${activeCategory === cat ? 'bg-[#662654] text-white shadow-[0_4px_14px_rgba(102,38,84,0.35)] scale-105' : 'bg-white text-gray-500 hover:text-gray-800 hover:bg-gray-50'}`}
-              >
-                <img 
-                  src={getCategoryIcon(cat)} 
-                  alt={cat} 
-                  className="w-6 h-6 rounded-full object-cover shadow-sm bg-white"
-                  onError={e => { e.target.src = '/mascot.png'; }}
-                />
-                <span>{cat}</span>
-              </button>
-            ))}
-          </div>
-        </div>
+        <CategoryNavigation
+          categories={categories}
+          activeCategory={activeCategory}
+          onCategoryChange={handleCategoryChange}
+        />
       )}
 
       {/* ══════════════════════════════════════════════════
@@ -1060,8 +1176,10 @@ const ShopPage = () => {
       <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-8">
 
         {loading ? (
-          <div className="flex gap-4 overflow-hidden pb-4">
-            {Array.from({ length: 6 }).map((_, i) => <div key={i} className="flex-shrink-0 w-[200px] sm:w-[220px]"><SkeletonCard /></div>)}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 py-4">
+            {Array.from({ length: 10 }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
           </div>
         ) : products.length === 0 ? (
           <motion.div
@@ -1078,10 +1196,18 @@ const ShopPage = () => {
             </button>
           </motion.div>
         ) : (
-          <>
-            {/* ── Horizontal Carousel ── */}
-            <ProductCarouselRow products={products} navSection={navSection} />
-          </>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 py-4">
+            {products.map((product, i) => (
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: Math.min(i * 0.04, 0.4), type: 'spring', damping: 20, stiffness: 120 }}
+              >
+                <ProductCard product={product} index={i} navSection={navSection} />
+              </motion.div>
+            ))}
+          </div>
         )}
 
 

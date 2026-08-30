@@ -31,7 +31,7 @@ const Banners = () => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingBanner, setEditingBanner] = useState(null);
-  const [formData, setFormData] = useState({ pageSlug: 'home', size: 'medium', webImage: '', webImagePath: '', mobileImage: '', mobileImagePath: '', isActive: true });
+  const [formData, setFormData] = useState({ pageSlug: 'home', size: 'medium', webImage: '', webImagePath: '', mobileImage: '', mobileImagePath: '', isActive: true, category: '' });
   const [newWebFile, setNewWebFile] = useState(null);
   const [newMobileFile, setNewMobileFile] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -84,7 +84,7 @@ const Banners = () => {
 
   const openAddModal = () => {
     setEditingBanner(null);
-    setFormData({ pageSlug: 'home', size: 'medium', webImage: '', webImagePath: '', mobileImage: '', mobileImagePath: '', isActive: true });
+    setFormData({ pageSlug: 'home', size: 'medium', webImage: '', webImagePath: '', mobileImage: '', mobileImagePath: '', isActive: true, category: '' });
     setNewWebFile(null);
     setNewMobileFile(null);
     setShowModal(true);
@@ -99,7 +99,8 @@ const Banners = () => {
       webImagePath: banner.webImagePath || '',
       mobileImage: banner.mobileImage || '',
       mobileImagePath: banner.mobileImagePath || '',
-      isActive: banner.isActive
+      isActive: banner.isActive,
+      category: banner.category || ''
     });
     setNewWebFile(null);
     setNewMobileFile(null);
@@ -236,6 +237,7 @@ const Banners = () => {
                 <th className="px-6 py-4">Page</th>
                 <th className="px-6 py-4">Web Banner</th>
                 <th className="px-6 py-4">Mobile Banner</th>
+                <th className="px-6 py-4">Mapped Category</th>
                 <th className="px-6 py-4">Size</th>
                 <th className="px-6 py-4">Status</th>
                 <th className="px-6 py-4 text-right">Actions</th>
@@ -244,11 +246,11 @@ const Banners = () => {
             <tbody className="divide-y divide-gray-100">
               {loading ? (
                 <tr>
-                  <td colSpan="6" className="px-6 py-12 text-center text-brand-plum">Loading banners...</td>
+                  <td colSpan="7" className="px-6 py-12 text-center text-brand-plum">Loading banners...</td>
                 </tr>
               ) : filteredBanners.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="px-6 py-12 text-center text-gray-500">No banners found for this filter.</td>
+                  <td colSpan="7" className="px-6 py-12 text-center text-gray-500">No banners found for this filter.</td>
                 </tr>
               ) : (
                 filteredBanners.map((banner) => (
@@ -269,6 +271,16 @@ const Banners = () => {
                           <img src={banner.mobileImage} alt="Mobile" className="w-full h-full object-cover" />
                         </div>
                       ) : <span className="text-gray-400 italic text-xs">Using Web Image</span>}
+                    </td>
+
+                    <td className="px-6 py-4">
+                      {banner.category ? (
+                        <span className="bg-brand-plum/5 text-brand-plum px-2.5 py-1 rounded-full text-xs font-bold border border-brand-plum/10">
+                          {banner.category}
+                        </span>
+                      ) : (
+                        <span className="text-gray-400 text-xs italic">None</span>
+                      )}
                     </td>
 
                     <td className="px-6 py-4 text-gray-600 capitalize">{banner.size}</td>
@@ -346,6 +358,25 @@ const Banners = () => {
                       {SIZES.map(s => <option key={s.value} value={s.value}>{s.name}</option>)}
                     </select>
                   </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">Mapped Category (Optional)</label>
+                  <select 
+                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-plum bg-white"
+                    value={formData.category}
+                    onChange={e => setFormData({...formData, category: e.target.value})}
+                  >
+                    <option value="">None / Unmapped</option>
+                    <option value="Bloom Cookies">Bloom Cookies</option>
+                    <option value="Bloom Powder">Bloom Powder</option>
+                    <option value="Petal Jam">Petal Jam</option>
+                    <option value="Medley Teas">Medley Teas</option>
+                    <option value="Brew Flora">Brew Flora</option>
+                    <option value="Saffron">Saffron</option>
+                    <option value="Combos">Combos</option>
+                  </select>
+                  <p className="text-xs text-gray-400 mt-1">If selected, clicking this banner on the store will navigate users to that category listing page.</p>
                 </div>
 
                 {/* IMAGES */}

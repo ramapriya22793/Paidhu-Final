@@ -18,7 +18,7 @@ const WhatsAppButton = () => {
           <img 
             src="/mascot.png" 
             alt="Chat with us" 
-            className="w-[120%] h-[120%] object-cover scale-110"
+            className="w-full h-full object-contain p-1"
           />
         </div>
         

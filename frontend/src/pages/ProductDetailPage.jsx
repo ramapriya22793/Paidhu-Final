@@ -39,11 +39,6 @@ const ProductDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [mainImgLoading, setMainImgLoading] = useState(true);
-  
-  // Image Hover Zoom Magnifier state
-
-  const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
-  const [isZooming, setIsZooming] = useState(false);
 
   // Similar Products Carousel ref & helper
   const similarScrollRef = useRef(null);
@@ -201,12 +196,7 @@ const ProductDetailPage = () => {
     return Array.isArray(field) ? field : [];
   };
 
-  const handleMouseMove = (e) => {
-    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - left) / width) * 100;
-    const y = ((e.clientY - top) / height) * 100;
-    setZoomPos({ x, y });
-  };
+
 
   if (loading) {
     return (
@@ -339,19 +329,15 @@ const ProductDetailPage = () => {
           {/* 1. Left Column: Product Image with Zoom */}
           <div>
             <div
-              onMouseMove={handleMouseMove}
-              onMouseEnter={() => setIsZooming(true)}
-              onMouseLeave={() => setIsZooming(false)}
-              className="relative aspect-square bg-[#faf9f7] rounded-[2rem] overflow-hidden border border-gray-100 flex items-center justify-center shadow-inner cursor-zoom-in"
+              className="relative aspect-square bg-[#faf9f7] rounded-[2rem] overflow-hidden border border-gray-100 flex items-center justify-center shadow-inner"
             >
               <motion.img 
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ 
                   opacity: 1,
-                  scale: isZooming ? 1.75 : 1,
-                  transformOrigin: isZooming ? `${zoomPos.x}% ${zoomPos.y}%` : 'center'
+                  scale: 1,
                 }}
-                transition={isZooming ? { type: 'tween', duration: 0.1 } : { type: 'spring', damping: 25, stiffness: 120 }}
+                transition={{ type: 'spring', damping: 25, stiffness: 120 }}
                 src={productImage || '/white_lotus_cookies_new.png'} 
                 alt={product.name} 
                 title={product.name}
