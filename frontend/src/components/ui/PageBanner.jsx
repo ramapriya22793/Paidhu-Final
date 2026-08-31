@@ -122,7 +122,7 @@ const PageBanner = ({ pageSlug }) => {
   const prev = () => setCurrentSlide(p => (p === 0 ? slides.length - 1 : p - 1));
 
   // ── Skeleton ──────────────────────────────────────────────────────────────
-  const isShopAll = pageSlug === 'shop-all';
+  const isShopAll = ['shop-all', 'shop-by-category', 'deal-of-the-day', 'shop'].includes(pageSlug);
 
   if (!ready) {
     return (

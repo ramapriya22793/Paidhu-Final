@@ -395,7 +395,7 @@ const Banners = () => {
                       <label className="cursor-pointer border-2 border-dashed border-gray-300 rounded-xl p-8 flex flex-col items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors h-32">
                         <span className="text-sm text-gray-600 font-bold">Upload Web Image</span>
                         <span className="text-xs text-gray-400 mt-1">
-                          {(formData.pageSlug === 'shop-all' || formData.pageSlug === 'shop') 
+                          {['shop-all', 'shop-by-category', 'deal-of-the-day', 'shop'].includes(formData.pageSlug) 
                             ? '1920 × 427 px (Slim 4.5:1 ratio)' 
                             : '1920 × 800 px (12:5 ratio)'}
                         </span>
