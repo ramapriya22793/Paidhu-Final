@@ -531,7 +531,7 @@ const CategoryNavigation = ({ categories, activeCategory, onCategoryChange }) =>
   ];
 
   return (
-    <div className="w-full bg-[#faf9f7] border-b border-gray-100 py-6 relative">
+    <div className="w-full bg-[#faf9f7] border-b border-gray-100 py-3 sm:py-4 relative">
       <div className="max-w-[1400px] mx-auto px-4 md:px-8 relative flex items-center">
         {/* Left Arrow Button */}
         {canLeft && (
@@ -1173,7 +1173,7 @@ const ShopPage = () => {
       {/* ══════════════════════════════════════════════════
           PRODUCT CAROUSEL
           ══════════════════════════════════════════════════ */}
-      <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-8">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-8 pt-3 pb-8 md:pt-4">
 
         {loading ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 py-4">
