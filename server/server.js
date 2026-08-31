@@ -81,6 +81,12 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get("/api/vercel-db-check", (req, res) => {
+  res.json({
+    database_url: process.env.DATABASE_URL ? process.env.DATABASE_URL.replace(/:[^:@]+@/, '@') : null,
+  });
+});
+
 // API ROUTES
 app.use("/api/products", require("./routes/productRoutes"));
 app.use("/api/settings", require("./routes/settingsRoutes"));
