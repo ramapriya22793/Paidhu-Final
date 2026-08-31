@@ -81,6 +81,13 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get("/api/db-check", (req, res) => {
+  res.json({
+    database_url_host: process.env.DATABASE_URL ? process.env.DATABASE_URL.split('@')[1] : null,
+    direct_url_host: process.env.DIRECT_URL ? process.env.DIRECT_URL.split('@')[1] : null,
+  });
+});
+
 // API ROUTES
 app.use("/api/products", require("./routes/productRoutes"));
 app.use("/api/settings", require("./routes/settingsRoutes"));

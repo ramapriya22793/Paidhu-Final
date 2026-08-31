@@ -10,10 +10,4 @@ router.post("/", verifyToken, verifyAdmin, checkPermission('banners'), createBan
 router.put("/:id", verifyToken, verifyAdmin, checkPermission('banners'), updateBanner);
 router.delete("/:id", verifyToken, verifyAdmin, checkPermission('banners'), deleteBanner);
 
-router.get("/db-info", (req, res) => {
-  const dbUrl = process.env.DATABASE_URL || "NOT SET";
-  const maskedUrl = dbUrl.replace(/:[^:]+@/, ':****@');
-  res.json({ dbUrl: maskedUrl });
-});
-
 module.exports = router;
