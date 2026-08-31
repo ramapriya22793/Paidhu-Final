@@ -1063,7 +1063,7 @@ const ShopPage = () => {
       {/* ══════════════════════════════════════════════════
           STICKY TOOLBAR — filters, sort, category pills
           ══════════════════════════════════════════════════ */}
-      <div className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-gray-100 shadow-sm">
+      <div className="sticky top-[48px] md:top-[60px] lg:top-[116px] z-40 bg-white/95 backdrop-blur border-b border-gray-100 shadow-sm">
         <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-3 flex items-center justify-between gap-4">
           {/* Result count */}
           <p className="text-[13px] text-gray-500 whitespace-nowrap">
