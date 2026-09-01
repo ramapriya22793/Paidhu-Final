@@ -43,14 +43,15 @@ const VideoCard = ({ video, index, onClick }) => {
       {/* Video element */}
       <video
         ref={videoRef}
-        src={video.url}
+        src={video.url ? (video.url.includes('#') ? video.url : `${video.url}#t=0.001`) : ''}
         preload="metadata"
         loop
         playsInline
         muted
         onLoadedData={() => setIsLoading(false)}
+        onLoadedMetadata={() => setIsLoading(false)}
         onError={() => setIsLoading(false)}
-        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+        className="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition-opacity duration-300"
       />
 
       {/* Loading overlay */}
@@ -105,49 +106,58 @@ const FloralHabitatSection = () => {
 
   const FALLBACK_VIDEOS = [
     {
-      id: "WhatsApp Video 2026-06-15 at 12.39.48 PM.mp4",
-      name: "WhatsApp Video 2026-06-15 at 12.39.48 PM.mp4",
-      url: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/starting-floral-food-habitat/WhatsApp%20Video%202026-06-15%20at%2012.39.48%20PM.mp4",
+      id: "WhatsApp Video 2026-09-01 at 11.31.56 AM.mp4",
+      name: "WhatsApp Video 2026-09-01 at 11.31.56 AM.mp4",
+      url: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/products/starting%20floral%20habits%20videos/WhatsApp%20Video%202026-09-01%20at%2011.31.56%20AM.mp4",
       title: "Curated Floral Food Starter Pack 🌸",
       description: "Discover how our hand-selected botanical ingredients support daily vitality.",
-      likes: 452,
-      shares: 56
+      likes: 222,
+      shares: 80
     },
     {
-      id: "WhatsApp Video 2026-06-15 at 12.44.35 PM.mp4",
-      name: "WhatsApp Video 2026-06-15 at 12.44.35 PM.mp4",
-      url: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/starting-floral-food-habitat/WhatsApp%20Video%202026-06-15%20at%2012.44.35%20PM.mp4",
+      id: "WhatsApp Video 2026-09-01 at 11.31.57 AM.mp4",
+      name: "WhatsApp Video 2026-09-01 at 11.31.57 AM.mp4",
+      url: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/products/starting%20floral%20habits%20videos/WhatsApp%20Video%202026-09-01%20at%2011.31.57%20AM.mp4",
       title: "Nourishing Your Family Naturally 🍯",
       description: "Wholesome nutrients direct from natural floral habitats, zero preservatives.",
-      likes: 239,
-      shares: 103
+      likes: 359,
+      shares: 127
     },
     {
-      id: "WhatsApp Video 2026-06-15 at 12.49.22 PM.mp4",
-      name: "WhatsApp Video 2026-06-15 at 12.49.22 PM.mp4",
-      url: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/starting-floral-food-habitat/WhatsApp%20Video%202026-06-15%20at%2012.49.22%20PM.mp4",
+      id: "WhatsApp Video 2026-09-01 at 11.32.19 AM (1).mp4",
+      name: "WhatsApp Video 2026-09-01 at 11.32.19 AM (1).mp4",
+      url: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/products/starting%20floral%20habits%20videos/WhatsApp%20Video%202026-09-01%20at%2011.32.19%20AM%20(1).mp4",
       title: "Rich Natural Flower Medleys 🌺",
       description: "Hand-mixed blossoms and roots curated for premium flavor and nutrition.",
-      likes: 376,
-      shares: 30
+      likes: 146,
+      shares: 54
     },
     {
-      id: "WhatsApp Video 2026-06-15 at 12.51.57 PM.mp4",
-      name: "WhatsApp Video 2026-06-15 at 12.51.57 PM.mp4",
-      url: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/starting-floral-food-habitat/WhatsApp%20Video%202026-06-15%20at%2012.51.57%20PM.mp4",
+      id: "WhatsApp Video 2026-09-01 at 11.32.19 AM (2).mp4",
+      name: "WhatsApp Video 2026-09-01 at 11.32.19 AM (2).mp4",
+      url: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/products/starting%20floral%20habits%20videos/WhatsApp%20Video%202026-09-01%20at%2011.32.19%20AM%20(2).mp4",
       title: "Artisanal Farm-to-Table Process 🌿",
       description: "Our sustainable sourcing ensures the purest grade of floral wellness.",
-      likes: 125,
-      shares: 77
+      likes: 283,
+      shares: 101
     },
     {
-      id: "WhatsApp Video 2026-06-15 at 12.59.51 PM (1).mp4",
-      name: "WhatsApp Video 2026-06-15 at 12.59.51 PM (1).mp4",
-      url: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/starting-floral-food-habitat/WhatsApp%20Video%202026-06-15%20at%2012.59.51%20PM%20(1).mp4",
+      id: "WhatsApp Video 2026-09-01 at 11.32.19 AM.mp4",
+      name: "WhatsApp Video 2026-09-01 at 11.32.19 AM.mp4",
+      url: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/products/starting%20floral%20habits%20videos/WhatsApp%20Video%202026-09-01%20at%2011.32.19%20AM.mp4",
       title: "Healthy Living and Floral Habitats ✨",
       description: "Bring nature's premium superfoods into your home and pantry.",
-      likes: 290,
-      shares: 51
+      likes: 420,
+      shares: 28
+    },
+    {
+      id: "WhatsApp Video 2026-09-01 at 11.32.20 AM.mp4",
+      name: "WhatsApp Video 2026-09-01 at 11.32.20 AM.mp4",
+      url: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/products/starting%20floral%20habits%20videos/WhatsApp%20Video%202026-09-01%20at%2011.32.20%20AM.mp4",
+      title: "Pure Botanical Goodness Daily 🌼",
+      description: "Experience wholesome edible flower nourishment crafted for your whole family.",
+      likes: 207,
+      shares: 75
     }
   ];
 
@@ -339,7 +349,7 @@ const FloralHabitatSection = () => {
               </h2>
             </div>
             
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-5">
               {videos.map((video, idx) => (
                 <VideoCard
                   key={video.id}

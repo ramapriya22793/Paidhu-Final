@@ -1,4 +1,5 @@
 const prisma = require("../prismaClient");
+const supabase = require("../utils/supabaseClient");
 
 const getSettings = async (req, res) => {
   try {
@@ -81,50 +82,112 @@ const updateSettings = async (req, res) => {
 
 const getHabitatVideos = async (req, res) => {
   try {
-    const objects = await prisma.$queryRawUnsafe(`
-      SELECT name, metadata, created_at FROM storage.objects
-      WHERE bucket_id = 'starting-floral-food-habitat'
-      ORDER BY created_at ASC
-    `);
+    const supabaseUrl = process.env.SUPABASE_URL || 'https://fvtgukindzmoiwqqkwcl.supabase.co';
+    let files = [];
+    let bucketName = 'products';
+    let folderName = 'starting floral habits videos';
 
-    const videos = objects
-      .filter(obj => {
-        const name = obj.name.toLowerCase();
+    // 1. Primary: List directly from Supabase storage under bucket 'products' and folder 'starting floral habits videos'
+    try {
+      const { data, error } = await supabase.storage
+        .from(bucketName)
+        .list(folderName, {
+          limit: 50,
+          sortBy: { column: 'name', order: 'asc' }
+        });
+
+      if (!error && data && data.length > 0) {
+        files = data;
+      }
+    } catch (sErr) {
+      console.warn("Could not list from products/starting floral habits videos:", sErr);
+    }
+
+    // 2. Fallback: Check other possible folder names in 'products' bucket if empty
+    if (!files || files.length === 0) {
+      const fallbackFolders = ['videos', 'starting-floral-food-habitat'];
+      for (const fld of fallbackFolders) {
+        try {
+          const { data, error } = await supabase.storage.from(bucketName).list(fld, { limit: 50 });
+          if (!error && data && data.length > 0) {
+            files = data;
+            folderName = fld;
+            break;
+          }
+        } catch (e) {}
+      }
+    }
+
+    // 3. Fallback: Check bucket 'starting-floral-food-habitat'
+    if (!files || files.length === 0) {
+      try {
+        const { data, error } = await supabase.storage.from('starting-floral-food-habitat').list('', { limit: 50 });
+        if (!error && data && data.length > 0) {
+          files = data;
+          bucketName = 'starting-floral-food-habitat';
+          folderName = '';
+        }
+      } catch (e) {}
+    }
+
+    // 4. Fallback: PostgreSQL direct query if storage API was unavailable
+    if (!files || files.length === 0) {
+      try {
+        const objects = await prisma.$queryRawUnsafe(`
+          SELECT name, metadata, created_at FROM storage.objects
+          WHERE bucket_id IN ('products', 'starting-floral-food-habitat')
+            AND (name ILIKE '%habitat%' OR name ILIKE '%floral%' OR name ILIKE '%habit%')
+          ORDER BY created_at ASC
+        `);
+        if (objects && objects.length > 0) {
+          files = objects.map(o => ({
+            name: o.name.includes('/') ? o.name.split('/').pop() : o.name,
+            fullName: o.name,
+            created_at: o.created_at,
+            metadata: o.metadata
+          }));
+        }
+      } catch (pErr) {}
+    }
+
+    const titles = [
+      "Curated Floral Food Starter Pack 🌸",
+      "Nourishing Your Family Naturally 🍯",
+      "Rich Natural Flower Medleys 🌺",
+      "Artisanal Farm-to-Table Process 🌿",
+      "Healthy Living and Floral Habitats ✨",
+      "Pure Botanical Goodness Daily 🌼"
+    ];
+
+    const descs = [
+      "Discover how our hand-selected botanical ingredients support daily vitality.",
+      "Wholesome nutrients direct from natural floral habitats, zero preservatives.",
+      "Hand-mixed blossoms and roots curated for premium flavor and nutrition.",
+      "Our sustainable sourcing ensures the purest grade of floral wellness.",
+      "Bring nature's premium superfoods into your home and pantry.",
+      "Experience wholesome edible flower nourishment crafted for your whole family."
+    ];
+
+    const videos = (files || [])
+      .filter(file => {
+        const name = (file.name || '').toLowerCase();
         return name.endsWith('.mp4') || name.endsWith('.mov') || name.endsWith('.webm');
       })
-      .map((obj, index) => {
-        const publicUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/starting-floral-food-habitat/${encodeURIComponent(obj.name)}`;
-        const sizeBytes = obj.metadata?.size || 0;
-        
-        // Create an elegant visual title
-        const titles = [
-          "Curated Floral Food Starter Pack 🌸",
-          "Nourishing Your Family Naturally 🍯",
-          "Rich Organic Flower Medleys 🌺",
-          "Artisanal Farm-to-Table Process 🌿",
-          "Healthy Living and Floral Habitats ✨"
-        ];
-        const title = titles[index % titles.length];
-
-        const descs = [
-          "Discover how our hand-selected botanical ingredients support daily vitality.",
-          "Wholesome nutrients direct from organic floral habitats, zero preservatives.",
-          "Hand-mixed blossoms and roots curated for premium flavor and nutrition.",
-          "Our sustainable sourcing ensures the purest grade of floral wellness.",
-          "Bring nature's premium superfoods into your home and pantry."
-        ];
-        const desc = descs[index % descs.length];
+      .map((file, index) => {
+        const pathPart = folderName ? `${encodeURIComponent(folderName)}/${encodeURIComponent(file.name)}` : encodeURIComponent(file.name);
+        const publicUrl = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${pathPart}`;
+        const sizeBytes = file.metadata?.size || 0;
 
         return {
-          id: obj.name,
-          name: obj.name,
+          id: file.name,
+          name: file.name,
           url: publicUrl,
           size: sizeBytes,
-          createdAt: obj.created_at,
-          title,
-          description: desc,
-          likes: Math.floor((index * 137 + 452) % 350) + 120, // Stable, dynamic mock likes
-          shares: Math.floor((index * 47 + 56) % 120) + 24 // Stable, dynamic mock shares
+          createdAt: file.created_at || file.updated_at || new Date().toISOString(),
+          title: titles[index % titles.length],
+          description: descs[index % descs.length],
+          likes: Math.floor((index * 137 + 452) % 350) + 120,
+          shares: Math.floor((index * 47 + 56) % 120) + 24
         };
       });
 
