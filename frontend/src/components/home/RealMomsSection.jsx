@@ -2,6 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const communitySlides = [
+  '/wp_community_4.jpg',
+  '/wp_community_5.jpg',
+  '/wp_community_6.jpg',
+  '/wp_community_7.jpg',
+  '/wp_community_8.jpg',
   '/wp_community_1.jpg',
   '/wp_community_2.jpg',
   '/wp_community_3.jpg',

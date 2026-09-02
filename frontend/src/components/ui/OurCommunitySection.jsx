@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageSquare, Calendar, Award, Sparkles } from 'lucide-react';
+import { MessageSquare, Calendar, Award, Sparkles, X } from 'lucide-react';
 
 const InstagramIcon = ({ size = 20 }) => (
   <svg
@@ -34,13 +34,52 @@ const FlowerIcon = () => (
 );
 
 const sliderImages = [
+  "/wp_community_4.jpg",
+  "/wp_community_5.jpg",
+  "/wp_community_6.jpg",
+  "/wp_community_7.jpg",
+  "/wp_community_8.jpg",
   "/wp_community_1.jpg",
   "/wp_community_2.jpg",
   "/wp_community_3.jpg"
 ];
 
+const eventMoments = [
+  {
+    image: "/wp_community_4.jpg",
+    tag: "Celebration",
+    title: "Family Tales Celebration",
+    subtitle: "Moms & kids gathering to celebrate pure food stories and natural wellness."
+  },
+  {
+    image: "/wp_community_5.jpg",
+    tag: "Little Chefs",
+    title: "Floral Food Kitchen",
+    subtitle: "Cooking & baking delicious, colourful treats wearing Paidhu chef aprons."
+  },
+  {
+    image: "/wp_community_6.jpg",
+    tag: "Green Gifting",
+    title: "Botanical Love & Gifting",
+    subtitle: "Sharing healthy flowering plants to bring nature closer to everyday homes."
+  },
+  {
+    image: "/wp_community_7.jpg",
+    tag: "Kid Storytellers",
+    title: "Young Voices & Expressions",
+    subtitle: "Children expressing their love for yummy natural foods on stage."
+  },
+  {
+    image: "/wp_community_8.jpg",
+    tag: "Community Bonds",
+    title: "Learning & Growing Together",
+    subtitle: "Sharing experiences, clean nutrition advice, and parenting encouragement."
+  }
+];
+
 const OurCommunitySection = () => {
   const [activeSlide, setActiveSlide] = useState(0);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -196,6 +235,137 @@ const OurCommunitySection = () => {
           </div>
 
         </div>
+
+        {/* ── Visual Divider ── */}
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-[#662654]/15 to-transparent my-12 sm:my-16" />
+
+        {/* ── Community Moments & Family Tales Gallery ── */}
+        <div className="space-y-8">
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#662654]/5 text-[#662654] rounded-full text-xs font-black uppercase tracking-[0.15em] shadow-sm">
+              <Sparkles size={12} className="fill-[#662654] text-[#662654]" />
+              Event Highlights
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#662654] font-serif tracking-tight">
+              Family Tales Moments &amp; Memories
+            </h2>
+            <p className="text-sm sm:text-base font-semibold text-gray-500 leading-relaxed">
+              Snapshots of joy, learning, and wholesome family connection from our recent Paidhu community events and culinary workshops.
+            </p>
+          </div>
+
+          {/* Photos Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6">
+            {eventMoments.map((item, idx) => (
+              <motion.div
+                key={idx}
+                whileHover={{ y: -6, transition: { duration: 0.25 } }}
+                onClick={() => setSelectedImage(item)}
+                className="group relative bg-white rounded-2xl md:rounded-3xl overflow-hidden shadow-sm hover:shadow-xl border border-gray-100/80 cursor-pointer transition-all duration-300 flex flex-col"
+              >
+                {/* Image Container with 3:4 Aspect Ratio */}
+                <div className="relative aspect-[3/4] w-full overflow-hidden bg-gray-100">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent opacity-85 group-hover:opacity-95 transition-opacity" />
+                  
+                  {/* Category Tag */}
+                  <span className="absolute top-3 left-3 px-2.5 py-1 bg-white/90 backdrop-blur text-[#662654] text-[10px] font-black uppercase tracking-wider rounded-full shadow-sm">
+                    {item.tag}
+                  </span>
+
+                  {/* Overlay Captions */}
+                  <div className="absolute inset-x-0 bottom-0 p-4 text-white">
+                    <h3 className="text-sm sm:text-base font-extrabold leading-snug drop-shadow-sm">
+                      {item.title}
+                    </h3>
+                    <p className="text-[11px] sm:text-xs text-white/80 font-medium line-clamp-2 mt-1 leading-relaxed">
+                      {item.subtitle}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Bottom Community Invitation Banner */}
+          <div className="mt-12 bg-gradient-to-r from-[#662654] via-[#521e42] to-[#662654] rounded-2xl md:rounded-3xl p-6 sm:p-10 text-center text-white shadow-xl relative overflow-hidden">
+            <div className="absolute -right-16 -bottom-16 w-64 h-64 rounded-full bg-white/5 blur-2xl pointer-events-none" />
+            <div className="relative z-10 max-w-2xl mx-auto space-y-4">
+              <span className="inline-block text-[#fbc225] font-black text-xs uppercase tracking-widest">
+                Be Part of the Next Story 🌸
+              </span>
+              <h3 className="text-2xl sm:text-3xl font-black font-serif">
+                Want to join our upcoming meetups &amp; recipe sessions?
+              </h3>
+              <p className="text-white/80 text-xs sm:text-sm font-medium leading-relaxed">
+                Connect directly with our thriving mothers' network, receive event invites, and discover wholesome kids-friendly floral food ideas.
+              </p>
+              <div className="pt-2">
+                <a
+                  href="https://chat.whatsapp.com/H1ECUmlOhe1IVuf2X9F9lE"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-[#fbc225] hover:bg-[#e5ad18] text-[#521e42] font-black text-xs sm:text-sm uppercase tracking-wider px-8 py-3.5 rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                >
+                  <MessageSquare size={16} />
+                  Join WhatsApp Community
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Image Lightbox Modal ── */}
+        <AnimatePresence>
+          {selectedImage && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedImage(null)}
+              className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-md flex items-center justify-center p-4 cursor-zoom-out"
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                onClick={(e) => e.stopPropagation()}
+                className="relative max-w-2xl w-full max-h-[90vh] bg-white rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl flex flex-col"
+              >
+                <button
+                  onClick={() => setSelectedImage(null)}
+                  className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition-colors shadow-lg cursor-pointer"
+                  aria-label="Close image preview"
+                >
+                  <X size={18} />
+                </button>
+                <div className="w-full bg-black flex items-center justify-center overflow-hidden">
+                  <img
+                    src={selectedImage.image}
+                    alt={selectedImage.title}
+                    className="w-full max-h-[68vh] object-contain"
+                  />
+                </div>
+                <div className="p-5 sm:p-6 bg-white space-y-1.5 text-left">
+                  <span className="text-[10px] uppercase tracking-wider font-extrabold text-[#662654] bg-[#662654]/10 px-2.5 py-0.5 rounded-full">
+                    {selectedImage.tag}
+                  </span>
+                  <h4 className="text-lg sm:text-xl font-bold text-gray-900 mt-1">
+                    {selectedImage.title}
+                  </h4>
+                  <p className="text-xs sm:text-sm text-gray-600 font-medium leading-relaxed">
+                    {selectedImage.subtitle}
+                  </p>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
       </div>
     </div>
