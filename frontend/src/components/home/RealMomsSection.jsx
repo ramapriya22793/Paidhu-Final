@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const SUPABASE_STORAGE_URL = 'https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/products/community';
+
 const communitySlides = [
-  '/wp_community_4.jpg',
-  '/wp_community_5.jpg',
-  '/wp_community_6.jpg',
-  '/wp_community_7.jpg',
-  '/wp_community_8.jpg',
-  '/wp_community_1.jpg',
-  '/wp_community_2.jpg',
-  '/wp_community_3.jpg',
+  `${SUPABASE_STORAGE_URL}/wp_community_4.jpg`,
+  `${SUPABASE_STORAGE_URL}/wp_community_5.jpg`,
+  `${SUPABASE_STORAGE_URL}/wp_community_6.jpg`,
+  `${SUPABASE_STORAGE_URL}/wp_community_7.jpg`,
+  `${SUPABASE_STORAGE_URL}/wp_community_8.jpg`,
+  `${SUPABASE_STORAGE_URL}/wp_community_1.jpg`,
+  `${SUPABASE_STORAGE_URL}/wp_community_2.jpg`,
+  `${SUPABASE_STORAGE_URL}/wp_community_3.jpg`,
 ];
 
 const RealMomsSection = () => {

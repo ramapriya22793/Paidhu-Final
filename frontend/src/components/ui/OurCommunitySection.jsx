@@ -33,44 +33,46 @@ const FlowerIcon = () => (
   </svg>
 );
 
+const SUPABASE_STORAGE_URL = 'https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/products/community';
+
 const sliderImages = [
-  "/wp_community_4.jpg",
-  "/wp_community_5.jpg",
-  "/wp_community_6.jpg",
-  "/wp_community_7.jpg",
-  "/wp_community_8.jpg",
-  "/wp_community_1.jpg",
-  "/wp_community_2.jpg",
-  "/wp_community_3.jpg"
+  `${SUPABASE_STORAGE_URL}/wp_community_4.jpg`,
+  `${SUPABASE_STORAGE_URL}/wp_community_5.jpg`,
+  `${SUPABASE_STORAGE_URL}/wp_community_6.jpg`,
+  `${SUPABASE_STORAGE_URL}/wp_community_7.jpg`,
+  `${SUPABASE_STORAGE_URL}/wp_community_8.jpg`,
+  `${SUPABASE_STORAGE_URL}/wp_community_1.jpg`,
+  `${SUPABASE_STORAGE_URL}/wp_community_2.jpg`,
+  `${SUPABASE_STORAGE_URL}/wp_community_3.jpg`
 ];
 
 const eventMoments = [
   {
-    image: "/wp_community_4.jpg",
+    image: `${SUPABASE_STORAGE_URL}/wp_community_4.jpg`,
     tag: "Celebration",
     title: "Family Tales Celebration",
     subtitle: "Moms & kids gathering to celebrate pure food stories and natural wellness."
   },
   {
-    image: "/wp_community_5.jpg",
+    image: `${SUPABASE_STORAGE_URL}/wp_community_5.jpg`,
     tag: "Little Chefs",
     title: "Floral Food Kitchen",
     subtitle: "Cooking & baking delicious, colourful treats wearing Paidhu chef aprons."
   },
   {
-    image: "/wp_community_6.jpg",
+    image: `${SUPABASE_STORAGE_URL}/wp_community_6.jpg`,
     tag: "Green Gifting",
     title: "Botanical Love & Gifting",
     subtitle: "Sharing healthy flowering plants to bring nature closer to everyday homes."
   },
   {
-    image: "/wp_community_7.jpg",
+    image: `${SUPABASE_STORAGE_URL}/wp_community_7.jpg`,
     tag: "Kid Storytellers",
     title: "Young Voices & Expressions",
     subtitle: "Children expressing their love for yummy natural foods on stage."
   },
   {
-    image: "/wp_community_8.jpg",
+    image: `${SUPABASE_STORAGE_URL}/wp_community_8.jpg`,
     tag: "Community Bonds",
     title: "Learning & Growing Together",
     subtitle: "Sharing experiences, clean nutrition advice, and parenting encouragement."
