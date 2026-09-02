@@ -86,7 +86,6 @@ const navSlugMap = {
   'Shop All':                    'shop-all',
   'Deal of the Day':             'deal-of-the-day',
   'Shop by Category':            'shop-by-category',
-  'For Your Family':             'for-your-family',
   'Starting Floral food habitat':'starting-floral-food-habitat',
   'BYOC':                        'byoc',
   'Our Own Community':           'our-own-community',
@@ -313,11 +312,9 @@ const Navbar = () => {
     { name: 'Careers' }
   ];
 
-  const navRow2 = [
-    { name: 'For Your Family' }
-  ];
+  const navRow2 = [];
 
-  const navColumns = [...navRow1, ...navRow2].map(item => ({ top: item }));
+  const navColumns = navRow1.map(item => ({ top: item }));
 
 
 
@@ -672,11 +669,13 @@ const Navbar = () => {
           </div>
 
           {/* Row 2 — Secondary Links */}
-          <div className="flex justify-center items-center gap-x-6 xl:gap-x-10 w-full max-w-full whitespace-nowrap pt-0.5">
-            {navRow2.map((item, i) => (
-              <NavItem key={i} name={item.name} onClick={() => handleNavClick(item.name)} />
-            ))}
-          </div>
+          {navRow2.length > 0 && (
+            <div className="flex justify-center items-center gap-x-6 xl:gap-x-10 w-full max-w-full whitespace-nowrap pt-0.5">
+              {navRow2.map((item, i) => (
+                <NavItem key={i} name={item.name} onClick={() => handleNavClick(item.name)} />
+              ))}
+            </div>
+          )}
         </nav>
       </div>
 

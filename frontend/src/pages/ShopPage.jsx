@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams, useSearchParams, Link } from 'react-router-dom';
+import { useParams, useSearchParams, Link, Navigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search, SlidersHorizontal, X, ChevronDown, ChevronLeft, ChevronRight,
@@ -13,7 +13,6 @@ import AboutUsSection from '../components/ui/AboutUsSection';
 import BlogsSection from '../components/ui/BlogsSection';
 import FloralHabitatSection from '../components/ui/FloralHabitatSection';
 import OurCommunitySection from '../components/ui/OurCommunitySection';
-import ForYourFamilySection from '../components/ui/ForYourFamilySection';
 import fallbacks from '../components/home/fallbacks.json';
 import SEO from '../components/seo/SEO';
 
@@ -46,7 +45,6 @@ const NAV_META = {
   'shop-all':                   { label: 'Shop All',                   emoji: '🛍️',  desc: 'Browse our complete collection of premium floral foods.' },
   'deal-of-the-day':            { label: 'Deal of the Day',            emoji: '🔥',  desc: 'Exclusive daily deals on your favourite products.' },
   'shop-by-category':           { label: 'Shop by Category',           emoji: '🌿',  desc: 'Explore products organised by category.' },
-  'for-your-family':            { label: 'For Your Family',            emoji: '👨‍👩‍👧‍👦', desc: 'Wholesome floral food products perfect for the whole family.' },
   'starting-floral-food-habitat':{ label: 'Starting Floral Food Habitat', emoji: '🌸', desc: 'Begin your floral food journey with curated starter packs.' },
   'byoc':                       { label: 'BYOC',                       emoji: '🎁',  desc: 'Build your own custom floral food box.' },
   'our-own-community':          { label: 'Our Own Community',          emoji: '🤝',  desc: 'Products loved and recommended by our community.' },
@@ -1014,16 +1012,7 @@ const ShopPage = () => {
   }
 
   if (navSection === 'for-your-family') {
-    return (
-      <motion.div 
-        initial={{ opacity: 0, y: 12 }} 
-        animate={{ opacity: 1, y: 0 }} 
-        transition={{ duration: 0.55, ease: 'easeOut' }}
-        className="min-h-screen bg-[#faf9f7]"
-      >
-        <ForYourFamilySection />
-      </motion.div>
-    );
+    return <Navigate to="/shop/shop-all" replace />;
   }
 
   const getSeoSlug = () => {
