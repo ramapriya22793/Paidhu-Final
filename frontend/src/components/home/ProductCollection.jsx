@@ -11,12 +11,13 @@ const productsCache = {};
 
 const categories = [
   "Bestsellers",
-  "Super Value Packs",
-  "New Launches",
-  "Deals of the Day",
-  "Traditional Snacks",
-  "Cookies & Cakes",
-  "Crunchy Snacks"
+  "Bloom Cookies",
+  "Petal Jam",
+  "Saffron",
+  "Medley Teas",
+  "Brew Flora",
+  "Combos",
+  "Deals of the Day"
 ];
 
 const resolveImage = (img) => {
@@ -248,14 +249,10 @@ const ProductCollection = () => {
   const handleViewAllClick = () => {
     if (activeCategory === "Bestsellers") {
       navigate("/shop/shop-all?tag=bestseller");
-    } else if (activeCategory === "Super Value Packs") {
-      navigate("/shop/shop-all?tag=family_combos");
-    } else if (activeCategory === "New Launches") {
-      navigate("/shop/shop-all?sort=newest");
+    } else if (activeCategory === "Combos" || activeCategory === "Combos & Gift Boxes") {
+      navigate("/shop/shop-by-category?category=Combos");
     } else if (activeCategory === "Deals of the Day") {
       navigate("/shop/deal-of-the-day");
-    } else if (activeCategory === "Cookies & Cakes") {
-      navigate("/shop/shop-by-category?category=Bloom Cookies");
     } else {
       navigate(`/shop/shop-by-category?category=${encodeURIComponent(activeCategory)}`);
     }
@@ -324,14 +321,10 @@ const ProductCollection = () => {
         const queryParams = new URLSearchParams({ limit: '10' });
         if (activeCategory === "Bestsellers") {
           queryParams.set("tag", "bestseller");
-        } else if (activeCategory === "Super Value Packs") {
-          queryParams.set("tag", "family_combos");
-        } else if (activeCategory === "New Launches") {
-          queryParams.set("sort", "newest");
         } else if (activeCategory === "Deals of the Day") {
           queryParams.set("navSection", "deal-of-the-day");
-        } else if (activeCategory === "Cookies & Cakes") {
-          queryParams.set("category", "Bloom Cookies");
+        } else if (activeCategory === "Combos" || activeCategory === "Combos & Gift Boxes") {
+          queryParams.set("category", "Combos");
         } else {
           queryParams.set("category", activeCategory);
         }

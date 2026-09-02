@@ -101,7 +101,16 @@ const getProducts = async (req, res) => {
     } else {
       // Legacy category / tag filters
       if (category && category !== 'Shop All') {
-        where.category = { name: { equals: category, mode: 'insensitive' } };
+        const catLower = category.toLowerCase();
+        if (catLower === 'combos' || catLower === 'combos & gift boxes') {
+          where.OR = [
+            { category: { name: { equals: 'Combos', mode: 'insensitive' } } },
+            { category: { name: { equals: 'Saffron Giftbox', mode: 'insensitive' } } },
+            { tags: { contains: 'combo', mode: 'insensitive' } }
+          ];
+        } else {
+          where.category = { name: { equals: category, mode: 'insensitive' } };
+        }
       }
       if (tag) {
         where.tags = { contains: tag, mode: 'insensitive' };
@@ -109,8 +118,17 @@ const getProducts = async (req, res) => {
     }
 
     // Apply global category filter if provided and not already applied by nav section smart filter
-    if (category && category !== 'Shop All' && !where.category) {
-      where.category = { name: { equals: category, mode: 'insensitive' } };
+    if (category && category !== 'Shop All' && !where.category && !where.OR) {
+      const catLower = category.toLowerCase();
+      if (catLower === 'combos' || catLower === 'combos & gift boxes') {
+        where.OR = [
+          { category: { name: { equals: 'Combos', mode: 'insensitive' } } },
+          { category: { name: { equals: 'Saffron Giftbox', mode: 'insensitive' } } },
+          { tags: { contains: 'combo', mode: 'insensitive' } }
+        ];
+      } else {
+        where.category = { name: { equals: category, mode: 'insensitive' } };
+      }
     }
 
     // Full-text search
