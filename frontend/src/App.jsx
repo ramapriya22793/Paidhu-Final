@@ -85,6 +85,7 @@ const LegalPage = safeLazy(() => import('./pages/LegalPage'));
 const CareersPage = safeLazy(() => import('./pages/CareersPage'));
 const BlogsPage = safeLazy(() => import('./pages/BlogsPage'));
 const BlogDetailPage = safeLazy(() => import('./pages/BlogDetailPage'));
+const MaintenancePage = safeLazy(() => import('./pages/MaintenancePage'));
 
 // Safe Lazy load below-the-fold home components
 const ExploreCategory = safeLazy(() => import('./components/home/ExploreCategory'));
@@ -140,15 +141,17 @@ function App() {
     }
   }, [location.pathname, location.search, location.key]);
 
-  // Removed redirect logic as it breaks deep links and SEO
+  const isMaintenanceRoute = location.pathname === '/maintenance' || location.pathname === '/under-maintenance';
 
   return (
     <CartProvider>
       <div className="w-full min-h-screen relative font-sans text-gray-800 bg-white flex flex-col">
         {/* Sticky Navigation */}
-        <div className="sticky top-0 z-50 w-full shadow-lg">
-          <Navbar />
-        </div>
+        {!isMaintenanceRoute && (
+          <div className="sticky top-0 z-50 w-full shadow-lg">
+            <Navbar />
+          </div>
+        )}
 
         <ErrorBoundary>
           <Suspense fallback={
@@ -189,6 +192,10 @@ function App() {
               <Route path="/blogs/:slug" element={<BlogDetailPage />} />
               <Route path="/journal" element={<BlogsPage />} />
 
+              {/* Maintenance Routes */}
+              <Route path="/maintenance" element={<MaintenancePage />} />
+              <Route path="/under-maintenance" element={<MaintenancePage />} />
+
               {/* Catch-all 404 Page */}
               <Route path="*" element={
                 <div className="min-h-[60vh] flex flex-col items-center justify-center p-8 text-center bg-[#fcfbfa]">
@@ -211,9 +218,7 @@ function App() {
           </Suspense>
         </ErrorBoundary>
 
-
-
-        <Footer />
+        {!isMaintenanceRoute && <Footer />}
         <WhatsAppButton />
       </div>
     </CartProvider>
