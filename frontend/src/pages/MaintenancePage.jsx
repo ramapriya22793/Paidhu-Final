@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import paidhuLogo from '../assets/paidhulogo.png';
 
@@ -44,21 +44,6 @@ const MaintenancePage = () => {
       {/* Main Content Area */}
       <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-10 md:py-16 flex flex-col items-center justify-center text-center relative z-10">
         
-        {/* Prominent Centered Paidhu Logo */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="flex flex-col items-center mb-6"
-        >
-          <div className="p-4 sm:p-5 rounded-3xl bg-white shadow-[0_10px_35px_rgba(102,38,84,0.08)] border border-[#662654]/10 mb-4 inline-flex items-center justify-center">
-            <img 
-              src={paidhuLogo} 
-              alt="Paidhu Ethical Foods" 
-              className="h-16 sm:h-20 md:h-24 w-auto object-contain"
-            />
-          </div>
-        </motion.div>
 
         {/* Website Maintenance Message */}
         <motion.div
