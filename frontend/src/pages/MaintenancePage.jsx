@@ -26,95 +26,65 @@ const MaintenancePage = () => {
 
       {/* Top Header Bar */}
       <header className="w-full bg-[#662654] py-3.5 px-4 md:px-8 shadow-md relative z-10">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
+        <div className="max-w-5xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img 
               src={paidhuLogo} 
               alt="Paidhu" 
-              className="h-9 md:h-11 w-auto object-contain"
+              className="h-8 md:h-10 w-auto object-contain"
             />
           </div>
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white text-[11px] md:text-xs font-bold uppercase tracking-wider backdrop-blur-sm border border-white/15">
             <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
-            Scheduled Maintenance
+            Maintenance Mode
           </span>
         </div>
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-8 md:py-14 flex flex-col items-center justify-center text-center relative z-10">
+      <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-10 md:py-16 flex flex-col items-center justify-center text-center relative z-10">
         
-        {/* Animated Badge & Floral Icon */}
+        {/* Prominent Centered Paidhu Logo */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
+          initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="relative mb-6"
+          className="flex flex-col items-center mb-6"
         >
-          <div className="w-24 h-24 md:w-28 md:h-28 rounded-3xl bg-white shadow-[0_12px_40px_rgba(102,38,84,0.12)] border border-[#662654]/10 flex items-center justify-center text-4xl md:text-5xl relative">
-            <span className="animate-bounce select-none">🌸</span>
-            <div className="absolute -bottom-2 -right-2 bg-[#662654] text-white text-[11px] font-black px-2.5 py-1 rounded-full shadow-md border-2 border-white">
-              NEW
-            </div>
+          <div className="p-4 sm:p-5 rounded-3xl bg-white shadow-[0_10px_35px_rgba(102,38,84,0.08)] border border-[#662654]/10 mb-4 inline-flex items-center justify-center">
+            <img 
+              src={paidhuLogo} 
+              alt="Paidhu Ethical Foods" 
+              className="h-16 sm:h-20 md:h-24 w-auto object-contain"
+            />
           </div>
         </motion.div>
 
-        {/* Headlines */}
+        {/* Website Maintenance Message */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="space-y-3 md:space-y-4 max-w-2xl"
+          transition={{ duration: 0.55, delay: 0.1 }}
+          className="space-y-3 md:space-y-4 max-w-2xl mb-10"
         >
           <span className="text-[#662654] font-black tracking-[0.2em] text-xs uppercase bg-[#662654]/10 px-4 py-1.5 rounded-full inline-block">
-            We'll Be Right Back!
+            Website Under Maintenance
           </span>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#662654] font-serif tracking-tight leading-tight">
-            We're Blossoming <br className="hidden sm:inline" />
-            Behind the Scenes
+            We'll Be Back Soon!
           </h1>
 
           <p className="text-sm sm:text-base md:text-lg text-gray-600 font-medium leading-relaxed max-w-xl mx-auto">
-            Our website is currently undergoing essential maintenance and system upgrades to bring you a smoother, sweeter, and more delightful floral shopping experience.
+            Our website is currently undergoing scheduled maintenance and system upgrades. We are working hard to enhance your experience and will be back online shortly.
           </p>
         </motion.div>
 
-        {/* Feature Highlights Grid during maintenance */}
+        {/* ── WhatsApp Call-To-Action Box (Down Part) ── */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.25 }}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 w-full max-w-2xl mt-8 mb-8"
-        >
-          <div className="bg-white/80 backdrop-blur-sm p-4 rounded-2xl border border-gray-100 shadow-sm text-left flex items-start gap-3">
-            <span className="text-2xl">🍯</span>
-            <div>
-              <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wide">Pure Ingredients</h4>
-              <p className="text-[11px] text-gray-500 mt-0.5">100% natural and preservative-free recipes.</p>
-            </div>
-          </div>
-          <div className="bg-white/80 backdrop-blur-sm p-4 rounded-2xl border border-gray-100 shadow-sm text-left flex items-start gap-3">
-            <span className="text-2xl">🌺</span>
-            <div>
-              <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wide">Edible Botanicals</h4>
-              <p className="text-[11px] text-gray-500 mt-0.5">Cookies, jams, tea blends & saffron.</p>
-            </div>
-          </div>
-          <div className="bg-white/80 backdrop-blur-sm p-4 rounded-2xl border border-gray-100 shadow-sm text-left flex items-start gap-3">
-            <span className="text-2xl">⚡</span>
-            <div>
-              <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wide">Instant Orders</h4>
-              <p className="text-[11px] text-gray-500 mt-0.5">Direct chat ordering active 24/7 on WhatsApp.</p>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* ── WhatsApp Call-To-Action Box (Core User Request) ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.35 }}
+          transition={{ duration: 0.55, delay: 0.2 }}
           className="w-full max-w-2xl bg-white rounded-3xl p-6 md:p-8 shadow-[0_15px_45px_rgba(37,211,102,0.12)] border-2 border-[#25D366]/30 relative overflow-hidden"
         >
           {/* Subtle top brand bar */}
@@ -131,7 +101,7 @@ const MaintenancePage = () => {
             </h3>
 
             <p className="text-xs md:text-sm text-gray-600 font-medium max-w-lg leading-relaxed">
-              Our support and order team is active right now! Click below to navigate directly to our WhatsApp chat. We will take your order and assist you immediately.
+              Our team is active right now! Click below to chat directly with us on WhatsApp. We will take your order and assist you immediately.
             </p>
 
             {/* Big WhatsApp Action Button */}
