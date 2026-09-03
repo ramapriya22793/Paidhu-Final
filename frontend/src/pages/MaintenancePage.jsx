@@ -1,10 +1,8 @@
-import React from 'react';
+﻿import React from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, RefreshCw, Mail, Phone, Heart } from 'lucide-react';
 import paidhuLogo from '../assets/paidhulogo.png';
-import SEO from '../components/seo/SEO';
 
-const WhatsAppIcon = ({ className = 'w-6 h-6' }) => (
+const WhatsAppIcon = ({ className = "w-6 h-6" }) => (
   <svg viewBox="0 0 48 48" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
     <circle cx="24" cy="24" r="24" fill="#25D366" />
     <path
@@ -16,164 +14,173 @@ const WhatsAppIcon = ({ className = 'w-6 h-6' }) => (
   </svg>
 );
 
-const WHATSAPP_LINK = 'https://wa.me/918754787774?text=Hi%20Paidhu%20Team%2C%20I%20am%20visiting%20your%20website%20and%20noticed%20it%20is%20under%20maintenance.%20I%20would%20like%20assistance%20with...';
-
 const MaintenancePage = () => {
+  const whatsappUrl = "https://wa.me/918754787774?text=" + encodeURIComponent("Hi Paidhu Team, I am visiting your website while it is under maintenance. I would like to place an order / get assistance.");
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#fcfbfa] via-[#faf7f3] to-[#f4f0ea] text-gray-800 flex flex-col justify-between font-sans relative overflow-x-hidden">
-      <SEO
-        title="We'll Be Right Back | Paidhu Edible Flower Co."
-        description="Paidhu is currently undergoing scheduled maintenance. Reach out directly on WhatsApp at +91 87547 87774 for inquiries and orders."
-      />
+    <div className="min-h-screen w-full bg-gradient-to-b from-[#fcfbfa] via-[#faf6f1] to-[#f4eee6] text-gray-800 font-sans flex flex-col justify-between relative overflow-x-hidden selection:bg-[#662654] selection:text-white">
+      
+      {/* Decorative ambient background glows */}
+      <div className="absolute top-[-10%] left-[-10%] w-[45vw] h-[45vw] rounded-full bg-[#662654]/5 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[45vw] h-[45vw] rounded-full bg-[#d4af37]/8 blur-[120px] pointer-events-none" />
 
-      {/* Background Floral Accents */}
-      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-[#662654]/5 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[10%] right-[-10%] w-[500px] h-[500px] rounded-full bg-[#d4af37]/8 blur-[120px] pointer-events-none" />
-
-      {/* Top Header */}
-      <header className="w-full py-4 px-6 md:px-12 flex items-center justify-between border-b border-[#662654]/10 bg-white/70 backdrop-blur-md relative z-10">
-        <div className="flex items-center gap-3">
-          <img src={paidhuLogo} alt="Paidhu Logo" className="h-9 md:h-11 w-auto object-contain" />
-        </div>
-        <div className="flex items-center gap-2 text-xs md:text-sm font-bold text-[#662654] bg-[#662654]/10 px-3.5 py-1.5 rounded-full">
-          <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
-          <span>Scheduled Maintenance</span>
+      {/* Top Header Bar */}
+      <header className="w-full bg-[#662654] py-3.5 px-4 md:px-8 shadow-md relative z-10">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <img 
+              src={paidhuLogo} 
+              alt="Paidhu" 
+              className="h-9 md:h-11 w-auto object-contain"
+            />
+          </div>
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white text-[11px] md:text-xs font-bold uppercase tracking-wider backdrop-blur-sm border border-white/15">
+            <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+            Scheduled Maintenance
+          </span>
         </div>
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-4xl mx-auto px-4 py-8 md:py-12 flex flex-col items-center justify-center text-center relative z-10">
+      <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-8 md:py-14 flex flex-col items-center justify-center text-center relative z-10">
         
-        {/* Animated Badge */}
+        {/* Animated Badge & Floral Icon */}
         <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#662654] text-[#ede7d7] text-xs md:text-sm font-extrabold uppercase tracking-widest shadow-md mb-6"
-        >
-          <Sparkles size={14} className="text-[#fbc225] fill-[#fbc225]" />
-          <span>Blossoming Behind the Scenes</span>
-        </motion.div>
-
-        {/* Hero Heading */}
-        <motion.h1
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-[#662654] font-serif tracking-tight leading-[1.15] mb-4"
-        >
-          We're Polishing Up <br className="hidden sm:inline" />
-          <span className="text-gray-900">Our Floral Store</span>
-        </motion.h1>
-
-        {/* Subtitle */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-sm sm:text-base md:text-lg font-medium text-gray-600 max-w-2xl leading-relaxed mb-8"
-        >
-          Our website is temporarily undergoing scheduled maintenance and performance upgrades to deliver an even sweeter, fresher, and smoother shopping experience for your family.
-        </motion.p>
-
-        {/* Status Highlights Grid */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 w-full max-w-2xl mb-8"
-        >
-          <div className="bg-white/85 backdrop-blur-sm p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col items-center text-center">
-            <span className="text-2xl mb-1.5">🌸</span>
-            <h4 className="text-xs md:text-sm font-black text-gray-900">Catalog Refresh</h4>
-            <p className="text-[11px] font-semibold text-gray-500 mt-0.5 leading-snug">New botanical bakes & preserves</p>
-          </div>
-
-          <div className="bg-white/85 backdrop-blur-sm p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col items-center text-center">
-            <span className="text-2xl mb-1.5">⚡</span>
-            <h4 className="text-xs md:text-sm font-black text-gray-900">Faster Speeds</h4>
-            <p className="text-[11px] font-semibold text-gray-500 mt-0.5 leading-snug">Smooth browsing & fast checkout</p>
-          </div>
-
-          <div className="bg-white/85 backdrop-blur-sm p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col items-center text-center">
-            <span className="text-2xl mb-1.5">🛡️</span>
-            <h4 className="text-xs md:text-sm font-black text-gray-900">System Upgrades</h4>
-            <p className="text-[11px] font-semibold text-gray-500 mt-0.5 leading-snug">Secure payments & order tracking</p>
-          </div>
-        </motion.div>
-
-        {/* ── DOWN: PROMINENT WHATSAPP NAVIGATION ── */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
+          initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="w-full max-w-2xl bg-gradient-to-br from-[#662654] via-[#521e42] to-[#3a132e] text-white p-6 sm:p-8 rounded-3xl shadow-xl relative overflow-hidden border border-[#d4af37]/30"
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="relative mb-6"
         >
-          {/* Subtle Ambient Glow */}
-          <div className="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-[#25D366]/20 blur-2xl pointer-events-none" />
-
-          <div className="relative z-10 flex flex-col items-center text-center space-y-3">
-            <span className="inline-flex items-center gap-1 text-[#fbc225] text-xs font-black uppercase tracking-widest">
-              <Heart size={13} className="fill-[#fbc225]" />
-              Direct Customer Support Active
-            </span>
-
-            <h3 className="text-xl sm:text-2xl font-black font-serif text-white">
-              Need to Place an Order or Have Questions?
-            </h3>
-
-            <p className="text-xs sm:text-sm font-medium text-white/85 max-w-lg leading-relaxed">
-              While the web store is polishing up, our support team is fully active on WhatsApp! Tap below to chat with us, order your favourite items, or check delivery status.
-            </p>
-
-            {/* Direct WhatsApp Action Button */}
-            <div className="pt-3 w-full sm:w-auto">
-              <motion.a
-                href={WHATSAPP_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.97 }}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20ba59] text-white font-black text-sm md:text-base px-8 py-4 rounded-full shadow-lg transition-all cursor-pointer group"
-              >
-                <WhatsAppIcon className="w-6 h-6 shrink-0 group-hover:rotate-12 transition-transform duration-300" />
-                <span>Chat on WhatsApp (+91 87547 87774)</span>
-              </motion.a>
+          <div className="w-24 h-24 md:w-28 md:h-28 rounded-3xl bg-white shadow-[0_12px_40px_rgba(102,38,84,0.12)] border border-[#662654]/10 flex items-center justify-center text-4xl md:text-5xl relative">
+            <span className="animate-bounce select-none">🌸</span>
+            <div className="absolute -bottom-2 -right-2 bg-[#662654] text-white text-[11px] font-black px-2.5 py-1 rounded-full shadow-md border-2 border-white">
+              NEW
             </div>
           </div>
         </motion.div>
 
-        {/* Refresh Page Helper */}
-        <div className="mt-6 flex items-center justify-center gap-4">
-          <button
-            onClick={() => window.location.reload()}
-            className="inline-flex items-center gap-2 text-xs md:text-sm font-bold text-[#662654] hover:text-[#4a1c3d] px-4 py-2 rounded-full bg-white/70 hover:bg-white border border-gray-200 transition-all cursor-pointer shadow-sm"
-          >
-            <RefreshCw size={14} />
-            <span>Check If We're Back Online</span>
-          </button>
-        </div>
+        {/* Headlines */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="space-y-3 md:space-y-4 max-w-2xl"
+        >
+          <span className="text-[#662654] font-black tracking-[0.2em] text-xs uppercase bg-[#662654]/10 px-4 py-1.5 rounded-full inline-block">
+            We'll Be Right Back!
+          </span>
+
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#662654] font-serif tracking-tight leading-tight">
+            We're Blossoming <br className="hidden sm:inline" />
+            Behind the Scenes
+          </h1>
+
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 font-medium leading-relaxed max-w-xl mx-auto">
+            Our website is currently undergoing essential maintenance and system upgrades to bring you a smoother, sweeter, and more delightful floral shopping experience.
+          </p>
+        </motion.div>
+
+        {/* Feature Highlights Grid during maintenance */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.25 }}
+          className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 w-full max-w-2xl mt-8 mb-8"
+        >
+          <div className="bg-white/80 backdrop-blur-sm p-4 rounded-2xl border border-gray-100 shadow-sm text-left flex items-start gap-3">
+            <span className="text-2xl">🍯</span>
+            <div>
+              <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wide">Pure Ingredients</h4>
+              <p className="text-[11px] text-gray-500 mt-0.5">100% natural and preservative-free recipes.</p>
+            </div>
+          </div>
+          <div className="bg-white/80 backdrop-blur-sm p-4 rounded-2xl border border-gray-100 shadow-sm text-left flex items-start gap-3">
+            <span className="text-2xl">🌺</span>
+            <div>
+              <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wide">Edible Botanicals</h4>
+              <p className="text-[11px] text-gray-500 mt-0.5">Cookies, jams, tea blends & saffron.</p>
+            </div>
+          </div>
+          <div className="bg-white/80 backdrop-blur-sm p-4 rounded-2xl border border-gray-100 shadow-sm text-left flex items-start gap-3">
+            <span className="text-2xl">⚡</span>
+            <div>
+              <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wide">Instant Orders</h4>
+              <p className="text-[11px] text-gray-500 mt-0.5">Direct chat ordering active 24/7 on WhatsApp.</p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* ── WhatsApp Call-To-Action Box (Core User Request) ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.35 }}
+          className="w-full max-w-2xl bg-white rounded-3xl p-6 md:p-8 shadow-[0_15px_45px_rgba(37,211,102,0.12)] border-2 border-[#25D366]/30 relative overflow-hidden"
+        >
+          {/* Subtle top brand bar */}
+          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#25D366] via-[#128C7E] to-[#25D366]" />
+
+          <div className="flex flex-col items-center space-y-4">
+            <div className="inline-flex items-center gap-2 bg-[#25D366]/10 text-[#075E54] font-black text-xs uppercase tracking-wider px-3.5 py-1 rounded-full">
+              <span className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse" />
+              Customer Support & Orders Live on WhatsApp
+            </div>
+
+            <h3 className="text-xl md:text-2xl font-black text-gray-900 font-serif">
+              Need to Place an Order or Have Questions?
+            </h3>
+
+            <p className="text-xs md:text-sm text-gray-600 font-medium max-w-lg leading-relaxed">
+              Our support and order team is active right now! Click below to navigate directly to our WhatsApp chat. We will take your order and assist you immediately.
+            </p>
+
+            {/* Big WhatsApp Action Button */}
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20ba5a] text-white font-black text-sm md:text-base uppercase tracking-wider px-8 py-4 rounded-full shadow-[0_8px_25px_rgba(37,211,102,0.4)] hover:shadow-[0_12px_30px_rgba(37,211,102,0.55)] hover:scale-[1.03] active:scale-[0.98] transition-all duration-200 cursor-pointer w-full sm:w-auto"
+            >
+              <WhatsAppIcon className="w-7 h-7" />
+              <span>Connect on WhatsApp Now</span>
+            </a>
+
+            <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-gray-500 font-semibold pt-1">
+              <span className="flex items-center gap-1.5">
+                <span className="text-gray-400">📞 Call / WhatsApp:</span>
+                <a href="tel:+918754787774" className="text-gray-900 font-bold hover:underline">
+                  +91 87547 87774
+                </a>
+              </span>
+              <span className="text-gray-300">•</span>
+              <span className="flex items-center gap-1.5">
+                <span className="text-gray-400">✉️ Email:</span>
+                <a href="mailto:contact@paidhuethicalfoods.com" className="text-gray-900 font-bold hover:underline">
+                  contact@paidhuethicalfoods.com
+                </a>
+              </span>
+            </div>
+          </div>
+        </motion.div>
 
       </main>
 
-      {/* ── DOWN: FOOTER & WHATSAPP BOTTOM BAR ── */}
-      <footer className="w-full bg-[#ede7d7] border-t border-[#662654]/15 py-4 px-4 md:px-8 relative z-10">
-        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-          
-          <div className="flex items-center gap-2 text-[#662654] font-bold text-xs md:text-sm">
-            <WhatsAppIcon className="w-4 h-4 shrink-0" />
-            <span>WhatsApp Helpline: <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="underline hover:text-[#25D366] transition-colors">+91 87547 87774</a></span>
-          </div>
-
-          <div className="flex items-center gap-4 text-xs font-semibold text-gray-600">
-            <a href="mailto:contact@paidhuethicalfoods.com" className="flex items-center gap-1 hover:text-[#662654] transition-colors">
-              <Mail size={13} />
-              <span>contact@paidhuethicalfoods.com</span>
-            </a>
-          </div>
-
+      {/* Bottom Footer Bar */}
+      <footer className="w-full bg-[#ede7d7] border-t border-[#662654]/10 py-4 px-4 text-center text-xs text-gray-600 font-semibold relative z-10">
+        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+          <p>© {new Date().getFullYear()} Paidhu Ethical Foods. All rights reserved.</p>
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-[#075E54] hover:text-[#05463e] font-bold underline"
+          >
+            <WhatsAppIcon className="w-4 h-4" />
+            Chat with us on WhatsApp (+91 87547 87774)
+          </a>
         </div>
       </footer>
+
     </div>
   );
 };

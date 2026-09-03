@@ -10,6 +10,13 @@ import TiffinModal from './components/home/TiffinModal';
 import { CartProvider } from './context/CartContext';
 import { motion } from 'framer-motion';
 import SEO from './components/seo/SEO';
+import MaintenancePage from './pages/MaintenancePage';
+
+// MAINTENANCE MODE SWITCH:
+// Set to true to display the Under Maintenance page across the store with WhatsApp navigation.
+// Set to false to restore the full website.
+// Preview bypass: add ?preview=true to any URL to inspect the live store during maintenance.
+const IS_MAINTENANCE_MODE = true;
 
 // Error boundary and safe lazy-loading helper to auto-recover when deployment chunks update
 class ErrorBoundary extends React.Component {
@@ -85,7 +92,6 @@ const LegalPage = safeLazy(() => import('./pages/LegalPage'));
 const CareersPage = safeLazy(() => import('./pages/CareersPage'));
 const BlogsPage = safeLazy(() => import('./pages/BlogsPage'));
 const BlogDetailPage = safeLazy(() => import('./pages/BlogDetailPage'));
-const MaintenancePage = safeLazy(() => import('./pages/MaintenancePage'));
 
 // Safe Lazy load below-the-fold home components
 const ExploreCategory = safeLazy(() => import('./components/home/ExploreCategory'));
@@ -129,6 +135,9 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const searchParams = new URLSearchParams(location.search);
+  const isPreviewBypass = searchParams.get('preview') === 'true' || searchParams.get('admin') === 'true';
+
   // Scroll to top on route change (only when the path itself changes)
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -141,17 +150,23 @@ function App() {
     }
   }, [location.pathname, location.search, location.key]);
 
-  const isMaintenanceRoute = location.pathname === '/maintenance' || location.pathname === '/under-maintenance';
+  // If site is in maintenance mode and not in preview bypass, display MaintenancePage directly
+  if (IS_MAINTENANCE_MODE && !isPreviewBypass) {
+    return (
+      <div className="w-full min-h-screen relative font-sans text-gray-800 bg-[#fcfbfa]">
+        <MaintenancePage />
+        <WhatsAppButton />
+      </div>
+    );
+  }
 
   return (
     <CartProvider>
       <div className="w-full min-h-screen relative font-sans text-gray-800 bg-white flex flex-col">
         {/* Sticky Navigation */}
-        {!isMaintenanceRoute && (
-          <div className="sticky top-0 z-50 w-full shadow-lg">
-            <Navbar />
-          </div>
-        )}
+        <div className="sticky top-0 z-50 w-full shadow-lg">
+          <Navbar />
+        </div>
 
         <ErrorBoundary>
           <Suspense fallback={
@@ -190,9 +205,6 @@ function App() {
               <Route path="/legal/:type" element={<LegalPage />} />
               <Route path="/blogs" element={<BlogsPage />} />
               <Route path="/blogs/:slug" element={<BlogDetailPage />} />
-              <Route path="/journal" element={<BlogsPage />} />
-
-              {/* Maintenance Routes */}
               <Route path="/maintenance" element={<MaintenancePage />} />
               <Route path="/under-maintenance" element={<MaintenancePage />} />
 
@@ -218,7 +230,9 @@ function App() {
           </Suspense>
         </ErrorBoundary>
 
-        {!isMaintenanceRoute && <Footer />}
+
+
+        <Footer />
         <WhatsAppButton />
       </div>
     </CartProvider>
