@@ -1,613 +1,362 @@
-# PAIDHU ETHICAL FOODS — COMPLETE ADMIN PORTAL FEATURE-BY-FEATURE MANUAL
-**Document Version:** 3.5 | **Classification:** Official Comprehensive Administrative Operations Manual  
-**Repository:** Paidhu-Final | **Admin Portal:** [https://admin.paidhuethicalfoods.com](https://admin.paidhuethicalfoods.com) (Local: `http://localhost:5174`)
+# PAIDHU ETHICAL FOODS
+## ADMIN PORTAL
+**Website:** [https://admin.paidhuethicalfoods.com/](https://admin.paidhuethicalfoods.com/) *(Local Development: `http://localhost:5174`)*  
+**Document Type:** Admin Portal User Manual & Standard Operating Procedure (SOP)  
+**Version:** 1.0  
+**Prepared For:** PaidhuEthicalFoods  
+**Purpose:** To provide a clear and standardized procedure for managing the Paidhu Ethical Foods website and e-commerce operations through the Admin Portal.
 
 ---
 
-# TABLE OF CONTENTS
-1. [Role-Based Access Control (RBAC) & Permissions](#1-role-based-access-control-rbac--permissions)
-2. [Authentication & Account Security](#2-authentication--account-security)
-3. [Dashboard & Executive Analytics](#3-dashboard--executive-analytics)
-4. [Product Catalog & Inventory Management](#4-product-catalog--inventory-management)
-5. [Order Fulfillment, Lifecycle & Invoices](#5-order-fulfillment-lifecycle--invoices)
-6. [Abandoned Carts Telemetry & WhatsApp Recovery](#6-abandoned-carts-telemetry--whatsapp-recovery)
-7. [Customer Wishlist Demand Insights](#7-customer-wishlist-demand-insights)
-8. [Customer Directory & Profiles](#8-customer-directory--profiles)
-9. [Payment Transactions & Gateway Records](#9-payment-transactions--gateway-records)
-10. [Coupons, Discounts & Promotions Engine](#10-coupons-discounts--promotions-engine)
-11. [Deals of the Day & Flash Sales](#11-deals-of-the-day--flash-sales)
-12. [Promotional Banners (Desktop & Mobile)](#12-promotional-banners-desktop--mobile)
-13. [Delivery Charges & Shipping Rules Engine](#13-delivery-charges--shipping-rules-engine)
-14. [Floral Food Habitat Management](#14-floral-food-habitat-management)
-15. [BYOC (Build Your Own Cart) Bundle Manager](#15-byoc-build-your-own-cart-bundle-manager)
-16. [Category Grid Management](#16-category-grid-management)
-17. [Family Combos Management](#17-family-combos-management)
-18. [Mom's Community & Event Moments Gallery](#18-moms-community--event-moments-gallery)
-19. [Our Philosophy & Botanical Nutrition CMS](#19-our-philosophy--botanical-nutrition-cms)
-20. [About Us Management](#20-about-us-management)
-21. [Bulk Orders Content & Corporate Gifting](#21-bulk-orders-content--corporate-gifting)
-22. [B2B Corporate Bulk Order Inquiries](#22-b2b-corporate-bulk-order-inquiries)
-23. [Saffron Guidance Pregnancy Consultation Leads](#23-saffron-guidance-pregnancy-consultation-leads)
-24. [WhatsApp Prompt & Tiffin Leads](#24-whatsapp-prompt--tiffin-leads)
-25. [Career & Job Applications Pipeline](#25-career--job-applications-pipeline)
-26. [Blog Authoring & Editorial Engine](#26-blog-authoring--editorial-engine)
-27. [Customer Reviews Moderation](#27-customer-reviews-moderation)
-28. [Static CMS Pages & Legal Policies](#28-static-cms-pages--legal-policies)
-29. [SEO & Search Engine Optimization](#29-seo--search-engine-optimization)
-30. [Tracking Scripts Injection (GA4, GTM, Meta Pixel)](#30-tracking-scripts-injection-ga4-gtm-meta-pixel)
-31. [Global Store Settings & Maintenance Mode Switch](#31-global-store-settings--maintenance-mode-switch)
-32. [Admin Profile & Password Rotation](#32-admin-profile--password-rotation)
+## TABLE OF CONTENTS
+1. [Admin Login](#1-admin-login)
+2. [Dashboard](#2-dashboard)
+3. [Products](#3-products)
+4. [Categories](#4-categories)
+5. [Orders](#5-orders)
+6. [Customers](#6-customers)
+7. [Inventory / Stock](#7-inventory--stock)
+8. [Payments](#8-payments)
+9. [Delivery / Shipping](#9-delivery--shipping)
+10. [Offers / Discounts](#10-offers--discounts)
+11. [Website Content](#11-website-content)
+12. [Reviews & Ratings](#12-reviews--ratings)
+13. [Notifications](#13-notifications)
+14. [Reports](#14-reports)
+15. [Search & Filters](#15-search--filters)
+16. [Admin Users](#16-admin-users)
+17. [Roles & Permissions](#17-roles--permissions)
+18. [Settings](#18-settings)
+19. [Activity / Audit Logs](#19-activity--audit-logs)
+20. [Admin Daily Operations](#20-admin-daily-operations)
 
 ---
 
-## 1. ROLE-BASED ACCESS CONTROL (RBAC) & PERMISSIONS
+## 1. Admin Login
+### Purpose:
+Used by authorized administrators to securely access the Paidhu Ethical Foods Admin Portal.
 
-The Paidhu Admin Portal utilizes a multi-tier authorization security matrix. Every administrator account is assigned one of three operational roles:
-
-### 1.1 SUPER_ADMIN
-- **Privileges:** Unrestricted master access to all 28 modules, financial records, payment gateway credentials, script injection, user provisioning, and maintenance settings.
-- **Assigned To:** Founders, Directors, and Lead Technical Administrators.
-
-### 1.2 ECOMMERCE_ADMIN
-- **Privileges:** Operational control over catalog, inventory, order processing, active abandoned carts, customer inquiries, banners, BYOC bundles, blogs, and marketing leads.
-- **Restrictions:** Restricted from viewing payment gateway configurations, financial refund processing, and tracking code injection.
-- **Assigned To:** Store Managers, Merchandisers, and Marketing Team.
-
-### 1.3 ACCOUNTS_ADMIN
-- **Privileges:** Focused access to Dashboard financial charts, Orders, Payment transaction histories, Stock deduction auditing, and Tax Invoices.
-- **Restrictions:** Restricted from editing storefront CMS banners, blogs, career applications, and customer leads.
-- **Assigned To:** Accountants, Finance Officers, and Inventory Auditors.
+### Admin can:
+- **Login to the portal:** Enter registered administrative email and password at `/login`. The portal authenticates using encrypted `bcryptjs` credentials and issues a secure 7-day JWT session token.
+- **Enforce Password Rotation:** First-time staff members are automatically prompted with a forced password change screen at `/change-password` before receiving dashboard access.
+- **Access authorized modules:** Based on assigned administrative role (`SUPER_ADMIN`, `ECOMMERCE_ADMIN`, or `ACCOUNTS_ADMIN`), navigation items are filtered dynamically.
+- **Logout from the portal:** Click the red **Logout** button at the bottom of the sidebar to invalidate the local session and redirect back to the login screen safely.
 
 ---
 
-## 2. AUTHENTICATION & ACCOUNT SECURITY
+## 2. Dashboard
+### Purpose:
+Provides an overall view of the activities and information managed through the Admin Portal.
 
-### 2.1 Admin Login (`/login`)
-- **How It Works:** Administrators enter their registered email and password. Upon successful verification via `bcryptjs`, a signed JSON Web Token (JWT) is issued with a 7-day validity period.
-- **Session Security:** Automatically logs the administrator out if the token expires or is revoked.
-
-### 2.2 Forced Initial Password Change (`/change-password`)
-- **How It Works:** When a new staff account is created, the system sets `mustChangePassword: true`.
-- **Enforcement:** On first login, the admin is immediately redirected to the Change Password screen and cannot navigate to any dashboard data until they establish a strong, private password.
-
-### 2.3 Login History & Audit Trail (`/login-history`)
-- **Purpose:** Cybersecurity monitoring and internal compliance.
-- **What It Displays:**
-  - **Admin User:** Email and Account Name.
-  - **IP Address:** Real-time client IP location.
-  - **Browser & OS:** Complete User-Agent string.
-  - **Timestamp:** Exact date and time of authentication.
-  - **Status:** `SUCCESS` (green badge) or `FAILED` (red badge).
-- **How to Use:** Review weekly to detect any unauthorized login attempts or abnormal IP activities.
+### Admin can view:
+- **Revenue Overview:** Total gross sales (₹) calculated in real time from all captured Razorpay and confirmed COD transactions.
+- **Order information:** Total order count, today's order volume, and month-over-month growth trends.
+- **Product information:** Total catalog count, active listings, and instant warning indicator for items with low stock ($le 5$ units).
+- **Customer information:** Total registered customer count and active buyer telemetry.
+- **Sales/business information:** Interactive Recharts visual curve displaying daily and monthly sales trajectories.
+- **Pending activities:** Orders awaiting packaging (`Paid`), shipments in transit (`Shipped`), and new consultation leads.
+- **Important notifications:** Alerts for newly placed orders, low inventory levels, and customer inquiries.
 
 ---
 
-## 3. DASHBOARD & EXECUTIVE ANALYTICS
+## 3. Products
+### Purpose:
+Used to manage the products displayed and sold through the Paidhu Ethical Foods website.
 
-**Route:** `/`
-
-### 3.1 Real-Time KPI Metric Cards
-- **Total Revenue (₹):** Live sum of all completed, verified transactions.
-- **Total Orders:** Count of placed orders with percentage trajectory compared to previous month.
-- **Total Customers:** Number of registered customer accounts on the storefront.
-- **Low Stock Alerts:** Real-time count of products with remaining inventory $le 5$ units.
-
-### 3.2 Sales & Orders Velocity Chart
-- Visualizes daily and monthly gross sales curves rendered via Recharts.
-- Allows executive management to spot sales peaks following marketing campaigns.
-
-### 3.3 Recent Orders Overview Table
-- Displays the 10 most recent customer purchases with customer name, order value, payment method, and real-time fulfillment status.
-- Clicking any order opens the full fulfillment workspace.
-
-### 3.4 Bestselling Products Leaderboard
-- Ranks top floral products (e.g. Kashmiri Pure Saffron, Hibiscus Petal Jam, Rose Bloom Cookies) by total revenue and quantity sold.
+### Admin can:
+- **View products (`/products`):** Browse the complete catalog table with thumbnail preview, title, category, SKU, stock level, and price.
+- **Add products (`/products/new`):** Create new floral food listings:
+  1. *Core Data:* Enter Product Title (e.g., "Artisanal Hibiscus Petal Jam"), short promotional summary, and rich culinary description.
+  2. *URL Slug:* Automatically generated from the product title for SEO (e.g., `artisanal-hibiscus-petal-jam`).
+  3. *Category:* Assign to appropriate catalog section.
+- **Update product price:** Set base MRP price and promotional discounted offer price.
+- **Update product images:** Drag and drop up to 6 high-resolution product photos. Uploads directly to Supabase Cloud Storage bucket `products` with public CDN URLs.
+- **Update product description:** Edit ingredients, storage recommendations, shelf life, and botanical benefits.
+- **Manage multi-size variants:** Click **Add Variant** to configure multiple size offerings (e.g., 50g, 100g, 250g, 500g, 1kg) with individual prices, offer prices, stock units, and SKUs.
+- **Manage product availability:** Set badges such as `bestseller`, `new_arrival`, `deal_of_the_day`, or `family_combo`.
+- **Manage product status:** Toggle products between active (visible on website) and inactive (hidden).
 
 ---
 
-## 4. PRODUCT CATALOG & INVENTORY MANAGEMENT
+## 4. Categories
+### Purpose:
+Used to organize products into appropriate product categories.
 
-### 4.1 Product List (`/products`)
-- **Search Bar:** Real-time search by product title, SKU code, or tags.
-- **Category Filter Dropdown:** Filter by category (e.g. *Bloom Cookies*, *Petal Jams*, *Pure Saffron*, *Floral Teas*, *Brew Flora*, *Super Value Packs*).
-- **Stock Status Badges:**
-  - `In Stock` (Green): Safe inventory levels.
-  - `Low Stock` (Amber): Units $le 5$.
-  - `Out of Stock` (Red): Zero inventory; triggers out-of-stock badge on storefront.
-- **Action Buttons:** Edit Product, Duplicate Product, or Delete Product.
-
-### 4.2 Adding a New Product (`/products/new`)
-- **Step 1: Basic Information:**
-  - *Title:* Name of the product (e.g., "Artisanal Hibiscus Petal Jam").
-  - *Slug:* Auto-generated URL path (e.g., `artisanal-hibiscus-petal-jam`).
-  - *Category:* Select from predefined categories.
-  - *Short Summary:* 1-2 sentence compelling summary for product card previews.
-  - *Full Description:* Rich-text botanical story, flavor profile, ingredients list, and storage instructions.
-- **Step 2: Media & Image Upload:**
-  - Drag and drop up to 6 high-resolution product photos.
-  - Uploads automatically to Supabase Cloud Storage bucket `products` with instant CDN delivery.
-  - First image acts as primary storefront thumbnail; secondary images populate the image carousel.
-- **Step 3: Multi-Size Variants Manager:**
-  - Click **Add Variant** to define size offerings:
-    - *Variant Label:* e.g. "100g Jar", "250g Jar", "500g Family Pack", "1g Saffron Box".
-    - *Base Price (₹):* Original MRP.
-    - *Offer Price (₹):* Discounted customer price.
-    - *Stock Units:* Physical units available for that specific size.
-    - *SKU Code:* Unique internal inventory identifier (e.g., `PH-JAM-HIB-250`).
-- **Step 4: Badges & Merchandising Tags:**
-  - Check tags: `bestseller`, `new_arrival`, `deal_of_the_day`, `family_combo`.
-- **Step 5: Click "Save & Publish Product".**
-
-### 4.3 Editing Existing Products (`/products/edit/:id`)
-- Modify prices, descriptions, images, or stock units. Updates reflect instantly across the storefront without requiring code deployments.
+### Admin can:
+- **View categories (`/category-grid-management`):** Inspect all active categories including *Bloom Cookies*, *Petal Jams*, *Pure Saffron*, *Floral Teas*, *Brew Flora*, and *Super Value Packs*.
+- **Add & Edit categories:** Define category names, subtitle slogans, and category URL slugs.
+- **Manage category information:** Set custom background accent color tints matching floral botanicals (rose pink, saffron gold, lavender purple).
+- **Manage promotional badges:** Assign display tags to category tiles on the storefront (e.g. "Bestseller", "New Launch", "Chef's Special").
+- **Manage category status:** Toggle visibility of category tiles on the homepage category grid.
 
 ---
 
-## 5. ORDER FULFILLMENT, LIFECYCLE & INVOICES
+## 5. Orders
+### Purpose:
+Used to manage customer orders received through the website.
 
-### 5.1 Orders Ledger (`/orders`)
-- **Filter Tabs:**
-  - `ALL` — Complete historical ledger.
-  - `PENDING` — Customer initiated order; payment not yet verified.
-  - `PAID` — Online payment successfully captured via Razorpay or COD order confirmed.
-  - `PROCESSING` — Order printed; items being packed and quality checked.
-  - `SHIPPED` — Dispatched with courier tracking details.
-  - `DELIVERED` — Customer received package.
-  - `CANCELLED` — Order cancelled or refunded.
-- **Search:** Search by Order ID, customer phone number, or customer name.
-
-### 5.2 Order Details & Fulfillment Screen (`/orders/:id`)
-- **Customer & Shipping Card:** Full name, phone number (with direct call/WhatsApp link), email, and full postal address including pincode.
-- **Line Items Breakdown:** Table showing thumbnail, product title, selected variant, unit price, quantity, and line total.
-- **Cost Calculation Box:**
-  - Items Subtotal.
-  - Applied Coupon Code and discount amount deducted.
-  - Delivery charge applied (or Free Delivery indicator).
-  - Net Grand Total paid.
-- **Order State Machine Dropdown:**
-  - Select new status (`Processing`, `Shipped`, `Delivered`, `Cancelled`).
-  - Enter Courier Partner name (e.g. Blue Dart, Delhivery, DTDC) and Tracking AWB Number.
-- **Print Tax Invoice Button:**
-  - Formats an official Paidhu Tax Invoice in standard A4 format with GST breakdown, company contact information, and shipping address label.
+### Admin can:
+- **View orders (`/orders`):** Filter orders across status tabs: `ALL`, `PENDING`, `PAID`, `PROCESSING`, `SHIPPED`, `DELIVERED`, and `CANCELLED`.
+- **View order details (`/orders/:id`):** Open order workspace showing complete line items breakdown, selected variant sizes, unit prices, and quantities.
+- **View customer details:** Full customer name, telephone number (with one-click WhatsApp/Call button), and email address.
+- **View delivery information:** Exact delivery address including flat/door number, street, city, state, and 6-digit postal code.
+- **Check order amount & payment information:** Inspect subtotal, coupon discounts applied, delivery charges added, Razorpay transaction ID, and final payment method (UPI, Card, COD).
+- **Update order status:** Advance order status from `Paid` $ightarrow$ `Processing` $ightarrow$ `Shipped` $ightarrow$ `Delivered`.
+- **Assign courier tracking:** Input courier partner name (e.g. Blue Dart, Delhivery) and AWB Tracking Number.
+- **Generate Tax Invoice:** Click **"Print Tax Invoice"** to render a standard printer-ready Paidhu GST Tax Invoice with customer shipping label.
+- **Manage cancelled & refunded orders:** Process cancellations and issue refunds with recorded internal reason notes.
 
 ---
 
-## 6. ABANDONED CARTS TELEMETRY & WHATSAPP RECOVERY
+## 6. Customers
+### Purpose:
+Used to manage customer information associated with website orders.
 
-**Route:** `/active-carts`
-
-### 6.1 What It Does
-Tracks high-intent shoppers who added items to their shopping cart and entered their contact details but dropped off before completing payment.
-
-### 6.2 Key Attributes Displayed
-- **Customer Phone & Email:** Contact identity.
-- **Cart Value (₹):** Total monetary value of items in the cart.
-- **Products in Cart:** List of specific items, variants, and quantities.
-- **Last Updated:** Exact timestamp showing how long ago the cart was updated.
-
-### 6.3 One-Click WhatsApp Recovery Workflow
-1. Locate customer in the Active Carts table.
-2. Click the green **"Chat on WhatsApp"** button.
-3. Automatically opens WhatsApp Web or WhatsApp Desktop with a pre-filled, personalized recovery message:
-   *"Hi [Customer], we noticed you left some lovely floral delicacies in your cart at Paidhu! Would you like help completing your order? Here is a special 5% coupon for you: WELCOME5"*
-4. Dramatically boosts store conversion rates by recovering lost revenue.
+### Admin can:
+- **View customers (`/customers`):** Searchable customer directory displaying full name, verified mobile number, email, and registration date.
+- **View customer details (`/customers/:id`):** Open customer profile card showing account statistics.
+- **View contact information:** Mobile number and email for order updates or customer support.
+- **View delivery information:** Full address book of saved delivery locations (Home, Work, etc.).
+- **View customer order history:** Chronological ledger of all past orders placed by the customer, cumulative lifetime spend (LTV), and average order value.
+- **Update customer information where permitted:** Update delivery notes, addresses, or account status upon customer request.
 
 ---
 
-## 7. CUSTOMER WISHLIST DEMAND INSIGHTS
+## 7. Inventory / Stock
+### Purpose:
+Used to maintain product availability and stock information.
 
-**Route:** `/wishlists`
-
-### 7.1 What It Does
-Aggregates all products added to wishlists across all registered users, functioning as an unfulfilled demand heatmap.
-
-### 7.2 How Admins Use It
-- Identifies which out-of-stock items have high customer interest, helping the kitchen prioritize baking/production batches.
-- Guides promotional campaigns: if 50+ users wishlisted a specific cookie pack, create a flash deal for that product to trigger immediate checkout conversions.
-
----
-
-## 8. CUSTOMER DIRECTORY & PROFILES
-
-**Route:** `/customers` and `/customers/:id`
-
-### 8.1 Customer Directory
-- Master list of all registered buyers.
-- Searchable by name, email, or telephone number.
-- Shows total orders placed, cumulative spend, and registration date.
-
-### 8.2 Customer Detail Profile
-- **Contact Summary:** Verified mobile number, email, and notification preferences.
-- **Saved Address Book:** Delivery addresses saved for home, office, etc.
-- **Lifetime Purchase Timeline:** Full chronology of all orders, items purchased, and payment records.
+### Admin can:
+- **View product stock:** Real-time stock units count displayed across all products and individual size variants.
+- **Update stock quantity:** Adjust physical count after new bakery batches or incoming supplier consignments.
+- **Identify available products:** Green badge indicator for items with healthy stock levels.
+- **Identify low-stock products:** Amber warning badge for items with remaining stock $le 5$ units, triggering kitchen replenishment.
+- **Identify out-of-stock products:** Red badge for items at 0 stock, automatically showing "Sold Out" on the website to prevent overselling.
+- **Maintain accurate product availability:** Stock auto-decrements synchronously whenever a customer completes a verified payment.
 
 ---
 
-## 9. PAYMENT TRANSACTIONS & GATEWAY RECORDS
+## 8. Payments
+### Purpose:
+Used to monitor, verify, and reconcile financial transactions from online payment gateways and cash-on-delivery orders.
 
-**Route:** `/payments`
-
-### 9.1 Transaction Ledger
-- Live audit log of all gateway events.
-- **Columns:**
-  - *Razorpay Payment ID:* e.g. `pay_O1b2c3d4e5f6`.
-  - *Order Number:* Linked Paidhu order reference.
-  - *Customer Name & Phone.*
-  - *Amount (₹):* Exact captured amount.
-  - *Payment Method:* UPI (Google Pay, PhonePe, Paytm), NetBanking, Credit/Debit Card, or COD.
-  - *Gateway Status:* `SUCCESS`, `PENDING`, or `FAILED`.
-
-### 9.2 Refund Management
-- View refund requests with logged reasons.
-- Issue partial or full refunds directly through the portal with audit log tracking.
+### Admin can:
+- **View payment transactions (`/payments`):** Real-time ledger of all payment attempts.
+- **Check payment details (`/payments/:id`):** Inspect Razorpay Payment ID (`pay_xxx`), Razorpay Order ID, captured amount, and payment timestamp.
+- **Check payment methods:** Verify whether payment was made via UPI (Google Pay, PhonePe, Paytm), NetBanking, Credit/Debit Card, or COD.
+- **Verify gateway status:** Filter by `SUCCESS` (captured), `PENDING` (in checkout), or `FAILED` (bank decline).
+- **Process refunds:** Issue full or partial refunds through the portal with audit log tracking and automated order status update to `CANCELLED`.
 
 ---
 
-## 10. COUPONS, DISCOUNTS & PROMOTIONS ENGINE
+## 9. Delivery / Shipping
+### Purpose:
+Used to manage the delivery-related information associated with customer orders.
 
-**Route:** `/coupons`
-
-### 10.1 Creating a Coupon Code
-1. Click **"Create Coupon"**.
-2. **Coupon Code:** Unique alphanumeric code (e.g. `FLORAL10`, `FESTIVE500`).
-3. **Discount Type:**
-   - *Percentage:* e.g. 10% off entire order.
-   - *Fixed Amount:* e.g. Flat ₹150 off.
-4. **Discount Value:** Enter the numeric discount value.
-5. **Minimum Cart Amount (₹):** e.g., Coupon valid only on orders above ₹999.
-6. **Maximum Discount Cap (₹):** Caps the maximum discount for percentage coupons (e.g., 15% off up to max ₹300).
-7. **Expiration Date:** Set end date/time after which the code auto-expires.
-8. **Usage Limits:** Limit redemptions per customer (e.g. 1 per customer) or total store redemptions.
-9. **Active Toggle:** Instantly activate or pause coupon code.
+### Admin can:
+- **View delivery address:** Complete shipping address and postal pincode on every order card.
+- **Configure shipping fees (`/delivery-charges`):**
+  - Set **Standard Delivery Charge** (e.g. ₹60).
+  - Set **Express Delivery Charge** (e.g. ₹120).
+  - Set **Free Delivery Threshold** (e.g. Free shipping automatically on orders above ₹999).
+- **Configure delivery timelines:** Set customer-facing promise (e.g. *"Estimated delivery in 3–5 business days"*).
+- **Manage regional delivery rules:** Specify pincodes or states requiring special logistics charges.
+- **Track dispatch and delivery status:** Update courier tracking URL/AWB so customers receive real-time dispatch updates.
 
 ---
 
-## 11. DEALS OF THE DAY & FLASH SALES
+## 10. Offers / Discounts
+### Purpose:
+Used to manage promotional offers and discounts provided to customers.
 
-**Route:** `/deals-management`
-
-### 11.1 What It Does
-Curates the special promotional offerings featured on the dedicated storefront deals page (`/shop/deal-of-the-day`).
-
-### 11.2 Configurable Options
-- **Featured Product Selection:** Choose which catalog items receive the special deal spotlight.
-- **Promotional Ribbon Text:** e.g. "Save 25% Today", "Limited Kitchen Batch".
-- **Countdown Timer Schedule:** Set start and expiry timestamps to display a live countdown timer on the storefront.
-
----
-
-## 12. PROMOTIONAL BANNERS (DESKTOP & MOBILE)
-
-**Route:** `/banners`
-
-### 12.1 Target Page Placement
-Banners can be assigned to specific storefront destinations:
-- `home` — Main storefront homepage hero slider.
-- `shop-all` — Shop All catalog header banner (**Recommended size: 1920 x 427 px**).
-- `deal-of-the-day` — Flash sales page banner.
-- Category slugs — Specific category pages (e.g. `bloom-cookies`, `pure-saffron`).
-
-### 12.2 Responsive Image Architecture
-- **Web Banner:** High-resolution landscape image (1920 x 427 px) engineered for desktop monitors.
-- **Mobile Banner:** Vertically optimized image formatted for smartphone touch screens.
-- Uploads directly to Supabase CDN bucket with zero server load.
-
-### 12.3 Banner Controls
-- **Link URL:** Set destination link when customer clicks the banner (e.g. `/shop/byoc`).
-- **Active Switch:** Toggle banners online/offline without having to re-upload image files.
+### Admin can:
+- **Create offers (`/coupons`):** Click **"Create Coupon"** to configure new discount codes (e.g. `PAIDHU10`, `WELCOME500`).
+- **Set discount types:**
+  - *Percentage:* e.g. 10% off entire order.
+  - *Fixed Amount:* e.g. Flat ₹150 off.
+- **Manage discount information:**
+  - Set numeric discount amount.
+  - Set minimum cart value required for coupon eligibility (e.g. Min cart ₹999).
+  - Set maximum discount ceiling for percentage coupons (e.g. 15% off up to max ₹300).
+- **Activate/deactivate offers:** Instant toggle switch to enable or pause promotional codes.
+- **Manage offer validity:** Set start and expiration calendar dates, and set per-customer or global usage redemption caps.
+- **Manage Flash Deals of the Day (`/deals-management`):** Curate limited-time deals on `/shop/deal-of-the-day` with countdown timers.
 
 ---
 
-## 13. DELIVERY CHARGES & SHIPPING RULES ENGINE
+## 11. Website Content
+### Purpose:
+Used to manage content displayed on the Paidhu Ethical Foods website.
 
-**Route:** `/delivery-charges`
-
-### 13.1 Configurable Parameters
-- **Standard Delivery Charge (₹):** Base shipping cost (e.g. ₹60).
-- **Express Delivery Charge (₹):** Expedited priority shipping cost (e.g. ₹120).
-- **Free Delivery Threshold (₹):** Minimum cart subtotal required for automated free shipping (e.g. ₹999).
-- **Estimated Delivery Timelines:** Text displayed in the cart and checkout (e.g. *"Estimated delivery in 3–5 business days"*).
-- **Regional Surcharges:** Specify pincodes or states requiring special logistics charges.
-
----
-
-## 14. FLORAL FOOD HABITAT MANAGEMENT
-
-**Route:** `/floral-habitat-management`
-
-### 14.1 What It Does
-Manages the educational and sensory immersion page at `/shop/starting-floral-food-habitat`.
-
-### 14.2 Configurable Options
-- **Headline & Narrative Copy:** Edit the introductory storytelling explaining how to incorporate edible flowers into daily wellness.
-- **Curated Video Reels:** Add or reorder video links (queried automatically from Supabase Storage folder `starting floral habits videos` or custom MP4 URLs).
-- **Starter Packs Selection:** Select starter combo products showcased beneath the videos.
+### Admin can manage:
+- **Banners (`/banners`):**
+  - Upload desktop hero banners (**exact 1920 x 427 px**) and responsive mobile banners.
+  - Assign banners by page: `home`, `shop-all`, `deal-of-the-day`, or specific categories.
+  - Set click destination URLs and toggle active status.
+- **Floral Habitat Section (`/floral-habitat-management`):**
+  - Manage video reels (fetched from Supabase Storage `starting floral habits videos` folder or custom URLs).
+  - Update storytelling headlines and starter pack product recommendations.
+- **Build Your Own Cart (BYOC) Bundles (`/byoc-management`):**
+  - Configure the 3 custom bundle tiers: Tier 1 (3 for ₹799), Tier 2 (4 for ₹1049), Tier 3 (5 for ₹1399).
+  - Select eligible products available in the bundle customizer.
+- **Mom's Community & Family Tales (`/community-management`):**
+  - Upload real community event photos, tasting memories, and captions on `/shop/our-own-community`.
+  - Update official WhatsApp community group invitation links.
+- **Our Philosophy & About Us (`/philosophy-management`, `/about-us-management`):**
+  - Edit botanical nutrition philosophy, pure ingredient guarantees, founder story, and certifications.
+- **Static Pages (`/pages`):**
+  - Rich-text editor for Privacy Policy, Terms & Conditions, Shipping Policy, and Refund Policy.
 
 ---
 
-## 15. BYOC (BUILD YOUR OWN CART) BUNDLE MANAGER
+## 12. Reviews & Ratings
+### Purpose:
+Used to manage customer feedback and product reviews.
 
-**Route:** `/byoc-management`
-
-### 15.1 What It Does
-Controls the custom floral gift box bundle builder page at `/shop/byoc`.
-
-### 15.2 Configurable Pricing Tiers
-- **Tier 1:** 3 Items Bundle Price (e.g. ₹799).
-- **Tier 2:** 4 Items Bundle Price (e.g. ₹1049).
-- **Tier 3:** 5 Items Bundle Price (e.g. ₹1399).
-
-### 15.3 Eligible Product Catalog
-- Select which catalog products are available in the BYOC builder (e.g. cookies, tea tins, saffron jars).
-- System automatically applies tier bundle discounts when customer completes their selection.
+### Admin can:
+- **View reviews (`/reviews`):** Browse all customer reviews submitted across the product catalog.
+- **View ratings:** Inspect 1 to 5 star ratings submitted by verified buyers.
+- **Approve reviews:** One-click approval to publish positive customer feedback onto the live product page.
+- **Reject/Delete inappropriate reviews:** Filter and remove spam, offensive comments, or invalid feedback to protect brand trust.
+- **Monitor customer feedback:** Track customer satisfaction trends across different floral food recipes.
 
 ---
 
-## 16. CATEGORY GRID MANAGEMENT
+## 13. Notifications
+### Purpose:
+Provides important alerts and updates related to portal activities.
 
-**Route:** `/category-grid-management`
-
-### 16.1 What It Does
-Manages the visual category navigation tiles displayed on the homepage.
-
-### 16.2 Configurable Options
-- **Category Titles:** Display names for each tile.
-- **Card Images:** Custom photography showcasing the category.
-- **Accent Theme Color:** Set custom background tints matching floral ingredients.
-- **Promotional Badge Text:** e.g. "Bestseller", "New Launch", "Chef's Special".
+### Admin can view:
+- **Notification Dropdown:** Top-bar bell icon with real-time badge count.
+- **New order notifications:** Instant alert when an online order is placed.
+- **Payment notifications:** Confirmation of successful Razorpay captures or payment failures.
+- **Stock notifications:** Automatic warnings when an SKU reaches critical threshold ($le 5$ units).
+- **Lead notifications:** New pregnancy consultation requests or corporate bulk order inquiries.
 
 ---
 
-## 17. FAMILY COMBOS MANAGEMENT
+## 14. Reports
+### Purpose:
+Used to review business and operational information generated through the portal.
 
-**Route:** `/family-management`
-
-### 17.1 What It Does
-Manages family-sized value bundles and multi-generation sharing packs.
-
-### 17.2 Options
-- Curate featured family combo products.
-- Configure promotional banners and description copy.
-
----
-
-## 18. MOM'S COMMUNITY & EVENT MOMENTS GALLERY
-
-**Route:** `/community-management`
-
-### 18.1 What It Does
-Controls the community storytelling page at `/shop/our-own-community`.
-
-### 18.2 Configurable Assets
-- **Event Moments Slideshow:** Upload and arrange high-resolution photos of real family gatherings, kids tasting sessions, and community events.
-- **Community Captions:** Edit testimonial stories and photo captions.
-- **WhatsApp Group Invite Link:** Manage direct invitation link to the official Paidhu WhatsApp Mothers Community group.
+### Admin can view or generate:
+- **Sales & Revenue Reports:** Daily, weekly, and monthly revenue performance via Dashboard charts.
+- **Order Reports:** Summary of completed, processing, and cancelled order volumes.
+- **Abandoned Cart Telemetry (`/active-carts`):** Uncompleted customer carts with values and direct WhatsApp recovery triggers.
+- **Wishlist Demand Reports (`/wishlists`):** Heatmap of products most desired by customers to guide production planning.
+- **Lead Pipeline Reports:**
+  - *Saffron Guidance Pregnancy Leads (`/saffron-guidance-leads`):* Gestational month, physician clearance, and consultation status.
+  - *B2B Bulk Order Inquiries (`/bulk-order-inquiries`):* Corporate gifting volume requests and deadlines.
+  - *Career Applications (`/career-applications`):* Job applicant resumes and hiring stages.
 
 ---
 
-## 19. OUR PHILOSOPHY & BOTANICAL NUTRITION CMS
+## 15. Search & Filters
+### Purpose:
+Used to quickly locate specific information within the Admin Portal.
 
-**Route:** `/philosophy-management`
-
-### 19.1 What It Does
-Manages brand authenticity storytelling, non-GMO promises, and pure natural ingredients messaging.
-
-### 19.2 Options
-- Edit brand philosophy paragraphs and pillar values (Pure, Clean, Botanical, Handcrafted).
-- Manage certifications (FSSAI compliance, chemical-free testing).
-
----
-
-## 20. ABOUT US MANAGEMENT
-
-**Route:** `/about-us-management`
-
-### 20.1 What It Does
-Controls the founder story, farm-to-table origin story, and culinary journey displayed at `/about`.
-
-### 20.2 Options
-- Founder letter and signature.
-- Farm sourcing photography and milestones timeline.
+### Admin can search/filter:
+- **Global Header Search:** Search across products, orders, and customers from the top search bar.
+- **Product Filters:** Filter by category, price range, stock availability (`In Stock`, `Low Stock`, `Out of Stock`), or SKU.
+- **Order Filters:** Filter by status tab (`Paid`, `Processing`, `Shipped`, etc.), customer name, phone number, or date range.
+- **Payment Filters:** Filter by Razorpay ID, payment method (UPI, Card, COD), or transaction status.
+- **Lead Filters:** Filter inquiries by status (`Pending`, `Contacted`, `Resolved`).
 
 ---
 
-## 21. BULK ORDERS CONTENT & CORPORATE GIFTING
+## 16. Admin Users
+### Purpose:
+Used to manage users who have access to the Admin Portal.
 
-**Route:** `/bulk-orders-management`
-
-### 21.1 What It Does
-Controls the promotional B2B landing page at `/shop/bulk-orders`.
-
-### 21.2 Options
-- Corporate gifting catalogue download link.
-- Wedding favors and corporate hampers photo gallery.
-- Custom branding packaging options showcase.
-
----
-
-## 22. B2B CORPORATE BULK ORDER INQUIRIES
-
-**Route:** `/bulk-order-inquiries`
-
-### 22.1 What It Does
-Captures lead inquiries submitted through the Corporate & Bulk Orders contact form.
-
-### 22.2 Data Attributes
-- **Company Name & Contact Person.**
-- **Phone Number & Business Email.**
-- **Estimated Quantity:** Units needed (e.g. 100 boxes, 500 hampers).
-- **Target Event Date & Delivery Location.**
-- **Requirement Notes:** Custom box customization requests.
-
-### 22.3 Action Steps
-- Click phone number to call or email to reply with a formal B2B quotation.
+### Admin can:
+- **View admin users:** List of all registered staff accounts with assigned emails and roles.
+- **Add users:** Provision new administrator accounts with initial credentials.
+- **Edit users:** Update staff names, assigned contact information, and role assignments.
+- **Activate/deactivate users:** Instantly revoke portal access for departing team members.
+- **Manage user access:** Enforce password reset requirements for enhanced security.
 
 ---
 
-## 23. SAFFRON GUIDANCE PREGNANCY CONSULTATION LEADS
+## 17. Roles & Permissions
+### Purpose:
+Used to control what different admin users can access and manage.
 
-**Route:** `/saffron-guidance-leads`
-
-### 23.1 What It Does
-Captures medical and lifestyle consultation requests submitted through `/saffron-guidance`.
-
-### 23.2 Attributes Displayed
-- **Mother's Full Name & Spouse's Name.**
-- **Contact Telephone Number:** Clickable for direct WhatsApp/Phone call.
-- **Month of Pregnancy:** Gestational month (Month 1 through Month 9).
-- **Doctor's Permission:** *Yes* or *No* flag indicating physician clearance.
-- **Purpose & Notes:** Customer questions regarding dosage and authentic saffron preparation.
-
-### 23.3 Lead Pipeline Status Machine
-- `Pending` (Yellow): Newly received inquiry.
-- `Contacted` (Blue): Consultation specialist called or messaged customer.
-- `Resolved` (Green): Consultation completed and customer guided or order placed.
+### Admin can:
+- **View role permissions:**
+  - `SUPER_ADMIN`: Unrestricted master access across all 28 modules and system settings.
+  - `ECOMMERCE_ADMIN`: Operational management of catalog, orders, carts, content, banners, and leads.
+  - `ACCOUNTS_ADMIN`: Focused management of financial transactions, orders, invoices, and stock deductions.
+- **Assign roles:** Assign appropriate operational roles to new or existing staff.
+- **Restrict module access:** Automatically hides restricted navigation links and blocks unauthorized API calls.
 
 ---
 
-## 24. WHATSAPP PROMPT & TIFFIN LEADS
+## 18. Settings
+### Purpose:
+Contains the configuration options used to manage the portal and website.
 
-**Route:** `/whatsapp-leads`
-
-### 24.1 What It Does
-Captures phone numbers from newsletter subscription modals, tiffin service registrations, and WhatsApp quick-buy prompts across the store.
-
-### 24.2 Features
-- Filter by date captured.
-- One-click export to CSV for SMS or WhatsApp broadcast marketing.
-- Direct link to open WhatsApp conversation.
-
----
-
-## 25. CAREER & JOB APPLICATIONS PIPELINE
-
-**Route:** `/career-applications`
-
-### 25.1 What It Does
-Captures job applicant submissions from the `/careers` storefront portal.
-
-### 25.2 Attributes Displayed
-- **Candidate Name, Email, and Phone.**
-- **Applied Position:** (e.g. Pastry Chef, Digital Marketer, Operations Lead).
-- **Education & Experience:** College, degree, and graduation year.
-- **Portfolio Link & Cover Letter.**
-- **Resume Attachment:** One-click preview and download of uploaded PDF resume.
-
-### 25.3 Hiring Workflow Status
-- Update candidate status: `New` $ightarrow$ `Reviewed` $ightarrow$ `Shortlisted` $ightarrow$ `Rejected`.
+### Admin can manage:
+- **General Store Information (`/settings`):** Official customer support telephone numbers, WhatsApp contact link, and official email (`info@paidhu.com`).
+- **Announcement Bar:** Edit the top scrolling promotional marquee ticker displayed across the storefront.
+- **Maintenance Mode Switch:**
+  - Toggle **Maintenance Mode** `ON` during website updates or catalog overhauls.
+  - Displays the dedicated **Under Maintenance Page** featuring the Paidhu logo, *the edibleflower.co* subtext, and the direct **WhatsApp Order & Support navigation button**.
+  - Team members can preview the live website anytime by appending `?preview=true` to any URL.
+- **Tracking Scripts Injection (`/tracking`):** One-click script injection for Google Analytics 4 (GA4), Google Tag Manager (GTM), and Meta Pixel with target placement (`HEAD`, `BODY_START`, `BODY_END`).
 
 ---
 
-## 26. BLOG AUTHORING & EDITORIAL ENGINE
+## 19. Activity / Audit Logs
+### Purpose:
+Used to track administrative activities performed within the portal.
 
-**Route:** `/blogs`
-
-### 26.1 Publishing New Articles (`/blogs/new`)
-- **Article Title:** Compelling recipe or floral wellness title.
-- **URL Slug:** Clean SEO-friendly path.
-- **Cover Image:** High-resolution featured banner upload.
-- **Rich-Text Editor:** Supports headings, bold/italic, lists, blockquotes, and inline images.
-- **Author & Category Tags:** Assign author credit and tags (e.g., *Recipes*, *Health & Wellness*, *Saffron Care*).
-- **Publication Status:** Toggle between `Draft` (private) and `Published` (live on `/blogs`).
+### Admin can view:
+- **Login Activity (`/login-history`):** Complete audit log of every login attempt with user email, client IP address, device/browser details, timestamp, and status (`SUCCESS` or `FAILED`).
+- **Order status changes:** History of when an order transitioned between status phases.
+- **Date and time of changes:** Exact timestamps for every administrative action to ensure operational accountability.
 
 ---
 
-## 27. CUSTOMER REVIEWS MODERATION
+## 20. Admin Daily Operations
+### Purpose:
+Defines the regular activities that the admin should perform to maintain smooth e-commerce operations.
 
-**Route:** `/reviews`
+### Daily Standard Operating Procedure (SOP) Checklist:
 
-### 27.1 What It Does
-Moderates customer reviews and star ratings submitted on product pages.
+#### Morning Shift (09:00 AM - 10:30 AM):
+1. **Login to Admin Portal:** Authenticate at `https://admin.paidhuethicalfoods.com/`.
+2. **Review Dashboard KPIs:** Inspect overnight sales revenue, order counts, and any low-stock alerts.
+3. **Check New Orders (`/orders`):**
+   - Review all orders in `Paid` status.
+   - Click each order, verify item quantities and variants.
+   - Click **"Print Tax Invoice"** and send pick-lists to the kitchen/packing team.
+   - Advance status to `Processing`.
+4. **Follow Up on Pregnancy Leads (`/saffron-guidance-leads`):**
+   - Check new saffron consultation inquiries.
+   - Contact mothers via WhatsApp/Phone to answer dosage questions, and update status to `Contacted`.
 
-### 27.2 Controls
-- Inspect review text, customer name, star rating (1–5 stars), and referenced product.
-- Click **Approve** to publish review publicly, or **Reject/Delete** to suppress spam or inappropriate content.
+#### Midday Shift (01:00 PM - 02:30 PM):
+5. **Recover Abandoned Carts (`/active-carts`):**
+   - Review high-value carts dropped off in the last 24 hours.
+   - Click **"Chat on WhatsApp"** to send personalized recovery offers or coupon codes.
+6. **Review Corporate Bulk Inquiries (`/bulk-order-inquiries`):**
+   - Review incoming wholesale/wedding gifting inquiries and email formal quotations.
+7. **Moderate Customer Reviews (`/reviews`):**
+   - Review newly submitted 1–5 star reviews and approve genuine customer feedback.
 
----
-
-## 28. STATIC CMS PAGES & LEGAL POLICIES
-
-**Route:** `/pages` and `/pages/edit/:slug`
-
-### 28.1 Managed Pages
-- Privacy Policy (`/privacy-policy`)
-- Terms & Conditions (`/terms-conditions`)
-- Shipping Policy (`/shipping-policy`)
-- Refund & Cancellation Policy (`/refund-policy`)
-- Contact Us (`/contact-us`)
-
-### 28.2 How It Works
-Admins can update legal terms, company addresses, and policy clauses directly through the rich editor without developer assistance.
-
----
-
-## 29. SEO & SEARCH ENGINE OPTIMIZATION
-
-**Route:** `/seo` and `/products/seo`
-
-### 29.1 Global Pages SEO
-- Set custom **Meta Titles** (under 60 characters).
-- Set custom **Meta Descriptions** (under 160 characters).
-- Upload custom **OpenGraph (OG) Social Share Images** so links shared on WhatsApp, Facebook, or Twitter display branded cards.
-
-### 29.2 Product SEO Inspector
-- Inspect search engine preview cards for each product catalog item.
-
----
-
-## 30. TRACKING SCRIPTS INJECTION (GA4, GTM, META PIXEL)
-
-**Route:** `/tracking`
-
-### 30.1 What It Does
-Allows marketing teams to deploy analytics and advertising conversion scripts without modifying codebase files.
-
-### 30.2 Supported Providers
-- Google Analytics 4 (GA4 Measurement ID).
-- Google Tag Manager (GTM Container ID).
-- Meta Pixel (Facebook Pixel ID & Conversion API).
-- Google Ads Remarketing Tag.
-- Custom Site Verification tags (Google Search Console, Pinterest, Bing).
-
-### 30.3 Placement Controls
-- `HEAD`: Injected before `</head>` (recommended for GA4, GTM, Meta Pixel).
-- `BODY_START`: Injected immediately after `<body>` (recommended for GTM noscript).
-- `BODY_END`: Injected before `</body>` (recommended for chat widgets).
-- **Active Switch:** Toggle tracking on/off with zero downtime.
+#### Evening Shift (05:00 PM - 06:30 PM):
+8. **Update Dispatched Shipments (`/orders`):**
+   - Collect tracking numbers from the courier partner.
+   - Enter Courier Name and AWB Tracking Number on processed orders.
+   - Advance status from `Processing` $ightarrow$ `Shipped`.
+9. **Check Stock & Inventory (`/products`):**
+   - Verify remaining stock for bestselling items.
+   - If stock $le 5$ units, notify the kitchen team to schedule baking/production batches.
+10. **Review Security & Audit Log (`/login-history`):**
+    - Inspect login history to ensure no unauthorized access attempts occurred.
+11. **Check Website Status & Settings (`/settings`):**
+    - Ensure storefront announcement ticker and banners are active and accurate.
+    - If maintenance is required, toggle Maintenance Mode `ON` and verify the WhatsApp order bridge.
 
 ---
-
-## 31. GLOBAL STORE SETTINGS & MAINTENANCE MODE SWITCH
-
-**Route:** `/settings`
-
-### 31.1 Brand Contact Parameters
-- Official Customer Support Telephone Number.
-- Official WhatsApp Business Chat URL.
-- Official Support Email (`info@paidhu.com`).
-- Kitchen / Office Physical Address.
-
-### 31.2 Announcement Marquee Ticker
-- Edit the scrolling promotional banner running across the top of the storefront (e.g. *"Free shipping on orders above ₹999 | 100% Preservative Free Floral Foods"*).
-
-### 31.3 Under Maintenance Mode Switch
-- **How It Works:**
-  - Toggle **Maintenance Mode** switch to `ON` when performing system upgrades or inventory overhauls.
-  - When `ON`, visitors to the storefront (or localhost) cannot view unfinished pages and are shown the dedicated **Under Maintenance Page** with the Paidhu logo, *the edibleflower.co* subtext, and the direct **WhatsApp Order & Support navigation button**.
-  - **Admin Preview Bypass:** Team members can bypass maintenance mode anytime by appending `?preview=true` to any storefront URL (e.g., `https://paidhuethicalfoods.com/?preview=true`).
-
----
-
-## 32. ADMIN PROFILE & PASSWORD ROTATION
-
-**Route:** `/profile`
-
-### 32.1 Profile Details
-- View registered email, assigned role name, and permissions scope.
-
-### 32.2 Password Change
-- Enter Current Password $ightarrow$ Enter New Password $ightarrow$ Confirm New Password.
-- Changes take effect immediately; system enforces minimum 8 characters with alphanumeric requirements.
-
----
-*Manual compiled and maintained for Paidhu Ethical Foods Management & Operations.*
+*Standard Operating Procedure (SOP) authorized for Paidhu Ethical Foods Operations Team.*
