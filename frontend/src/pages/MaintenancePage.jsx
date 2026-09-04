@@ -110,8 +110,8 @@ const MaintenancePage = () => {
               <span className="text-gray-300">•</span>
               <span className="flex items-center gap-1.5">
                 <span className="text-gray-400">✉️ Email:</span>
-                <a href="mailto:contact@paidhuethicalfoods.com" className="text-gray-900 font-bold hover:underline">
-                  contact@paidhuethicalfoods.com
+                <a href="mailto:info@paidhu.com" className="text-gray-900 font-bold hover:underline">
+                  info@paidhu.com
                 </a>
               </span>
             </div>
