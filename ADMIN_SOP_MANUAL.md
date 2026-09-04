@@ -1,421 +1,522 @@
 # PAIDHU ETHICAL FOODS — ADMIN PORTAL
-## COMPLETE MULTI-ROLE OPERATIONS & STANDARD OPERATING PROCEDURE (SOP) MANUAL
+## COMPLETE MULTI-ROLE OPERATIONS & ROLE-BASED ACTIONS MANUAL (ALL 20 FEATURES)
+
 **Website:** [https://admin.paidhuethicalfoods.com/](https://admin.paidhuethicalfoods.com/) *(Local Development: `http://localhost:5174`)*  
-**Document Type:** Unified Standard Operating Procedure (SOP) & Admin User Manual  
-**Version:** 2.0  
-**Prepared For:** Paidhu Ethical Foods Operations Team  
-**Coverage:** All 3 Administrative Roles (`SUPER_ADMIN`, `ECOMMERCE_ADMIN`, `ACCOUNTS_ADMIN`) across all 20 operational features.
+**Document Type:** Master Standard Operating Procedure (SOP) & Admin Role Manual  
+**Version:** 2.5  
+**Prepared For:** Paidhu Ethical Foods Management & Operations Staff  
+**Roles Covered:** `SUPER_ADMIN`, `ECOMMERCE_ADMIN`, `ACCOUNTS_ADMIN`  
 
 ---
 
-## EXECUTIVE SUMMARY: ROLE ACCESS SUMMARY
+## 1. COLUMN-WISE ROLE-BASED ACTIONS MATRIX (ALL 20 FEATURES)
 
-| # | Feature | SUPER_ADMIN | ECOMMERCE_ADMIN | ACCOUNTS_ADMIN |
-| :-: | :--- | :---: | :---: | :---: |
-| **1** | **Admin Login** | Full Access | Staff Login (Forced Password Change) | Staff Login (Forced Password Change) |
-| **2** | **Dashboard** | Full Executive KPIs | Sales, Orders & Low Stock Telemetry | Revenue, Transactions & Daily Charts |
-| **3** | **Products** | Full Add/Edit/Delete/Variants | Full Add/Edit/Images/Variants | 🚫 Restricted *(Stock View Only)* |
-| **4** | **Categories** | Full Category & Theme Control | Category Titles, Badges & Images | 🚫 Restricted (403) |
-| **5** | **Orders** | Full Lifecycle & Invoicing | Fulfillment & Shipping *(Payments Redacted)* | Payment Verification & Invoices *(Shipping Blocked)* |
-| **6** | **Customers** | Full Directory & Address Books | Customer Contact & Order History | 🚫 Restricted (403) |
-| **7** | **Inventory / Stock** | Master Stock Control | Real-Time Stock Updates & Alerts | Dedicated Stock Audit & Reconciliation |
-| **8** | **Payments** | Full Gateway & Refund Control | 🚫 Restricted (403) *(Payments Redacted)* | Full Razorpay Ledger & Refund Processing |
-| **9** | **Delivery / Shipping** | Full Shipping Fee Engine | View Customer Delivery Details | 🚫 Restricted (403) |
-| **10** | **Offers / Discounts** | Full Coupon & Deal Creation | View Coupons & Customer Assistance | 🚫 Restricted (403) |
-| **11** | **Website Content** | Full Banners, BYOC, CMS Control | Manage Banners, BYOC, Habitat, Blogs | 🚫 Restricted (403) |
-| **12** | **Reviews & Ratings** | Full Review Approval & Deletion | Moderate & Approve Reviews | 🚫 Restricted (403) |
-| **13** | **Notifications** | All System Alerts | Orders, Stock & Lead Alerts | Payments & Zero-Stock Alerts |
-| **14** | **Reports** | Master Business Intelligence | Abandoned Carts, Wishlists, Leads | Sales, Revenue & Refund Reconciliation |
-| **15** | **Search & Filters** | Global Master Search | Products, Orders, Customers | Orders, Payments, Invoices |
-| **16** | **Admin Users** | Full Provisioning & Deactivation | 🚫 Restricted (403) | 🚫 Restricted (403) |
-| **17** | **Roles & Permissions**| Full RBAC Management | 🚫 Restricted (403) | 🚫 Restricted (403) |
-| **18** | **Settings** | Full Config, Scripts & Maintenance | 🚫 Restricted (403) | 🚫 Restricted (403) |
-| **19** | **Activity / Audit Logs**| Full Security IP & Login Logs | 🚫 Restricted (403) | 🚫 Restricted (403) |
-| **20** | **Daily Operations** | Strategic Oversight & Reviews | Order Fulfillment & Cart Recovery SOP | Payment Verification & Invoicing SOP |
-
----
-
-# FEATURE-BY-FEATURE OPERATIONAL BREAKDOWN (ALL 20 FEATURES)
+| # | Feature & Purpose | SUPER_ADMIN Actions | ECOMMERCE_ADMIN Actions | ACCOUNTS_ADMIN Actions |
+| :-: | :--- | :--- | :--- | :--- |
+| **1** | **Admin Login**<br>*(Route: `/login`)*<br><br>_Purpose:_ Used by authorized administrators to securely access the Paidhu Ethical Foods Admin Portal. | Master authentication credentials; reset or unlock passwords for any staff account; invalidate active JWT sessions; manage portal security timeouts. | Staff login using assigned email/password; forced password rotation upon initial sign-in (/change-password); access authorized store operations, catalog, orders, and content. | Staff login using assigned email/password; forced password rotation upon initial sign-in (/change-password); access authorized financial ledgers, orders, payments, invoices, and stock audit. |
+| **2** | **Dashboard**<br>*(Route: `/`)*<br><br>_Purpose:_ Provides an overall view of the activities and information managed through the Admin Portal. | Full executive visibility: Gross Revenue (₹), Total Placed Orders, Active Catalog Items, Low-Stock Warnings (<= 5 units), Registered Customers, and interactive Recharts sales velocity graphs. | Operational telemetry: Orders Placed Today, Month-over-Month order curves, Low-Stock Badges (<= 5 units) to alert kitchen for baking, Top-selling floral items, and dropped cart telemetry. | Financial KPIs: Gross Transaction Volume (Razorpay + COD), Payment Gateway Success vs Failure Rates, Daily Cashflow Curves, and Pending Invoicing backlog counter. |
+| **3** | **Products**<br>*(Route: `/products`)*<br><br>_Purpose:_ Used to manage the products displayed and sold through the Paidhu Ethical Foods website. | Unrestricted catalog control: Add, edit, duplicate, price, discount, or delete products; manage all multi-size packaging variants (50g, 100g, 250g, 500g, 1kg), SKUs, and upload media to Supabase CDN. | Add & edit products (/products/new, /products/edit/:id); update descriptions, botanical ingredients, tags; upload CDN photos; configure size variants & prices; assign badges (bestseller, new_arrival); toggle Active/Inactive. | Stock Audit View ONLY (/products labeled as Stock Management): View product catalog, SKU codes, unit selling prices, and monitor physical inventory counts. (Add/Edit/Delete blocked 403). |
+| **4** | **Categories**<br>*(Route: `/category-grid-management`)*<br><br>_Purpose:_ Used to organize products into appropriate product categories. | Full taxonomy control: Create, edit, reorder, delete categories; configure floral background accent tints (Rose pink, Saffron gold, Lavender purple); manage category tiles and badges. | Manage active categories (Bloom Cookies, Petal Jams, Pure Saffron, Floral Teas, Brew Flora, Super Value Packs); edit marketing slogans; assign promotional badges (Bestseller, New Launch). | Restricted (403): Completely blocked from category management. Navigation link hidden in sidebar. |
+| **5** | **Orders**<br>*(Route: `/orders`)*<br><br>_Purpose:_ Used to manage customer orders received through the website. | Master order authority: View all orders across all status tabs (ALL, PENDING, PAID, PROCESSING, SHIPPED, DELIVERED, CANCELLED); manual status overrides; invoice printing; refund & cancellation processing. | Fulfillment & Shipping: View active orders; inspect customer shipping address & phone (direct WhatsApp / Call button); advance status (Paid -> Processing -> Shipped); enter courier name (Blue Dart, Delhivery) and AWB tracking number; print packing slips. (Payment details redacted). | Payments & Invoicing: View all orders to verify financial settlement; inspect itemized totals, applied coupon discounts, and delivery fees; verify Razorpay payment ID (pay_xxx) & method; generate & Print Official Paidhu GST Tax Invoices. (Shipping courier editing blocked 403). |
+| **6** | **Customers**<br>*(Route: `/customers`)*<br><br>_Purpose:_ Used to manage customer information associated with website orders. | Master customer directory (/customers, /customers/:id): Full customer profiles, verified mobile numbers, emails, saved delivery address book, and lifetime purchase value (LTV). | Customer support access: Search customer directory; view contact telephone with direct WhatsApp bridge to assist with order inquiries, address corrections, and repeat orders; review purchase history. | Restricted (403): Completely blocked from personal customer directory and address books to ensure data privacy (DPDP Act compliance). Customer data is accessed strictly via order tax invoices. |
+| **7** | **Inventory / Stock**<br>*(Route: `/products`)*<br><br>_Purpose:_ Used to maintain product availability and stock information. | Global stock oversight: View and update physical inventory counts across all products and individual packaging variants; configure low-stock threshold triggers (default <= 5 units); manual stock adjustments. | Real-time stock management: Monitor product stock across 50g, 100g, 250g, 500g, 1kg variants; update stock quantities upon kitchen batch completion; identify low-stock (Amber badge) and out-of-stock items. | Stock Audit & Reconciliation: Audit unit stock against gross sales records; verify automatic stock deduction upon order payment; reconcile physical warehouse inventory against financial balance sheets. |
+| **8** | **Payments**<br>*(Route: `/payments`)*<br><br>_Purpose:_ Used to monitor, verify, and reconcile financial transactions from online payment gateways and cash-on-delivery orders. | Complete payment administration: Master transaction ledger; inspect Razorpay Payment IDs, Order IDs, captured amounts, gateway fees, and statuses; execute full or partial refunds directly with audit tracking. | Restricted (403): Completely blocked from /payments and /payments/:id. Menu item hidden. On orders page, financial payment rows are stripped (order.payments = []). Cannot issue refunds or mark orders paid. | Full Financial Ledger: Access all payment transactions; verify captured UPI, NetBanking, Card, and COD receipts; process customer refunds with justification remarks; reconcile Razorpay settlements with bank accounts. |
+| **9** | **Delivery / Shipping**<br>*(Route: `/delivery-charges`)*<br><br>_Purpose:_ Used to manage the delivery-related information associated with customer orders. | Full shipping fee engine (/delivery-charges): Set Standard Delivery charge, Express Delivery charge, and Free Delivery threshold (e.g. Free shipping above ₹999); configure customer-facing delivery promises. | Logistics tracking: View customer delivery address and courier tracking requirements on orders; convey shipping tracking status to customers on WhatsApp. (Cannot alter shipping fees or free delivery rules). | Restricted (403): Blocked from /delivery-charges. Delivery fees are audited strictly as an itemized line item on the customer tax invoice. |
+| **10** | **Offers / Discounts**<br>*(Route: `/coupons`)*<br><br>_Purpose:_ Used to manage promotional offers and discounts provided to customers. | Full discount engine (/coupons): Create coupon codes (e.g. PAIDHU10, FESTIVE200); set percentage or fixed discounts; set minimum cart values, usage caps, per-customer limits, expiry dates; curate Deals of the Day (/deals-management). | Promotional support: View active coupons and parameters to assist customers; issue pre-approved coupon codes to recover abandoned carts on WhatsApp; manage products featured in Flash Deals of the Day. | Restricted (403): Blocked from creating or altering discount codes. Audits applied discounts as promotional deductions on sales invoices. |
+| **11** | **Website Content**<br>*(Route: `/banners`)*<br><br>_Purpose:_ Used to manage content displayed on the Paidhu Ethical Foods website. | Master CMS control: Desktop & mobile banners (/banners), Floral Habitat video reels (/floral-habitat-management), BYOC bundles (/byoc-management), Mom's Community (/community-management), Philosophy & About Us. | Daily CMS management: Upload 1920x427 desktop banners & mobile responsive banners; configure BYOC cart bundle tiers (₹799/3, ₹1049/4, ₹1399/5); upload Floral Habitat reels; publish blog recipes (/blogs); update Mom's Community photos. | Restricted (403): Completely blocked from all CMS and website content editing modules. All content routes hidden from sidebar. |
+| **12** | **Reviews & Ratings**<br>*(Route: `/reviews`)*<br><br>_Purpose:_ Used to manage customer feedback and product reviews. | Master review moderation (/reviews): View all customer 1–5 star reviews, approve high-praise testimonials for live storefront display, reject or permanently delete spam / inappropriate entries. | Review moderation: Daily screening of new customer ratings and product feedback; approve authentic customer reviews to display social proof on product pages; report quality complaints to bakery staff. | Restricted (403): Blocked from customer reviews module. |
+| **13** | **Notifications**<br>*(Route: `/`)*<br><br>_Purpose:_ Provides important alerts and updates related to portal activities. | Global notification center: Live alerts for new orders, successful payments, payment failures, low stock warnings, out-of-stock notices, consultation inquiries, and security events. | Operational alerts: Instant badge notifications for new orders needing fulfillment, low-stock warnings (<= 5 units), new WhatsApp tiffin leads, and pregnancy guidance inquiries. | Financial alerts: Notifications for new captured payments, payment gateway webhook syncs, zero-stock warnings, and pending refund requests. |
+| **14** | **Reports**<br>*(Route: `/active-carts`)*<br><br>_Purpose:_ Used to review business and operational information generated through the portal. | Master Business Intelligence: Comprehensive sales revenue reports, gross margins, abandoned cart recovery rates, customer wishlist demand heatmaps (/wishlists), and lead conversion rates. | Operational & Merchandising Reports: Abandoned Cart telemetry (/active-carts) with one-click WhatsApp recovery buttons; Wishlist Insights (/wishlists); Saffron Pregnancy Leads reports; B2B Bulk Inquiries reports. | Financial Reports: Gross Sales & Revenue Reconciliation (Daily, Monthly); Gateway Settlement vs Bank Transfer Reports; Tax Reports (Output GST, CGST, SGST, IGST collected); Stock Valuation & Asset Balance Reports. |
+| **15** | **Search & Filters**<br>*(Route: `/products`)*<br><br>_Purpose:_ Used to quickly locate specific information within the Admin Portal. | Global master search: Search across all modules by customer, order number, amount, date, SKU, transaction ID (pay_xxx), and fulfillment status. | Catalog & Order search: Filter products by category, price, SKU, or stock status; search orders by customer phone or name; filter by fulfillment status (Paid, Processing, Shipped); filter leads by inquiry type. | Financial search: Search payments by Razorpay ID, order number, or date; filter orders by payment status (PAID vs PENDING), invoice date, and payment gateway method; search stock by SKU. |
+| **16** | **Admin Users**<br>*(Route: `/profile`)*<br><br>_Purpose:_ Used to manage users who have access to the Admin Portal. | Exclusive administrative user management: Provision new staff accounts with assigned emails, temporary passwords, and roles; toggle mustChangePassword flag; deactivate or delete staff accounts. | Restricted (403): Cannot view other admin accounts or create users. Can only view/edit their own profile and update their own password. | Restricted (403): Cannot view other admin accounts or create users. Can only view/edit their own profile and update their own password. |
+| **17** | **Roles & Permissions**<br>*(Route: `/profile`)*<br><br>_Purpose:_ Used to control what different admin users can access and manage. | Full RBAC configuration: Assign administrative roles (SUPER_ADMIN, ECOMMERCE_ADMIN, ACCOUNTS_ADMIN); control module authorizations; enforce organizational boundaries. | Restricted (403): Operates strictly within assigned ECOMMERCE_ADMIN role permissions. Cannot modify permissions or roles. | Restricted (403): Operates strictly within assigned ACCOUNTS_ADMIN role permissions. Cannot modify permissions or roles. |
+| **18** | **Settings**<br>*(Route: `/settings`)*<br><br>_Purpose:_ Contains the configuration options used to manage the portal and website. | Master store configuration (/settings, /tracking): Support contact info (info@paidhu.com, phone, WhatsApp); announcement bar marquee; Maintenance Mode toggle switch; tracking scripts (GA4, GTM, Meta Pixel). | Restricted (403): Cannot alter store contact settings, toggle Maintenance Mode, or inject third-party tracking scripts. | Restricted (403): Cannot alter store settings or system configurations. |
+| **19** | **Activity / Audit Logs**<br>*(Route: `/login-history`)*<br><br>_Purpose:_ Used to track administrative activities performed within the portal. | Master security audit trail (/login-history): Comprehensive login audit logs with staff email, client IP address, browser User-Agent, exact timestamp, and authentication status (SUCCESS or FAILED); order audit history. | Operational audit: Can view chronological status transition history on individual order cards (Paid -> Processing -> Shipped). (Blocked from login history and IP security logs 403). | Financial audit: Can view payment timestamp logs and refund transaction records. (Blocked from login history and IP security logs 403). |
+| **20** | **Admin Daily Operations**<br>*(Route: `/`)*<br><br>_Purpose:_ Defines the regular activities that the admin should perform to maintain smooth e-commerce operations. | Master Operational Oversight: Morning executive dashboard review (sales, orders, stock); Midday campaign & lead review; Evening financial settlement, staff login security audit, and system health check. | Fulfillment & Merchandising SOP: Morning (09:00 AM) review PAID orders, print pick-lists, notify kitchen of low stock (<=5), advance to Processing; Midday (01:00 PM) recover dropped carts on WhatsApp (/active-carts), reply to Saffron & bulk leads, moderate reviews; Evening (05:00 PM) enter courier AWBs, mark Shipped, check bakery stock. | Financial & Invoicing SOP: Morning (09:30 AM) verify incoming Razorpay payments against bank settlement reports; Midday (02:00 PM) generate & print Paidhu GST Tax Invoices, process approved customer refunds; Evening (05:30 PM) audit stock deductions at /products, generate daily revenue closing summary. |
 
 ---
+
+## 2. FEATURE-BY-FEATURE OPERATIONAL BREAKDOWN (ALL 20 FEATURES)
 
 ### 1. Admin Login
-- **Route:** `/login`
+- **Route / Navigation:** `/login`
 - **Purpose:** Used by authorized administrators to securely access the Paidhu Ethical Foods Admin Portal.
 
-#### Role Actions:
+#### Role Actions & Capabilities:
 - **SUPER_ADMIN:**
-  - Login with master administrator credentials.
-  - Reset or unlock passwords for any staff account.
-  - Invalidate active JWT sessions across the organization.
+  - Master authentication credentials; reset or unlock passwords for any staff account; invalidate active JWT sessions; manage portal security timeouts.
 - **ECOMMERCE_ADMIN:**
-  - Login with assigned staff email and password.
-  - Required to rotate initial temporary password upon first login (`mustChangePassword: true`).
-  - Access authorized store operations and marketing modules.
+  - Staff login using assigned email/password; forced password rotation upon initial sign-in (/change-password); access authorized store operations, catalog, orders, and content.
 - **ACCOUNTS_ADMIN:**
-  - Login with assigned staff email and password.
-  - Required to rotate initial temporary password upon first login.
-  - Access authorized financial, payment, and inventory audit modules.
+  - Staff login using assigned email/password; forced password rotation upon initial sign-in (/change-password); access authorized financial ledgers, orders, payments, invoices, and stock audit.
 
-#### Step-by-Step Procedure:
-1. Navigate to `https://admin.paidhuethicalfoods.com/login`.
-2. Enter your registered email address and secure password.
-3. Click **"Sign In"**.
-4. If prompted with the **Change Password** screen, input a new private password (minimum 8 characters with numbers and symbols) and submit.
-5. To end your shift, click the red **Logout** button at the bottom of the sidebar.
+#### Standard Operating Procedure (SOP):
+1. Navigate to `/login` from the admin sidebar.
+2. If your role does not have authorization for this module, the system will enforce Role-Based Access Control and redirect to the Access Denied screen.
+3. Perform authorized role actions as outlined in the matrix above.
+4. Verify modifications in real-time or via the respective confirmation toast message.
 
 ---
 
 ### 2. Dashboard
-- **Route:** `/`
+- **Route / Navigation:** `/`
 - **Purpose:** Provides an overall view of the activities and information managed through the Admin Portal.
 
-#### Role Actions:
+#### Role Actions & Capabilities:
 - **SUPER_ADMIN:**
-  - Full visibility across gross revenue, net margin, order volumes, customer acquisition, and low-stock warnings.
-  - Complete Recharts interactive revenue velocity charts.
+  - Full executive visibility: Gross Revenue (₹), Total Placed Orders, Active Catalog Items, Low-Stock Warnings (<= 5 units), Registered Customers, and interactive Recharts sales velocity graphs.
 - **ECOMMERCE_ADMIN:**
-  - View total orders placed today and month-over-month sales trends.
-  - Monitor low-stock indicators ($le 5$ units) to alert the kitchen for upcoming batch bakes.
-  - View top-selling floral food products (Bloom Cookies, Petal Jams, Saffron).
+  - Operational telemetry: Orders Placed Today, Month-over-Month order curves, Low-Stock Badges (<= 5 units) to alert kitchen for baking, Top-selling floral items, and dropped cart telemetry.
 - **ACCOUNTS_ADMIN:**
-  - View gross revenue generated through Razorpay and Cash on Delivery.
-  - Track payment capture rates and transaction failure rates.
-  - Audit daily cashflow curves and order count reconciliation.
+  - Financial KPIs: Gross Transaction Volume (Razorpay + COD), Payment Gateway Success vs Failure Rates, Daily Cashflow Curves, and Pending Invoicing backlog counter.
+
+#### Standard Operating Procedure (SOP):
+1. Navigate to `/` from the admin sidebar.
+2. If your role does not have authorization for this module, the system will enforce Role-Based Access Control and redirect to the Access Denied screen.
+3. Perform authorized role actions as outlined in the matrix above.
+4. Verify modifications in real-time or via the respective confirmation toast message.
 
 ---
 
 ### 3. Products
-- **Route:** `/products`, `/products/new`, `/products/edit/:id`
+- **Route / Navigation:** `/products`
 - **Purpose:** Used to manage the products displayed and sold through the Paidhu Ethical Foods website.
 
-#### Role Actions:
+#### Role Actions & Capabilities:
 - **SUPER_ADMIN:**
-  - Unrestricted authority to create, edit, duplicate, price, and permanently delete products.
-  - Manage all multi-size packaging variants (50g, 100g, 250g, 500g, 1kg).
+  - Unrestricted catalog control: Add, edit, duplicate, price, discount, or delete products; manage all multi-size packaging variants (50g, 100g, 250g, 500g, 1kg), SKUs, and upload media to Supabase CDN.
 - **ECOMMERCE_ADMIN:**
-  - Add new products: Title, URL slug, category, short summary, and culinary description.
-  - Upload high-resolution product photography directly to Supabase CDN bucket `products`.
-  - Configure multi-size pack variants with individual prices, offer prices, stock units, and SKUs.
-  - Assign merchandising badges: `bestseller`, `new_arrival`, `deal_of_the_day`, `family_combo`.
-  - Toggle product active/inactive visibility on the live website.
+  - Add & edit products (/products/new, /products/edit/:id); update descriptions, botanical ingredients, tags; upload CDN photos; configure size variants & prices; assign badges (bestseller, new_arrival); toggle Active/Inactive.
 - **ACCOUNTS_ADMIN:**
-  - 🚫 **Restricted from creating, editing, or deleting products.**
-  - Accesses the product table in **Stock Monitoring Mode** only to audit physical inventory against financial deductions.
+  - Stock Audit View ONLY (/products labeled as Stock Management): View product catalog, SKU codes, unit selling prices, and monitor physical inventory counts. (Add/Edit/Delete blocked 403).
 
-#### Step-by-Step Procedure (Adding a Product):
-1. Go to **Products** $ightarrow$ Click **"Add Product"**.
-2. Fill in Product Title (e.g. "Kashmiri Pure Saffron").
-3. Select Category (e.g. *Pure Saffron*).
-4. Drag and drop product images into the upload container.
-5. In the **Variants** section, click **"Add Variant"** and enter Size Label (e.g. "1g Box"), MRP Price, Offer Price, and Stock Units.
-6. Click **"Save Product"**.
+#### Standard Operating Procedure (SOP):
+1. Navigate to `/products` from the admin sidebar.
+2. If your role does not have authorization for this module, the system will enforce Role-Based Access Control and redirect to the Access Denied screen.
+3. Perform authorized role actions as outlined in the matrix above.
+4. Verify modifications in real-time or via the respective confirmation toast message.
 
 ---
 
 ### 4. Categories
-- **Route:** `/category-grid-management`
+- **Route / Navigation:** `/category-grid-management`
 - **Purpose:** Used to organize products into appropriate product categories.
 
-#### Role Actions:
+#### Role Actions & Capabilities:
 - **SUPER_ADMIN:**
-  - Full creation, editing, reordering, and deletion of categories.
-  - Set custom theme color accents matching floral ingredients (rose pink, saffron gold, lavender purple).
+  - Full taxonomy control: Create, edit, reorder, delete categories; configure floral background accent tints (Rose pink, Saffron gold, Lavender purple); manage category tiles and badges.
 - **ECOMMERCE_ADMIN:**
-  - Update category titles, promotional subtitles, and category photography.
-  - Assign promotional badges to homepage category tiles (*Bestseller*, *New Launch*, *Chef's Choice*).
-  - Toggle category tile visibility on the homepage grid.
+  - Manage active categories (Bloom Cookies, Petal Jams, Pure Saffron, Floral Teas, Brew Flora, Super Value Packs); edit marketing slogans; assign promotional badges (Bestseller, New Launch).
 - **ACCOUNTS_ADMIN:**
-  - 🚫 **Restricted (403 Forbidden).** Categories module is hidden from the sidebar.
+  - Restricted (403): Completely blocked from category management. Navigation link hidden in sidebar.
+
+#### Standard Operating Procedure (SOP):
+1. Navigate to `/category-grid-management` from the admin sidebar.
+2. If your role does not have authorization for this module, the system will enforce Role-Based Access Control and redirect to the Access Denied screen.
+3. Perform authorized role actions as outlined in the matrix above.
+4. Verify modifications in real-time or via the respective confirmation toast message.
 
 ---
 
 ### 5. Orders
-- **Route:** `/orders`, `/orders/:id`
+- **Route / Navigation:** `/orders`
 - **Purpose:** Used to manage customer orders received through the website.
 
-#### Role Actions:
+#### Role Actions & Capabilities:
 - **SUPER_ADMIN:**
-  - Master control across all status tabs: `ALL`, `PENDING`, `PAID`, `PROCESSING`, `SHIPPED`, `DELIVERED`, `CANCELLED`.
-  - Override order status, edit courier tracking, and print GST Tax Invoices.
+  - Master order authority: View all orders across all status tabs (ALL, PENDING, PAID, PROCESSING, SHIPPED, DELIVERED, CANCELLED); manual status overrides; invoice printing; refund & cancellation processing.
 - **ECOMMERCE_ADMIN:**
-  - View order line items, selected pack variants, and customer delivery address.
-  - Advance fulfillment status: `Paid` $ightarrow$ `Processing` $ightarrow$ `Shipped`.
-  - Enter Courier Partner name (e.g. Blue Dart, Delhivery) and AWB Tracking Number.
-  - Print GST Tax Invoices and packing pick-lists.
-  - 🚫 *Financial payment transactions are stripped and hidden.* Cannot mark unpaid orders as Paid.
+  - Fulfillment & Shipping: View active orders; inspect customer shipping address & phone (direct WhatsApp / Call button); advance status (Paid -> Processing -> Shipped); enter courier name (Blue Dart, Delhivery) and AWB tracking number; print packing slips. (Payment details redacted).
 - **ACCOUNTS_ADMIN:**
-  - View order financial totals, line items, applied coupon discounts, and delivery fees.
-  - Verify payment capture against Razorpay transaction records.
-  - Update payment status from Unpaid to Paid for manual offline transfers.
-  - Print official GST Tax Invoices for corporate accounting and tax reconciliation.
-  - 🚫 *Cannot change delivery status to Shipped or edit courier tracking numbers.*
+  - Payments & Invoicing: View all orders to verify financial settlement; inspect itemized totals, applied coupon discounts, and delivery fees; verify Razorpay payment ID (pay_xxx) & method; generate & Print Official Paidhu GST Tax Invoices. (Shipping courier editing blocked 403).
 
-#### Step-by-Step Procedure (Processing an Order):
-1. Navigate to **Orders** $ightarrow$ Click on the `PAID` tab.
-2. Click on the order number to open the Order Details workspace.
-3. Verify the purchased products and variants.
-4. Click **"Print Tax Invoice"** for the shipping package.
-5. In the status dropdown, change status from `Paid` to `Processing`.
-6. Once packed and picked up by courier, enter the Courier Name and AWB Tracking Number and advance status to `Shipped`.
+#### Standard Operating Procedure (SOP):
+1. Navigate to `/orders` from the admin sidebar.
+2. If your role does not have authorization for this module, the system will enforce Role-Based Access Control and redirect to the Access Denied screen.
+3. Perform authorized role actions as outlined in the matrix above.
+4. Verify modifications in real-time or via the respective confirmation toast message.
 
 ---
 
 ### 6. Customers
-- **Route:** `/customers`, `/customers/:id`
+- **Route / Navigation:** `/customers`
 - **Purpose:** Used to manage customer information associated with website orders.
 
-#### Role Actions:
+#### Role Actions & Capabilities:
 - **SUPER_ADMIN:**
-  - Access complete customer directory, verified mobile numbers, email addresses, and saved delivery locations.
-  - View lifetime customer spend (LTV) and order chronology.
+  - Master customer directory (/customers, /customers/:id): Full customer profiles, verified mobile numbers, emails, saved delivery address book, and lifetime purchase value (LTV).
 - **ECOMMERCE_ADMIN:**
-  - Search customer directory by name, email, or telephone number.
-  - Use one-click **Call** or **WhatsApp** buttons to assist customers with delivery inquiries or address corrections.
-  - View past orders to understand customer preferences.
+  - Customer support access: Search customer directory; view contact telephone with direct WhatsApp bridge to assist with order inquiries, address corrections, and repeat orders; review purchase history.
 - **ACCOUNTS_ADMIN:**
-  - 🚫 **Restricted (403 Forbidden).** Personal customer directory and address books are restricted for privacy compliance.
+  - Restricted (403): Completely blocked from personal customer directory and address books to ensure data privacy (DPDP Act compliance). Customer data is accessed strictly via order tax invoices.
+
+#### Standard Operating Procedure (SOP):
+1. Navigate to `/customers` from the admin sidebar.
+2. If your role does not have authorization for this module, the system will enforce Role-Based Access Control and redirect to the Access Denied screen.
+3. Perform authorized role actions as outlined in the matrix above.
+4. Verify modifications in real-time or via the respective confirmation toast message.
 
 ---
 
 ### 7. Inventory / Stock
-- **Route:** `/products`
+- **Route / Navigation:** `/products`
 - **Purpose:** Used to maintain product availability and stock information.
 
-#### Role Actions:
+#### Role Actions & Capabilities:
 - **SUPER_ADMIN:**
-  - Master stock oversight with ability to set stock thresholds and override counts.
+  - Global stock oversight: View and update physical inventory counts across all products and individual packaging variants; configure low-stock threshold triggers (default <= 5 units); manual stock adjustments.
 - **ECOMMERCE_ADMIN:**
-  - Update physical stock quantities following new bakery batches.
-  - Monitor amber warning badges for items with low stock ($le 5$ units) and notify the kitchen.
-  - Mark products as sold out to prevent overselling.
+  - Real-time stock management: Monitor product stock across 50g, 100g, 250g, 500g, 1kg variants; update stock quantities upon kitchen batch completion; identify low-stock (Amber badge) and out-of-stock items.
 - **ACCOUNTS_ADMIN:**
-  - Accesses dedicated **Stock Management** view.
-  - Audits automated stock deductions against completed customer orders.
-  - Performs physical vs. system stock reconciliations at month-end.
+  - Stock Audit & Reconciliation: Audit unit stock against gross sales records; verify automatic stock deduction upon order payment; reconcile physical warehouse inventory against financial balance sheets.
+
+#### Standard Operating Procedure (SOP):
+1. Navigate to `/products` from the admin sidebar.
+2. If your role does not have authorization for this module, the system will enforce Role-Based Access Control and redirect to the Access Denied screen.
+3. Perform authorized role actions as outlined in the matrix above.
+4. Verify modifications in real-time or via the respective confirmation toast message.
 
 ---
 
 ### 8. Payments
-- **Route:** `/payments`, `/payments/:id`
+- **Route / Navigation:** `/payments`
 - **Purpose:** Used to monitor, verify, and reconcile financial transactions from online payment gateways and cash-on-delivery orders.
 
-#### Role Actions:
+#### Role Actions & Capabilities:
 - **SUPER_ADMIN:**
-  - Complete visibility over all Razorpay gateway transactions, captured amounts, transaction fees, and net settlements.
-  - Authorize and execute full or partial customer refunds.
+  - Complete payment administration: Master transaction ledger; inspect Razorpay Payment IDs, Order IDs, captured amounts, gateway fees, and statuses; execute full or partial refunds directly with audit tracking.
 - **ECOMMERCE_ADMIN:**
-  - 🚫 **Restricted (403 Forbidden).** Payments module is completely hidden from the sidebar. Gateway transaction records and refund processing are blocked.
+  - Restricted (403): Completely blocked from /payments and /payments/:id. Menu item hidden. On orders page, financial payment rows are stripped (order.payments = []). Cannot issue refunds or mark orders paid.
 - **ACCOUNTS_ADMIN:**
-  - Inspect transaction ledger: Razorpay Payment ID (`pay_xxx`), Order ID, Amount, and Payment Method (UPI, NetBanking, Card, COD).
-  - Verify payment status: `SUCCESS`, `PENDING`, `FAILED`.
-  - Process customer refunds with mandatory reason logging, automatically updating the order status to `CANCELLED`.
-  - Reconcile gateway settlements with the corporate bank account.
+  - Full Financial Ledger: Access all payment transactions; verify captured UPI, NetBanking, Card, and COD receipts; process customer refunds with justification remarks; reconcile Razorpay settlements with bank accounts.
+
+#### Standard Operating Procedure (SOP):
+1. Navigate to `/payments` from the admin sidebar.
+2. If your role does not have authorization for this module, the system will enforce Role-Based Access Control and redirect to the Access Denied screen.
+3. Perform authorized role actions as outlined in the matrix above.
+4. Verify modifications in real-time or via the respective confirmation toast message.
 
 ---
 
 ### 9. Delivery / Shipping
-- **Route:** `/delivery-charges`
+- **Route / Navigation:** `/delivery-charges`
 - **Purpose:** Used to manage the delivery-related information associated with customer orders.
 
-#### Role Actions:
+#### Role Actions & Capabilities:
 - **SUPER_ADMIN:**
-  - Configure **Standard Delivery Charge** (e.g. ₹60) and **Express Delivery Charge** (e.g. ₹120).
-  - Configure **Free Delivery Threshold** (e.g. Free delivery on all orders above ₹999).
-  - Set estimated delivery timelines (e.g. *"Delivery in 3–5 Business Days"*).
-  - Define regional surcharges by state or pincode.
+  - Full shipping fee engine (/delivery-charges): Set Standard Delivery charge, Express Delivery charge, and Free Delivery threshold (e.g. Free shipping above ₹999); configure customer-facing delivery promises.
 - **ECOMMERCE_ADMIN:**
-  - View delivery information on customer orders and coordinate dispatch timelines.
-  - 🚫 *Cannot alter shipping fees or free delivery thresholds.*
+  - Logistics tracking: View customer delivery address and courier tracking requirements on orders; convey shipping tracking status to customers on WhatsApp. (Cannot alter shipping fees or free delivery rules).
 - **ACCOUNTS_ADMIN:**
-  - 🚫 **Restricted (403 Forbidden).** Delivery fee engine is restricted.
+  - Restricted (403): Blocked from /delivery-charges. Delivery fees are audited strictly as an itemized line item on the customer tax invoice.
+
+#### Standard Operating Procedure (SOP):
+1. Navigate to `/delivery-charges` from the admin sidebar.
+2. If your role does not have authorization for this module, the system will enforce Role-Based Access Control and redirect to the Access Denied screen.
+3. Perform authorized role actions as outlined in the matrix above.
+4. Verify modifications in real-time or via the respective confirmation toast message.
 
 ---
 
 ### 10. Offers / Discounts
-- **Route:** `/coupons`, `/deals-management`
+- **Route / Navigation:** `/coupons`
 - **Purpose:** Used to manage promotional offers and discounts provided to customers.
 
-#### Role Actions:
+#### Role Actions & Capabilities:
 - **SUPER_ADMIN:**
-  - Create, modify, and delete discount coupons (Percentage and Fixed Amount).
-  - Set minimum cart value requirements, maximum discount caps, and start/expiry calendar dates.
-  - Set per-customer usage limits or store-wide redemption caps.
-  - Curate flash **Deals of the Day** on `/shop/deal-of-the-day` with live countdown timers.
+  - Full discount engine (/coupons): Create coupon codes (e.g. PAIDHU10, FESTIVE200); set percentage or fixed discounts; set minimum cart values, usage caps, per-customer limits, expiry dates; curate Deals of the Day (/deals-management).
 - **ECOMMERCE_ADMIN:**
-  - View active coupons to assist customers inquiring on WhatsApp.
-  - Provide approved promotional codes to recover abandoned carts.
-  - 🚫 *Cannot create or edit coupon rules or discount percentages.*
+  - Promotional support: View active coupons and parameters to assist customers; issue pre-approved coupon codes to recover abandoned carts on WhatsApp; manage products featured in Flash Deals of the Day.
 - **ACCOUNTS_ADMIN:**
-  - 🚫 **Restricted (403 Forbidden).** Offers module is restricted.
+  - Restricted (403): Blocked from creating or altering discount codes. Audits applied discounts as promotional deductions on sales invoices.
+
+#### Standard Operating Procedure (SOP):
+1. Navigate to `/coupons` from the admin sidebar.
+2. If your role does not have authorization for this module, the system will enforce Role-Based Access Control and redirect to the Access Denied screen.
+3. Perform authorized role actions as outlined in the matrix above.
+4. Verify modifications in real-time or via the respective confirmation toast message.
 
 ---
 
 ### 11. Website Content
-- **Route:** `/banners`, `/floral-habitat-management`, `/byoc-management`, `/community-management`, `/blogs`, `/pages`
+- **Route / Navigation:** `/banners`
 - **Purpose:** Used to manage content displayed on the Paidhu Ethical Foods website.
 
-#### Role Actions:
+#### Role Actions & Capabilities:
 - **SUPER_ADMIN:**
-  - Master authority across all CMS modules, static legal pages, banners, and video reels.
+  - Master CMS control: Desktop & mobile banners (/banners), Floral Habitat video reels (/floral-habitat-management), BYOC bundles (/byoc-management), Mom's Community (/community-management), Philosophy & About Us.
 - **ECOMMERCE_ADMIN:**
-  - **Banners (`/banners`):** Upload desktop banners (**exact 1920 x 427 px**) and mobile responsive banners; assign to `home`, `shop-all`, or category pages.
-  - **Floral Food Habitat (`/floral-habitat-management`):** Manage video reels from Supabase Storage and configure starter packs.
-  - **BYOC Bundles (`/byoc-management`):** Configure bundle pricing tiers (₹799/3, ₹1049/4, ₹1399/5) and select eligible products.
-  - **Mom's Community (`/community-management`):** Upload family tasting moments, event photos, and update the official WhatsApp group link.
-  - **Blogs (`/blogs`):** Author and publish botanical food recipes, wellness guides, and health articles.
+  - Daily CMS management: Upload 1920x427 desktop banners & mobile responsive banners; configure BYOC cart bundle tiers (₹799/3, ₹1049/4, ₹1399/5); upload Floral Habitat reels; publish blog recipes (/blogs); update Mom's Community photos.
 - **ACCOUNTS_ADMIN:**
-  - 🚫 **Restricted (403 Forbidden).** All website content CMS modules are hidden and restricted.
+  - Restricted (403): Completely blocked from all CMS and website content editing modules. All content routes hidden from sidebar.
+
+#### Standard Operating Procedure (SOP):
+1. Navigate to `/banners` from the admin sidebar.
+2. If your role does not have authorization for this module, the system will enforce Role-Based Access Control and redirect to the Access Denied screen.
+3. Perform authorized role actions as outlined in the matrix above.
+4. Verify modifications in real-time or via the respective confirmation toast message.
 
 ---
 
 ### 12. Reviews & Ratings
-- **Route:** `/reviews`
+- **Route / Navigation:** `/reviews`
 - **Purpose:** Used to manage customer feedback and product reviews.
 
-#### Role Actions:
+#### Role Actions & Capabilities:
 - **SUPER_ADMIN:**
-  - Approve customer reviews, reject feedback, or permanently delete spam.
+  - Master review moderation (/reviews): View all customer 1–5 star reviews, approve high-praise testimonials for live storefront display, reject or permanently delete spam / inappropriate entries.
 - **ECOMMERCE_ADMIN:**
-  - Inspect customer 1–5 star ratings and written reviews.
-  - Click **Approve** to publish verified positive feedback onto the live product pages.
-  - Flag or delete inappropriate, abusive, or competitor spam reviews.
+  - Review moderation: Daily screening of new customer ratings and product feedback; approve authentic customer reviews to display social proof on product pages; report quality complaints to bakery staff.
 - **ACCOUNTS_ADMIN:**
-  - 🚫 **Restricted (403 Forbidden).** Reviews module is restricted.
+  - Restricted (403): Blocked from customer reviews module.
+
+#### Standard Operating Procedure (SOP):
+1. Navigate to `/reviews` from the admin sidebar.
+2. If your role does not have authorization for this module, the system will enforce Role-Based Access Control and redirect to the Access Denied screen.
+3. Perform authorized role actions as outlined in the matrix above.
+4. Verify modifications in real-time or via the respective confirmation toast message.
 
 ---
 
 ### 13. Notifications
-- **Route:** Top Header Notification Dropdown
+- **Route / Navigation:** `/`
 - **Purpose:** Provides important alerts and updates related to portal activities.
 
-#### Role Actions:
+#### Role Actions & Capabilities:
 - **SUPER_ADMIN:**
-  - Receives all system alerts: new orders, captured payments, gateway declines, stock warnings, and consultation leads.
+  - Global notification center: Live alerts for new orders, successful payments, payment failures, low stock warnings, out-of-stock notices, consultation inquiries, and security events.
 - **ECOMMERCE_ADMIN:**
-  - Receives alerts for: Newly placed orders, low inventory items ($le 5$ units), Saffron Guidance pregnancy inquiries, and corporate bulk order leads.
+  - Operational alerts: Instant badge notifications for new orders needing fulfillment, low-stock warnings (<= 5 units), new WhatsApp tiffin leads, and pregnancy guidance inquiries.
 - **ACCOUNTS_ADMIN:**
-  - Receives alerts for: Successful Razorpay captures, payment failures, refund requests, and zero-stock inventory events.
+  - Financial alerts: Notifications for new captured payments, payment gateway webhook syncs, zero-stock warnings, and pending refund requests.
+
+#### Standard Operating Procedure (SOP):
+1. Navigate to `/` from the admin sidebar.
+2. If your role does not have authorization for this module, the system will enforce Role-Based Access Control and redirect to the Access Denied screen.
+3. Perform authorized role actions as outlined in the matrix above.
+4. Verify modifications in real-time or via the respective confirmation toast message.
 
 ---
 
 ### 14. Reports
-- **Route:** Dashboard & Specialty Lead Screens
+- **Route / Navigation:** `/active-carts`
 - **Purpose:** Used to review business and operational information generated through the portal.
 
-#### Role Actions:
+#### Role Actions & Capabilities:
 - **SUPER_ADMIN:**
-  - Full business intelligence: Gross sales, net revenue, order volume trajectories, customer lifetime value, and lead conversion rates.
+  - Master Business Intelligence: Comprehensive sales revenue reports, gross margins, abandoned cart recovery rates, customer wishlist demand heatmaps (/wishlists), and lead conversion rates.
 - **ECOMMERCE_ADMIN:**
-  - **Active Carts Telemetry (`/active-carts`):** Real-time report of dropped carts with direct WhatsApp recovery button.
-  - **Wishlist Demand Insights (`/wishlists`):** Report of products most wishlisted by customers to guide production.
-  - **Lead Pipeline Reports:** Saffron Guidance pregnancy leads (`/saffron-guidance-leads`), B2B bulk inquiries (`/bulk-order-inquiries`), and Career applications (`/career-applications`).
+  - Operational & Merchandising Reports: Abandoned Cart telemetry (/active-carts) with one-click WhatsApp recovery buttons; Wishlist Insights (/wishlists); Saffron Pregnancy Leads reports; B2B Bulk Inquiries reports.
 - **ACCOUNTS_ADMIN:**
-  - Financial sales reports, Razorpay fee deduction summaries, refund reports, and tax reconciliation ledgers.
+  - Financial Reports: Gross Sales & Revenue Reconciliation (Daily, Monthly); Gateway Settlement vs Bank Transfer Reports; Tax Reports (Output GST, CGST, SGST, IGST collected); Stock Valuation & Asset Balance Reports.
+
+#### Standard Operating Procedure (SOP):
+1. Navigate to `/active-carts` from the admin sidebar.
+2. If your role does not have authorization for this module, the system will enforce Role-Based Access Control and redirect to the Access Denied screen.
+3. Perform authorized role actions as outlined in the matrix above.
+4. Verify modifications in real-time or via the respective confirmation toast message.
 
 ---
 
 ### 15. Search & Filters
+- **Route / Navigation:** `/products`
 - **Purpose:** Used to quickly locate specific information within the Admin Portal.
 
-#### Role Actions:
+#### Role Actions & Capabilities:
 - **SUPER_ADMIN:**
-  - Global master search across products, orders, customers, transactions, and staff accounts.
+  - Global master search: Search across all modules by customer, order number, amount, date, SKU, transaction ID (pay_xxx), and fulfillment status.
 - **ECOMMERCE_ADMIN:**
-  - Search products by title, SKU, or category.
-  - Search orders by order ID, customer name, or phone number.
-  - Search customers by mobile number or email.
+  - Catalog & Order search: Filter products by category, price, SKU, or stock status; search orders by customer phone or name; filter by fulfillment status (Paid, Processing, Shipped); filter leads by inquiry type.
 - **ACCOUNTS_ADMIN:**
-  - Search orders by monetary amount, date range, and payment status.
-  - Search payments by Razorpay Payment ID (`pay_xxx`) or gateway status.
+  - Financial search: Search payments by Razorpay ID, order number, or date; filter orders by payment status (PAID vs PENDING), invoice date, and payment gateway method; search stock by SKU.
+
+#### Standard Operating Procedure (SOP):
+1. Navigate to `/products` from the admin sidebar.
+2. If your role does not have authorization for this module, the system will enforce Role-Based Access Control and redirect to the Access Denied screen.
+3. Perform authorized role actions as outlined in the matrix above.
+4. Verify modifications in real-time or via the respective confirmation toast message.
 
 ---
 
 ### 16. Admin Users
-- **Route:** `/settings`
+- **Route / Navigation:** `/profile`
 - **Purpose:** Used to manage users who have access to the Admin Portal.
 
-#### Role Actions:
+#### Role Actions & Capabilities:
 - **SUPER_ADMIN:**
-  - View complete list of administrative accounts.
-  - Create new staff credentials and set initial temporary passwords.
-  - Update staff details or instantly deactivate access for departing personnel.
+  - Exclusive administrative user management: Provision new staff accounts with assigned emails, temporary passwords, and roles; toggle mustChangePassword flag; deactivate or delete staff accounts.
 - **ECOMMERCE_ADMIN:**
-  - 🚫 **Restricted (403 Forbidden).** Cannot view or manage admin accounts.
+  - Restricted (403): Cannot view other admin accounts or create users. Can only view/edit their own profile and update their own password.
 - **ACCOUNTS_ADMIN:**
-  - 🚫 **Restricted (403 Forbidden).** Cannot view or manage admin accounts.
+  - Restricted (403): Cannot view other admin accounts or create users. Can only view/edit their own profile and update their own password.
+
+#### Standard Operating Procedure (SOP):
+1. Navigate to `/profile` from the admin sidebar.
+2. If your role does not have authorization for this module, the system will enforce Role-Based Access Control and redirect to the Access Denied screen.
+3. Perform authorized role actions as outlined in the matrix above.
+4. Verify modifications in real-time or via the respective confirmation toast message.
 
 ---
 
 ### 17. Roles & Permissions
+- **Route / Navigation:** `/profile`
 - **Purpose:** Used to control what different admin users can access and manage.
 
-#### Role Actions:
+#### Role Actions & Capabilities:
 - **SUPER_ADMIN:**
-  - Assign operational roles: `SUPER_ADMIN`, `ECOMMERCE_ADMIN`, or `ACCOUNTS_ADMIN`.
-  - Enforce module-level and field-level operational boundaries.
+  - Full RBAC configuration: Assign administrative roles (SUPER_ADMIN, ECOMMERCE_ADMIN, ACCOUNTS_ADMIN); control module authorizations; enforce organizational boundaries.
 - **ECOMMERCE_ADMIN:**
-  - 🚫 **Restricted (403 Forbidden).** Cannot modify roles or permissions.
+  - Restricted (403): Operates strictly within assigned ECOMMERCE_ADMIN role permissions. Cannot modify permissions or roles.
 - **ACCOUNTS_ADMIN:**
-  - 🚫 **Restricted (403 Forbidden).** Cannot modify roles or permissions.
+  - Restricted (403): Operates strictly within assigned ACCOUNTS_ADMIN role permissions. Cannot modify permissions or roles.
+
+#### Standard Operating Procedure (SOP):
+1. Navigate to `/profile` from the admin sidebar.
+2. If your role does not have authorization for this module, the system will enforce Role-Based Access Control and redirect to the Access Denied screen.
+3. Perform authorized role actions as outlined in the matrix above.
+4. Verify modifications in real-time or via the respective confirmation toast message.
 
 ---
 
 ### 18. Settings
-- **Route:** `/settings`, `/tracking`
+- **Route / Navigation:** `/settings`
 - **Purpose:** Contains the configuration options used to manage the portal and website.
 
-#### Role Actions:
+#### Role Actions & Capabilities:
 - **SUPER_ADMIN:**
-  - Edit store contact information: official support phone, WhatsApp link, and support email (`info@paidhu.com`).
-  - Edit the top scrolling announcement marquee ticker.
-  - **Toggle Maintenance Mode:** Enable Under Maintenance page with direct WhatsApp order bridge; test full store anytime with `?preview=true`.
-  - **Tracking Codes Management (`/tracking`):** Inject GA4, GTM, Meta Pixel, and Google Ads scripts into `HEAD`, `BODY_START`, or `BODY_END`.
+  - Master store configuration (/settings, /tracking): Support contact info (info@paidhu.com, phone, WhatsApp); announcement bar marquee; Maintenance Mode toggle switch; tracking scripts (GA4, GTM, Meta Pixel).
 - **ECOMMERCE_ADMIN:**
-  - 🚫 **Restricted (403 Forbidden).** Settings and Tracking Codes modules are hidden and blocked.
+  - Restricted (403): Cannot alter store contact settings, toggle Maintenance Mode, or inject third-party tracking scripts.
 - **ACCOUNTS_ADMIN:**
-  - 🚫 **Restricted (403 Forbidden).** Settings and Tracking Codes modules are hidden and blocked.
+  - Restricted (403): Cannot alter store settings or system configurations.
+
+#### Standard Operating Procedure (SOP):
+1. Navigate to `/settings` from the admin sidebar.
+2. If your role does not have authorization for this module, the system will enforce Role-Based Access Control and redirect to the Access Denied screen.
+3. Perform authorized role actions as outlined in the matrix above.
+4. Verify modifications in real-time or via the respective confirmation toast message.
 
 ---
 
 ### 19. Activity / Audit Logs
-- **Route:** `/login-history`
+- **Route / Navigation:** `/login-history`
 - **Purpose:** Used to track administrative activities performed within the portal.
 
-#### Role Actions:
+#### Role Actions & Capabilities:
 - **SUPER_ADMIN:**
-  - View master security audit log: staff email, client IP address, device User-Agent, timestamp, and login status (`SUCCESS` or `FAILED`).
-  - Review order timeline status changes to ensure accountability.
+  - Master security audit trail (/login-history): Comprehensive login audit logs with staff email, client IP address, browser User-Agent, exact timestamp, and authentication status (SUCCESS or FAILED); order audit history.
 - **ECOMMERCE_ADMIN:**
-  - 🚫 **Restricted (403 Forbidden).** Security login history is hidden.
+  - Operational audit: Can view chronological status transition history on individual order cards (Paid -> Processing -> Shipped). (Blocked from login history and IP security logs 403).
 - **ACCOUNTS_ADMIN:**
-  - 🚫 **Restricted (403 Forbidden).** Security login history is hidden.
+  - Financial audit: Can view payment timestamp logs and refund transaction records. (Blocked from login history and IP security logs 403).
+
+#### Standard Operating Procedure (SOP):
+1. Navigate to `/login-history` from the admin sidebar.
+2. If your role does not have authorization for this module, the system will enforce Role-Based Access Control and redirect to the Access Denied screen.
+3. Perform authorized role actions as outlined in the matrix above.
+4. Verify modifications in real-time or via the respective confirmation toast message.
 
 ---
 
 ### 20. Admin Daily Operations
-- **Purpose:** Defines the regular standard operating procedure (SOP) that each admin performs daily.
+- **Route / Navigation:** `/`
+- **Purpose:** Defines the regular activities that the admin should perform to maintain smooth e-commerce operations.
 
-#### SUPER_ADMIN Daily Routine:
-1. Review overall business health and gross revenue on the Dashboard.
-2. Review audit logs (`/login-history`) for unauthorized login attempts.
-3. Review promotional performance and approve new marketing banners or flash deals.
-4. Verify system health, tracking scripts, and store settings.
+#### Role Actions & Capabilities:
+- **SUPER_ADMIN:**
+  - Master Operational Oversight: Morning executive dashboard review (sales, orders, stock); Midday campaign & lead review; Evening financial settlement, staff login security audit, and system health check.
+- **ECOMMERCE_ADMIN:**
+  - Fulfillment & Merchandising SOP: Morning (09:00 AM) review PAID orders, print pick-lists, notify kitchen of low stock (<=5), advance to Processing; Midday (01:00 PM) recover dropped carts on WhatsApp (/active-carts), reply to Saffron & bulk leads, moderate reviews; Evening (05:00 PM) enter courier AWBs, mark Shipped, check bakery stock.
+- **ACCOUNTS_ADMIN:**
+  - Financial & Invoicing SOP: Morning (09:30 AM) verify incoming Razorpay payments against bank settlement reports; Midday (02:00 PM) generate & print Paidhu GST Tax Invoices, process approved customer refunds; Evening (05:30 PM) audit stock deductions at /products, generate daily revenue closing summary.
 
-#### ECOMMERCE_ADMIN Daily Routine:
-1. **Morning (09:00 AM):** Open `/orders` $ightarrow$ Filter by `PAID` $ightarrow$ Verify line items $ightarrow$ Print pick-lists $ightarrow$ Advance status to `Processing`.
-2. **Morning (10:00 AM):** Open `/saffron-guidance-leads` $ightarrow$ Review gestational month and doctor clearance $ightarrow$ Call/WhatsApp mother to provide authentic dosage guidance $ightarrow$ Update status to `Contacted`.
-3. **Midday (01:30 PM):** Open `/active-carts` $ightarrow$ Review high-intent dropped carts $ightarrow$ Click **"Chat on WhatsApp"** to send personalized recovery offers.
-4. **Midday (02:30 PM):** Open `/reviews` $ightarrow$ Approve verified positive customer reviews.
-5. **Evening (05:00 PM):** Open `/orders` $ightarrow$ Enter courier partner name and AWB tracking numbers $ightarrow$ Advance status to `Shipped`.
-6. **Evening (06:00 PM):** Open `/products` $ightarrow$ Check inventory levels; alert kitchen team for any item with stock $le 5$ units.
-
-#### ACCOUNTS_ADMIN Daily Routine:
-1. **Morning (09:00 AM):** Open `/payments` $ightarrow$ Reconcile online Razorpay captures and confirmed COD orders against the bank account.
-2. **Morning (10:30 AM):** Open `/orders` $ightarrow$ Click **"Print Tax Invoice"** for all packed orders to include official GST invoices in delivery parcels.
-3. **Midday (02:00 PM):** Open `/payments` $ightarrow$ Review refund requests $ightarrow$ Process approved refunds with mandatory reason notes.
-4. **Evening (05:30 PM):** Open `/products` (Stock Management view) $ightarrow$ Audit daily stock deductions against dispatched orders to reconcile physical inventory.
-5. **Evening (06:30 PM):** Generate daily sales and transaction summary report for management.
+#### Standard Operating Procedure (SOP):
+1. Navigate to `/` from the admin sidebar.
+2. If your role does not have authorization for this module, the system will enforce Role-Based Access Control and redirect to the Access Denied screen.
+3. Perform authorized role actions as outlined in the matrix above.
+4. Verify modifications in real-time or via the respective confirmation toast message.
 
 ---
-*Authorized Standard Operating Procedure (SOP) for Paidhu Ethical Foods Operations Team.*
+
+## 3. SUPER_ADMIN: MASTER OPERATIONAL MANUAL
+*Target Audience: Business Owners, Managing Directors, CTO*
+
+The `SUPER_ADMIN` role possesses 100% unrestricted administrative authority across the entire Paidhu e-commerce platform and database. This role is responsible for executive oversight, organizational governance, financial approvals, staff provisioning, and disaster recovery.
+
+### Core Responsibilities & Authority:
+1. **Full Catalog & Pricing Authority:** Create, update, or delete products, floral ingredients, size variants (50g–1kg), and discount structures.
+2. **Storefront Merchandising:** Full control over homepage banners (1920x427), BYOC bundles, deals, and category tiles.
+3. **Financial Gateway Management:** Direct access to Razorpay gateway logs, payment captures, settlement verification, and one-click customer refunds.
+4. **Order Lifecycle Oversight:** Authority to override order statuses, reassign couriers, cancel orders, and reprint GST invoices.
+5. **Staff Administration & RBAC:** Provision new `ECOMMERCE_ADMIN` or `ACCOUNTS_ADMIN` accounts, reset passwords, force first-time password rotation, or revoke access instantly.
+6. **Store Configuration & Security:** Manage store contact info (`info@paidhu.com`), WhatsApp bridge (`+91 87547 87774`), inject tracking scripts (GA4, GTM, Meta Pixel), inspect staff IP audit trails, and toggle **Maintenance Mode** on/off.
+
+---
+
+## 4. ECOMMERCE_ADMIN: STORE OPERATIONS & MERCHANDISING MANUAL
+*Target Audience: Store Managers, Merchandisers, Fulfillment Crew, Customer Support*
+
+The `ECOMMERCE_ADMIN` role is focused strictly on day-to-day storefront operations, inventory replenishment, order fulfillment, content updates, and customer support. Financial gateway ledgers and system administration are restricted to ensure separation of duties.
+
+### What E-Commerce Admin CAN Do:
+- **Products & Variants:** Add new products, update descriptions, upload photos to Supabase Storage CDN, configure pack sizes, and assign promotional badges.
+- **Order Fulfillment:** Review new orders, print packing slips, update status to `Processing` and `Shipped`, and input courier partner names and AWB tracking numbers.
+- **Customer Support:** View customer contact numbers and use the one-click **Direct WhatsApp / Call** button to resolve address queries and delivery questions.
+- **Inventory Alerts:** Monitor stock levels and alert bakery kitchen staff when stock drops below 5 units.
+- **Cart Recovery:** Access dropped carts at `/active-carts` and click **Chat on WhatsApp** to send gentle reminders and recovery coupons.
+- **Content & Marketing:** Upload promotional banners, configure BYOC snack bundles, upload reels to Floral Habitat, publish healthy recipe blogs, and moderate customer reviews.
+- **Leads Pipeline:** Review and respond to Saffron Pregnancy Guidance inquiries, B2B corporate bulk orders, and job applications.
+
+### What E-Commerce Admin CANNOT Do (Restricted):
+- 🚫 **Payments:** Cannot view Razorpay gateway logs or transaction fees. On order details, payment logs are stripped (`order.payments = []`).
+- 🚫 **Payment Status:** Cannot mark an unpaid order as Paid.
+- 🚫 **Refunds:** Cannot issue payment gateway refunds.
+- 🚫 **Delivery Fee Engine:** Cannot alter standard/express shipping fees or free delivery thresholds.
+- 🚫 **Admin Users & RBAC:** Cannot view other staff credentials, create accounts, or change user roles.
+- 🚫 **System Settings:** Cannot alter store tracking codes, SEO scripts, or toggle Maintenance Mode.
+- 🚫 **Audit Logs:** Cannot view staff login histories or IP security logs.
+
+---
+
+## 5. ACCOUNTS_ADMIN: FINANCIAL CONTROLLER & INVENTORY AUDIT MANUAL
+*Target Audience: Accountants, Financial Controllers, Inventory Auditors*
+
+The `ACCOUNTS_ADMIN` role provides complete control over the financial lifecycle, payment reconciliation, GST invoicing, refund processing, and warehouse stock auditing, while locking out storefront design, customer private profiles, and shipping modifications.
+
+### What Accounts Admin CAN Do:
+- **Executive Financial Dashboard:** View gross sales (₹), gateway settlement totals, daily cashflow curves, and transaction success rates.
+- **Payment Gateway Ledger (`/payments`):** Inspect every captured Razorpay transaction, transaction IDs (`pay_xxx`), payment methods (UPI, Cards, NetBanking, COD), and gateway fees.
+- **Refund Processing:** Issue full or partial refunds directly to customer bank/UPI accounts with mandatory justification notes and audit logging.
+- **Order Financials:** Verify line-item totals, delivery charges, discounts applied, and tax calculations on every order.
+- **Official GST Tax Invoices:** Generate and print official printer-ready Paidhu GST Tax Invoices with GSTIN, HSN codes, and CGST/SGST/IGST breakdown.
+- **Stock Management (`/products`):** Dedicated stock audit screen to monitor unit quantities, reconcile physical stock with digital deductions, and verify inventory asset value.
+- **Financial & Tax Reporting:** Generate daily/monthly revenue reconciliation, gateway payout reconciliation, and sales tax reports.
+
+### What Accounts Admin CANNOT Do (Restricted):
+- 🚫 **Catalog Content:** Cannot add new products, edit botanical descriptions, upload images, or delete products.
+- 🚫 **Shipping Lifecycle:** Cannot advance shipping status to `Shipped` or `Delivered`, and cannot edit courier tracking AWBs (blocked with 403).
+- 🚫 **Customer Directory:** Cannot view customer address books or personal customer profiles (blocked with 403) for data privacy compliance.
+- 🚫 **Website CMS:** Cannot upload banners, edit blogs, modify BYOC bundles, or manage homepage sections.
+- 🚫 **Marketing & Leads:** Cannot access Saffron guidance leads, abandoned carts, or bulk order inquiries.
+- 🚫 **Coupons & Discounts:** Cannot create or alter coupon codes.
+- 🚫 **System Settings:** Cannot alter store configurations, tracking scripts, or toggle Maintenance Mode.
+- 🚫 **Audit Logs:** Cannot view staff login histories or IP security logs.
+
+---
+
+## 6. TECHNICAL RBAC ENFORCEMENT ARCHITECTURE
+
+### 6.1 Frontend Route Protection (`admin/src/App.jsx`)
+Every administrative route is wrapped inside `<PermissionGuard module="...">`. If an authenticated admin attempts to access an unauthorized route, the guard intercepts the request and displays an **Access Denied** notice with a quick link back to the Dashboard.
+
+### 6.2 Dynamic Sidebar Navigation (`admin/src/components/Sidebar.jsx`)
+The sidebar dynamically filters navigation links based on `authService.getCurrentUser().role`. `SUPER_ADMIN` sees all 30 menu links, `ECOMMERCE_ADMIN` sees store and catalog links, and `ACCOUNTS_ADMIN` sees financial, invoicing, and stock management links.
+
+### 6.3 Backend Middleware Authorization (`server/middleware/authMiddleware.js`)
+All Express API routes enforce `checkPermission(moduleName)`. Every incoming request verifies the admin's JWT session and matches their database role against the whitelist. Any unauthorized API call returns HTTP 403 Forbidden.
+
+### 6.4 Field-Level Data Redaction (`server/controllers/orderController.js`)
+For `ECOMMERCE_ADMIN`, the backend controller automatically strips financial payment transaction rows (`order.payments = []`). For `ACCOUNTS_ADMIN`, attempts to modify shipping status or courier tracking numbers are rejected with HTTP 403 Forbidden.
+
+---
+*Maintained by Paidhu Ethical Foods Engineering & Operations Team.*

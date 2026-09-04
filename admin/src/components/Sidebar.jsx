@@ -38,6 +38,7 @@ const menuItems = [
   { name: 'About Us', path: '/about-us-management', icon: <FiUsers /> },
   { name: 'Saffron Guidance Leads', path: '/saffron-guidance-leads', icon: <FiFileText /> },
   { name: 'Career Applications', path: '/career-applications', icon: <FiUsers /> },
+  { name: 'User Manual & SOP', path: '/user-manual', icon: <FiBookOpen /> },
   { name: 'Profile', path: '/profile', icon: <FiUser /> },
 ];
 
@@ -58,7 +59,7 @@ const Sidebar = () => {
     }
     if (role === 'ECOMMERCE_ADMIN') {
       return menuItems.filter(item => 
-        ['Dashboard', 'Products', 'Orders', 'Active Carts', 'WhatsApp Leads', 'Blogs', 'Banners', 'BYOC Management', 'Bulk Inquiries', 'Saffron Guidance Leads', 'Profile'].includes(item.name)
+        ['Dashboard', 'Products', 'Orders', 'Active Carts', 'WhatsApp Leads', 'Blogs', 'Banners', 'BYOC Management', 'Bulk Inquiries', 'Saffron Guidance Leads', 'User Manual & SOP', 'Profile'].includes(item.name)
       );
     }
     if (role === 'ACCOUNTS_ADMIN') {
@@ -68,7 +69,7 @@ const Sidebar = () => {
         }
         return item;
       }).filter(item => 
-        ['Dashboard', 'Orders', 'Payments', 'Stock Management', 'Profile'].includes(item.name)
+        ['Dashboard', 'Orders', 'Payments', 'Stock Management', 'User Manual & SOP', 'Profile'].includes(item.name)
       );
     }
     return [];

@@ -27,15 +27,12 @@ const MaintenancePage = () => {
       {/* Top Header Bar */}
       <header className="w-full bg-[#662654] py-3.5 px-4 md:px-8 shadow-md relative z-10">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <div className="flex flex-col items-start">
+          <div className="flex items-center">
             <img 
               src={paidhuLogo} 
-              alt="Paidhu" 
-              className="h-8 md:h-10 w-auto object-contain"
+              alt="Paidhu - The Edible Flower Co." 
+              className="h-10 md:h-12 w-auto object-contain"
             />
-            <span className="text-[10px] sm:text-[11px] text-[#ede7d7]/90 font-medium tracking-wide -mt-0.5">
-              the edibleflower.co
-            </span>
           </div>
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white text-[11px] md:text-xs font-bold uppercase tracking-wider backdrop-blur-sm border border-white/15">
             <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
@@ -47,6 +44,19 @@ const MaintenancePage = () => {
       {/* Main Content Area */}
       <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-10 md:py-16 flex flex-col items-center justify-center text-center relative z-10">
         
+        {/* Official Brand Logo Tile */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="mb-6 flex justify-center"
+        >
+          <img 
+            src="/paidhu-brand-tile.jpg" 
+            alt="Paidhu - The Edible Flower Co." 
+            className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl shadow-xl border-2 border-white/60 object-cover"
+          />
+        </motion.div>
 
         {/* Website Maintenance Message */}
         <motion.div

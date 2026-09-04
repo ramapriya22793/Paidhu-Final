@@ -110,6 +110,7 @@ const TiffinLeads = safeLazy(() => import('./pages/TiffinLeads'));
 const SaffronGuidanceLeads = safeLazy(() => import('./pages/SaffronGuidanceLeads'));
 const CareerApplications = safeLazy(() => import('./pages/CareerApplications'));
 const LoginHistory = safeLazy(() => import('./pages/LoginHistory'));
+const UserManual = safeLazy(() => import('./pages/UserManual'));
 
 
 
@@ -223,8 +224,9 @@ const App = () => {
                 {/* Active Carts Module */}
                 <Route path="active-carts" element={<PermissionGuard module="active_carts"><ActiveCarts /></PermissionGuard>} />
                 
-                {/* Profile (General access for all roles) */}
+                {/* Profile & User Manual (General access for all roles) */}
                 <Route path="profile" element={<Profile />} />
+                <Route path="user-manual" element={<UserManual />} />
 
                 {/* Restricted Super Admin Only Modules */}
                 <Route path="coupons" element={<PermissionGuard module="super_only"><Coupons /></PermissionGuard>} />
