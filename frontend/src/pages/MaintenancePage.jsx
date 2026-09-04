@@ -27,12 +27,15 @@ const MaintenancePage = () => {
       {/* Top Header Bar */}
       <header className="w-full bg-[#662654] py-3.5 px-4 md:px-8 shadow-md relative z-10">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col items-start">
             <img 
               src={paidhuLogo} 
               alt="Paidhu" 
               className="h-8 md:h-10 w-auto object-contain"
             />
+            <span className="text-[10px] sm:text-[11px] text-[#ede7d7]/90 font-medium tracking-wide -mt-0.5">
+              the edibleflower.co
+            </span>
           </div>
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white text-[11px] md:text-xs font-bold uppercase tracking-wider backdrop-blur-sm border border-white/15">
             <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
@@ -123,7 +126,7 @@ const MaintenancePage = () => {
       {/* Bottom Footer Bar */}
       <footer className="w-full bg-[#ede7d7] border-t border-[#662654]/10 py-4 px-4 text-center text-xs text-gray-600 font-semibold relative z-10">
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p>© {new Date().getFullYear()} Paidhu Ethical Foods. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Paidhu Ethical Foods (the edibleflower.co). All rights reserved.</p>
           <a
             href={whatsappUrl}
             target="_blank"
