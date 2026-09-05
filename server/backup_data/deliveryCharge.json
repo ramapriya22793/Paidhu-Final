@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "type": "Standard",
+    "charge": 150,
+    "freeAbove": null,
+    "estimatedDays": "5-7 days",
+    "regions": "",
+    "isActive": true,
+    "createdAt": "2026-06-16T16:46:37.507Z",
+    "updatedAt": "2026-06-16T16:46:37.507Z"
+  },
+  {
+    "id": 2,
+    "type": "Standard",
+    "charge": 100,
+    "freeAbove": null,
+    "estimatedDays": "3-4 days",
+    "regions": "60*, 61*, 62*, 63*, 64*, Tamil Nadu",
+    "isActive": true,
+    "createdAt": "2026-06-16T16:46:37.891Z",
+    "updatedAt": "2026-06-16T17:54:55.297Z"
+  },
+  {
+    "id": 3,
+    "type": "Standard",
+    "charge": 75,
+    "freeAbove": null,
+    "estimatedDays": "1-2 days",
+    "regions": "641*, Coimbatore",
+    "isActive": true,
+    "createdAt": "2026-06-16T16:46:38.240Z",
+    "updatedAt": "2026-06-16T17:54:55.886Z"
+  },
+  {
+    "id": 6,
+    "type": "Standard",
+    "charge": 50,
+    "freeAbove": null,
+    "estimatedDays": "1-2 Business Days",
+    "regions": "642*, pollachi",
+    "isActive": true,
+    "createdAt": "2026-06-16T16:54:07.481Z",
+    "updatedAt": "2026-06-16T17:54:56.672Z"
+  },
+  {
+    "id": 4,
+    "type": "Standard",
+    "charge": 180,
+    "freeAbove": null,
+    "estimatedDays": "2-3 days",
+    "regions": "40*, 41*, 42*, 43*, 44*, Mumbai, Maharashtra",
+    "isActive": true,
+    "createdAt": "2026-06-16T16:46:38.699Z",
+    "updatedAt": "2026-06-16T18:06:23.060Z"
+  },
+  {
+    "id": 5,
+    "type": "Standard",
+    "charge": 50,
+    "freeAbove": null,
+    "estimatedDays": "1-2 days",
+    "regions": "400001",
+    "isActive": false,
+    "createdAt": "2026-06-16T16:46:39.170Z",
+    "updatedAt": "2026-06-16T18:06:23.367Z"
+  }
+]

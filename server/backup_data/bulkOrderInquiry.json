@@ -1,0 +1,46 @@
+[
+  {
+    "id": "a2c05c2b-9f23-4c31-9eb8-71b05590672b",
+    "fullName": "S Chennammal",
+    "email": "chennammal2003@gmail.com",
+    "mobile": "+919787582969",
+    "region": "Tamil Nadu",
+    "country": "India",
+    "purpose": "Reseller / Distribution",
+    "status": "Pending",
+    "createdAt": "2026-06-17T06:52:01.467Z"
+  },
+  {
+    "id": "887d1bea-a1e4-4fb3-8772-051242cefafd",
+    "fullName": "prabu",
+    "email": "annadhanaprabug@gmail.com",
+    "mobile": "9791891168",
+    "region": "tamilnadu",
+    "country": "India",
+    "purpose": "Other",
+    "status": "Pending",
+    "createdAt": "2026-07-17T09:29:25.026Z"
+  },
+  {
+    "id": "d49ba627-5480-42d3-a393-f3409f0070d4",
+    "fullName": "RAMAPRIYA KARTHIKEYAN",
+    "email": "ramapriya793@gmail.com",
+    "mobile": "+919865675611",
+    "region": "Tamil Nadu",
+    "country": "India",
+    "purpose": "Events / Weddings",
+    "status": "Pending",
+    "createdAt": "2026-07-17T09:37:24.743Z"
+  },
+  {
+    "id": "74deb210-e28b-4710-a117-413e7e3161cb",
+    "fullName": "RAMAPRIYA KARTHIKEYAN",
+    "email": "ramapriya793@gmail.com",
+    "mobile": "+919865675611",
+    "region": "Tamil Nadu",
+    "country": "India",
+    "purpose": "Reseller / Distribution",
+    "status": "Pending",
+    "createdAt": "2026-07-17T09:53:03.116Z"
+  }
+]

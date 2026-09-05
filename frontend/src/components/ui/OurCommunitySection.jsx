@@ -33,7 +33,7 @@ const FlowerIcon = () => (
   </svg>
 );
 
-const SUPABASE_STORAGE_URL = 'https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/products/community';
+const SUPABASE_STORAGE_URL = 'https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/community';
 
 const sliderImages = [
   `${SUPABASE_STORAGE_URL}/wp_community_4.jpg`,

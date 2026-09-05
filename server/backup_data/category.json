@@ -1,0 +1,57 @@
+[
+  {
+    "id": 1,
+    "name": "Uncategorized",
+    "createdAt": "2026-06-07T17:15:02.554Z"
+  },
+  {
+    "id": 2,
+    "name": "Bloom Cookies",
+    "createdAt": "2026-06-07T17:17:42.650Z"
+  },
+  {
+    "id": 3,
+    "name": "Petal Jam",
+    "createdAt": "2026-06-07T18:11:29.267Z"
+  },
+  {
+    "id": 4,
+    "name": "Brew Flora",
+    "createdAt": "2026-06-08T16:48:56.951Z"
+  },
+  {
+    "id": 5,
+    "name": "Medley Teas",
+    "createdAt": "2026-06-08T17:01:04.403Z"
+  },
+  {
+    "id": 6,
+    "name": "Saffron",
+    "createdAt": "2026-06-08T17:16:21.076Z"
+  },
+  {
+    "id": 7,
+    "name": "Bloom Powder",
+    "createdAt": "2026-07-30T04:48:39.251Z"
+  },
+  {
+    "id": 9,
+    "name": "Dry Flower",
+    "createdAt": "2026-07-30T04:48:40.324Z"
+  },
+  {
+    "id": 10,
+    "name": "Events",
+    "createdAt": "2026-07-30T04:48:40.694Z"
+  },
+  {
+    "id": 12,
+    "name": "Powder",
+    "createdAt": "2026-07-30T04:48:42.128Z"
+  },
+  {
+    "id": 13,
+    "name": "Pregnancy",
+    "createdAt": "2026-07-30T04:48:42.502Z"
+  }
+]

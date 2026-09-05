@@ -4,7 +4,7 @@ import { X } from 'lucide-react';
 import videoThumbnail from '../../assets/video_thumbnail.jpg';
 
 const API_BASE = 'https://paidhu-final-anm2.vercel.app';
-const FALLBACK_VIDEO_URL = "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/products/videos/WhatsApp%20Video%202026-08-06%20at%2011.23.18%20AM.mp4";
+const FALLBACK_VIDEO_URL = "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/videos/WhatsApp%20Video%202026-08-06%20at%2011.23.18%20AM.mp4";
 
 const StorytellingVideo = () => {
   const [videoData, setVideoData] = useState({

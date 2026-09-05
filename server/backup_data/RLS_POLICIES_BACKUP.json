@@ -1,0 +1,228 @@
+{
+  "tables": [
+    {
+      "tablename": "Address",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "Banner",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "Blog",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "BulkOrderInquiry",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "CareerApplication",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "CartItem",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "Category",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "Coupon",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "DeliveryCharge",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "LoginHistory",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "NewsletterSubscriber",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "Order",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "OrderItem",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "PasswordResetToken",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "Payment",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "Product",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "ProductImage",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "ProductSeo",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "Refund",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "Review",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "SaffronGuidance",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "SeoData",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "SiteSettings",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "TiffinRegistration",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "TrackingScript",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "User",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "WishlistItem",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "_prisma_migrations",
+      "rowsecurity": true
+    }
+  ],
+  "policies": [
+    {
+      "schemaname": "public",
+      "tablename": "Banner",
+      "policyname": "Allow public select access to Banner",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "qual": "true",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "Category",
+      "policyname": "Allow public read access",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "qual": "true",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "Product",
+      "policyname": "Allow public read access",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "qual": "true",
+      "with_check": null
+    },
+    {
+      "schemaname": "storage",
+      "tablename": "objects",
+      "policyname": "Allow Public Access 1jhziis_0",
+      "permissive": "PERMISSIVE",
+      "roles": "{anon}",
+      "cmd": "SELECT",
+      "qual": "(bucket_id = 'Products'::text)",
+      "with_check": null
+    },
+    {
+      "schemaname": "storage",
+      "tablename": "objects",
+      "policyname": "Allow Public Access 1jhziis_1",
+      "permissive": "PERMISSIVE",
+      "roles": "{anon}",
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "(bucket_id = 'Products'::text)"
+    },
+    {
+      "schemaname": "storage",
+      "tablename": "objects",
+      "policyname": "Allow Public Access 1jhziis_2",
+      "permissive": "PERMISSIVE",
+      "roles": "{anon}",
+      "cmd": "UPDATE",
+      "qual": "(bucket_id = 'Products'::text)",
+      "with_check": null
+    },
+    {
+      "schemaname": "storage",
+      "tablename": "objects",
+      "policyname": "Allow Public Access 1jhziis_3",
+      "permissive": "PERMISSIVE",
+      "roles": "{anon}",
+      "cmd": "DELETE",
+      "qual": "(bucket_id = 'Products'::text)",
+      "with_check": null
+    },
+    {
+      "schemaname": "storage",
+      "tablename": "objects",
+      "policyname": "Public Delete",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "DELETE",
+      "qual": "(bucket_id = 'landing-videos'::text)",
+      "with_check": null
+    },
+    {
+      "schemaname": "storage",
+      "tablename": "objects",
+      "policyname": "Public Insert",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "(bucket_id = 'landing-videos'::text)"
+    },
+    {
+      "schemaname": "storage",
+      "tablename": "objects",
+      "policyname": "Public Select",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "SELECT",
+      "qual": "(bucket_id = 'landing-videos'::text)",
+      "with_check": null
+    },
+    {
+      "schemaname": "storage",
+      "tablename": "objects",
+      "policyname": "Public Update",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "UPDATE",
+      "qual": "(bucket_id = 'landing-videos'::text)",
+      "with_check": "(bucket_id = 'landing-videos'::text)"
+    }
+  ]
+}

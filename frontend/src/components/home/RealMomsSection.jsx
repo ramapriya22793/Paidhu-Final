@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const SUPABASE_STORAGE_URL = 'https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/products/community';
+const SUPABASE_STORAGE_URL = 'https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/community';
 
 const communitySlides = [
   `${SUPABASE_STORAGE_URL}/wp_community_4.jpg`,

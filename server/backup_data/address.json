@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "userId": 7254,
+    "fullName": "RAMAPRIYA KARTHIKEYAN",
+    "phone": "9865675611",
+    "addressLine1": "11",
+    "addressLine2": null,
+    "landmark": null,
+    "city": "Coimbatore",
+    "state": "Tamil Nadu",
+    "country": "India",
+    "pincode": "642004",
+    "addressType": "Home",
+    "isDefault": false,
+    "createdAt": "2026-07-15T17:00:42.456Z"
+  },
+  {
+    "id": 2,
+    "userId": 7433,
+    "fullName": "prabu",
+    "phone": "9791891168",
+    "addressLine1": "212,sANJa",
+    "addressLine2": null,
+    "landmark": null,
+    "city": "chennai",
+    "state": "tamilnadu",
+    "country": "India",
+    "pincode": "639002",
+    "addressType": "Home",
+    "isDefault": false,
+    "createdAt": "2026-07-17T09:51:12.519Z"
+  },
+  {
+    "id": 3,
+    "userId": 7879,
+    "fullName": "RAM KUMAR S",
+    "phone": "7353218971",
+    "addressLine1": "-",
+    "addressLine2": null,
+    "landmark": null,
+    "city": "-",
+    "state": "-",
+    "country": "India",
+    "pincode": "-",
+    "addressType": "Home",
+    "isDefault": false,
+    "createdAt": "2026-07-23T11:12:29.056Z"
+  }
+]

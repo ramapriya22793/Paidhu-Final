@@ -20,32 +20,32 @@ const CATEGORY_CONFIG = [
     subtitle: "Pure Floral Preserves",
     accent: "#c45c7c",
     badge: "New Arrival",
-    img: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/products/products/1787137460717-ChatGPTImageApr242026105405AM180x180png.png",
-    fallback: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/products/products/1787137460717-ChatGPTImageApr242026105405AM180x180png.png"
+    img: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787137460717-ChatGPTImageApr242026105405AM180x180png.png",
+    fallback: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787137460717-ChatGPTImageApr242026105405AM180x180png.png"
   },
   {
     title: "Saffron",
     subtitle: "Premium Red Gold",
     accent: "#d4821a",
     badge: "Pure & Premium",
-    img: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/products/products/1787140033601-WhatsAppImage20260819at51345PMjpeg.jpeg",
-    fallback: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/products/products/1787140033601-WhatsAppImage20260819at51345PMjpeg.jpeg"
+    img: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787140033601-WhatsAppImage20260819at51345PMjpeg.jpeg",
+    fallback: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787140033601-WhatsAppImage20260819at51345PMjpeg.jpeg"
   },
   {
     title: "Medley Teas",
     subtitle: "Botanical Blends",
     accent: "#4a7c59",
     badge: "Hand Blended",
-    img: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/products/products/1787138640008-WhatsAppImage20251113at23302330981866180x180jpg.jpg",
-    fallback: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/products/products/1787138640008-WhatsAppImage20251113at23302330981866180x180jpg.jpg"
+    img: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787138640008-WhatsAppImage20251113at23302330981866180x180jpg.jpg",
+    fallback: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787138640008-WhatsAppImage20251113at23302330981866180x180jpg.jpg"
   },
   {
     title: "Brew Flora",
     subtitle: "Floral Infused Drinks",
     accent: "#7b5ea7",
     badge: "Signature Brew",
-    img: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/products/products/1787138534729-WhatsAppImage20251113at233026a02aaf431180x1802jpg.jpg",
-    fallback: "https://fvtgukindzmoiwqqkwcl.supabase.co/storage/v1/object/public/products/products/1787138534729-WhatsAppImage20251113at233026a02aaf431180x1802jpg.jpg"
+    img: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787138534729-WhatsAppImage20251113at233026a02aaf431180x1802jpg.jpg",
+    fallback: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787138534729-WhatsAppImage20251113at233026a02aaf431180x1802jpg.jpg"
   }
 ];
 
