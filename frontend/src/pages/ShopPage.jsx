@@ -975,16 +975,7 @@ const ShopPage = () => {
   }
 
   if (navSection === 'blogs') {
-    return (
-      <motion.div 
-        initial={{ opacity: 0, y: 12 }} 
-        animate={{ opacity: 1, y: 0 }} 
-        transition={{ duration: 0.55, ease: 'easeOut' }}
-        className="min-h-screen bg-[#faf9f7]"
-      >
-        <BlogsSection />
-      </motion.div>
-    );
+    return <Navigate to="/shop/shop-all" replace />;
   }
 
   if (navSection === 'starting-floral-food-habitat') {

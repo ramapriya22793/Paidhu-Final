@@ -93,7 +93,7 @@ const navSlugMap = {
   'Starting Floral food habitat':'starting-floral-food-habitat',
   'BYOC':                        'byoc',
   'Our Own Community':           'our-own-community',
-  'Blogs':                       '__direct__/blogs',
+  'Blogs':                       'shop-all', // Navigates to Shop All per request while blog is being updated
   'About Us':                    'about-us',
   'Careers':                     '__direct__/careers',
   'Saffron Guidance':            '__direct__/saffron-guidance',
