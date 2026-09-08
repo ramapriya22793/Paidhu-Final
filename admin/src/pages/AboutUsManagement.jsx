@@ -48,9 +48,9 @@ const defaultData = {
       },
       {
         id: 2,
-        name: 'Vikram',
+        name: 'Vikram AVB',
         bio: 'Vikram is the co-founder of Paidhu, leading product innovation and sustainable sourcing. Driven by a mission to build clean food products, Vikram works closely with local, small-holder farmers to source authentic edible flowers and premium ingredients ethically. He is dedicated to establishing a transparent, fair-trade supply chain that benefits both children\'s health and the local agricultural ecosystem.',
-        image: '/vikram.jpg'
+        image: '/vikram.jpg?v=3'
       }
     ]
   },

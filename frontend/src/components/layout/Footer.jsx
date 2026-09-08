@@ -35,7 +35,7 @@ const Footer = () => {
     setLoading(true);
     setMessage('');
     try {
-      const res = await fetch('https://paidhu-final-anm2.vercel.app/api/newsletter', {
+      const res = await fetch(`${(import.meta.env && import.meta.env.VITE_API_BASE_URL) || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://paidhu-final-anm2.vercel.app')}/api/newsletter`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
@@ -69,8 +69,6 @@ const Footer = () => {
             <Link to="/shop/about-us" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">About Us</Link>
             <Link to="/careers" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Careers</Link>
             <Link to="/shop" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Shop All</Link>
-
-            <Link to="/shop/bulk-orders" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Bulk Orders</Link>
             <Link to="/saffron-guidance" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Saffron Guidance</Link>
           </div>
 

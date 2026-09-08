@@ -26,8 +26,8 @@ const features = [
   },
   {
     id: '03',
-    title: 'Moms Community',
-    description: 'Join the Paidhu moms community to share parenting experiences, healthy food ideas, and lifestyle tips.',
+    title: 'Paidhu Community',
+    description: 'Join the Paidhu community to share wholesome food experiences, delicious recipe ideas, and lifestyle tips.',
     images: [
       '/moms_sharing_cookies.png',
       '/mom_drinking_tea.png',

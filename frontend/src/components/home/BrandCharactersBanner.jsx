@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 const characters = [
   { src: '/illustrations PNG-01 (1).png', message: "100% Natural Ingredients" },
   { src: '/illustrations PNG-02 (1).png', message: "No Refined Sugar" },
-  { src: '/illustrations PNG-05 (1).png', message: "Mom Approved Recipes" },
+  { src: '/illustrations PNG-05 (1).png', message: "Family Approved Recipes" },
   { src: '/illustrations PNG-06 (1).png', message: "Zero Preservatives" },
   { src: '/illustrations PNG-07 (1).png', message: "Joyful & Healthy Snacking" },
 ];

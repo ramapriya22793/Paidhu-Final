@@ -51,7 +51,7 @@ const eventMoments = [
     image: `${SUPABASE_STORAGE_URL}/wp_community_4.jpg`,
     tag: "Celebration",
     title: "Family Tales Celebration",
-    subtitle: "Moms & kids gathering to celebrate pure food stories and natural wellness."
+    subtitle: "Families & kids gathering to celebrate pure food stories and natural wellness."
   },
   {
     image: `${SUPABASE_STORAGE_URL}/wp_community_5.jpg`,
@@ -171,10 +171,10 @@ const OurCommunitySection = () => {
 
           </div>
 
-          {/* Right Column: "Dear Mommies / Flower Recipes" Card and Events info */}
+          {/* Right Column: "Dear Food Lovers / Flower Recipes" Card and Events info */}
           <div className="lg:col-span-5 space-y-8">
             
-            {/* ── Dear Mommies Card ── */}
+            {/* ── Dear Food Lovers Card ── */}
             <div className="relative bg-gradient-to-br from-white via-[#fdfcfb] to-[#fcfaf7] rounded-[28px] border border-[#662654]/10 shadow-[0_15px_40px_rgba(102,38,84,0.03)] p-6 sm:p-8 overflow-hidden before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1.5 before:bg-gradient-to-b before:from-[#662654] before:to-[#d4af37]">
               <FlowerIcon />
               
@@ -190,7 +190,7 @@ const OurCommunitySection = () => {
                 </div>
 
                 <h2 className="text-xl sm:text-2xl font-black text-gray-900 font-serif leading-snug">
-                  Dear Mommies
+                  Dear Food Lovers & Families
                 </h2>
                 
                 <div className="space-y-4 text-gray-600 text-xs sm:text-sm leading-relaxed font-sans">
@@ -305,7 +305,7 @@ const OurCommunitySection = () => {
                 Want to join our upcoming meetups &amp; recipe sessions?
               </h3>
               <p className="text-white/80 text-xs sm:text-sm font-medium leading-relaxed">
-                Connect directly with our thriving mothers' network, receive event invites, and discover wholesome kids-friendly floral food ideas.
+                Connect directly with our thriving community network, receive event invites, and discover wholesome kids-friendly floral food ideas.
               </p>
               <div className="pt-2">
                 <a

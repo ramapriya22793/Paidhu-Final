@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import videoThumbnail from '../../assets/video_thumbnail.jpg';
 
-const API_BASE = 'https://paidhu-final-anm2.vercel.app';
+const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://paidhu-final-anm2.vercel.app');
 const FALLBACK_VIDEO_URL = "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/videos/WhatsApp%20Video%202026-08-06%20at%2011.23.18%20AM.mp4";
 
 const StorytellingVideo = () => {

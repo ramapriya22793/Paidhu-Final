@@ -167,7 +167,7 @@ const SECTIONS = [
       'Banners (/banners): Upload desktop banners (exact 1920 x 427 px) and mobile banners with page routing (home, shop-all).',
       'Floral Habitat Section (/floral-habitat-management): Manage video reels, storytelling copy, and starter pack products.',
       'BYOC Bundles (/byoc-management): Configure pricing tiers (3 for ₹799, 4 for ₹1049, 5 for ₹1399) and eligible products.',
-      'Mom\'s Community (/community-management): Upload event photos, memories, and manage WhatsApp community group link.',
+      'Community Management (/community-management): Upload event photos, memories, and manage WhatsApp community group link.',
       'Our Philosophy & About Us: Manage botanical nutrition ethos, certifications, and founder story.'
     ],
     route: '/banners'

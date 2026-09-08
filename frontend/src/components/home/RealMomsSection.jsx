@@ -44,10 +44,10 @@ const RealMomsSection = () => {
           className="w-full md:w-1/2 text-left mb-12 md:mb-0 pr-6 md:pr-12"
         >
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#522742] font-serif mb-4 tracking-tight">
-            Paidhu Moms Community
+            Paidhu Community
           </h2>
           <p className="text-lg md:text-xl font-bold text-[#522742]/85 mb-6 max-w-md leading-snug">
-            A supportive space for moms to share tips on clean eating, child nutrition, and natural family wellness.
+            A supportive space to share tips on clean eating, wholesome family nutrition, and pure culinary delights.
           </p>
 
           <div className="w-full h-px bg-[#522742]/20 mb-6"></div>
@@ -55,19 +55,19 @@ const RealMomsSection = () => {
           <ul className="space-y-3 mb-8">
             <li className="flex items-start">
               <span className="text-[#fbc225] mr-3 mt-1 text-xl leading-none">•</span>
-              <span className="text-[#4b3c43] font-medium text-base md:text-lg">Connect with health-conscious moms in your city</span>
+              <span className="text-[#4b3c43] font-medium text-base md:text-lg">Connect with health-conscious families in your city</span>
             </li>
             <li className="flex items-start">
               <span className="text-[#fbc225] mr-3 mt-1 text-xl leading-none">•</span>
-              <span className="text-[#4b3c43] font-medium text-base md:text-lg">Get expert advice on child nutrition, healthy growth, and natural remedies</span>
+              <span className="text-[#4b3c43] font-medium text-base md:text-lg">Get expert advice on wholesome nutrition, healthy growth, and natural wellness</span>
             </li>
             <li className="flex items-start">
               <span className="text-[#fbc225] mr-3 mt-1 text-xl leading-none">•</span>
-              <span className="text-[#4b3c43] font-medium text-base md:text-lg">Share unique, kids-friendly recipes using floral petal jams and natural ingredients</span>
+              <span className="text-[#4b3c43] font-medium text-base md:text-lg">Share unique, family-friendly recipes using floral petal jams and natural ingredients</span>
             </li>
             <li className="flex items-start">
               <span className="text-[#fbc225] mr-3 mt-1 text-xl leading-none">•</span>
-              <span className="text-[#4b3c43] font-medium text-base md:text-lg">Receive invitations to exclusive local meetups, wellness workshops, and product tastings</span>
+              <span className="text-[#4b3c43] font-medium text-base md:text-lg">Receive invitations to exclusive local meetups, workshops, and product tastings</span>
             </li>
           </ul>
 
@@ -89,7 +89,7 @@ const RealMomsSection = () => {
             rel="noopener noreferrer"
             className="bg-[#522742] text-white text-sm font-black py-2.5 px-6 rounded-full hover:bg-[#662654] transition-colors flex items-center shadow-md w-fit"
           >
-            Join Our Moms Community
+            Join Our Community
             <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
             </svg>
@@ -115,7 +115,7 @@ const RealMomsSection = () => {
               <motion.img
                 key={activeSlide}
                 src={communitySlides[activeSlide]}
-                alt={`Paidhu Moms Community ${activeSlide + 1}`}
+                alt={`Paidhu Community ${activeSlide + 1}`}
                 className="w-full h-full object-cover"
                 initial={{ opacity: 0, scale: 1.04 }}
                 animate={{ opacity: 1, scale: 1 }}

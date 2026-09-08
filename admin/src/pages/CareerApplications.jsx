@@ -17,7 +17,7 @@ const CareerApplications = () => {
   const fetchApplications = async () => {
     try {
       const config = { headers: { Authorization: `Bearer ${authService.getToken()}` } };
-      const API_BASE = 'https://paidhu-final-anm2.vercel.app';
+      const API_BASE = (import.meta.env && import.meta.env.VITE_API_URL) || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://paidhu-final-anm2.vercel.app');
       const res = await axios.get(`${API_BASE}/api/careers/applications`, config);
       setApplications(res.data);
     } catch (error) {
@@ -30,7 +30,7 @@ const CareerApplications = () => {
   const updateStatus = async (id, newStatus) => {
     try {
       const config = { headers: { Authorization: `Bearer ${authService.getToken()}` } };
-      const API_BASE = 'https://paidhu-final-anm2.vercel.app';
+      const API_BASE = (import.meta.env && import.meta.env.VITE_API_URL) || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://paidhu-final-anm2.vercel.app');
       await axios.patch(`${API_BASE}/api/careers/applications/${id}/status`, { status: newStatus }, config);
       fetchApplications();
     } catch (error) {
@@ -42,7 +42,7 @@ const CareerApplications = () => {
     if (!window.confirm('Are you sure you want to delete this application?')) return;
     try {
       const config = { headers: { Authorization: `Bearer ${authService.getToken()}` } };
-      const API_BASE = 'https://paidhu-final-anm2.vercel.app';
+      const API_BASE = (import.meta.env && import.meta.env.VITE_API_URL) || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://paidhu-final-anm2.vercel.app');
       await axios.delete(`${API_BASE}/api/careers/applications/${id}`, config);
       fetchApplications();
     } catch (error) {

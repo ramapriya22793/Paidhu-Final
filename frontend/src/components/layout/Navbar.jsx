@@ -21,7 +21,7 @@ const getCategoryIcon = (categoryName) => {
   return '🌼'; // Default brand flower fallback
 };
 
-const API_BASE = 'https://paidhu-final-anm2.vercel.app';
+const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://paidhu-final-anm2.vercel.app');
 
 const resolveSingleImage = (img) => {
   if (!img) return null;
@@ -53,7 +53,10 @@ const CATEGORY_FALLBACK_IMAGES = {
   'medley teas': '/cat_medley_teas.png',
   'brew flora': '/cat_brew_flora.jpg',
   'bloom cookies': '/cat_bloom_cookies.jpg',
-  'petal jam': '/cat_petal_jam.jpg'
+  'petal jam': '/cat_petal_jam.jpg',
+  'gift box': '/cat_saffron_giftbox.png',
+  'gift boxes': '/cat_saffron_giftbox.png',
+  'combos & gift boxes': '/cat_saffron_giftbox.png'
 };
 
 const searchPhrases = [
@@ -71,6 +74,7 @@ const CATEGORY_EMOJI = {
   'Floral Jams':    '🍓',
   'Edible Flowers': '🌺',
   'Gift Boxes':     '🎁',
+  'Gift Box':       '🎁',
   'Herbal':         '🌿',
   'Spices':         '🌶️',
   'Teas':           '🍵',
@@ -89,7 +93,6 @@ const navSlugMap = {
   'Starting Floral food habitat':'starting-floral-food-habitat',
   'BYOC':                        'byoc',
   'Our Own Community':           'our-own-community',
-  'Bulk Orders':                 'bulk-orders',
   'Blogs':                       '__direct__/blogs',
   'About Us':                    'about-us',
   'Careers':                     '__direct__/careers',
@@ -108,9 +111,11 @@ const Navbar = () => {
     { name: 'Saffron', image: '/cat_saffron.jpg' },
     { name: 'Petal Jam', image: '/cat_petal_jam.jpg' },
     { name: 'Medley Teas', image: '/cat_medley_teas.png' },
-    { name: 'Brew Flora', image: '/cat_brew_flora.jpg' }
+    { name: 'Brew Flora', image: '/cat_brew_flora.jpg' },
+    { name: 'Gift Box', image: '/cat_saffron_giftbox.png' }
   ];
   const [categories, setCategories]           = useState(defaultCategoriesList);
+  const displayCategories = (categories && categories.length > 0) ? categories : defaultCategoriesList;
   const [showCatDropdown, setShowCatDropdown] = useState(false);
   const [mobileCatOpen, setMobileCatOpen]     = useState(false);
   const [showKnowUsDropdown, setShowKnowUsDropdown] = useState(false);
@@ -214,9 +219,20 @@ const Navbar = () => {
 
     if (cachedCats && cachedProducts && cachedTime && (Date.now() - Number(cachedTime) < cachingDuration)) {
       try {
-        setCategories(JSON.parse(cachedCats));
-        setAllProducts(JSON.parse(cachedProducts));
-        return;
+        let parsedCats = JSON.parse(cachedCats).map(c => {
+          if (c.name && c.name.toLowerCase() === 'uncategorized') {
+            return { ...c, name: 'Gift Box' };
+          }
+          return c;
+        });
+        if (parsedCats && Array.isArray(parsedCats) && parsedCats.length > 0) {
+          setCategories(parsedCats);
+          setAllProducts(JSON.parse(cachedProducts));
+          if (cachedCats.includes('Uncategorized')) {
+            localStorage.setItem('paidhu_categories', JSON.stringify(parsedCats));
+          }
+          return;
+        }
       } catch (e) {}
     }
 
@@ -224,31 +240,42 @@ const Navbar = () => {
       .then(r => r.json())
       .then(data => {
         const productsList = data.products || [];
-        setAllProducts(productsList);
+        if (productsList.length > 0) {
+          setAllProducts(productsList);
+        }
         const categoryMap = {};
         
         productsList.forEach(p => {
-          if (p.category && !categoryMap[p.category]) {
+          let catName = p.category;
+          if (!catName) return;
+          if (catName.toLowerCase() === 'uncategorized') catName = 'Gift Box';
+          if (!categoryMap[catName]) {
             const img = p.image || (p.productImages && p.productImages.length > 0 ? p.productImages[0].imageUrl : null);
-            categoryMap[p.category] = img;
+            categoryMap[catName] = img;
           }
         });
         
         const cats = Object.keys(categoryMap).map(name => ({
           name,
-          image: categoryMap[name]
+          image: categoryMap[name] || CATEGORY_FALLBACK_IMAGES[name.toLowerCase()] || null
         }));
         
-        setCategories(cats);
-        try {
-          localStorage.setItem('paidhu_categories', JSON.stringify(cats));
-          localStorage.setItem('paidhu_products', JSON.stringify(productsList));
-          localStorage.setItem('paidhu_products_time', String(Date.now()));
-        } catch (e) {
-          console.error("Failed to write to localStorage", e);
+        if (cats.length > 0) {
+          setCategories(cats);
+          try {
+            localStorage.setItem('paidhu_categories', JSON.stringify(cats));
+            localStorage.setItem('paidhu_products', JSON.stringify(productsList));
+            localStorage.setItem('paidhu_products_time', String(Date.now()));
+          } catch (e) {
+            console.error("Failed to write to localStorage", e);
+          }
+        } else {
+          setCategories(defaultCategoriesList);
         }
       })
-      .catch(() => {});
+      .catch(() => {
+        setCategories(prev => (prev && prev.length > 0 ? prev : defaultCategoriesList));
+      });
   }, []);
 
   // Close dropdown on outside click
@@ -306,10 +333,8 @@ const Navbar = () => {
     { name: 'Deal of the Day' },
     { name: 'BYOC' },
     { name: 'Starting Floral food habitat' },
-    { name: 'Bulk Orders' },
     { name: 'Know us better' },
-    { name: 'Saffron Guidance' },
-    { name: 'Careers' }
+    { name: 'Saffron Guidance' }
   ];
 
   const navRow2 = [];
@@ -419,8 +444,7 @@ const Navbar = () => {
                   alt="Paidhu Ethical Foods"
                   width={142}
                   height={64}
-                  className="h-10 md:h-12 lg:h-14 w-auto object-contain"
-                  style={{ filter: 'brightness(0) saturate(100%) invert(92%) sepia(12%) saturate(308%) hue-rotate(34deg) brightness(96%) contrast(93%)' }}
+                  className="h-10 md:h-12 lg:h-14 w-auto object-contain drop-shadow-sm"
                 />
               </Link>
             </motion.div>
@@ -527,56 +551,50 @@ const Navbar = () => {
 
                           {/* Category Grid */}
                           <div className="p-4">
-                            {categories.length === 0 ? (
-                              <div className="flex items-center justify-center py-8 text-gray-400 text-sm">
-                                Loading categories…
-                              </div>
-                            ) : (
-                              <div className="grid grid-cols-2 gap-1">
-                                {categories.map(cat => {
-                                  const catName = typeof cat === 'string' ? cat : (cat.name || '');
-                                  const catImage = CATEGORY_FALLBACK_IMAGES[catName.toLowerCase()] || ((cat && typeof cat === 'object' && cat.image) ? cat.image : null);
-                                  const iconFallback = getCategoryIcon(catName);
-                                  
-                                  return (
-                                    <button
-                                      key={catName}
-                                      onClick={() => handleCategoryClick(catName)}
-                                      className="flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-[#662654]/5 hover:text-[#662654] text-gray-700 transition-all duration-150 group/cat text-left w-full cursor-pointer"
-                                    >
-                                      <div className="w-6.5 h-6.5 rounded-full overflow-hidden flex-shrink-0 border border-gray-100 bg-gray-50 flex items-center justify-center">
-                                        {catImage ? (
-                                          <img 
-                                            src={catImage.startsWith('http') || catImage.startsWith('/') ? catImage : `${API_BASE}/${catImage}`} 
-                                            alt={catName} 
-                                            className="w-full h-full object-cover transition-transform duration-300 group-hover/cat:scale-110"
-                                            onError={(e) => {
-                                              e.target.style.display = 'none';
-                                              if (e.target.nextSibling) e.target.nextSibling.style.display = 'block';
-                                            }}
-                                          />
-                                        ) : null}
-                                        <span 
-                                          className="text-xs font-bold text-[#662654]" 
-                                          style={{ display: catImage ? 'none' : 'block' }}
-                                        >
-                                          {iconFallback}
-                                        </span>
-                                      </div>
-                                      <span className="text-[13.5px] font-semibold group-hover/cat:translate-x-0.5 transition-transform duration-150">
-                                        {catName}
+                            <div className="grid grid-cols-2 gap-1">
+                              {displayCategories.map(cat => {
+                                const catName = typeof cat === 'string' ? cat : (cat.name || '');
+                                const catImage = CATEGORY_FALLBACK_IMAGES[catName.toLowerCase()] || ((cat && typeof cat === 'object' && cat.image) ? cat.image : null);
+                                const iconFallback = getCategoryIcon(catName);
+                                
+                                return (
+                                  <button
+                                    key={catName}
+                                    onClick={() => handleCategoryClick(catName)}
+                                    className="flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-[#662654]/5 hover:text-[#662654] text-gray-700 transition-all duration-150 group/cat text-left w-full cursor-pointer"
+                                  >
+                                    <div className="w-6.5 h-6.5 rounded-full overflow-hidden flex-shrink-0 border border-gray-100 bg-gray-50 flex items-center justify-center">
+                                      {catImage ? (
+                                        <img 
+                                          src={catImage.startsWith('http') || catImage.startsWith('/') ? catImage : `${API_BASE}/${catImage}`} 
+                                          alt={catName} 
+                                          className="w-full h-full object-cover transition-transform duration-300 group-hover/cat:scale-110"
+                                          onError={(e) => {
+                                            e.target.style.display = 'none';
+                                            if (e.target.nextSibling) e.target.nextSibling.style.display = 'block';
+                                          }}
+                                        />
+                                      ) : null}
+                                      <span 
+                                        className="text-xs font-bold text-[#662654]" 
+                                        style={{ display: catImage ? 'none' : 'block' }}
+                                      >
+                                        {iconFallback}
                                       </span>
-                                    </button>
-                                  );
-                                })}
-                              </div>
-                            )}
+                                    </div>
+                                    <span className="text-[13.5px] font-semibold group-hover/cat:translate-x-0.5 transition-transform duration-150">
+                                      {catName}
+                                    </span>
+                                  </button>
+                                );
+                              })}
+                            </div>
                           </div>
 
                           {/* View All Footer */}
                           <div className="px-6 py-3 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
                             <span className="text-[12px] text-gray-400">
-                              {categories.length} categories available
+                              {displayCategories.length} categories available
                             </span>
                             <button
                               onClick={() => {
@@ -786,7 +804,7 @@ const Navbar = () => {
                               className="overflow-hidden"
                             >
                               <div className="pl-4 pb-2 pt-1 grid grid-cols-2 gap-1">
-                                {categories.map(cat => {
+                                {displayCategories.map(cat => {
                                   const catName = typeof cat === 'string' ? cat : (cat.name || '');
                                   const catImage = CATEGORY_FALLBACK_IMAGES[catName.toLowerCase()] || ((cat && typeof cat === 'object' && cat.image) ? cat.image : null);
                                   const iconFallback = getCategoryIcon(catName);

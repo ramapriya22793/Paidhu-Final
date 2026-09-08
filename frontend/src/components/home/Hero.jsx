@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const API_BASE = 'https://paidhu-final-anm2.vercel.app';
+const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://paidhu-final-anm2.vercel.app');
 
 const FALLBACK_SLIDES = [
   {
@@ -54,7 +54,8 @@ const getBannerLink = (slide) => {
 
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [slides, setSlides] = useState(FALLBACK_SLIDES);
+  const [slides, setSlides] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth < 768 : false);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
@@ -90,13 +91,13 @@ const Hero = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Fetch ALL active banners for the 'home' page slug
+  // Fetch ALL active banners strictly for the 'home' page slug
   useEffect(() => {
     fetch(`${API_BASE}/api/banners/active/home?t=${Date.now()}`)
       .then(r => r.ok ? r.json() : [])
       .then(homeBanners => {
         if (homeBanners && homeBanners.length > 0) {
-          const activeBanners = homeBanners.filter(b => b.isActive === true || b.isActive === 'true');
+          const activeBanners = homeBanners.filter(b => (b.isActive === true || b.isActive === 'true') && (b.webImage || b.webImagePath));
           if (activeBanners.length > 0) {
             // Map backend banners to slide format
             const backendSlides = activeBanners.map(b => ({
@@ -106,15 +107,20 @@ const Hero = () => {
               bgColor: 'bg-[#faf5eb]',
               isBackendBanner: true,
               category: b.category || null,
-            }));
-            setSlides(backendSlides);
-            return;
+            })).filter(s => s.image);
+            if (backendSlides.length > 0) {
+              setSlides(backendSlides);
+              setLoading(false);
+              return;
+            }
           }
         }
-        setSlides(FALLBACK_SLIDES);
+        setSlides([]);
+        setLoading(false);
       })
       .catch(() => {
-        setSlides(FALLBACK_SLIDES);
+        setSlides([]);
+        setLoading(false);
       });
   }, []);
 
@@ -154,6 +160,19 @@ const Hero = () => {
 
   const nextSlide = () => setCurrentSlide(prev => (prev === slides.length - 1 ? 0 : prev + 1));
   const prevSlide = () => setCurrentSlide(prev => (prev === 0 ? slides.length - 1 : prev - 1));
+
+  if (loading) {
+    return (
+      <div className="w-full bg-[#f8f4ef] py-3 md:py-4 px-3 sm:px-4 lg:px-6">
+        <div 
+          className="relative w-full overflow-hidden rounded-[28px] md:rounded-[36px] animate-pulse bg-gradient-to-r from-[#e8e0d5] via-[#f0e8db] to-[#e8e0d5]"
+          style={{ aspectRatio: isMobile ? '2 / 1' : '2.4 / 1' }}
+        />
+      </div>
+    );
+  }
+
+  if (slides.length === 0) return null;
 
   const current = slides[currentSlide];
   if (!current) return null;

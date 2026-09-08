@@ -338,7 +338,7 @@ const ForYourFamilySection = () => {
               Join Our Floral Wellness Tribe
             </h3>
             <p className="text-[#fdfaf6]/80 font-medium leading-relaxed text-sm md:text-base">
-              Share recipes, learn how other moms introduce floral wellness to their homes, and get access to exclusive workshops led by clinical nutritionists and wellness experts.
+              Share recipes, learn how other families introduce floral goodness to their homes, and get access to exclusive workshops and community events.
             </p>
             <div className="pt-4">
               <Link

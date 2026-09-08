@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { X, Check, MessageSquare } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const API_BASE = 'https://paidhu-final-anm2.vercel.app';
+const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://paidhu-final-anm2.vercel.app');
 
 const TiffinModal = ({ 
   isOpen: propIsOpen, 
@@ -130,7 +130,7 @@ const TiffinModal = ({
             {/* Split overlay */}
             <div className="absolute inset-0 bg-gradient-to-r from-[#662654]/90 via-[#662654]/40 to-transparent p-6 flex flex-col justify-end text-white">
               <span className="text-[#fbc225] text-[10px] font-black uppercase tracking-[0.2em] mb-1 px-2.5 py-1 bg-white/10 backdrop-blur-sm rounded-full w-fit font-sans">
-                Paidhu Moms Club
+                Paidhu Community Club
               </span>
               <h3 className="font-serif italic text-2xl md:text-3xl font-bold leading-tight mb-2 text-[#fff]">
                 Running out of school tiffin ideas?

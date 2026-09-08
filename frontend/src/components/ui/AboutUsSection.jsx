@@ -10,14 +10,14 @@ const foundersData = [
     name: 'Ragapriya Karunakaran',
     role: 'Founder',
     bio: 'As the Founder of Paidhu, I am driven by a vision to redefine the way generations experience floral-based foods through authenticity, purity, and innovation. At Paidhu, we curate premium floral foods and value-added products that preserve nature\'s goodness while honoring traditional wisdom for today\'s lifestyle. Our flagship Kashmiri saffron is sourced directly from trusted farmers, ensuring unmatched quality and authenticity in every strand. My entrepreneurial journey and years of experience in the FMCG industry inspired me to build a brand founded on ethical sourcing, transparency, and trust. Through Paidhu, our mission is to create a legacy of natural wellness by bringing nature\'s finest offerings to every generation with products that are minimally processed, rich in natural goodness, and crafted for a healthier future.',
-    image: '/ragapriya.jpg'
+    image: '/ragapriya.jpg?v=4'
   },
   {
     id: 2,
     name: 'Vikram AVB',
     role: 'Co-founder',
     bio: 'As the Co-founder of Paidhu Ethical Foods Pvt. Ltd., I support the company\'s vision of promoting natural wellness through authentic floral and herbal products. I contribute to product development, brand growth, and day-to-day operations while helping strengthen Paidhu\'s commitment to quality, ethical sourcing, and customer trust. Together, we aim to bring nature-inspired wellness products to more people and build a brand that reflects authenticity, sustainability, and care.',
-    image: '/vikram.jpg'
+    image: '/vikram.jpg?v=4'
   }
 ];
 
@@ -284,19 +284,19 @@ const AboutUsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.55, delay: i * 0.1 }}
-              className={`flex flex-col md:flex-row gap-8 lg:gap-12 items-start p-8 md:p-12 rounded-[2.5rem] bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all ${
+              className={`flex flex-col md:flex-row gap-8 lg:gap-12 items-center p-8 md:p-12 rounded-[2.5rem] bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all ${
                 i % 2 === 1 ? 'md:flex-row-reverse' : ''
               }`}
             >
               {/* Photo */}
-              <div className="w-32 h-32 md:w-44 md:h-44 rounded-full overflow-hidden shrink-0 shadow-lg border-4 border-[#662654]/10 bg-gray-50 self-start mx-auto md:mx-0">
+              <div className="w-32 h-32 md:w-44 md:h-44 rounded-full overflow-hidden shrink-0 shadow-lg border-4 border-[#662654]/10 bg-gray-50 self-center mx-auto md:mx-0">
                 <img
                   src={founder.image}
                   alt={founder.name}
                   className="w-full h-full object-cover"
-                  style={{ objectPosition: 'center 15%' }}
+                  style={{ objectPosition: 'center center' }}
                   onError={(e) => {
-                    e.target.src = founder.name.toLowerCase().includes('vikram') ? '/vikram.jpg' : '/ragapriya.jpg';
+                    e.target.src = founder.name.toLowerCase().includes('vikram') ? '/vikram.jpg?v=4' : '/ragapriya.jpg?v=4';
                   }}
                 />
               </div>
@@ -337,10 +337,10 @@ const AboutUsSection = () => {
                 Join Our Family
               </span>
               <h2 className="text-3xl md:text-5xl font-black text-[#5a2141] font-serif leading-tight">
-                Paidhu Moms Community
+                Paidhu Community
               </h2>
               <p className="text-[#662654] font-bold text-sm sm:text-base mt-3 leading-relaxed">
-                A supportive space for moms to share tips on clean eating, child nutrition, and natural family wellness.
+                A supportive space to share tips on clean eating, wholesome family nutrition, and pure floral living.
               </p>
             </div>
             
@@ -348,9 +348,9 @@ const AboutUsSection = () => {
             
             <ul className="space-y-3 text-gray-700 text-sm font-medium">
               {[
-                'Connect with health-conscious moms in your city',
-                'Get expert advice on child nutrition, healthy growth, and natural remedies',
-                'Share unique, kids-friendly recipes using floral petal jams and natural ingredients',
+                'Connect with health-conscious families in your city',
+                'Get expert advice on wholesome child nutrition and natural remedies',
+                'Share unique, family-friendly recipes using floral petal jams and natural ingredients',
                 'Receive invitations to exclusive local meetups, wellness workshops, and events',
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-2.5">
@@ -373,7 +373,7 @@ const AboutUsSection = () => {
           <div className="relative min-h-[320px] lg:min-h-[auto]">
             <img
               src="/wp_community_1.jpg"
-              alt="Paidhu Moms Community"
+              alt="Paidhu Community"
               className="absolute inset-0 w-full h-full object-cover"
             />
           </div>

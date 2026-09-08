@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 
-const API_BASE = 'https://paidhu-final-anm2.vercel.app';
+const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://paidhu-final-anm2.vercel.app');
 
 const AuthModal = ({ isOpen, onClose, onLoginSuccess, user, onLogout }) => {
   const [view, setView] = useState('login'); // 'login', 'register', 'forgot', 'reset'

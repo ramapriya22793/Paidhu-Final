@@ -5,19 +5,61 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import fallbacks from './fallbacks.json';
 
-const API_BASE = 'https://paidhu-final-anm2.vercel.app';
+const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://paidhu-final-anm2.vercel.app');
 
 const productsCache = {};
+let allProductsMemory = null;
 
-const categories = [
-  "Bestsellers",
-  "Super Value Packs",
-  "New Launches",
-  "Deals of the Day",
-  "Traditional Snacks",
-  "Cookies & Cakes",
-  "Crunchy Snacks"
-];
+// Thematic terms directly based on Paidhu's floral food products (mouth-watering product temptation, non-health/non-medicinal)
+const COLLECTION_TERMS = {
+  "Bestsellers": {
+    filter: (p) => p.tags?.toLowerCase().includes("bestseller") || [20, 8, 3, 31, 22].includes(p.id),
+    priorityIds: [20, 8, 3, 31, 22],
+    shopUrl: "/shop/shop-all?tag=bestseller",
+  },
+  "Pure Kashmiri Saffron": {
+    filter: (p) => p.category?.toLowerCase() === 'saffron' || /saffron/i.test(p.name + ' ' + (p.description || '')),
+    priorityIds: [20, 22, 21, 18],
+    shopUrl: "/shop/shop-all?q=saffron",
+  },
+  "Crispy Bloom Cookies": {
+    filter: (p) => /cookie/i.test(p.name + ' ' + (p.category?.name || p.category || '')),
+    priorityIds: [8, 10, 9],
+    shopUrl: "/shop/shop-by-category?category=Bloom%20Cookies",
+  },
+  "Artisanal Petal Preserves": {
+    filter: (p) => p.category?.toLowerCase().includes('jam') || /jam|gulkhand|syrup|preserve/i.test(p.name),
+    priorityIds: [28, 4, 3, 29, 6],
+    shopUrl: "/shop/shop-by-category?category=Petal%20Jam",
+  },
+  "Fragrant Medley Teas": {
+    filter: (p) => /medly|medley|tea\s*\(20\s*dips\)|dips/i.test(p.name),
+    priorityIds: [45, 17, 18, 19, 31, 16],
+    shopUrl: "/shop/shop-by-category?category=Medley%20Teas",
+  },
+  "Exotic Flower Brews": {
+    filter: (p) => /brew\s*flora|whole\s*flower|chamomile|blue\s*pea|lavender|aavaram\s*poo/i.test(p.name),
+    priorityIds: [12, 15, 14, 13, 11, 44],
+    shopUrl: "/shop/shop-by-category?category=Brew%20Flora",
+  },
+  "Ruby Hibiscus Delights": {
+    filter: (p) => /hibiscus/i.test(p.name + ' ' + (p.description || '')),
+    priorityIds: [4, 10, 13, 16, 45],
+    shopUrl: "/shop/shop-all?q=hibiscus",
+  },
+  "Deals of the Day": {
+    filter: (p) => p.isDealOfTheDay || (p.discountPrice && p.discountPrice < p.price) || p.tags?.toLowerCase().includes('deal') || [20, 28, 22, 10, 15].includes(p.id),
+    priorityIds: [20, 28, 22, 10, 15],
+    shopUrl: "/shop/deal-of-the-day",
+  },
+  "Gift Boxes & Combos": {
+    filter: (p) => p.category?.toLowerCase().includes('gift') || /gift|combo|box/i.test(p.name + ' ' + (p.tags || '')) || [30, 20, 8, 3].includes(p.id),
+    priorityIds: [30, 20, 8, 3, 28],
+    shopUrl: "/shop/shop-all?tag=family_combos",
+  }
+};
+
+const categories = Object.keys(COLLECTION_TERMS);
 
 const resolveImage = (img) => {
   if (!img) return null;
@@ -246,18 +288,11 @@ const ProductCollection = () => {
   const [activeCategory, setActiveCategory] = useState("Bestsellers");
 
   const handleViewAllClick = () => {
-    if (activeCategory === "Bestsellers") {
-      navigate("/shop/shop-all?tag=bestseller");
-    } else if (activeCategory === "Super Value Packs") {
-      navigate("/shop/shop-all?tag=family_combos");
-    } else if (activeCategory === "New Launches") {
-      navigate("/shop/shop-all?sort=newest");
-    } else if (activeCategory === "Deals of the Day") {
-      navigate("/shop/deal-of-the-day");
-    } else if (activeCategory === "Cookies & Cakes") {
-      navigate("/shop/shop-by-category?category=Bloom Cookies");
+    const config = COLLECTION_TERMS[activeCategory];
+    if (config?.shopUrl) {
+      navigate(config.shopUrl);
     } else {
-      navigate(`/shop/shop-by-category?category=${encodeURIComponent(activeCategory)}`);
+      navigate("/shop/shop-all");
     }
   };
 
@@ -319,115 +354,101 @@ const ProductCollection = () => {
     setProducts(instantList);
     setLoading(instantList.length === 0);
 
+    const mapProductToUI = (p) => {
+      const originalPrice = p.price;
+      const discountedPrice = p.discountPrice || p.price;
+      const discountPercent = originalPrice > discountedPrice 
+        ? Math.round(((originalPrice - discountedPrice) / originalPrice) * 100) 
+        : 0;
+
+      let badge = "";
+      let badgeColor = "";
+      if (p.status === 'PREORDER') {
+        badge = "Pre-order";
+        badgeColor = "bg-[#662654] text-white";
+      } else if (p.tags && p.tags.toLowerCase().includes("bestseller")) {
+        badge = "Bestseller";
+        badgeColor = "bg-[#662654] text-white";
+      } else if (discountPercent > 0) {
+        badge = "Sale";
+        badgeColor = "bg-[#662654] text-white";
+      }
+
+      const image = p.image || (p.productImages && p.productImages.length > 0 ? p.productImages[0].imageUrl : null) || (p.images && p.images.length > 0 ? p.images[0] : null);
+      const resolvedImages = p.images ? p.images.map(img => resolveImage(img)) : [resolveImage(image)].filter(Boolean);
+
+      return {
+        id: p.id,
+        badge,
+        badgeColor,
+        image: resolveImage(image) || "https://images.unsplash.com/photo-1599598425947-330026217432?q=80&w=500&auto=format&fit=crop",
+        images: resolvedImages.length > 0 ? resolvedImages : ["https://images.unsplash.com/photo-1599598425947-330026217432?q=80&w=500&auto=format&fit=crop"],
+        title: p.name,
+        description: p.shortDescription || p.description,
+        originalPrice,
+        discountedPrice,
+        discountPercent,
+        raw: p
+      };
+    };
+
     const fetchProducts = async () => {
       try {
-        const queryParams = new URLSearchParams({ limit: '10' });
-        if (activeCategory === "Bestsellers") {
-          queryParams.set("tag", "bestseller");
-        } else if (activeCategory === "Super Value Packs") {
-          queryParams.set("tag", "family_combos");
-        } else if (activeCategory === "New Launches") {
-          queryParams.set("sort", "newest");
-        } else if (activeCategory === "Deals of the Day") {
-          queryParams.set("navSection", "deal-of-the-day");
-        } else if (activeCategory === "Cookies & Cakes") {
-          queryParams.set("category", "Bloom Cookies");
-        } else {
-          queryParams.set("category", activeCategory);
+        let allProducts = allProductsMemory;
+        if (!allProducts || allProducts.length === 0) {
+          const res = await fetch(`${API_BASE}/api/products?limit=100`);
+          if (res.ok) {
+            const data = await res.json();
+            allProducts = data.products || [];
+            allProductsMemory = allProducts;
+          }
         }
 
-        const res = await fetch(`${API_BASE}/api/products?${queryParams.toString()}`);
-        if (!res.ok) throw new Error("Failed to fetch products");
-        const data = await res.json();
-        
-        let fetchedProducts = data.products || [];
+        // Populate cache for all collection terms at once for instantaneous tab switching
+        if (allProducts && allProducts.length > 0) {
+          for (const [termName, termConfig] of Object.entries(COLLECTION_TERMS)) {
+            let matched = allProducts.filter(termConfig.filter);
+            if (termConfig.priorityIds) {
+              matched.sort((a, b) => {
+                const idxA = termConfig.priorityIds.indexOf(a.id);
+                const idxB = termConfig.priorityIds.indexOf(b.id);
+                if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+                if (idxA !== -1) return -1;
+                if (idxB !== -1) return 1;
+                return a.id - b.id;
+              });
+            }
 
-        // For Bestsellers, pin the 4 hero products at the top in exact order
-        if (activeCategory === "Bestsellers") {
-          const PRIORITY_ORDER = [20, 8, 3, 31]; // Kashmiri Mongra, White Lotus, Neem Jam, Cassia Fistula
-          const pinned = [];
-          const rest = [];
-          for (const id of PRIORITY_ORDER) {
-            const found = fetchedProducts.find(p => p.id === id);
-            if (found) pinned.push(found);
-          }
-          for (const p of fetchedProducts) {
-            if (!PRIORITY_ORDER.includes(p.id)) rest.push(p);
-          }
-          fetchedProducts = [...pinned, ...rest];
-        }
-
-        // If we have fewer than 5 products, backfill with general products to fill the 5-column grid row
-        if (fetchedProducts.length < 5) {
-          const backfillRes = await fetch(`${API_BASE}/api/products?limit=15`);
-          if (backfillRes.ok) {
-            const backfillData = await backfillRes.json();
-            const backfillList = backfillData.products || [];
-            for (const p of backfillList) {
-              if (fetchedProducts.length >= 5) break;
-              if (!fetchedProducts.some(fp => fp.id === p.id)) {
-                fetchedProducts.push(p);
+            // If fewer than 5 products, backfill with general products to fill the 5-column row
+            if (matched.length < 5) {
+              for (const p of allProducts) {
+                if (matched.length >= 5) break;
+                if (!matched.some(m => m.id === p.id)) {
+                  matched.push(p);
+                }
               }
             }
+
+            // Deduplicate by title
+            const seen = new Set();
+            matched = matched.filter(p => {
+              const key = (p.name || '').trim().toLowerCase();
+              if (seen.has(key)) return false;
+              seen.add(key);
+              return true;
+            });
+
+            productsCache[termName] = matched.map(mapProductToUI);
           }
         }
 
-        // Map products to UI format
-        let mappedProducts = fetchedProducts.map(p => {
-          const originalPrice = p.price;
-          const discountedPrice = p.discountPrice || p.price;
-          const discountPercent = originalPrice > discountedPrice 
-            ? Math.round(((originalPrice - discountedPrice) / originalPrice) * 100) 
-            : 0;
-
-          let badge = "";
-          let badgeColor = "";
-          if (p.status === 'PREORDER') {
-            badge = "Pre-order";
-            badgeColor = "bg-[#662654] text-white";
-          } else if (p.tags && p.tags.toLowerCase().includes("bestseller")) {
-            badge = "Bestseller";
-            badgeColor = "bg-[#662654] text-white";
-          } else if (discountPercent > 0) {
-            badge = "Sale";
-            badgeColor = "bg-[#662654] text-white";
-          }
-
-          const image = p.image || (p.productImages && p.productImages.length > 0 ? p.productImages[0].imageUrl : null);
-          const resolvedImages = p.images ? p.images.map(img => resolveImage(img)) : [resolveImage(image)].filter(Boolean);
-
-          return {
-            id: p.id,
-            badge,
-            badgeColor,
-            image: resolveImage(image) || "https://images.unsplash.com/photo-1599598425947-330026217432?q=80&w=500&auto=format&fit=crop",
-            images: resolvedImages.length > 0 ? resolvedImages : ["https://images.unsplash.com/photo-1599598425947-330026217432?q=80&w=500&auto=format&fit=crop"],
-            title: p.name,
-            description: p.shortDescription || p.description,
-            originalPrice,
-            discountedPrice,
-            discountPercent,
-            raw: p
-          };
-        });
-
-        // Deduplicate mapped products by title to avoid rendering duplicates
-        const seen = new Set();
-        mappedProducts = mappedProducts.filter(p => {
-          const key = (p.title || '').trim().toLowerCase();
-          if (seen.has(key)) return false;
-          seen.add(key);
-          return true;
-        });
-
-        productsCache[activeCategory] = mappedProducts;
-
+        const activeList = productsCache[activeCategory] || fallbacks[activeCategory] || [];
         if (isMounted) {
-          setProducts(mappedProducts);
+          setProducts(activeList);
           setLoading(false);
         }
       } catch (err) {
-        console.error("Error fetching products:", err);
+        console.error("Error fetching collection products:", err);
         if (isMounted) {
           setLoading(false);
         }

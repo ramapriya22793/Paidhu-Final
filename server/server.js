@@ -82,6 +82,32 @@ app.use((req, res, next) => {
 });
 
 // API ROUTES
+app.get("/api/categories", async (req, res) => {
+  try {
+    const categories = await prisma.category.findMany({
+      orderBy: { id: 'asc' },
+      include: {
+        products: {
+          take: 1,
+          select: { image: true, productImages: { take: 1, select: { imageUrl: true } } }
+        }
+      }
+    });
+    const result = categories.map(c => {
+      const p = c.products && c.products[0];
+      const img = p ? (p.image || p.productImages?.[0]?.imageUrl) : null;
+      return {
+        id: c.id,
+        name: c.name.toLowerCase() === 'uncategorized' ? 'Gift Box' : c.name,
+        image: img
+      };
+    });
+    res.json(result);
+  } catch (err) {
+    console.error("Categories fetch error:", err);
+    res.status(500).json({ error: "Failed to fetch categories" });
+  }
+});
 app.use("/api/products", require("./routes/productRoutes"));
 app.use("/api/settings", require("./routes/settingsRoutes"));
 app.use("/api/orders", require("./routes/orderRoutes"));

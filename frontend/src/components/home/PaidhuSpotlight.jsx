@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import fallbacks from './fallbacks.json';
 
-const API_BASE = 'https://paidhu-final-anm2.vercel.app';
+const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://paidhu-final-anm2.vercel.app');
 
 const spotlightCache = { current: null };
 
@@ -129,6 +129,10 @@ const PaidhuSpotlight = () => {
                   alt={item.name} 
                   width={240}
                   height={240}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787745523565-paidhuwhitelotus001png.png";
+                  }}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" 
                   loading="lazy"
                 />

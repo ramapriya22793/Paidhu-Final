@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const API_BASE = 'https://paidhu-final-anm2.vercel.app';
+const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://paidhu-final-anm2.vercel.app');
 
 const resolveUrl = (path) => {
   if (!path) return null;
@@ -29,11 +29,11 @@ const toSlide = (b) => ({
 const LOCAL_FALLBACK = '/shop_all_banner.jpg';
 
 const PageBanner = ({ pageSlug }) => {
-  const [slides, setSlides]             = useState([{ id: 'fallback-init', image: LOCAL_FALLBACK, bgColor: '#f8f4ef' }]);
+  const [slides, setSlides]             = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isMobile, setIsMobile]         = useState(false);
   const [aspectRatios, setAspectRatios] = useState({});
-  const [ready, setReady]               = useState(true);
+  const [ready, setReady]               = useState(false);
 
   // ── Responsive detection ─────────────────────────────────────────────────
   useEffect(() => {
@@ -43,10 +43,15 @@ const PageBanner = ({ pageSlug }) => {
     return () => window.removeEventListener('resize', check);
   }, []);
 
-  // ── Fetch: slug → shop-all/shop → home → local fallback ──────────────────
+  // ── Fetch banners strictly for this pageSlug ──────────────────────────────
   useEffect(() => {
-    if (!pageSlug) return;
+    if (!pageSlug) {
+      setSlides([]);
+      setReady(true);
+      return;
+    }
     setCurrentSlide(0);
+    setReady(false);
 
     const resolvedSlug = pageSlug;
 
@@ -56,39 +61,28 @@ const PageBanner = ({ pageSlug }) => {
         .catch(() => []);
 
     (async () => {
-      // 1. Slug-specific banners
+      // 1. Fetch active banners strictly for this page slug
       let data = await fetchSlug(resolvedSlug);
 
-      // 2. Fallback to main shop-all / shop banners if not found
-      if (!data || data.length === 0) {
-        if (resolvedSlug !== 'shop-all' && resolvedSlug !== 'shop') {
-          data = await fetchSlug('shop-all');
-          if (!data || data.length === 0) {
-            data = await fetchSlug('shop');
-          }
-        } else if (resolvedSlug === 'shop-all') {
-          data = await fetchSlug('shop');
-        } else if (resolvedSlug === 'shop') {
-          data = await fetchSlug('shop-all');
-        }
-      }
-
-      // 3. Fallback to home banners (same carousel as the homepage)
-      if (!data || data.length === 0) {
-        data = await fetchSlug('home');
+      // 2. Only if another shop sub-page has no active banner, check if 'shop-all' has an active banner
+      if ((!data || data.length === 0) && resolvedSlug !== 'shop-all' && resolvedSlug !== 'shop') {
+        data = await fetchSlug('shop-all');
       }
 
       if (data && data.length > 0) {
-        const activeData = data.filter(b => b.isActive === true || b.isActive === 'true');
+        const activeData = data.filter(b => (b.isActive === true || b.isActive === 'true') && (b.webImage || b.webImagePath));
         if (activeData.length > 0) {
-          setSlides(activeData.map(toSlide).filter(s => s.image));
-        } else {
-          setSlides([{ id: 'local-1', image: LOCAL_FALLBACK, bgColor: '#f0ede6' }]);
+          const validSlides = activeData.map(toSlide).filter(s => s.image);
+          if (validSlides.length > 0) {
+            setSlides(validSlides);
+            setReady(true);
+            return;
+          }
         }
-      } else {
-        // 4. Last resort — local image
-        setSlides([{ id: 'local-1', image: LOCAL_FALLBACK, bgColor: '#f0ede6' }]);
       }
+
+      // 3. No active banners for this page in the table -> return empty
+      setSlides([]);
       setReady(true);
     })();
   }, [pageSlug]);

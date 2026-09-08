@@ -12,7 +12,7 @@ import SEO from '../components/seo/SEO';
 import ProductCarousel from '../components/home/ProductCarousel';
 import Breadcrumbs from '../components/ui/Breadcrumbs';
 
-const API_BASE = 'https://paidhu-final-anm2.vercel.app';
+const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://paidhu-final-anm2.vercel.app');
 
 const resolveImage = (img) => {
   if (!img) return null;
@@ -548,7 +548,7 @@ const ProductDetailPage = () => {
                 <div className="w-10 h-10 rounded-full bg-[#662654]/5 flex items-center justify-center mb-1.5">
                   <CheckCircle2 size={20} className="text-[#662654]" />
                 </div>
-                <span className="text-[10px] font-black uppercase tracking-wider text-gray-700">Mom Approved</span>
+                <span className="text-[10px] font-black uppercase tracking-wider text-gray-700">Family Approved</span>
               </motion.div>
               <motion.div whileHover={{ y: -3 }} className="flex flex-col items-center p-3 rounded-2xl bg-white border border-gray-100 shadow-[0_4px_12px_rgba(0,0,0,0.02)]">
                 <div className="w-10 h-10 rounded-full bg-[#662654]/5 flex items-center justify-center mb-1.5">

@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useEffect } from 'react';
-import { Routes, Route, useNavigate, useLocation, Link } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation, Link, Navigate } from 'react-router-dom';
 
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
@@ -16,7 +16,7 @@ import MaintenancePage from './pages/MaintenancePage';
 // Set to true to display the Under Maintenance page across the store with WhatsApp navigation.
 // Set to false to restore the full website.
 // Preview bypass: add ?preview=true to any URL to inspect the live store during maintenance.
-const IS_MAINTENANCE_MODE = true;
+const IS_MAINTENANCE_MODE = false;
 
 // Error boundary and safe lazy-loading helper to auto-recover when deployment chunks update
 class ErrorBoundary extends React.Component {
@@ -190,7 +190,7 @@ function App() {
               {/* Direct Route Aliases to avoid any broken links */}
               <Route path="/about" element={<ShopPage navSection="about-us" />} />
               <Route path="/about-us" element={<ShopPage navSection="about-us" />} />
-              <Route path="/bulk-orders" element={<ShopPage navSection="bulk-orders" />} />
+              <Route path="/bulk-orders" element={<Navigate to="/shop" replace />} />
               <Route path="/contact" element={<LegalPage type="contact-us" />} />
               <Route path="/contact-us" element={<LegalPage type="contact-us" />} />
               <Route path="/privacy-policy" element={<LegalPage type="privacy-policy" />} />

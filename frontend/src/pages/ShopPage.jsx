@@ -8,7 +8,6 @@ import {
 import PageBanner from '../components/ui/PageBanner';
 import paidhuLogo from '../assets/paidhulogo.png';
 import { useCart } from '../context/CartContext';
-import BulkOrdersSection from '../components/ui/BulkOrdersSection';
 import AboutUsSection from '../components/ui/AboutUsSection';
 import BlogsSection from '../components/ui/BlogsSection';
 import FloralHabitatSection from '../components/ui/FloralHabitatSection';
@@ -16,7 +15,7 @@ import OurCommunitySection from '../components/ui/OurCommunitySection';
 import fallbacks from '../components/home/fallbacks.json';
 import SEO from '../components/seo/SEO';
 
-const API_BASE = 'https://paidhu-final-anm2.vercel.app';
+const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://paidhu-final-anm2.vercel.app');
 
 // Clean up corrupted product names (??? -> -)
 const resolveProductName = (name) => {
@@ -49,7 +48,6 @@ const NAV_META = {
   'byoc':                       { label: 'BYOC',                       emoji: '🎁',  desc: 'Build your own custom floral food box.' },
   'our-own-community':          { label: 'Our Own Community',          emoji: '🤝',  desc: 'Products loved and recommended by our community.' },
   'our-philosophy':             { label: 'Our Philosophy',             emoji: '💚',  desc: 'Products that embody our core values and philosophy.' },
-  'bulk-orders':                { label: 'Bulk Orders',                emoji: '📦',  desc: 'Get the best prices when ordering in bulk.' },
   'blogs':                      { label: 'Blogs',                      emoji: '✍️',  desc: 'Discover stories, recipes, and insights from Paidhu.' },
 };
 
@@ -947,16 +945,7 @@ const ShopPage = () => {
   const sortLabel = SORT_OPTIONS.find(o => o.value === sort)?.label || 'Sort';
 
   if (navSection === 'bulk-orders') {
-    return (
-      <motion.div 
-        initial={{ opacity: 0, y: 12 }} 
-        animate={{ opacity: 1, y: 0 }} 
-        transition={{ duration: 0.55, ease: 'easeOut' }}
-        className="min-h-screen bg-[#faf9f7]"
-      >
-        <BulkOrdersSection />
-      </motion.div>
-    );
+    return <Navigate to="/shop/shop-all" replace />;
   }
 
   if (navSection === 'about-us') {

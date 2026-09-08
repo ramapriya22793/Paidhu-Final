@@ -28,3 +28,4 @@ lerna-debug.log*
 node_modules_old 
 .vercel
 .env*
+server/uploads/
