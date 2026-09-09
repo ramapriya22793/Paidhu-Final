@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Star, ChevronDown, ChevronUp, Plus, Minus, ShoppingCart, 
   ShieldCheck, CheckCircle2, Heart, Info, HelpCircle, ArrowLeft, Check,
-  ChevronLeft, ChevronRight
+  ChevronLeft, ChevronRight, MessageSquare, Sparkles, ArrowRight, X
 } from 'lucide-react';
 
 import { useCart } from '../context/CartContext';
@@ -24,6 +24,31 @@ const resolveImage = (img) => {
 const resolveProductName = (name) => {
   if (!name) return '';
   return name.replace(/\s*\?+\s*/g, ' - ').trim();
+};
+
+// Detect if a product is saffron-related (Saffron 1G, Saffron Gift Box, Kashmiri Mongra, etc.)
+const isSaffronProduct = (p, selectedVariant) => {
+  if (!p) return false;
+  const str = [
+    p.name,
+    p.slug,
+    typeof p.category === 'object' ? p.category?.name : p.category,
+    typeof p.tags === 'string' ? p.tags : Array.isArray(p.tags) ? p.tags.join(' ') : '',
+    p.description,
+    p.shortDescription,
+    selectedVariant?.size,
+    selectedVariant?.name,
+    ...(Array.isArray(p.variants) ? p.variants.map(v => v.size || v.name) : [])
+  ].filter(Boolean).join(' ').toLowerCase();
+
+  return (
+    str.includes('saffron') ||
+    str.includes('mongra') ||
+    str.includes('neign') ||
+    str.includes('gift-box') ||
+    str.includes('gift box') ||
+    str.includes('kesar')
+  );
 };
 
 
@@ -77,6 +102,9 @@ const ProductDetailPage = () => {
   const isInWishlist = product && wishlist && wishlist.some(item => item.id === product.id);
   const [isAdding, setIsAdding] = useState(false);
   const [similarProducts, setSimilarProducts] = useState([]);
+  const [showSaffronGuidanceModal, setShowSaffronGuidanceModal] = useState(false);
+
+  const isSaffron = isSaffronProduct(product, selectedVariant);
 
   const handleAddToCart = async () => {
     if (isAdding) return;
@@ -91,6 +119,10 @@ const ProductDetailPage = () => {
         category: product.category,
         shortDescription: product.shortDescription
       }, quantity, selectedVariant);
+
+      if (isSaffron) {
+        setShowSaffronGuidanceModal(true);
+      }
     } finally {
       setIsAdding(false);
     }
@@ -374,10 +406,21 @@ const ProductDetailPage = () => {
           {/* 2. Right Column: Rich Info Panel */}
           <div className="space-y-6 lg:space-y-8">
             <div>
-              <span className="text-xs font-black text-[#662654] uppercase tracking-widest bg-[#662654]/10 border border-[#662654]/10 px-3.5 py-1.5 rounded-full">
-                {product.category}
-              </span>
-              <h1 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight mt-4 leading-tight">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs font-black text-[#662654] uppercase tracking-widest bg-[#662654]/10 border border-[#662654]/10 px-3.5 py-1.5 rounded-full">
+                  {product.category}
+                </span>
+                {isSaffron && (
+                  <Link
+                    to="/saffron-guidance"
+                    className="inline-flex items-center gap-1.5 bg-gradient-to-r from-[#d4af37]/20 to-[#f5d061]/20 hover:from-[#d4af37]/30 hover:to-[#f5d061]/30 text-[#7a4f15] border border-[#d4af37]/40 text-[11px] font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full transition-all shadow-xs"
+                  >
+                    <Sparkles size={11} className="text-[#85581a]" />
+                    <span>Free Saffron Guidance Included</span>
+                  </Link>
+                )}
+              </div>
+              <h1 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight mt-3 leading-tight">
                 {product.name}
               </h1>
             </div>
@@ -535,6 +578,75 @@ const ProductDetailPage = () => {
                 <Heart size={20} className={isInWishlist ? 'animate-pulse' : ''} fill={isInWishlist ? "currentColor" : "none"} />
               </motion.button>
             </div>
+
+            {/* 🌸 Saffron Guidance Box (Visible while viewing Saffron products) */}
+            {isSaffron && (
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="rounded-2xl p-4 md:p-5 bg-gradient-to-br from-[#fefbf6] via-[#fff8ef] to-[#fbf1f5] border border-[#d4af37]/50 shadow-[0_4px_20px_rgba(212,175,55,0.12)] relative overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[#d4af37]/10 rounded-full blur-2xl pointer-events-none -mr-10 -mt-10" />
+                
+                <div className="flex items-start gap-3.5 relative z-10">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#662654] to-[#9b3b82] p-1 flex-shrink-0 shadow-md flex items-center justify-center">
+                    <img 
+                      src="/saffron_icon.png" 
+                      alt="Saffron Guidance" 
+                      className="w-full h-full object-contain drop-shadow-sm" 
+                      onError={(e) => { e.target.src = '/mascot.png'; }} 
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-black uppercase tracking-widest bg-[#d4af37]/20 text-[#85581a] px-2.5 py-0.5 rounded-full border border-[#d4af37]/40 flex items-center gap-1">
+                        <Sparkles size={10} className="text-[#85581a]" />
+                        Free Saffron Guidance
+                      </span>
+                    </div>
+                    <h3 className="text-sm md:text-[15px] font-black text-[#662654] mt-1.5 font-serif leading-snug">
+                      Need Guidance on Saffron for Pregnancy or Daily Wellness?
+                    </h3>
+                    <p className="text-xs text-gray-600 mt-1 leading-relaxed">
+                      Doctor-aligned advice on Kashmiri Mongra Saffron dosage, right trimester timing, warm milk preparation, and family wellness benefits.
+                    </p>
+
+                    {/* Quick highlight pills */}
+                    <div className="flex flex-wrap gap-2 mt-2.5 text-[11px] font-bold text-[#662654]/90">
+                      <span className="bg-white/80 border border-[#d4af37]/30 rounded-md px-2 py-0.5 shadow-xs flex items-center gap-1">
+                        🌸 Trimester-wise Dosage
+                      </span>
+                      <span className="bg-white/80 border border-[#d4af37]/30 rounded-md px-2 py-0.5 shadow-xs flex items-center gap-1">
+                        🥛 Warm Milk Protocol
+                      </span>
+                      <span className="bg-white/80 border border-[#d4af37]/30 rounded-md px-2 py-0.5 shadow-xs flex items-center gap-1">
+                        🏥 Doctor-Approved
+                      </span>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex flex-wrap items-center gap-2.5 mt-3.5">
+                      <Link
+                        to="/saffron-guidance"
+                        className="inline-flex items-center gap-1.5 bg-[#662654] hover:bg-[#4a1c3d] text-white text-xs font-black px-4 py-2.5 rounded-full shadow-md hover:shadow-lg transition-all cursor-pointer"
+                      >
+                        <span>Consult Saffron Guidance</span>
+                        <ArrowRight size={13} />
+                      </Link>
+                      <a
+                        href="https://wa.me/918754787774?text=Hi%20Paidhu%2C%20I%20am%20viewing%20the%20Saffron%20Gift%20Box%20%2F%20Kashmiri%20Mongra%20Saffron%20and%20would%20like%20expert%20saffron%20guidance%20for%20pregnancy%2Fwellness."
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black px-3.5 py-2.5 rounded-full shadow-md hover:shadow-lg transition-all cursor-pointer"
+                      >
+                        <MessageSquare size={13} />
+                        <span>WhatsApp Expert</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
 
             {/* Value Props Strip */}
             <div className="grid grid-cols-3 gap-3 text-center text-gray-500 pt-2">
@@ -847,6 +959,102 @@ const ProductDetailPage = () => {
 
 
       </div>
+
+      {/* 🌸 Saffron Guidance Popup Modal (Triggered on Add to Cart) */}
+      <AnimatePresence>
+        {showSaffronGuidanceModal && (
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="bg-white rounded-3xl shadow-2xl border border-[#d4af37]/30 max-w-lg w-full overflow-hidden relative"
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setShowSaffronGuidanceModal(false)}
+                className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-black/20 hover:bg-black/40 text-white flex items-center justify-center transition-colors cursor-pointer"
+                aria-label="Close"
+              >
+                <X size={18} />
+              </button>
+
+              {/* Modal Top Header Banner */}
+              <div className="bg-gradient-to-r from-[#662654] via-[#85306e] to-[#662654] p-6 text-white text-center relative overflow-hidden">
+                <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border-2 border-white/20 p-1 mx-auto mb-3 shadow-lg flex items-center justify-center">
+                  <img 
+                    src="/saffron_icon.png" 
+                    alt="Saffron Guidance" 
+                    className="w-full h-full object-contain"
+                    onError={(e) => { e.target.src = '/mascot.png'; }}
+                  />
+                </div>
+                <span className="inline-block bg-[#d4af37] text-[#522742] text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full mb-1 shadow-sm">
+                  Added to Cart! 🌸
+                </span>
+                <h2 className="text-xl md:text-2xl font-black font-serif tracking-tight mt-1">
+                  Personalized Saffron Guidance
+                </h2>
+                <p className="text-xs text-white/80 mt-1 max-w-xs mx-auto">
+                  Are you using Kashmiri Mongra Saffron for pregnancy, newborn wellness, or family health?
+                </p>
+              </div>
+
+              {/* Modal Body */}
+              <div className="p-6 space-y-4">
+                <div className="bg-[#fff9f4] border border-[#d4af37]/30 rounded-2xl p-4 space-y-2">
+                  <div className="flex items-center gap-2 text-sm font-extrabold text-[#662654]">
+                    <CheckCircle2 size={16} className="text-[#d4af37]" />
+                    <span>Get 100% Free Expert Consultation</span>
+                  </div>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    Our specialists provide doctor-approved guidance on exact strand dosage, trimester timing, and optimal preparation so you get the purest benefits.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <Link
+                    to="/saffron-guidance"
+                    onClick={() => setShowSaffronGuidanceModal(false)}
+                    className="flex items-center justify-center gap-2 bg-[#662654] hover:bg-[#4a1c3d] text-white text-xs font-black py-3 px-4 rounded-xl shadow-md transition-all text-center"
+                  >
+                    <span>Consult Guidance Form</span>
+                    <ArrowRight size={13} />
+                  </Link>
+
+                  <a
+                    href="https://wa.me/918754787774?text=Hi%20Paidhu%2C%20I%20just%20added%20Saffron%20to%20my%20cart%20and%20would%20love%20expert%20guidance%20for%20pregnancy%2Fwellness."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setShowSaffronGuidanceModal(false)}
+                    className="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black py-3 px-4 rounded-xl shadow-md transition-all text-center"
+                  >
+                    <MessageSquare size={14} />
+                    <span>WhatsApp Specialist</span>
+                  </a>
+                </div>
+
+                <div className="border-t border-gray-100 pt-3 flex items-center justify-between">
+                  <button
+                    onClick={() => setShowSaffronGuidanceModal(false)}
+                    className="text-xs font-bold text-gray-500 hover:text-gray-800 transition-colors py-1 cursor-pointer"
+                  >
+                    Continue Shopping
+                  </button>
+                  <Link
+                    to="/checkout"
+                    onClick={() => setShowSaffronGuidanceModal(false)}
+                    className="text-xs font-extrabold text-[#662654] hover:underline flex items-center gap-1 cursor-pointer"
+                  >
+                    <span>Proceed to Checkout</span>
+                    <ArrowRight size={13} />
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
     </motion.div>
   );
