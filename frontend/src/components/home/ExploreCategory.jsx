@@ -453,31 +453,10 @@ const DesktopCategoryCard = ({
         <div className="relative w-full h-full flex flex-row items-center justify-between p-6 lg:p-8 gap-6 z-10 bg-white">
           
           {/* Left Column: Category details & Shop Now */}
-          <div className="flex-1 flex flex-col justify-between h-full max-w-[44%] py-1">
+          <div className="flex-1 flex flex-col justify-between h-full max-w-[44%] py-2">
             <div>
-              {/* Badges */}
-              <div className="flex items-center gap-2 mb-3.5 flex-wrap">
-                <span
-                  className="rounded-full px-3 py-1 text-white text-[10px] font-extrabold tracking-wider uppercase shadow-xs"
-                  style={{ background: cat.accent }}
-                >
-                  {cat.badge}
-                </span>
-                <span className="bg-gray-100 border border-gray-200 text-gray-700 rounded-full px-2.5 py-1 text-[10px] font-bold shadow-xs">
-                  {products.length || cat.productCount} Products
-                </span>
-              </div>
-
-              {/* Subtitle */}
-              <span
-                className="text-[11px] font-black tracking-[0.2em] uppercase mb-1.5 block"
-                style={{ color: cat.textAccent || cat.accent }}
-              >
-                {cat.subtitle}
-              </span>
-
               {/* Category Title */}
-              <h3 className="font-black text-2xl lg:text-4xl text-gray-900 tracking-tight leading-tight mb-2">
+              <h3 className="font-black text-2xl lg:text-4xl text-gray-900 tracking-tight leading-tight mb-3">
                 {cat.title}
               </h3>
 
@@ -819,12 +798,6 @@ const MobileCategoryCard = ({
 
       {/* Bottom Information */}
       <div className="absolute inset-0 p-3 flex flex-col justify-end z-10 pointer-events-none">
-        <span
-          className="text-[9px] font-black tracking-widest uppercase mb-0.5 block"
-          style={{ color: cat.textAccent || cat.accent }}
-        >
-          {cat.subtitle}
-        </span>
         <h3 className="font-black text-[15px] leading-tight text-gray-900 tracking-tight">
           {cat.title}
         </h3>
