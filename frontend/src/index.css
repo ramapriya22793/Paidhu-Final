@@ -1,79 +1,162 @@
-@import url('https://fonts.googleapis.com/css2?family=Francois+One&family=Nunito+Sans:ital,opsz,wght@0,6..12,300..900;1,6..12,300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Francois+One&display=swap');
 @import url('https://fonts.cdnfonts.com/css/avenir-lt-std');
 @import "tailwindcss";
 
-/* Define alias so 'Avenir LT' matches 'Avenir LT Std' webfont */
+/* ─────────────────────────────────────────────────────────────
+   @FONT-FACE: Francois One (Headings)
+   ───────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: 'Francois One';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Francois One'),
+       url('/fonts/FrancoisOne-Regular.woff2') format('woff2'),
+       url('https://fonts.gstatic.com/s/francoisone/v22/_Xmr-H4zszafZw3A-KPSZut9wQiR.woff2') format('woff2');
+}
+
+/* ─────────────────────────────────────────────────────────────
+   @FONT-FACE: Avenir LT & Avenir LT Std (Body)
+   ───────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: 'Avenir LT';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: local('Avenir LT 35 Light'), local('Avenir LT Light'),
+       url('/fonts/AvenirLTStd-Light.woff') format('woff'),
+       url('https://fonts.cdnfonts.com/s/13298/AvenirLTStd-Light.woff') format('woff');
+}
+@font-face {
+  font-family: 'Avenir LT';
+  font-style: normal;
+  font-weight: 350;
+  font-display: swap;
+  src: local('Avenir LT 45 Book'), local('Avenir LT Book'),
+       url('/fonts/AvenirLTStd-Book.woff') format('woff'),
+       url('https://fonts.cdnfonts.com/s/13298/AvenirLTStd-Book.woff') format('woff');
+}
 @font-face {
   font-family: 'Avenir LT';
   font-style: normal;
   font-weight: 400;
-  src: local('Avenir LT'), local('Avenir LT Std'), local('Avenir Next'), local('Avenir'), url('https://fonts.cdnfonts.com/s/13298/AvenirLTStd-Roman.woff') format('woff');
+  font-display: swap;
+  src: local('Avenir LT 55 Roman'), local('Avenir LT Std 55 Roman'), local('Avenir LT'), local('Avenir LT Std'), local('Avenir Next'), local('Avenir'),
+       url('/fonts/AvenirLTStd-Roman.woff') format('woff'),
+       url('https://fonts.cdnfonts.com/s/13298/AvenirLTStd-Roman.woff') format('woff');
+}
+@font-face {
+  font-family: 'Avenir LT';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Avenir LT 55 Oblique'), local('Avenir LT Oblique'),
+       url('/fonts/AvenirLTStd-Oblique.woff') format('woff'),
+       url('https://fonts.cdnfonts.com/s/13298/AvenirLTStd-Oblique.woff') format('woff');
 }
 @font-face {
   font-family: 'Avenir LT';
   font-style: normal;
   font-weight: 500;
-  src: local('Avenir LT Medium'), local('Avenir LT Std 65 Medium'), local('Avenir Next Medium'), url('https://fonts.cdnfonts.com/s/13298/AvenirLTStd-Medium.woff') format('woff');
+  font-display: swap;
+  src: local('Avenir LT 65 Medium'), local('Avenir LT Medium'), local('Avenir LT Std 65 Medium'), local('Avenir Next Medium'),
+       url('/fonts/AvenirLTStd-Medium.woff') format('woff'),
+       url('https://fonts.cdnfonts.com/s/13298/AvenirLTStd-Medium.woff') format('woff');
 }
 @font-face {
   font-family: 'Avenir LT';
   font-style: normal;
   font-weight: 600;
-  src: local('Avenir LT Demi'), local('Avenir LT Std 65 Medium'), local('Avenir Next Demi Bold'), url('https://fonts.cdnfonts.com/s/13298/AvenirLTStd-Medium.woff') format('woff');
+  font-display: swap;
+  src: local('Avenir LT 65 Medium'), local('Avenir LT Demi'), local('Avenir LT Std 65 Medium'), local('Avenir Next Demi Bold'),
+       url('/fonts/AvenirLTStd-Medium.woff') format('woff'),
+       url('https://fonts.cdnfonts.com/s/13298/AvenirLTStd-Medium.woff') format('woff');
 }
 @font-face {
   font-family: 'Avenir LT';
   font-style: normal;
   font-weight: 700;
-  src: local('Avenir LT Bold'), local('Avenir LT Std 85 Heavy'), local('Avenir Next Bold'), url('https://fonts.cdnfonts.com/s/13298/AvenirLTStd-Heavy.woff') format('woff');
+  font-display: swap;
+  src: local('Avenir LT 85 Heavy'), local('Avenir LT Bold'), local('Avenir LT Std 85 Heavy'), local('Avenir Next Bold'),
+       url('/fonts/AvenirLTStd-Heavy.woff') format('woff'),
+       url('https://fonts.cdnfonts.com/s/13298/AvenirLTStd-Heavy.woff') format('woff');
 }
 @font-face {
   font-family: 'Avenir LT';
   font-style: normal;
   font-weight: 800;
-  src: local('Avenir LT Black'), local('Avenir LT Std 95 Black'), local('Avenir Next Heavy'), url('https://fonts.cdnfonts.com/s/13298/AvenirLTStd-Black.woff') format('woff');
+  font-display: swap;
+  src: local('Avenir LT 85 Heavy'), local('Avenir LT Heavy'), local('Avenir LT Std 85 Heavy'), local('Avenir Next Bold'),
+       url('/fonts/AvenirLTStd-Heavy.woff') format('woff'),
+       url('https://fonts.cdnfonts.com/s/13298/AvenirLTStd-Heavy.woff') format('woff');
+}
+@font-face {
+  font-family: 'Avenir LT';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: local('Avenir LT 95 Black'), local('Avenir LT Black'), local('Avenir LT Std 95 Black'), local('Avenir Next Heavy'),
+       url('/fonts/AvenirLTStd-Black.woff') format('woff'),
+       url('https://fonts.cdnfonts.com/s/13298/AvenirLTStd-Black.woff') format('woff');
+}
+
+/* Also support 'Avenir LT Std' alias */
+@font-face {
+  font-family: 'Avenir LT Std';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Avenir LT Std 55 Roman'), local('Avenir LT Std'), local('Avenir LT'),
+       url('/fonts/AvenirLTStd-Roman.woff') format('woff'),
+       url('https://fonts.cdnfonts.com/s/13298/AvenirLTStd-Roman.woff') format('woff');
+}
+@font-face {
+  font-family: 'Avenir LT Std';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Avenir LT Std 65 Medium'), local('Avenir LT Medium'),
+       url('/fonts/AvenirLTStd-Medium.woff') format('woff'),
+       url('https://fonts.cdnfonts.com/s/13298/AvenirLTStd-Medium.woff') format('woff');
+}
+@font-face {
+  font-family: 'Avenir LT Std';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Avenir LT Std 85 Heavy'), local('Avenir LT Bold'),
+       url('/fonts/AvenirLTStd-Heavy.woff') format('woff'),
+       url('https://fonts.cdnfonts.com/s/13298/AvenirLTStd-Heavy.woff') format('woff');
 }
 
 @theme {
   --color-brand-plum: #662654;
   --color-brand-cream: #ede7d7;
-  --font-sans: "Avenir LT", "Avenir LT Std", "Avenir Next", "Avenir", "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-body: "Avenir LT", "Avenir LT Std", "Avenir Next", "Avenir", "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: "Avenir LT", "Avenir LT Std", "Avenir Next", "Avenir", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-body: "Avenir LT", "Avenir LT Std", "Avenir Next", "Avenir", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-serif: "Francois One", sans-serif;
   --font-heading: "Francois One", sans-serif;
 }
 
-html {
+html, body {
   scroll-behavior: smooth;
-  font-family: "Avenir LT", "Avenir LT Std", "Avenir Next", "Avenir", "Nunito Sans", system-ui, sans-serif;
-}
-
-body {
   margin: 0;
   padding: 0;
   width: 100%;
   overflow-x: hidden;
-  font-family: "Avenir LT", "Avenir LT Std", "Avenir Next", "Avenir", "Nunito Sans", system-ui, sans-serif;
+  font-family: "Avenir LT", "Avenir LT Std", "Avenir Next", "Avenir", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background-color: var(--color-brand-cream);
   color: #1a1a1a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* ─────────────────────────────────────────────────────────────
-   HEADINGS: Francois One
+   BODY TEXT: Avenir LT (Global Default for all text & elements)
    ───────────────────────────────────────────────────────────── */
-h1, h2, h3, h4, h5, h6,
-h1 *, h2 *, h3 *, h4 *, h5 *, h6 *,
-.font-serif,
-.font-serif *,
-.font-heading,
-.font-heading * {
-  font-family: "Francois One", sans-serif !important;
-  letter-spacing: 0.01em;
-}
-
-/* ─────────────────────────────────────────────────────────────
-   BODY TEXT: Avenir LT
-   ───────────────────────────────────────────────────────────── */
+*,
+::before,
+::after,
 p, 
 span, 
 a, 
@@ -87,17 +170,22 @@ td,
 th,
 .font-sans,
 .font-body {
-  font-family: "Avenir LT", "Avenir LT Std", "Avenir Next", "Avenir", "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: "Avenir LT", "Avenir LT Std", "Avenir Next", "Avenir", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-/* Re-assert heading styling over any nested spans/tags */
+/* ─────────────────────────────────────────────────────────────
+   HEADINGS: Francois One (All Headings & Heading-Classes)
+   ───────────────────────────────────────────────────────────── */
 h1, h2, h3, h4, h5, h6,
 h1 *, h2 *, h3 *, h4 *, h5 *, h6 *,
 .font-serif,
 .font-serif *,
 .font-heading,
-.font-heading * {
+.font-heading *,
+[class*="font-serif"],
+[class*="font-heading"] {
   font-family: "Francois One", sans-serif !important;
+  letter-spacing: 0.01em;
 }
 
 #root {
