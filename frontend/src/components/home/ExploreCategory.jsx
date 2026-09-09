@@ -25,7 +25,7 @@ const CATEGORY_CONFIG = [
     actionIcon: "🍪",
     actionIconAnim: { y: [2, -18], x: [0, 6], opacity: [0, 1, 0], scale: [0.5, 1.2, 0.7] },
     actionIconDuration: 1.6,
-    temptationQuote: "Wholesome cookies baked with real flower petals (Lotus, Hibiscus, Aavaram), pure country jaggery, and zero refined sugar or maida.",
+    temptationQuote: "Delightful, crunchy floral cookies baked with real petals (Lotus, Hibiscus, Aavaram), pearl millet, and pure country jaggery with zero refined sugar or maida.",
     bgClass: "from-[#fffdfa] via-[#fcf6ee] to-[#f8ede0]",
     borderClass: "border-[#eaddcb]",
     img: "/white_lotus_cookies_new.png",
@@ -35,17 +35,23 @@ const CATEGORY_CONFIG = [
       {
         id: 8,
         name: "Bloom Cookies - White Lotus",
-        image: "/white_lotus_cookies_new.png"
+        image: "/white_lotus_cookies_new.png",
+        shortDescription: "Bloom Cookies White Lotus are a delicate and soothing snack crafted for those who appreciate subtle floral flavors combined with a soft, melt-in-the-mouth texture.",
+        description: "Bloom Cookies White Lotus are a delicate and soothing snack crafted for those who appreciate subtle floral flavors combined with a soft and melt-in-the-mouth texture. Infused with natural white lotus petals, pearl millet, and country jaggery."
       },
       {
         id: 10,
         name: "Bloom Cookies - Hibiscus",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787744799967-paidhuhibiscus001png.png"
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787744799967-paidhuhibiscus001png.png",
+        shortDescription: "Bloom Cookies Hibiscus are a delightful and refreshing snack crafted for those who appreciate unique flavors combined with a perfect crunchy texture.",
+        description: "Bloom Cookies Hibiscus are the perfect combination of taste, quality, and uniqueness. With their natural hibiscus flavor, crispy texture, and balanced sweetness."
       },
       {
         id: 9,
         name: "Bloom Cookies - Aavaram Poo",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787745086149-paidhuaavaram001png.png"
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787745086149-paidhuaavaram001png.png",
+        shortDescription: "Aavaram Poo Bloom Cookies are a delightful and traditional snack crafted for those who appreciate authentic flavors combined with a perfect crunchy texture.",
+        description: "Aavaram Poo Bloom Cookies are the perfect combination of tradition, taste, and quality. Infused with natural Aavaram Poo (Senna auriculata) for a unique herbal taste."
       }
     ],
     images: [
@@ -73,7 +79,7 @@ const CATEGORY_CONFIG = [
     actionIcon: "🥄",
     actionIconAnim: { y: [0, -16], x: [-2, 6], opacity: [0, 1, 0], rotate: [-10, 20], scale: [0.6, 1.1, 0.8] },
     actionIconDuration: 1.8,
-    temptationQuote: "Artisanal flower petal jams and traditional gulkhand slow-simmered with fresh rose, aavaram, and hibiscus petals.",
+    temptationQuote: "Artisanal flower petal jams and traditional gulkhand slow-simmered from fresh Damask rose, aavaram, and hibiscus petals to retain delicate floral essence and natural wellness.",
     bgClass: "from-[#fffcfd] via-[#fef2f6] to-[#fae5ed]",
     borderClass: "border-[#f2d4e0]",
     img: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787746427907-WhatsAppImage20260806at1138202jpeg.jpeg",
@@ -83,27 +89,32 @@ const CATEGORY_CONFIG = [
       {
         id: 29,
         name: "Tanner's Jam",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787746427907-WhatsAppImage20260806at1138202jpeg.jpeg"
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787746427907-WhatsAppImage20260806at1138202jpeg.jpeg",
+        shortDescription: "Made from the vibrant blossoms of the Avaram Poo (Cassia Auriculata) flower, this jam captures the delicate floral essence and natural goodness of this traditionally cherished medicinal flower."
       },
       {
         id: 28,
         name: "Rose Gulkhand Jam",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787746603306-rosegulkhand001png.png"
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787746603306-rosegulkhand001png.png",
+        shortDescription: "Discover the sweet floral taste of Rose Gulkhand Jam, made from handpicked Damask rose petals. A natural, digestive-friendly spread with traditional Ayurvedic benefits."
       },
       {
         id: 6,
         name: "Sinensis Syrup – Petal Jam",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787747332571-synensissyrup001png.png"
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787747332571-synensissyrup001png.png",
+        shortDescription: "Sinensis Petal Jam is a premium artisanal floral preserve made from hand-picked fresh edible petals, carefully crafted to deliver both rich taste and natural wellness benefits."
       },
       {
         id: 4,
         name: "Hibiscus Petal Jam",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787747607795-hibiscuspetaljam001png.png"
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787747607795-hibiscuspetaljam001png.png",
+        shortDescription: "Hibiscus Petal Jam is a natural antioxidant-rich herbal jam made from fresh hibiscus flowers. It helps support heart health, digestion, and overall wellness with every spoon."
       },
       {
         id: 3,
         name: "Neem Petal Jam",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787748641468-neemjam001png.png"
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787748641468-neemjam001png.png",
+        shortDescription: "Buy Neem Petal Jam made from natural neem flowers. Supports digestion, detox, and overall wellness. 100% natural, chemical-free herbal jam from Paidhu."
       }
     ],
     images: [
@@ -132,7 +143,7 @@ const CATEGORY_CONFIG = [
     actionIcon: "✨",
     actionIconAnim: { y: [2, -22], opacity: [0, 1, 0], scale: [0.4, 1.3, 0.8] },
     actionIconDuration: 2.0,
-    temptationQuote: "Lab-certified Grade-A1 Kashmiri Mongra saffron threads offering intense natural aroma, rich flavor, and royal golden color.",
+    temptationQuote: "Prized Kashmiri Mongra and Super Negin saffron hand-harvested for deep crimson threads, exceptional potency, and rich aroma.",
     bgClass: "from-[#fffdfa] via-[#fef7eb] to-[#faeedb]",
     borderClass: "border-[#f0dbc0]",
     img: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787746786285-saffronsuperneigin001png.png",
@@ -142,17 +153,20 @@ const CATEGORY_CONFIG = [
       {
         id: 22,
         name: "Super Negin Saffron",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787746786285-saffronsuperneigin001png.png"
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787746786285-saffronsuperneigin001png.png",
+        shortDescription: "Indulge in the ultimate luxury with our Super Neigin saffron, known for its exquisite golden strands, exceptional potency, and rich aromatic profile."
       },
       {
         id: 21,
         name: "Saffron Powder",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787747041682-saffronpowder002png.png"
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787747041682-saffronpowder002png.png",
+        shortDescription: "Premium saffron powder from Paidhu is carefully sourced to ensure purity and superior quality. Known for its rich aroma and vibrant color."
       },
       {
         id: 20,
         name: "Kashmiri Mongra",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787745899482-paidhukashmirimongrapng.png"
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787745899482-paidhukashmirimongrapng.png",
+        shortDescription: "Experience the essence of Kashmir with our prized Kashmiri Mongra saffron, renowned for its deep red threads, distinct flavor, and unparalleled fragrance."
       }
     ],
     images: [
@@ -179,7 +193,7 @@ const CATEGORY_CONFIG = [
     actionIcon: "♨️",
     actionIconAnim: { y: [4, -20], x: [2, -4], opacity: [0, 1, 0], scale: [0.6, 1.2, 0.8] },
     actionIconDuration: 1.8,
-    temptationQuote: "Caffeine-free whole flower dip infusions blending hibiscus, blue pea, cassia fistula, and lavender for daily wellness.",
+    temptationQuote: "Whole flower herbal tea infusions blending butterfly pea, hibiscus, pure saffron, and lavender for calming, antioxidant-rich hydration.",
     bgClass: "from-[#fafffc] via-[#f3f9f5] to-[#e6f2e9]",
     borderClass: "border-[#d2e7d7]",
     img: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787751567516-medleyteahibiscus005png.png",
@@ -189,27 +203,32 @@ const CATEGORY_CONFIG = [
       {
         id: 45,
         name: "Medley Teas - Hibiscus",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787751567516-medleyteahibiscus005png.png"
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787751567516-medleyteahibiscus005png.png",
+        shortDescription: "Medly Teas – Hibiscus is a premium herbal tea made from carefully selected and naturally dried hibiscus flowers."
       },
       {
         id: 31,
         name: "Cassia Fistula Medley Tea",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787752669123-cassiafistulamedleyteaspng.png"
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787752669123-cassiafistulamedleyteaspng.png",
+        shortDescription: "A premium herbal tea blend made with Cassia Fistula and carefully selected natural herbs. Rich in antioxidants and crafted to support everyday wellness."
       },
       {
         id: 19,
         name: "Medley Teas - Blue Pea",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787750755658-medleyteasbluepea001png.png"
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787750755658-medleyteasbluepea001png.png",
+        shortDescription: "Enjoy Bluetea Infusion — a pure butterfly pea flower drink that transforms your hydration routine with calming wellness."
       },
       {
         id: 18,
         name: "Medley Teas - Saffron",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787751146063-medleyteassaffron003png.png"
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787751146063-medleyteassaffron003png.png",
+        shortDescription: "Medly Saffron Tea is a premium herbal infusion crafted from high-quality tea leaves and pure saffron strands for daily relaxation."
       },
       {
         id: 17,
         name: "Medley Teas - Lavender",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787752213835-medleyteaslavender007png.png"
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787752213835-medleyteaslavender007png.png",
+        shortDescription: "Soothe your senses with Lavender Infusion — a fragrant herbal beverage that restores calm and balance with delicate floral notes."
       }
     ],
     images: [
@@ -238,7 +257,7 @@ const CATEGORY_CONFIG = [
     actionIcon: "🌸",
     actionIconAnim: { y: [0, -18], x: [-4, 8], opacity: [0, 1, 0], rotate: [0, 45], scale: [0.5, 1.1, 0.7] },
     actionIconDuration: 1.7,
-    temptationQuote: "Intact sun-dried edible flowers (Aavaram, Chamomile, Lavender, Blue Pea, Hibiscus) that bloom gracefully when steeped in hot water.",
+    temptationQuote: "Intact sun-dried whole edible flowers (Aavaram, Chamomile, Lavender, Blue Pea, Hibiscus) crafted to bring calmness, relaxation, and gentle wellness.",
     bgClass: "from-[#fcfaff] via-[#f7f1fc] to-[#eee2f7]",
     borderClass: "border-[#e0d2f2]",
     img: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787156882780-brewfloraavarampoojpg.jpg",
@@ -248,27 +267,32 @@ const CATEGORY_CONFIG = [
       {
         id: 44,
         name: "Brew Flora - Aavaram Poo",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787156882780-brewfloraavarampoojpg.jpg"
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787156882780-brewfloraavarampoojpg.jpg",
+        shortDescription: "Brew Flora Aavaram Poo (30g) is a premium-quality herbal product made from carefully selected and naturally dried Aavaram flowers for overall wellness and skin glow."
       },
       {
         id: 15,
         name: "Brew Flora - Chamomile",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787141815115-WhatsAppImage20251113at2330215f60b43f180x180jpg.jpg"
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787141815115-WhatsAppImage20251113at2330215f60b43f180x180jpg.jpg",
+        shortDescription: "Sip serenity with Chamomile Tea, crafted from pure dried chamomile flowers. Naturally caffeine-free, it helps promote deep sleep, reduce stress, and calm the digestive system."
       },
       {
         id: 14,
         name: "Brew Flora - Lavender",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787138689761-WhatsAppImage20251113at233021b33d20d8180x1801jpg.jpg"
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787138689761-WhatsAppImage20251113at233021b33d20d8180x1801jpg.jpg",
+        shortDescription: "Crafted with calmness. Inspired by nature. Premium floral herbal blend carefully crafted to bring relaxation and elegance into your routine."
       },
       {
         id: 13,
         name: "Brew Flora - Hibiscus Tea",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787137806392-WhatsAppImage20251113at233024f74fae34180x180jpg.jpg"
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787137806392-WhatsAppImage20251113at233024f74fae34180x180jpg.jpg",
+        shortDescription: "Brew the vibrant taste of Indian Hibiscus Tea — a tart, refreshing floral infusion known for its deep red hue and high vitamin C content."
       },
       {
         id: 12,
         name: "Brew Flora - Blue Pea",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787158088419-bluepeabrewflorajpg.jpg"
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787158088419-bluepeabrewflorajpg.jpg",
+        shortDescription: "Dive into calm with Bluepea Tea, also known as Shankhpushpi or Aparajita tea. Rich in anthocyanins that improve focus and relieve stress."
       }
     ],
     images: [
@@ -301,6 +325,82 @@ const resolveImage = (img) => {
 
 const countsCache = { current: null };
 
+// Derive a clean, punchy excerpt directly from the admin-entered product description
+export const deriveProductExcerpt = (product, fallback = '') => {
+  if (!product) return fallback;
+  const raw = product.shortDescription || product.description || '';
+  if (!raw || !raw.trim()) return fallback;
+
+  // Strip HTML tags & decode common HTML entities
+  let text = raw
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&ndash;/g, '–')
+    .replace(/&mdash;/g, '—');
+
+  const lines = text
+    .split(/\r?\n/)
+    .map((l) => l.trim())
+    .filter(Boolean);
+
+  const normName = (product.name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
+  let meaningful = lines.find((l) => {
+    const normLine = l.toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (normLine === normName) return false;
+    if (l.includes('| Paidhu')) return false;
+    if (l.match(/^(5 Benefits|Ingredients|Taste of|Why Choose|Conclusion)/i)) return false;
+    if (l.includes('–') && normLine.startsWith(normName) && l.length < 75) return false;
+    if (l.length < 25) return false;
+    return true;
+  });
+
+  if (!meaningful && lines.length > 0) {
+    meaningful = lines.find((l) => !l.includes('| Paidhu') && l.length > 20) || lines[0];
+  }
+
+  if (!meaningful) return fallback;
+
+  meaningful = meaningful.replace(/\s+/g, ' ').trim();
+
+  // Try extracting the first complete sentence (or two short sentences)
+  const sentences = meaningful.match(/[^.!?]+[.!?]+/g);
+  if (sentences && sentences.length > 0) {
+    let result = '';
+    for (const s of sentences) {
+      const trimmed = s.trim();
+      if (!result) {
+        if (trimmed.length <= 190) {
+          result = trimmed;
+        } else {
+          const cut = trimmed.substring(0, 160);
+          const lastSpace = cut.lastIndexOf(' ');
+          result = (lastSpace > 90 ? cut.substring(0, lastSpace) : cut).trim() + '...';
+        }
+      } else if ((result + ' ' + trimmed).length <= 180) {
+        result = (result + ' ' + trimmed).trim();
+      } else {
+        break;
+      }
+    }
+    if (result && result.length >= 25) {
+      return result;
+    }
+  }
+
+  // Fallback to word-boundary truncation
+  if (meaningful.length > 165) {
+    const cut = meaningful.substring(0, 160);
+    const lastSpace = cut.lastIndexOf(' ');
+    return (lastSpace > 90 ? cut.substring(0, lastSpace) : cut).trim() + '...';
+  }
+
+  return meaningful;
+};
+
 // =======================================================
 // DESKTOP CATEGORY CARD (Expanding Flex Accordion Item)
 // =======================================================
@@ -318,6 +418,7 @@ const DesktopCategoryCard = ({
   const safeIdx = images.length > 0 ? (activeImageIdx % images.length) : 0;
   const currentImg = images[safeIdx] || cat.fallback;
   const currentProduct = products[safeIdx] || null;
+  const activeProductDescription = deriveProductExcerpt(currentProduct, cat.temptationQuote);
 
   // Auto-cycle products whenever the box is active / hovered
   useEffect(() => {
@@ -385,11 +486,20 @@ const DesktopCategoryCard = ({
                 {cat.title}
               </h3>
 
-              {/* Temptation Quote */}
-              {cat.temptationQuote && (
-                <p className="text-gray-600 text-xs lg:text-[13px] font-semibold leading-relaxed mb-3 italic">
-                  "{cat.temptationQuote}"
-                </p>
+              {/* Product description derived dynamically from admin */}
+              {activeProductDescription && (
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={currentProduct?.id || `${cat.title}-${safeIdx}`}
+                    initial={{ opacity: 0, y: 3 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.22 }}
+                    className="text-gray-600 text-xs lg:text-[13px] font-medium leading-relaxed mb-3 line-clamp-3 italic min-h-[46px]"
+                  >
+                    "{activeProductDescription}"
+                  </motion.p>
+                </AnimatePresence>
               )}
 
               {/* Live Active Product Name Tag */}
@@ -632,6 +742,7 @@ const MobileCategoryCard = ({
   const safeIdx = images.length > 0 ? (activeImageIdx % images.length) : 0;
   const currentImg = images[safeIdx] || cat.fallback;
   const currentProduct = products[safeIdx] || null;
+  const activeProductDescription = deriveProductExcerpt(currentProduct, cat.temptationQuote);
 
   // Staggered auto-cycle for mobile cards
   useEffect(() => {
@@ -742,9 +853,14 @@ const MobileCategoryCard = ({
           {cat.title}
         </h3>
         {currentProduct && (
-          <span className="text-gray-700 text-[10px] font-bold truncate mt-0.5">
+          <span className="text-gray-800 text-[10px] font-extrabold truncate mt-0.5 block">
             ✦ {currentProduct.name}
           </span>
+        )}
+        {activeProductDescription && (
+          <p className="text-gray-600 text-[9px] font-medium line-clamp-1 mt-0.5 leading-tight opacity-90">
+            {activeProductDescription}
+          </p>
         )}
       </div>
     </motion.div>
@@ -789,22 +905,34 @@ const ExploreCategory = () => {
                     id: p.id,
                     name: p.name,
                     image: p.image,
-                    price: p.price
+                    price: p.price,
+                    shortDescription: p.shortDescription || '',
+                    description: p.description || ''
                   }))
                 : cat.products || [];
 
-              const productImages = fetchedProducts.map((p) => p.image).filter(Boolean);
-              const allImages = (cat.title === 'Bloom Cookies')
-                ? ['/white_lotus_cookies_new.png', ...productImages.filter(img => img !== '/white_lotus_cookies_new.png')]
-                : (productImages.length > 0 ? productImages : (cat.images || [cat.img || cat.fallback]));
+              // Keep products and images in exact matching order
+              let orderedProducts = fetchedProducts;
+              if (cat.title === 'Bloom Cookies') {
+                const whiteLotus = fetchedProducts.find(p => p.name.toLowerCase().includes('white lotus') || p.id === 8);
+                if (whiteLotus) {
+                  orderedProducts = [
+                    { ...whiteLotus, image: whiteLotus.image || '/white_lotus_cookies_new.png' },
+                    ...fetchedProducts.filter(p => p !== whiteLotus)
+                  ];
+                }
+              }
+
+              const productImages = orderedProducts.map((p) => p.image).filter(Boolean);
+              const allImages = productImages.length > 0 ? productImages : (cat.images || [cat.img || cat.fallback]);
 
               return {
                 ...cat,
-                products: fetchedProducts,
+                products: orderedProducts,
                 images: allImages,
                 img: allImages[0] || cat.fallback,
                 loading: false,
-                productCount: data.total || fetchedProducts.length || cat.productCount || 0
+                productCount: data.total || orderedProducts.length || cat.productCount || 0
               };
             } catch (e) {
               return {
