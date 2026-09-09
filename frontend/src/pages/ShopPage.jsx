@@ -10,6 +10,7 @@ import paidhuLogo from '../assets/paidhulogo.png';
 import { useCart } from '../context/CartContext';
 import AboutUsSection from '../components/ui/AboutUsSection';
 import BlogsSection from '../components/ui/BlogsSection';
+import BulkOrdersSection from '../components/ui/BulkOrdersSection';
 import FloralHabitatSection from '../components/ui/FloralHabitatSection';
 import OurCommunitySection from '../components/ui/OurCommunitySection';
 import fallbacks from '../components/home/fallbacks.json';
@@ -45,7 +46,10 @@ const NAV_META = {
   'deal-of-the-day':            { label: 'Deal of the Day',            emoji: '🔥',  desc: 'Exclusive daily deals on your favourite products.' },
   'shop-by-category':           { label: 'Shop by Category',           emoji: '🌿',  desc: 'Explore products organised by category.' },
   'starting-floral-food-habitat':{ label: 'Starting Floral Food Habitat', emoji: '🌸', desc: 'Begin your floral food journey with curated starter packs.' },
-  'byoc':                       { label: 'BYOC',                       emoji: '🎁',  desc: 'Build your own custom floral food box.' },
+  'starting-solids-guide':      { label: 'Starting Solids Guide',      emoji: '🌸', desc: 'Begin your floral food journey with curated starter packs.' },
+  'bulk-orders':                { label: 'Bulk Orders',                emoji: '📦', desc: 'Buy your Paidhu favourites in bulk & resell ahead.' },
+  'byoc':                       { label: 'Build your Box',             emoji: '🎁', desc: 'Build your own custom floral food box.' },
+  'build-your-box':             { label: 'Build your Box',             emoji: '🎁', desc: 'Build your own custom floral food box.' },
   'our-own-community':          { label: 'Our Own Community',          emoji: '🤝',  desc: 'Products loved and recommended by our community.' },
   'our-philosophy':             { label: 'Our Philosophy',             emoji: '💚',  desc: 'Products that embody our core values and philosophy.' },
   'blogs':                      { label: 'Blogs',                      emoji: '✍️',  desc: 'Discover stories, recipes, and insights from Paidhu.' },
@@ -945,7 +949,16 @@ const ShopPage = () => {
   const sortLabel = SORT_OPTIONS.find(o => o.value === sort)?.label || 'Sort';
 
   if (navSection === 'bulk-orders') {
-    return <Navigate to="/shop/shop-all" replace />;
+    return (
+      <motion.div 
+        initial={{ opacity: 0, y: 12 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.55, ease: 'easeOut' }}
+        className="min-h-screen bg-[#faf9f7]"
+      >
+        <BulkOrdersSection />
+      </motion.div>
+    );
   }
 
   if (navSection === 'about-us') {
@@ -978,7 +991,7 @@ const ShopPage = () => {
     return <Navigate to="/shop/shop-all" replace />;
   }
 
-  if (navSection === 'starting-floral-food-habitat') {
+  if (navSection === 'starting-floral-food-habitat' || navSection === 'starting-solids-guide') {
     return (
       <motion.div 
         initial={{ opacity: 0, y: 12 }} 

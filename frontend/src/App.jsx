@@ -179,6 +179,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/shop" element={<ShopPage />} />
               <Route path="/shop/byoc" element={<BYOCPage />} />
+              <Route path="/shop/build-your-box" element={<BYOCPage />} />
               <Route path="/shop/blogs" element={<Navigate to="/shop/shop-all" replace />} />
               <Route path="/shop/:navSection" element={<ShopPage />} />
               <Route path="/product/:id" element={<ProductDetailPage />} />
@@ -191,7 +192,10 @@ function App() {
               <Route path="/about" element={<ShopPage navSection="about-us" />} />
               <Route path="/about-us" element={<ShopPage navSection="about-us" />} />
               <Route path="/starting-floral-food-habitat" element={<ShopPage navSection="starting-floral-food-habitat" />} />
-              <Route path="/bulk-orders" element={<Navigate to="/shop" replace />} />
+              <Route path="/starting-solids-guide" element={<ShopPage navSection="starting-solids-guide" />} />
+              <Route path="/bulk-orders" element={<ShopPage navSection="bulk-orders" />} />
+              <Route path="/build-your-box" element={<BYOCPage />} />
+              <Route path="/byoc" element={<BYOCPage />} />
               <Route path="/contact" element={<LegalPage type="contact-us" />} />
               <Route path="/contact-us" element={<LegalPage type="contact-us" />} />
               <Route path="/privacy-policy" element={<LegalPage type="privacy-policy" />} />

@@ -88,10 +88,14 @@ const defaultEmoji = '🌼';
 const navSlugMap = {
   'Home':                        '/',
   'Shop All':                    'shop-all',
-  'Deal of the Day':             'deal-of-the-day',
   'Shop by Category':            'shop-by-category',
-  'Starting Floral food habitat':'starting-floral-food-habitat',
+  'Deal of the Day':             'deal-of-the-day',
+  'Build your Box':              'byoc',
   'BYOC':                        'byoc',
+  'Starting Solids Guide':       'starting-solids-guide',
+  'Starting Floral food habitat':'starting-floral-food-habitat',
+  'Bulk Orders':                 'bulk-orders',
+  'Know us better':              'about-us',
   'Our Own Community':           'our-own-community',
   'Blogs':                       'shop-all', // Navigates to Shop All per request while blog is being updated
   'About Us':                    'about-us',
@@ -327,11 +331,12 @@ const Navbar = () => {
   };
 
   const navRow1 = [
-    { name: 'Home' },
     { name: 'Shop All' },
     { name: 'Shop by Category' },
     { name: 'Deal of the Day' },
-    { name: 'BYOC' },
+    { name: 'Build your Box' },
+    { name: 'Starting Solids Guide' },
+    { name: 'Bulk Orders' },
     { name: 'Know us better' },
     { name: 'Saffron Guidance' }
   ];
@@ -505,7 +510,7 @@ const Navbar = () => {
       <div className="hidden lg:block w-full bg-[#ede7d7] border-b border-[#662654]/10 py-3 relative z-40">
         <nav className="max-w-[1400px] mx-auto px-4 xl:px-8 flex flex-col gap-y-2">
           {/* Row 1 — Primary Links */}
-          <div className="flex justify-center items-center gap-x-2.5 xl:gap-x-5 w-full max-w-full whitespace-nowrap">
+          <div className="flex justify-center items-center gap-x-3 xl:gap-x-6 w-full max-w-full whitespace-nowrap">
             {navRow1.map((item, i) => {
               if (item.name === 'Shop by Category') {
                 return (
@@ -518,7 +523,7 @@ const Navbar = () => {
                   >
                     <button
                       onClick={() => setShowCatDropdown(v => !v)}
-                      className="relative flex items-center gap-1.5 text-[#662654] font-bold text-[15px] xl:text-[16.5px] hover:text-[#4a1c3d] transition-colors cursor-pointer whitespace-nowrap group py-0.5"
+                      className="relative flex items-center gap-1.5 text-[#662654] font-bold text-[14px] xl:text-[15.5px] hover:text-[#4a1c3d] transition-colors cursor-pointer whitespace-nowrap group py-0.5"
                     >
                       {item.name}
                       <ChevronDown
@@ -623,7 +628,7 @@ const Navbar = () => {
                   >
                     <button
                       onClick={() => setShowKnowUsDropdown(v => !v)}
-                      className="relative flex items-center gap-1.5 text-[#662654] font-bold text-[15px] xl:text-[16.5px] hover:text-[#4a1c3d] transition-colors cursor-pointer whitespace-nowrap group py-0.5"
+                      className="relative flex items-center gap-1.5 text-[#662654] font-bold text-[14px] xl:text-[15.5px] hover:text-[#4a1c3d] transition-colors cursor-pointer whitespace-nowrap group py-0.5"
                     >
                       {item.name}
                       <ChevronDown
@@ -775,6 +780,13 @@ const Navbar = () => {
               </div>
 
               <div className="flex flex-col space-y-1">
+                <Link
+                  to="/"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-full text-left text-[#ede7d7] font-medium text-sm border-b border-[#ede7d7]/10 py-3 hover:text-white transition-colors block"
+                >
+                  Home
+                </Link>
                 {navColumns.reduce((acc, col) => {
                   acc.push(col.top);
                   if (col.bottom) acc.push(col.bottom);
@@ -1251,7 +1263,7 @@ const NavItem = ({ name, onClick }) => {
         e.preventDefault();
         onClick();
       }}
-      className="relative text-[#662654] font-bold text-[15px] xl:text-[16.5px] leading-snug hover:text-[#4a1c3d] transition-colors cursor-pointer whitespace-nowrap text-center group py-0.5 inline-block"
+      className="relative text-[#662654] font-bold text-[14px] xl:text-[15.5px] leading-snug hover:text-[#4a1c3d] transition-colors cursor-pointer whitespace-nowrap text-center group py-0.5 inline-block"
     >
       {name}
       <span className="absolute -bottom-0.5 left-0 w-0 h-[2px] bg-[#662654] group-hover:w-full transition-all duration-300 rounded-full" />
