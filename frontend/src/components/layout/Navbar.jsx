@@ -330,7 +330,6 @@ const Navbar = () => {
     { name: 'Shop by Category' },
     { name: 'Deal of the Day' },
     { name: 'Build your Box' },
-    { name: 'Starting Solids Guide' },
     { name: 'Bulk Orders' },
     { name: 'Know us better' },
     { name: 'Saffron Guidance' }
