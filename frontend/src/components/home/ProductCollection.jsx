@@ -9,6 +9,7 @@ const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || (type
 
 const productsCache = {};
 let allProductsMemory = null;
+let lastFetchTime = 0;
 
 // Thematic terms directly based on Paidhu's floral food products (mouth-watering product temptation, non-health/non-medicinal)
 const COLLECTION_TERMS = {
@@ -394,13 +395,15 @@ const ProductCollection = () => {
 
     const fetchProducts = async () => {
       try {
+        const isStale = (Date.now() - lastFetchTime) > 15000;
         let allProducts = allProductsMemory;
-        if (!allProducts || allProducts.length === 0) {
-          const res = await fetch(`${API_BASE}/api/products?limit=100`);
+        if (!allProducts || allProducts.length === 0 || isStale) {
+          const res = await fetch(`${API_BASE}/api/products?limit=100&_t=${Date.now()}`, { cache: 'no-store' });
           if (res.ok) {
             const data = await res.json();
             allProducts = data.products || [];
             allProductsMemory = allProducts;
+            lastFetchTime = Date.now();
           }
         }
 

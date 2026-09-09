@@ -207,21 +207,19 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Fetch products and map categories from backend with 4h caching
+  // Fetch products and map categories from backend (stale-while-revalidate with live sync)
   useEffect(() => {
     let cachedCats = null;
     let cachedProducts = null;
-    let cachedTime = null;
     try {
       cachedCats = localStorage.getItem('paidhu_categories');
       cachedProducts = localStorage.getItem('paidhu_products');
-      cachedTime = localStorage.getItem('paidhu_products_time');
     } catch (e) {
       console.error("Failed to read cache from localStorage", e);
     }
-    const cachingDuration = 4 * 60 * 60 * 1000; // Cache for 4 hours
 
-    if (cachedCats && cachedProducts && cachedTime && (Date.now() - Number(cachedTime) < cachingDuration)) {
+    // Hydrate immediately to prevent layout shift
+    if (cachedCats && cachedProducts) {
       try {
         let parsedCats = JSON.parse(cachedCats).map(c => {
           if (c.name && c.name.toLowerCase() === 'uncategorized') {
@@ -232,15 +230,12 @@ const Navbar = () => {
         if (parsedCats && Array.isArray(parsedCats) && parsedCats.length > 0) {
           setCategories(parsedCats);
           setAllProducts(JSON.parse(cachedProducts));
-          if (cachedCats.includes('Uncategorized')) {
-            localStorage.setItem('paidhu_categories', JSON.stringify(parsedCats));
-          }
-          return;
         }
       } catch (e) {}
     }
 
-    fetch(`${API_BASE}/api/products?limit=200`)
+    // Always fetch fresh products and categories live from backend to reflect any admin updates
+    fetch(`${API_BASE}/api/products?limit=200&_t=${Date.now()}`, { cache: 'no-store' })
       .then(r => r.json())
       .then(data => {
         const productsList = data.products || [];

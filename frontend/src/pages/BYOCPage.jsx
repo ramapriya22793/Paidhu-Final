@@ -38,7 +38,7 @@ const BYOCPage = () => {
 
   // Load products if backend is available
   useEffect(() => {
-    fetch(`${API_BASE}/api/products?limit=50`)
+    fetch(`${API_BASE}/api/products?limit=50&_t=${Date.now()}`, { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         if (data.products && data.products.length > 0) {

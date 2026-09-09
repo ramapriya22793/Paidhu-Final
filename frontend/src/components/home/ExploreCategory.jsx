@@ -845,7 +845,8 @@ const ExploreCategory = () => {
             try {
               // Fetch up to 20 products per category to get all product images
               const res = await fetch(
-                `${API_BASE}/api/products?category=${encodeURIComponent(cat.title)}&limit=20`
+                `${API_BASE}/api/products?category=${encodeURIComponent(cat.title)}&limit=20&_t=${Date.now()}`,
+                { cache: 'no-store' }
               );
               const data = await res.json();
 

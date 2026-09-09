@@ -779,7 +779,7 @@ const ShopPage = () => {
 
   // Fetch categories
   useEffect(() => {
-    fetch(`${API_BASE}/api/products?limit=200`)
+    fetch(`${API_BASE}/api/products?limit=200&_t=${Date.now()}`, { cache: 'no-store' })
       .then(r => r.json())
       .then(data => {
         const productsList = data.products || [];
@@ -810,11 +810,12 @@ const ShopPage = () => {
     let active = true;
     const cacheKey = `${navSection}-${page}-${sort}-${debouncedSearch}-${appliedMinPrice}-${appliedMaxPrice}-${activeCategory}`;
     
-    // Instantly resolve cached result if available
-    if (shopCache[cacheKey]) {
-      setProducts(shopCache[cacheKey].products);
-      setTotal(shopCache[cacheKey].total);
-      setPages(shopCache[cacheKey].pages);
+    // Instantly resolve cached result if available and fresh (15s TTL)
+    const cached = shopCache[cacheKey];
+    if (cached && (Date.now() - (cached.timestamp || 0) < 15000)) {
+      setProducts(cached.products);
+      setTotal(cached.total);
+      setPages(cached.pages);
       setLoading(false);
     } else {
       // If no cache but we have matching fallback products, keep showing them and loading = false to prevent showing skeletons
@@ -835,13 +836,14 @@ const ShopPage = () => {
           page,
           limit: LIMIT,
           sort,
+          _t: Date.now()
         });
         if (debouncedSearch) params.set('search', debouncedSearch);
         if (appliedMinPrice) params.set('minPrice', appliedMinPrice);
         if (appliedMaxPrice) params.set('maxPrice', appliedMaxPrice);
         if (activeCategory) params.set('category', activeCategory);
 
-        const res = await fetch(`${API_BASE}/api/products?${params}`);
+        const res = await fetch(`${API_BASE}/api/products?${params}`, { cache: 'no-store' });
         const data = await res.json();
         if (active) {
           let fetchedList = data.products || [];
@@ -892,7 +894,8 @@ const ShopPage = () => {
           shopCache[cacheKey] = {
             products: fetchedList,
             total: fetchedTotal,
-            pages: fetchedPages
+            pages: fetchedPages,
+            timestamp: Date.now()
           };
         }
       } catch (e) {

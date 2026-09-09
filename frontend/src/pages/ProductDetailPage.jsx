@@ -135,7 +135,7 @@ const ProductDetailPage = () => {
       try {
         const decoded = decodeURIComponent(id || '').trim();
         const fetchParam = decoded.replace(/\s+/g, '-');
-        const res = await fetch(`${API_BASE}/api/products/${encodeURIComponent(fetchParam)}`);
+        const res = await fetch(`${API_BASE}/api/products/${encodeURIComponent(fetchParam)}?_t=${Date.now()}`, { cache: 'no-store' });
         if (!res.ok) {
           if (res.status === 404) throw new Error("Product not found");
           throw new Error("Failed to fetch product details");
@@ -156,7 +156,7 @@ const ProductDetailPage = () => {
 
         // Fetch similar products in same category or matching keywords
         try {
-          const listRes = await fetch(`${API_BASE}/api/products?limit=50`);
+          const listRes = await fetch(`${API_BASE}/api/products?limit=50&_t=${Date.now()}`, { cache: 'no-store' });
           if (listRes.ok) {
             const listData = await listRes.json();
             const all = listData.products || [];

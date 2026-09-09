@@ -33,7 +33,7 @@ const PaidhuSpotlight = () => {
     let isMounted = true;
     
     // Fetch products dynamically from the database
-    fetch(`${API_BASE}/api/products?limit=25`)
+    fetch(`${API_BASE}/api/products?limit=25&_t=${Date.now()}`, { cache: 'no-store' })
       .then(res => res.ok ? res.json() : { products: [] })
       .then(data => {
         const mapped = (data.products || []).map(p => {

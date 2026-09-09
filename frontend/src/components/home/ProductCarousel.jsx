@@ -90,7 +90,7 @@ const ProductCarousel = ({
   React.useEffect(() => {
     const fetchCarouselProducts = async () => {
       try {
-        const res = await fetch(`${API_BASE}/api/products?limit=50`);
+        const res = await fetch(`${API_BASE}/api/products?limit=50&_t=${Date.now()}`, { cache: 'no-store' });
         if (!res.ok) throw new Error("Failed to fetch carousel products");
         const data = await res.json();
         
