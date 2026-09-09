@@ -29,6 +29,10 @@ const features = [
     title: 'Paidhu Community',
     description: 'Join the Paidhu community to share wholesome food experiences, delicious recipe ideas, and lifestyle tips.',
     images: [
+      '/paidhu_mom_community_event_2.jpg',
+      '/paidhu_mom_community_event_1.jpg',
+      '/paidhu_mom_community_event_3.jpg',
+      '/paidhu_mom_community_event_4.jpg',
       '/moms_sharing_cookies.png',
       '/mom_drinking_tea.png',
       '/moms_garden_gathering.png'

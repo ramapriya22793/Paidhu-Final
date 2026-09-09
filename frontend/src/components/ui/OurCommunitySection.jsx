@@ -36,6 +36,10 @@ const FlowerIcon = () => (
 const SUPABASE_STORAGE_URL = 'https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/community';
 
 const sliderImages = [
+  '/paidhu_mom_community_event_2.jpg',
+  '/paidhu_mom_community_event_1.jpg',
+  '/paidhu_mom_community_event_3.jpg',
+  '/paidhu_mom_community_event_4.jpg',
   `${SUPABASE_STORAGE_URL}/wp_community_4.jpg`,
   `${SUPABASE_STORAGE_URL}/wp_community_5.jpg`,
   `${SUPABASE_STORAGE_URL}/wp_community_6.jpg`,
@@ -47,6 +51,30 @@ const sliderImages = [
 ];
 
 const eventMoments = [
+  {
+    image: '/paidhu_mom_community_event_2.jpg',
+    tag: "Celebration",
+    title: "Mom & Family Community Gathering",
+    subtitle: "Mothers, fathers, and children uniting around the Paidhu Bloom Stories celebration table."
+  },
+  {
+    image: '/paidhu_mom_community_event_1.jpg',
+    tag: "Storyteller",
+    title: "Family Tales Storytelling",
+    subtitle: "Mothers sharing inspiring family stories and healthy culinary journeys with young listeners."
+  },
+  {
+    image: '/paidhu_mom_community_event_3.jpg',
+    tag: "Cake Ceremony",
+    title: "Sweet Celebration Cake",
+    subtitle: "Excited children gathering together to celebrate healthy growth and wholesome treats."
+  },
+  {
+    image: '/paidhu_mom_community_event_4.jpg',
+    tag: "Bloom Kids",
+    title: "Little Storytellers Bonding",
+    subtitle: "Happy kids exploring natural floral food creations and making unforgettable memories."
+  },
   {
     image: `${SUPABASE_STORAGE_URL}/wp_community_4.jpg`,
     tag: "Celebration",
@@ -257,7 +285,7 @@ const OurCommunitySection = () => {
           </div>
 
           {/* Photos Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-5 sm:gap-6">
             {eventMoments.map((item, idx) => (
               <motion.div
                 key={idx}
