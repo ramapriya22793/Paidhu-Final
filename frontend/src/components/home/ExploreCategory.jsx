@@ -9,13 +9,13 @@ const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || (type
 const CATEGORY_CONFIG = [
   {
     title: "Bloom Cookies",
-    subtitle: "Crunchy Melt-in-Mouth Bakes",
+    subtitle: "Wholesome Edible Flower Bakes",
     accent: "#c8843a",
     textAccent: "#9a5d1a",
-    badge: "Crispy & Sweet",
+    badge: "100% Real Flowers & Jaggery",
     characterImg: "/illustrations PNG-06 (1).png",
     characterAlt: "Lotus mascot enjoying crunchy cookie",
-    characterTag: "Crunching & Munching!",
+    characterTag: "Real Flower Cookies",
     characterAnim: {
       y: [0, 5, 5, -8, -6, 3, -4, 0],
       rotate: [0, -6, -6, 5, 2, -3, 3, 0],
@@ -25,7 +25,7 @@ const CATEGORY_CONFIG = [
     actionIcon: "🍪",
     actionIconAnim: { y: [2, -18], x: [0, 6], opacity: [0, 1, 0], scale: [0.5, 1.2, 0.7] },
     actionIconDuration: 1.6,
-    temptationQuote: "Irresistibly crunchy, crumbly floral cookies baked with wholesome country jaggery and zero refined sugar.",
+    temptationQuote: "Wholesome cookies baked with real flower petals (Lotus, Hibiscus, Aavaram), pure country jaggery, and zero refined sugar or maida.",
     bgClass: "from-[#fffdfa] via-[#fcf6ee] to-[#f8ede0]",
     borderClass: "border-[#eaddcb]",
     img: "/white_lotus_cookies_new.png",
@@ -56,13 +56,13 @@ const CATEGORY_CONFIG = [
   },
   {
     title: "Petal Jam",
-    subtitle: "Luscious Velvety Spreads",
+    subtitle: "Handcrafted Floral Gulkhand & Jams",
     accent: "#c45c7c",
     textAccent: "#a63f61",
-    badge: "Sweet Temptation",
+    badge: "Pure Petal Preserves",
     characterImg: "/illustrations PNG-05 (1).png",
     characterAlt: "Lotus chef stirring sweet petal jam",
-    characterTag: "Stirring Sweet Jam!",
+    characterTag: "Handmade Petal Jam",
     characterAnim: {
       x: [0, 6, 0, -6, 0],
       y: [0, -4, 4, -2, 0],
@@ -73,7 +73,7 @@ const CATEGORY_CONFIG = [
     actionIcon: "🥄",
     actionIconAnim: { y: [0, -16], x: [-2, 6], opacity: [0, 1, 0], rotate: [-10, 20], scale: [0.6, 1.1, 0.8] },
     actionIconDuration: 1.8,
-    temptationQuote: "Velvety floral preserves slow-simmered from freshly hand-plucked petals for decadent toasts and desserts.",
+    temptationQuote: "Artisanal flower petal jams and traditional gulkhand slow-simmered with fresh rose, aavaram, and hibiscus petals.",
     bgClass: "from-[#fffcfd] via-[#fef2f6] to-[#fae5ed]",
     borderClass: "border-[#f2d4e0]",
     img: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787746427907-WhatsAppImage20260806at1138202jpeg.jpeg",
@@ -116,13 +116,13 @@ const CATEGORY_CONFIG = [
   },
   {
     title: "Saffron",
-    subtitle: "Crimson Royal Luxury",
+    subtitle: "Certified Grade-A1 Saffron Strands",
     accent: "#d4821a",
     textAccent: "#b5690b",
-    badge: "Gourmet Grade A+",
+    badge: "100% Pure Kashmiri Mongra",
     characterImg: "/saffron_character.png",
     characterAlt: "Saffron flower with authentic vibrant crimson threads",
-    characterTag: "Blooming Royal Threads!",
+    characterTag: "Pure Kashmiri Saffron",
     characterAnim: {
       y: [0, -12, 0],
       rotate: [-3, 3, -3],
@@ -132,7 +132,7 @@ const CATEGORY_CONFIG = [
     actionIcon: "✨",
     actionIconAnim: { y: [2, -22], opacity: [0, 1, 0], scale: [0.4, 1.3, 0.8] },
     actionIconDuration: 2.0,
-    temptationQuote: "Hand-harvested pristine crimson threads offering intense floral aroma and luxurious golden hues.",
+    temptationQuote: "Lab-certified Grade-A1 Kashmiri Mongra saffron threads offering intense natural aroma, rich flavor, and royal golden color.",
     bgClass: "from-[#fffdfa] via-[#fef7eb] to-[#faeedb]",
     borderClass: "border-[#f0dbc0]",
     img: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787746786285-saffronsuperneigin001png.png",
@@ -163,13 +163,13 @@ const CATEGORY_CONFIG = [
   },
   {
     title: "Medley Teas",
-    subtitle: "Soul-Soothing Aromatic Brews",
+    subtitle: "Whole Flower Infusion Dip Teas",
     accent: "#4a7c59",
     textAccent: "#386847",
-    badge: "Fragrant Bliss",
+    badge: "Herbal Floral Dip Bags",
     characterImg: "/medley_tea_character.png",
     characterAlt: "Hibiscus mascot dipping tea pouch into a cup",
-    characterTag: "Dipping Pouch in Cup!",
+    characterTag: "Flower Dip Tea",
     characterAnim: {
       y: [0, 8, 9, -8, -7, 8, 9, 0],
       rotate: [0, 4, 3, -3, -2, 4, 3, 0],
@@ -179,7 +179,7 @@ const CATEGORY_CONFIG = [
     actionIcon: "♨️",
     actionIconAnim: { y: [4, -20], x: [2, -4], opacity: [0, 1, 0], scale: [0.6, 1.2, 0.8] },
     actionIconDuration: 1.8,
-    temptationQuote: "Handcrafted whole flower dips that infuse every cup with gentle floral fragrance and peaceful warmth.",
+    temptationQuote: "Caffeine-free whole flower dip infusions blending hibiscus, blue pea, cassia fistula, and lavender for daily wellness.",
     bgClass: "from-[#fafffc] via-[#f3f9f5] to-[#e6f2e9]",
     borderClass: "border-[#d2e7d7]",
     img: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787751567516-medleyteahibiscus005png.png",
@@ -222,12 +222,12 @@ const CATEGORY_CONFIG = [
   },
   {
     title: "Brew Flora",
-    subtitle: "Exotic Whole Blossom Teas",
+    subtitle: "Sun-Dried Whole Blossom Teas",
     accent: "#7b5ea7",
     textAccent: "#684b93",
-    badge: "Whole Bloom Magic",
+    badge: "100% Whole Dried Flowers",
     characterImg: "/brew_flora_character.png",
-    characterTag: "Swinging Dried Blooms!",
+    characterTag: "Sun-Dried Blooms",
     characterAnim: {
       x: [-5, 5, -5],
       y: [0, -10, 0, -9, 0],
@@ -238,7 +238,7 @@ const CATEGORY_CONFIG = [
     actionIcon: "🌸",
     actionIconAnim: { y: [0, -18], x: [-4, 8], opacity: [0, 1, 0], rotate: [0, 45], scale: [0.5, 1.1, 0.7] },
     actionIconDuration: 1.7,
-    temptationQuote: "Spectacular intact sun-dried whole flower blossoms that bloom and dance as they steep in steaming hot water.",
+    temptationQuote: "Intact sun-dried edible flowers (Aavaram, Chamomile, Lavender, Blue Pea, Hibiscus) that bloom gracefully when steeped in hot water.",
     bgClass: "from-[#fcfaff] via-[#f7f1fc] to-[#eee2f7]",
     borderClass: "border-[#e0d2f2]",
     img: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787156882780-brewfloraavarampoojpg.jpg",
@@ -861,7 +861,7 @@ const ExploreCategory = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-gray-600 font-medium text-base md:text-lg max-w-2xl leading-relaxed"
           >
-            Mouth-watering crunchy cookies, velvety petal spreads, royal golden saffron, and soul-soothing aromatic brews — crafted to tempt every craving!
+            Wholesome flower cookies, traditional petal jams, certified Kashmiri saffron, herbal dip teas, and sun-dried whole blossoms — curated for clean, natural wellness.
           </motion.p>
         </div>
 
