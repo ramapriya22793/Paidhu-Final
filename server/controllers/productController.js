@@ -180,6 +180,24 @@ const getProducts = async (req, res) => {
       };
     });
 
+    if ((sort === 'newest' || !sort) && category && /saffron/i.test(category)) {
+      const getSaffronOrder = (p) => {
+        const title = (p.name || p.slug || '').toLowerCase();
+        if (p.id === 20 || /mongra|kashmiri/i.test(title)) return 1;
+        if (p.id === 22 || /negin|neigin/i.test(title)) return 2;
+        if (p.id === 21 || /powder/i.test(title)) return 3;
+        return 99;
+      };
+      formattedProducts.sort((a, b) => {
+        const rankA = getSaffronOrder(a);
+        const rankB = getSaffronOrder(b);
+        if (rankA !== 99 || rankB !== 99) {
+          if (rankA !== rankB) return rankA - rankB;
+        }
+        return b.id - a.id;
+      });
+    }
+
     res.json({
       products: formattedProducts,
       total,

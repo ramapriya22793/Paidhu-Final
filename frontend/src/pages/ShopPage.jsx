@@ -679,7 +679,24 @@ const ShopPage = () => {
       if (/medley|tea/i.test(name)) return 5;
       return 999;
     };
-    list = [...list].sort((a, b) => getCategoryIndex(a.category) - getCategoryIndex(b.category));
+    const getSaffronOrder = (p) => {
+      const title = (p.name || p.title || p.slug || '').toLowerCase();
+      if (p.id === 20 || /mongra|kashmiri/i.test(title)) return 1;
+      if (p.id === 22 || /negin|neigin/i.test(title)) return 2;
+      if (p.id === 21 || /powder/i.test(title)) return 3;
+      return 99;
+    };
+    list = [...list].sort((a, b) => {
+      const idxA = getCategoryIndex(a.category);
+      const idxB = getCategoryIndex(b.category);
+      if (idxA !== idxB) return idxA - idxB;
+      const saffronA = getSaffronOrder(a);
+      const saffronB = getSaffronOrder(b);
+      if (saffronA !== 99 || saffronB !== 99) {
+        if (saffronA !== saffronB) return saffronA - saffronB;
+      }
+      return (b.id || 0) - (a.id || 0);
+    });
 
     return list.slice(0, 24);
   };
@@ -911,6 +928,14 @@ const ShopPage = () => {
             return 999;
           };
           
+          const getSaffronOrder = (p) => {
+            const title = (p.name || p.title || p.slug || '').toLowerCase();
+            if (p.id === 20 || /mongra|kashmiri/i.test(title)) return 1;
+            if (p.id === 22 || /negin|neigin/i.test(title)) return 2;
+            if (p.id === 21 || /powder/i.test(title)) return 3;
+            return 99;
+          };
+
           fetchedList.sort((a, b) => {
             const idxA = getCategoryIndex(a.category);
             const idxB = getCategoryIndex(b.category);
@@ -920,6 +945,11 @@ const ShopPage = () => {
             } else if (sort === 'price-desc') {
               return b.price - a.price;
             } else {
+              const saffronA = getSaffronOrder(a);
+              const saffronB = getSaffronOrder(b);
+              if (saffronA !== 99 || saffronB !== 99) {
+                if (saffronA !== saffronB) return saffronA - saffronB;
+              }
               return b.id - a.id;
             }
           });

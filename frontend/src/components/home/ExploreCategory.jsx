@@ -79,10 +79,16 @@ const CATEGORY_CONFIG = [
     temptationQuote: "Prized Kashmiri Mongra and Super Negin saffron hand-harvested for deep crimson threads, exceptional potency, and rich aroma.",
     bgClass: "from-[#fffdfa] via-[#fef7eb] to-[#faeedb]",
     borderClass: "border-[#f0dbc0]",
-    img: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787746786285-saffronsuperneigin001png.png",
-    fallback: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787746786285-saffronsuperneigin001png.png",
+    img: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787745899482-paidhukashmirimongrapng.png",
+    fallback: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787745899482-paidhukashmirimongrapng.png",
     productCount: 3,
     products: [
+      {
+        id: 20,
+        name: "Kashmiri Mongra",
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787745899482-paidhukashmirimongrapng.png",
+        shortDescription: "Experience the essence of Kashmir with our prized Kashmiri Mongra saffron, renowned for its deep red threads, distinct flavor, and unparalleled fragrance."
+      },
       {
         id: 22,
         name: "Super Negin Saffron",
@@ -94,18 +100,12 @@ const CATEGORY_CONFIG = [
         name: "Saffron Powder",
         image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787747041682-saffronpowder002png.png",
         shortDescription: "Premium saffron powder from Paidhu is carefully sourced to ensure purity and superior quality. Known for its rich aroma and vibrant color."
-      },
-      {
-        id: 20,
-        name: "Kashmiri Mongra",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787745899482-paidhukashmirimongrapng.png",
-        shortDescription: "Experience the essence of Kashmir with our prized Kashmiri Mongra saffron, renowned for its deep red threads, distinct flavor, and unparalleled fragrance."
       }
     ],
     images: [
+      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787745899482-paidhukashmirimongrapng.png",
       "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787746786285-saffronsuperneigin001png.png",
-      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787747041682-saffronpowder002png.png",
-      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787745899482-paidhukashmirimongrapng.png"
+      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787747041682-saffronpowder002png.png"
     ]
   },
   {
@@ -871,6 +871,22 @@ const ExploreCategory = () => {
                     ...fetchedProducts.filter(p => p !== whiteLotus)
                   ];
                 }
+              } else if (cat.title === 'Saffron') {
+                const getSaffronRank = (p) => {
+                  const title = (p.name || p.title || '').toLowerCase();
+                  if (p.id === 20 || /mongra|kashmiri/i.test(title)) return 1;
+                  if (p.id === 22 || /negin|neigin/i.test(title)) return 2;
+                  if (p.id === 21 || /powder/i.test(title)) return 3;
+                  return 99;
+                };
+                orderedProducts = [...fetchedProducts].sort((a, b) => {
+                  const rankA = getSaffronRank(a);
+                  const rankB = getSaffronRank(b);
+                  if (rankA !== 99 || rankB !== 99) {
+                    if (rankA !== rankB) return rankA - rankB;
+                  }
+                  return (b.id || 0) - (a.id || 0);
+                });
               }
 
               const productImages = orderedProducts.map((p) => p.image).filter(Boolean);
