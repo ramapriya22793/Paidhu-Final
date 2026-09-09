@@ -158,20 +158,6 @@ const SaffronGuidancePage = () => {
               Let our experts guide you on the right way to use saffron during pregnancy. Fill in your details and we'll get back to you personally.
             </p>
           </motion.div>
-
-          {/* Trust badges */}
-          <div className="flex flex-wrap justify-center gap-4 mt-5">
-            {[
-              { icon: '🏥', text: 'Doctor Approved Protocol' },
-              { icon: '🔒', text: '100% Private & Confidential' },
-              { icon: '📞', text: 'Personal Callback' },
-            ].map((b, i) => (
-              <div key={i} className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 text-white text-xs font-bold">
-                <span>{b.icon}</span>
-                <span>{b.text}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
