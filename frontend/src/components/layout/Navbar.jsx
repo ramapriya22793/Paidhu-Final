@@ -309,6 +309,7 @@ const Navbar = () => {
     if (slug) {
       if (slug === '/') {
         navigate('/');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } else if (slug.startsWith('__direct__')) {
         navigate(slug.replace('__direct__', ''));
       } else {
@@ -333,6 +334,7 @@ const Navbar = () => {
   };
 
   const navRow1 = [
+    { name: 'Home' },
     { name: 'Shop All' },
     { name: 'Shop by Category' },
     { name: 'Deal of the Day' },
@@ -511,7 +513,7 @@ const Navbar = () => {
       <div className="hidden lg:block w-full bg-[#ede7d7] border-b border-[#662654]/10 py-3 relative z-40">
         <nav className="max-w-[1400px] mx-auto px-4 xl:px-8 flex flex-col gap-y-2">
           {/* Row 1 — Primary Links */}
-          <div className="flex justify-center items-center gap-x-3 xl:gap-x-6 w-full max-w-full whitespace-nowrap">
+          <div className="flex justify-center items-center gap-x-3 xl:gap-x-6 w-full max-w-full whitespace-nowrap overflow-x-auto no-scrollbar">
             {navRow1.map((item, i) => {
               if (item.name === 'Shop by Category') {
                 return (
@@ -781,13 +783,6 @@ const Navbar = () => {
               </div>
 
               <div className="flex flex-col space-y-1">
-                <Link
-                  to="/"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full text-left text-[#ede7d7] font-medium text-sm border-b border-[#ede7d7]/10 py-3 hover:text-white transition-colors block"
-                >
-                  Home
-                </Link>
                 {navColumns.reduce((acc, col) => {
                   acc.push(col.top);
                   if (col.bottom) acc.push(col.bottom);
