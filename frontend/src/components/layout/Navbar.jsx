@@ -114,8 +114,8 @@ const Navbar = () => {
     { name: 'Bloom Cookies', image: '/cat_bloom_cookies.jpg' },
     { name: 'Saffron', image: '/cat_saffron.jpg' },
     { name: 'Petal Jam', image: '/cat_petal_jam.jpg' },
-    { name: 'Medley Teas', image: '/cat_medley_teas.png' },
     { name: 'Brew Flora', image: '/cat_brew_flora.jpg' },
+    { name: 'Medley Teas', image: '/cat_medley_teas.png' },
     { name: 'Gift Box', image: '/cat_saffron_giftbox.png' }
   ];
   const [categories, setCategories]           = useState(defaultCategoriesList);
@@ -254,10 +254,17 @@ const Navbar = () => {
           }
         });
         
-        const cats = Object.keys(categoryMap).map(name => ({
-          name,
-          image: categoryMap[name] || CATEGORY_FALLBACK_IMAGES[name.toLowerCase()] || null
-        }));
+        const catOrder = ['Bloom Cookies', 'Saffron', 'Petal Jam', 'Brew Flora', 'Medley Teas', 'Gift Box', 'Combos'];
+        const cats = Object.keys(categoryMap)
+          .sort((a, b) => {
+            const idxA = catOrder.indexOf(a);
+            const idxB = catOrder.indexOf(b);
+            return (idxA === -1 ? 999 : idxA) - (idxB === -1 ? 999 : idxB);
+          })
+          .map(name => ({
+            name,
+            image: categoryMap[name] || CATEGORY_FALLBACK_IMAGES[name.toLowerCase()] || null
+          }));
         
         if (cats.length > 0) {
           setCategories(cats);

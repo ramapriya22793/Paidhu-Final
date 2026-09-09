@@ -60,6 +60,55 @@ const CATEGORY_CONFIG = [
     ]
   },
   {
+    title: "Saffron",
+    subtitle: "Certified Grade-A1 Saffron Strands",
+    accent: "#d4821a",
+    textAccent: "#b5690b",
+    badge: "100% Pure Kashmiri Mongra",
+    characterImg: "/saffron_character.png",
+    characterAlt: "Saffron flower with authentic vibrant crimson threads",
+    characterAnim: {
+      y: [0, -12, 0],
+      rotate: [-3, 3, -3],
+      scale: [1, 1.1, 0.98, 1]
+    },
+    characterAnimDuration: 2.8,
+    actionIcon: "✨",
+    actionIconAnim: { y: [2, -22], opacity: [0, 1, 0], scale: [0.4, 1.3, 0.8] },
+    actionIconDuration: 2.0,
+    temptationQuote: "Prized Kashmiri Mongra and Super Negin saffron hand-harvested for deep crimson threads, exceptional potency, and rich aroma.",
+    bgClass: "from-[#fffdfa] via-[#fef7eb] to-[#faeedb]",
+    borderClass: "border-[#f0dbc0]",
+    img: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787746786285-saffronsuperneigin001png.png",
+    fallback: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787746786285-saffronsuperneigin001png.png",
+    productCount: 3,
+    products: [
+      {
+        id: 22,
+        name: "Super Negin Saffron",
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787746786285-saffronsuperneigin001png.png",
+        shortDescription: "Indulge in the ultimate luxury with our Super Neigin saffron, known for its exquisite golden strands, exceptional potency, and rich aromatic profile."
+      },
+      {
+        id: 21,
+        name: "Saffron Powder",
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787747041682-saffronpowder002png.png",
+        shortDescription: "Premium saffron powder from Paidhu is carefully sourced to ensure purity and superior quality. Known for its rich aroma and vibrant color."
+      },
+      {
+        id: 20,
+        name: "Kashmiri Mongra",
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787745899482-paidhukashmirimongrapng.png",
+        shortDescription: "Experience the essence of Kashmir with our prized Kashmiri Mongra saffron, renowned for its deep red threads, distinct flavor, and unparalleled fragrance."
+      }
+    ],
+    images: [
+      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787746786285-saffronsuperneigin001png.png",
+      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787747041682-saffronpowder002png.png",
+      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787745899482-paidhukashmirimongrapng.png"
+    ]
+  },
+  {
     title: "Petal Jam",
     subtitle: "Handcrafted Floral Gulkhand & Jams",
     accent: "#c45c7c",
@@ -124,52 +173,66 @@ const CATEGORY_CONFIG = [
     ]
   },
   {
-    title: "Saffron",
-    subtitle: "Certified Grade-A1 Saffron Strands",
-    accent: "#d4821a",
-    textAccent: "#b5690b",
-    badge: "100% Pure Kashmiri Mongra",
-    characterImg: "/saffron_character.png",
-    characterAlt: "Saffron flower with authentic vibrant crimson threads",
+    title: "Brew Flora",
+    subtitle: "Sun-Dried Whole Blossom Teas",
+    accent: "#7b5ea7",
+    textAccent: "#684b93",
+    badge: "100% Whole Dried Flowers",
+    characterImg: "/brew_flora_character.png",
     characterAnim: {
-      y: [0, -12, 0],
-      rotate: [-3, 3, -3],
-      scale: [1, 1.1, 0.98, 1]
+      x: [-5, 5, -5],
+      y: [0, -10, 0, -9, 0],
+      rotate: [-7, 7, -6, 6, -7],
+      scale: [1, 1.04, 0.98, 1.04, 1]
     },
-    characterAnimDuration: 2.8,
-    actionIcon: "✨",
-    actionIconAnim: { y: [2, -22], opacity: [0, 1, 0], scale: [0.4, 1.3, 0.8] },
-    actionIconDuration: 2.0,
-    temptationQuote: "Prized Kashmiri Mongra and Super Negin saffron hand-harvested for deep crimson threads, exceptional potency, and rich aroma.",
-    bgClass: "from-[#fffdfa] via-[#fef7eb] to-[#faeedb]",
-    borderClass: "border-[#f0dbc0]",
-    img: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787746786285-saffronsuperneigin001png.png",
-    fallback: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787746786285-saffronsuperneigin001png.png",
-    productCount: 3,
+    characterAnimDuration: 2.0,
+    actionIcon: "🌸",
+    actionIconAnim: { y: [0, -18], x: [-4, 8], opacity: [0, 1, 0], rotate: [0, 45], scale: [0.5, 1.1, 0.7] },
+    actionIconDuration: 1.7,
+    temptationQuote: "Intact sun-dried whole edible flowers (Aavaram, Chamomile, Lavender, Blue Pea, Hibiscus) crafted to bring calmness, relaxation, and gentle wellness.",
+    bgClass: "from-[#fcfaff] via-[#f7f1fc] to-[#eee2f7]",
+    borderClass: "border-[#e0d2f2]",
+    img: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787156882780-brewfloraavarampoojpg.jpg",
+    fallback: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787156882780-brewfloraavarampoojpg.jpg",
+    productCount: 5,
     products: [
       {
-        id: 22,
-        name: "Super Negin Saffron",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787746786285-saffronsuperneigin001png.png",
-        shortDescription: "Indulge in the ultimate luxury with our Super Neigin saffron, known for its exquisite golden strands, exceptional potency, and rich aromatic profile."
+        id: 44,
+        name: "Brew Flora - Aavaram Poo",
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787156882780-brewfloraavarampoojpg.jpg",
+        shortDescription: "Brew Flora Aavaram Poo (30g) is a premium-quality herbal product made from carefully selected and naturally dried Aavaram flowers for overall wellness and skin glow."
       },
       {
-        id: 21,
-        name: "Saffron Powder",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787747041682-saffronpowder002png.png",
-        shortDescription: "Premium saffron powder from Paidhu is carefully sourced to ensure purity and superior quality. Known for its rich aroma and vibrant color."
+        id: 15,
+        name: "Brew Flora - Chamomile",
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787141815115-WhatsAppImage20251113at2330215f60b43f180x180jpg.jpg",
+        shortDescription: "Sip serenity with Chamomile Tea, crafted from pure dried chamomile flowers. Naturally caffeine-free, it helps promote deep sleep, reduce stress, and calm the digestive system."
       },
       {
-        id: 20,
-        name: "Kashmiri Mongra",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787745899482-paidhukashmirimongrapng.png",
-        shortDescription: "Experience the essence of Kashmir with our prized Kashmiri Mongra saffron, renowned for its deep red threads, distinct flavor, and unparalleled fragrance."
+        id: 14,
+        name: "Brew Flora - Lavender",
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787138689761-WhatsAppImage20251113at233021b33d20d8180x1801jpg.jpg",
+        shortDescription: "Crafted with calmness. Inspired by nature. Premium floral herbal blend carefully crafted to bring relaxation and elegance into your routine."
+      },
+      {
+        id: 13,
+        name: "Brew Flora - Hibiscus Tea",
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787137806392-WhatsAppImage20251113at233024f74fae34180x180jpg.jpg",
+        shortDescription: "Brew the vibrant taste of Indian Hibiscus Tea — a tart, refreshing floral infusion known for its deep red hue and high vitamin C content."
+      },
+      {
+        id: 12,
+        name: "Brew Flora - Blue Pea",
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787158088419-bluepeabrewflorajpg.jpg",
+        shortDescription: "Dive into calm with Bluepea Tea, also known as Shankhpushpi or Aparajita tea. Rich in anthocyanins that improve focus and relieve stress."
       }
     ],
     images: [
-      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787746786285-saffronsuperneigin001png.png",
-      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787747041682-saffronpowder002png.png",
-      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787745899482-paidhukashmirimongrapng.png"
+      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787156882780-brewfloraavarampoojpg.jpg",
+      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787141815115-WhatsAppImage20251113at2330215f60b43f180x180jpg.jpg",
+      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787138689761-WhatsAppImage20251113at233021b33d20d8180x1801jpg.jpg",
+      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787137806392-WhatsAppImage20251113at233024f74fae34180x180jpg.jpg",
+      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787158088419-bluepeabrewflorajpg.jpg"
     ]
   },
   {
@@ -233,69 +296,6 @@ const CATEGORY_CONFIG = [
       "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787750755658-medleyteasbluepea001png.png",
       "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787751146063-medleyteassaffron003png.png",
       "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787752213835-medleyteaslavender007png.png"
-    ]
-  },
-  {
-    title: "Brew Flora",
-    subtitle: "Sun-Dried Whole Blossom Teas",
-    accent: "#7b5ea7",
-    textAccent: "#684b93",
-    badge: "100% Whole Dried Flowers",
-    characterImg: "/brew_flora_character.png",
-    characterAnim: {
-      x: [-5, 5, -5],
-      y: [0, -10, 0, -9, 0],
-      rotate: [-7, 7, -6, 6, -7],
-      scale: [1, 1.04, 0.98, 1.04, 1]
-    },
-    characterAnimDuration: 2.0,
-    actionIcon: "🌸",
-    actionIconAnim: { y: [0, -18], x: [-4, 8], opacity: [0, 1, 0], rotate: [0, 45], scale: [0.5, 1.1, 0.7] },
-    actionIconDuration: 1.7,
-    temptationQuote: "Intact sun-dried whole edible flowers (Aavaram, Chamomile, Lavender, Blue Pea, Hibiscus) crafted to bring calmness, relaxation, and gentle wellness.",
-    bgClass: "from-[#fcfaff] via-[#f7f1fc] to-[#eee2f7]",
-    borderClass: "border-[#e0d2f2]",
-    img: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787156882780-brewfloraavarampoojpg.jpg",
-    fallback: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787156882780-brewfloraavarampoojpg.jpg",
-    productCount: 5,
-    products: [
-      {
-        id: 44,
-        name: "Brew Flora - Aavaram Poo",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787156882780-brewfloraavarampoojpg.jpg",
-        shortDescription: "Brew Flora Aavaram Poo (30g) is a premium-quality herbal product made from carefully selected and naturally dried Aavaram flowers for overall wellness and skin glow."
-      },
-      {
-        id: 15,
-        name: "Brew Flora - Chamomile",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787141815115-WhatsAppImage20251113at2330215f60b43f180x180jpg.jpg",
-        shortDescription: "Sip serenity with Chamomile Tea, crafted from pure dried chamomile flowers. Naturally caffeine-free, it helps promote deep sleep, reduce stress, and calm the digestive system."
-      },
-      {
-        id: 14,
-        name: "Brew Flora - Lavender",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787138689761-WhatsAppImage20251113at233021b33d20d8180x1801jpg.jpg",
-        shortDescription: "Crafted with calmness. Inspired by nature. Premium floral herbal blend carefully crafted to bring relaxation and elegance into your routine."
-      },
-      {
-        id: 13,
-        name: "Brew Flora - Hibiscus Tea",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787137806392-WhatsAppImage20251113at233024f74fae34180x180jpg.jpg",
-        shortDescription: "Brew the vibrant taste of Indian Hibiscus Tea — a tart, refreshing floral infusion known for its deep red hue and high vitamin C content."
-      },
-      {
-        id: 12,
-        name: "Brew Flora - Blue Pea",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787158088419-bluepeabrewflorajpg.jpg",
-        shortDescription: "Dive into calm with Bluepea Tea, also known as Shankhpushpi or Aparajita tea. Rich in anthocyanins that improve focus and relieve stress."
-      }
-    ],
-    images: [
-      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787156882780-brewfloraavarampoojpg.jpg",
-      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787141815115-WhatsAppImage20251113at2330215f60b43f180x180jpg.jpg",
-      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787138689761-WhatsAppImage20251113at233021b33d20d8180x1801jpg.jpg",
-      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787137806392-WhatsAppImage20251113at233024f74fae34180x180jpg.jpg",
-      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787158088419-bluepeabrewflorajpg.jpg"
     ]
   }
 ];

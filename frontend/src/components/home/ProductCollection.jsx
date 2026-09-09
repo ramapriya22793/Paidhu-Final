@@ -18,30 +18,30 @@ const COLLECTION_TERMS = {
     priorityIds: [20, 8, 3, 31, 22],
     shopUrl: "/shop/shop-all?tag=bestseller",
   },
-  "Pure Kashmiri Saffron": {
-    filter: (p) => p.category?.toLowerCase() === 'saffron' || /saffron/i.test(p.name + ' ' + (p.description || '')),
-    priorityIds: [20, 22, 21, 18],
-    shopUrl: "/shop/shop-all?q=saffron",
-  },
   "Crispy Bloom Cookies": {
     filter: (p) => /cookie/i.test(p.name + ' ' + (p.category?.name || p.category || '')),
     priorityIds: [8, 10, 9],
     shopUrl: "/shop/shop-by-category?category=Bloom%20Cookies",
+  },
+  "Pure Kashmiri Saffron": {
+    filter: (p) => p.category?.toLowerCase() === 'saffron' || /saffron/i.test(p.name + ' ' + (p.description || '')),
+    priorityIds: [20, 22, 21, 18],
+    shopUrl: "/shop/shop-all?q=saffron",
   },
   "Artisanal Petal Preserves": {
     filter: (p) => p.category?.toLowerCase().includes('jam') || /jam|gulkhand|syrup|preserve/i.test(p.name),
     priorityIds: [28, 4, 3, 29, 6],
     shopUrl: "/shop/shop-by-category?category=Petal%20Jam",
   },
-  "Fragrant Medley Teas": {
-    filter: (p) => /medly|medley|tea\s*\(20\s*dips\)|dips/i.test(p.name),
-    priorityIds: [45, 17, 18, 19, 31, 16],
-    shopUrl: "/shop/shop-by-category?category=Medley%20Teas",
-  },
   "Exotic Flower Brews": {
     filter: (p) => /brew\s*flora|whole\s*flower|chamomile|blue\s*pea|lavender|aavaram\s*poo/i.test(p.name),
     priorityIds: [12, 15, 14, 13, 11, 44],
     shopUrl: "/shop/shop-by-category?category=Brew%20Flora",
+  },
+  "Fragrant Medley Teas": {
+    filter: (p) => /medly|medley|tea\s*\(20\s*dips\)|dips/i.test(p.name),
+    priorityIds: [45, 17, 18, 19, 31, 16],
+    shopUrl: "/shop/shop-by-category?category=Medley%20Teas",
   },
   "Ruby Hibiscus Delights": {
     filter: (p) => /hibiscus/i.test(p.name + ' ' + (p.description || '')),

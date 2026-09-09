@@ -653,12 +653,31 @@ const ShopPage = () => {
       list = list.filter(p => p.name.toLowerCase().includes(initialSearch.toLowerCase()));
     }
 
-    // Sort category-wise (cookies first)
-    const categoryOrder = ['Combos', 'Saffron Giftbox', 'Saffron', 'Bloom Cookies', 'Petal Jam', 'Medley Teas', 'Brew Flora'];
+    // Sort category-wise: Bloom Cookies, Saffron, Petal Jam, Brew Flora, Medley Teas
+    const categoryOrder = [
+      'Bloom Cookies',
+      'Saffron',
+      'Saffron Giftbox',
+      'Petal Jam',
+      'Brew Flora',
+      'Medley Teas',
+      'Gift Box',
+      'Combos',
+      'Family Combos',
+      'Bloom Powder',
+      'Dry Flower'
+    ];
     const getCategoryIndex = (cat) => {
       const name = cat && typeof cat === 'object' ? cat.name : cat;
-      const idx = categoryOrder.indexOf(name);
-      return idx === -1 ? 999 : idx;
+      if (!name) return 999;
+      const idx = categoryOrder.findIndex(c => c.toLowerCase() === String(name).toLowerCase());
+      if (idx !== -1) return idx;
+      if (/cookie/i.test(name)) return 0;
+      if (/saffron/i.test(name)) return 1;
+      if (/jam|gulkhand|preserve/i.test(name)) return 3;
+      if (/brew/i.test(name)) return 4;
+      if (/medley|tea/i.test(name)) return 5;
+      return 999;
     };
     list = [...list].sort((a, b) => getCategoryIndex(a.category) - getCategoryIndex(b.category));
 
@@ -782,8 +801,7 @@ const ShopPage = () => {
     fetch(`${API_BASE}/api/products?limit=200&_t=${Date.now()}`, { cache: 'no-store' })
       .then(r => r.json())
       .then(data => {
-        const productsList = data.products || [];
-        const desiredOrder = ['Combos', 'Saffron Giftbox', 'Saffron', 'Bloom Cookies', 'Petal Jam', 'Medley Teas', 'Brew Flora'];
+        const desiredOrder = ['Bloom Cookies', 'Saffron', 'Saffron Giftbox', 'Petal Jam', 'Brew Flora', 'Medley Teas', 'Gift Box', 'Combos'];
         
         const categoryMap = {};
         productsList.forEach(p => {
@@ -866,12 +884,31 @@ const ShopPage = () => {
             return true;
           });
 
-          // Sort category-wise (cookies first)
-          const categoryOrder = ['Combos', 'Saffron Giftbox', 'Saffron', 'Bloom Cookies', 'Petal Jam', 'Medley Teas', 'Brew Flora'];
+          // Sort category-wise: Bloom Cookies, Saffron, Petal Jam, Brew Flora, Medley Teas
+          const categoryOrder = [
+            'Bloom Cookies',
+            'Saffron',
+            'Saffron Giftbox',
+            'Petal Jam',
+            'Brew Flora',
+            'Medley Teas',
+            'Gift Box',
+            'Combos',
+            'Family Combos',
+            'Bloom Powder',
+            'Dry Flower'
+          ];
           const getCategoryIndex = (cat) => {
             const name = cat && typeof cat === 'object' ? cat.name : cat;
-            const idx = categoryOrder.indexOf(name);
-            return idx === -1 ? 999 : idx;
+            if (!name) return 999;
+            const idx = categoryOrder.findIndex(c => c.toLowerCase() === String(name).toLowerCase());
+            if (idx !== -1) return idx;
+            if (/cookie/i.test(name)) return 0;
+            if (/saffron/i.test(name)) return 1;
+            if (/jam|gulkhand|preserve/i.test(name)) return 3;
+            if (/brew/i.test(name)) return 4;
+            if (/medley|tea/i.test(name)) return 5;
+            return 999;
           };
           
           fetchedList.sort((a, b) => {
