@@ -332,7 +332,6 @@ const Navbar = () => {
     { name: 'Shop by Category' },
     { name: 'Deal of the Day' },
     { name: 'BYOC' },
-    { name: 'Starting Floral food habitat' },
     { name: 'Know us better' },
     { name: 'Saffron Guidance' }
   ];

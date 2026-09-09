@@ -190,6 +190,7 @@ function App() {
               {/* Direct Route Aliases to avoid any broken links */}
               <Route path="/about" element={<ShopPage navSection="about-us" />} />
               <Route path="/about-us" element={<ShopPage navSection="about-us" />} />
+              <Route path="/starting-floral-food-habitat" element={<ShopPage navSection="starting-floral-food-habitat" />} />
               <Route path="/bulk-orders" element={<Navigate to="/shop" replace />} />
               <Route path="/contact" element={<LegalPage type="contact-us" />} />
               <Route path="/contact-us" element={<LegalPage type="contact-us" />} />
