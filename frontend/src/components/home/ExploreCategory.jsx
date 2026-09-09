@@ -15,7 +15,6 @@ const CATEGORY_CONFIG = [
     badge: "100% Real Flowers & Jaggery",
     characterImg: "/illustrations PNG-06 (1).png",
     characterAlt: "Lotus mascot enjoying crunchy cookie",
-    characterTag: "Real Flower Cookies",
     characterAnim: {
       y: [0, 5, 5, -8, -6, 3, -4, 0],
       rotate: [0, -6, -6, 5, 2, -3, 3, 0],
@@ -68,7 +67,6 @@ const CATEGORY_CONFIG = [
     badge: "Pure Petal Preserves",
     characterImg: "/illustrations PNG-05 (1).png",
     characterAlt: "Lotus chef stirring sweet petal jam",
-    characterTag: "Handmade Petal Jam",
     characterAnim: {
       x: [0, 6, 0, -6, 0],
       y: [0, -4, 4, -2, 0],
@@ -133,7 +131,6 @@ const CATEGORY_CONFIG = [
     badge: "100% Pure Kashmiri Mongra",
     characterImg: "/saffron_character.png",
     characterAlt: "Saffron flower with authentic vibrant crimson threads",
-    characterTag: "Pure Kashmiri Saffron",
     characterAnim: {
       y: [0, -12, 0],
       rotate: [-3, 3, -3],
@@ -183,7 +180,6 @@ const CATEGORY_CONFIG = [
     badge: "Herbal Floral Dip Bags",
     characterImg: "/medley_tea_character.png",
     characterAlt: "Hibiscus mascot dipping tea pouch into a cup",
-    characterTag: "Flower Dip Tea",
     characterAnim: {
       y: [0, 8, 9, -8, -7, 8, 9, 0],
       rotate: [0, 4, 3, -3, -2, 4, 3, 0],
@@ -246,7 +242,6 @@ const CATEGORY_CONFIG = [
     textAccent: "#684b93",
     badge: "100% Whole Dried Flowers",
     characterImg: "/brew_flora_character.png",
-    characterTag: "Sun-Dried Blooms",
     characterAnim: {
       x: [-5, 5, -5],
       y: [0, -10, 0, -9, 0],
@@ -572,12 +567,6 @@ const DesktopCategoryCard = ({
                   transition={{ duration: 0.4, delay: 0.1 }}
                   className="absolute bottom-1 right-2 lg:right-3 z-20 flex flex-col items-center pointer-events-none drop-shadow-md"
                 >
-                  <span
-                    className="mb-1 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/95 backdrop-blur-xs border shadow-sm"
-                    style={{ borderColor: `${cat.accent}55`, color: cat.textAccent || cat.accent }}
-                  >
-                    {cat.characterTag || "Tempting!"}
-                  </span>
                   <div className="relative flex items-center justify-center">
                     <motion.img
                       animate={cat.characterAnim || { y: [0, -4, 0] }}
@@ -699,19 +688,6 @@ const DesktopCategoryCard = ({
                 </motion.div>
               )}
             </div>
-
-            {/* Action Tag Badge */}
-            <span
-              className="mt-2 text-[8px] lg:text-[8.5px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full border shadow-xs transition-transform duration-200 group-hover:scale-105 text-center whitespace-nowrap inline-flex items-center gap-1"
-              style={{
-                color: cat.textAccent || cat.accent,
-                borderColor: `${cat.accent}40`,
-                background: `${cat.accent}14`
-              }}
-            >
-              <span className="w-1.5 h-1.5 rounded-full animate-ping inline-block" style={{ background: cat.accent }} />
-              {cat.characterTag}
-            </span>
           </div>
 
           {/* Vertical Title */}
