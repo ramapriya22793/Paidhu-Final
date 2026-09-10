@@ -98,7 +98,7 @@ const ProductDetailPage = () => {
   const [activeTab, setActiveTab] = useState('about'); // about, benefits, nutrition, faqs
   const [openFaq, setOpenFaq] = useState(null);
   
-  const { addToCart, wishlist, toggleWishlist, setShowSaffronGuidanceModal } = useCart();
+  const { addToCart, wishlist, toggleWishlist } = useCart();
   const isInWishlist = product && wishlist && wishlist.some(item => item.id === product.id);
   const [isAdding, setIsAdding] = useState(false);
   const [similarProducts, setSimilarProducts] = useState([]);
@@ -118,10 +118,6 @@ const ProductDetailPage = () => {
         category: product.category,
         shortDescription: product.shortDescription
       }, quantity, selectedVariant);
-
-      if (isSaffron) {
-        setShowSaffronGuidanceModal(true);
-      }
     } finally {
       setIsAdding(false);
     }
