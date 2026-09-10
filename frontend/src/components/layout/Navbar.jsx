@@ -56,6 +56,8 @@ const CATEGORY_FALLBACK_IMAGES = {
   'petal jam': '/cat_petal_jam.jpg',
   'gift box': '/cat_saffron_giftbox.png',
   'gift boxes': '/cat_saffron_giftbox.png',
+  'saffron giftbox': '/cat_saffron_giftbox.png',
+  'combos': '/cat_combos.png',
   'combos & gift boxes': '/cat_saffron_giftbox.png'
 };
 
@@ -71,10 +73,15 @@ const CATEGORY_EMOJI = {
   'Saffron':        '🌸',
   'Honey':          '🍯',
   'Medley Teas':    '🍵',
+  'Brew Flora':     '🫖',
+  'Bloom Cookies':  '🍪',
+  'Petal Jam':      '🌺',
   'Floral Jams':    '🍓',
   'Edible Flowers': '🌺',
   'Gift Boxes':     '🎁',
   'Gift Box':       '🎁',
+  'Saffron Giftbox':'🎁',
+  'Combos':         '✨',
   'Herbal':         '🌿',
   'Spices':         '🌶️',
   'Teas':           '🍵',
@@ -254,7 +261,7 @@ const Navbar = () => {
           }
         });
         
-        const catOrder = ['Bloom Cookies', 'Saffron', 'Petal Jam', 'Brew Flora', 'Medley Teas', 'Gift Box', 'Combos'];
+        const catOrder = ['Bloom Cookies', 'Saffron', 'Petal Jam', 'Brew Flora', 'Medley Teas', 'Gift Box', 'Saffron Giftbox', 'Combos'];
         const cats = Object.keys(categoryMap)
           .sort((a, b) => {
             const idxA = catOrder.indexOf(a);
@@ -513,7 +520,7 @@ const Navbar = () => {
       <div className="hidden lg:block w-full bg-[#ede7d7] border-b border-[#662654]/10 py-3 relative z-40">
         <nav className="max-w-[1400px] mx-auto px-4 xl:px-8 flex flex-col gap-y-2">
           {/* Row 1 — Primary Links */}
-          <div className="flex justify-center items-center gap-x-3 xl:gap-x-6 w-full max-w-full whitespace-nowrap overflow-x-auto no-scrollbar">
+          <div className="flex justify-center items-center gap-x-3 xl:gap-x-6 w-full max-w-full whitespace-nowrap">
             {navRow1.map((item, i) => {
               if (item.name === 'Shop by Category') {
                 return (
@@ -540,78 +547,80 @@ const Navbar = () => {
                     <AnimatePresence>
                       {showCatDropdown && (
                         <motion.div
-                          initial={{ opacity: 0, y: 10, scale: 0.97 }}
+                          initial={{ opacity: 0, y: 8, scale: 0.97 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: 10, scale: 0.97 }}
-                          transition={{ duration: 0.2, ease: 'easeOut' }}
-                          className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[520px] bg-white rounded-2xl shadow-2xl border border-gray-100 z-[9999] overflow-hidden"
+                          exit={{ opacity: 0, y: 8, scale: 0.97 }}
+                          transition={{ duration: 0.15, ease: 'easeOut' }}
+                          className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[520px] z-[9999]"
                         >
-                          {/* Dropdown Header */}
-                          <div className="px-6 pt-5 pb-3 border-b border-gray-100">
-                            <div className="flex items-center gap-2">
-                              <Grid3X3 size={15} className="text-[#662654]" />
-                              <p className="text-[12px] font-bold uppercase tracking-widest text-[#662654]">
-                                Discover Our Range of Floral Foods
-                              </p>
+                          <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
+                            {/* Dropdown Header */}
+                            <div className="px-6 pt-5 pb-3 border-b border-gray-100">
+                              <div className="flex items-center gap-2">
+                                <Grid3X3 size={15} className="text-[#662654]" />
+                                <p className="text-[12px] font-bold uppercase tracking-widest text-[#662654]">
+                                  Discover Our Range of Floral Foods
+                                </p>
+                              </div>
                             </div>
-                          </div>
 
-                          {/* Category Grid */}
-                          <div className="p-4">
-                            <div className="grid grid-cols-2 gap-1">
-                              {displayCategories.map(cat => {
-                                const catName = typeof cat === 'string' ? cat : (cat.name || '');
-                                const catImage = CATEGORY_FALLBACK_IMAGES[catName.toLowerCase()] || ((cat && typeof cat === 'object' && cat.image) ? cat.image : null);
-                                const iconFallback = getCategoryIcon(catName);
-                                
-                                return (
-                                  <button
-                                    key={catName}
-                                    onClick={() => handleCategoryClick(catName)}
-                                    className="flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-[#662654]/5 hover:text-[#662654] text-gray-700 transition-all duration-150 group/cat text-left w-full cursor-pointer"
-                                  >
-                                    <div className="w-6.5 h-6.5 rounded-full overflow-hidden flex-shrink-0 border border-gray-100 bg-gray-50 flex items-center justify-center">
-                                      {catImage ? (
-                                        <img 
-                                          src={catImage.startsWith('http') || catImage.startsWith('/') ? catImage : `${API_BASE}/${catImage}`} 
-                                          alt={catName} 
-                                          className="w-full h-full object-cover transition-transform duration-300 group-hover/cat:scale-110"
-                                          onError={(e) => {
-                                            e.target.style.display = 'none';
-                                            if (e.target.nextSibling) e.target.nextSibling.style.display = 'block';
-                                          }}
-                                        />
-                                      ) : null}
-                                      <span 
-                                        className="text-xs font-bold text-[#662654]" 
-                                        style={{ display: catImage ? 'none' : 'block' }}
-                                      >
-                                        {iconFallback}
+                            {/* Category Grid */}
+                            <div className="p-4">
+                              <div className="grid grid-cols-2 gap-1">
+                                {displayCategories.map(cat => {
+                                  const catName = typeof cat === 'string' ? cat : (cat.name || '');
+                                  const catImage = CATEGORY_FALLBACK_IMAGES[catName.toLowerCase()] || ((cat && typeof cat === 'object' && cat.image) ? cat.image : null);
+                                  const iconFallback = getCategoryIcon(catName);
+                                  
+                                  return (
+                                    <button
+                                      key={catName}
+                                      onClick={() => handleCategoryClick(catName)}
+                                      className="flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-[#662654]/5 hover:text-[#662654] text-gray-700 transition-all duration-150 group/cat text-left w-full cursor-pointer"
+                                    >
+                                      <div className="w-6.5 h-6.5 rounded-full overflow-hidden flex-shrink-0 border border-gray-100 bg-gray-50 flex items-center justify-center">
+                                        {catImage ? (
+                                          <img 
+                                            src={catImage.startsWith('http') || catImage.startsWith('/') ? catImage : `${API_BASE}/${catImage}`} 
+                                            alt={catName} 
+                                            className="w-full h-full object-cover transition-transform duration-300 group-hover/cat:scale-110"
+                                            onError={(e) => {
+                                              e.target.style.display = 'none';
+                                              if (e.target.nextSibling) e.target.nextSibling.style.display = 'block';
+                                            }}
+                                          />
+                                        ) : null}
+                                        <span 
+                                          className="text-xs font-bold text-[#662654]" 
+                                          style={{ display: catImage ? 'none' : 'block' }}
+                                        >
+                                          {iconFallback}
+                                        </span>
+                                      </div>
+                                      <span className="text-[13.5px] font-semibold group-hover/cat:translate-x-0.5 transition-transform duration-150">
+                                        {catName}
                                       </span>
-                                    </div>
-                                    <span className="text-[13.5px] font-semibold group-hover/cat:translate-x-0.5 transition-transform duration-150">
-                                      {catName}
-                                    </span>
-                                  </button>
-                                );
-                              })}
+                                    </button>
+                                  );
+                                })}
+                              </div>
                             </div>
-                          </div>
 
-                          {/* View All Footer */}
-                          <div className="px-6 py-3 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
-                            <span className="text-[12px] text-gray-400">
-                              {displayCategories.length} categories available
-                            </span>
-                            <button
-                              onClick={() => {
-                                setShowCatDropdown(false);
-                                navigate('/shop/shop-by-category');
-                              }}
-                              className="text-[13px] font-bold text-[#662654] hover:underline flex items-center gap-1"
-                            >
-                              View All →
-                            </button>
+                            {/* View All Footer */}
+                            <div className="px-6 py-3 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
+                              <span className="text-[12px] text-gray-400">
+                                {displayCategories.length} categories available
+                              </span>
+                              <button
+                                onClick={() => {
+                                  setShowCatDropdown(false);
+                                  navigate('/shop/shop-by-category');
+                                }}
+                                className="text-[13px] font-bold text-[#662654] hover:underline flex items-center gap-1 cursor-pointer"
+                              >
+                                View All →
+                              </button>
+                            </div>
                           </div>
                         </motion.div>
                       )}
@@ -645,13 +654,13 @@ const Navbar = () => {
                     <AnimatePresence>
                       {showKnowUsDropdown && (
                         <motion.div
-                          initial={{ opacity: 0, y: 10, scale: 0.97 }}
+                          initial={{ opacity: 0, y: 8, scale: 0.97 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: 10, scale: 0.97 }}
-                          transition={{ duration: 0.2, ease: 'easeOut' }}
-                          className="absolute top-full left-0 mt-2 w-48 bg-white rounded-xl shadow-2xl border border-gray-100 py-1.5 z-[9999] overflow-hidden"
+                          exit={{ opacity: 0, y: 8, scale: 0.97 }}
+                          transition={{ duration: 0.15, ease: 'easeOut' }}
+                          className="absolute top-full left-0 pt-2 w-48 z-[9999]"
                         >
-                          <div className="flex flex-col">
+                          <div className="bg-white rounded-xl shadow-2xl border border-gray-100 py-1.5 overflow-hidden flex flex-col">
                             <button
                               onClick={() => {
                                 setShowKnowUsDropdown(false);
@@ -678,6 +687,15 @@ const Navbar = () => {
                               className="w-full text-left px-4 py-2 hover:bg-[#662654]/5 hover:text-[#662654] text-[#662654]/80 font-bold text-[13.5px] transition-colors cursor-pointer"
                             >
                               Our Own Community
+                            </button>
+                            <button
+                              onClick={() => {
+                                setShowKnowUsDropdown(false);
+                                handleNavClick('Careers');
+                              }}
+                              className="w-full text-left px-4 py-2 hover:bg-[#662654]/5 hover:text-[#662654] text-[#662654]/80 font-bold text-[13.5px] transition-colors cursor-pointer"
+                            >
+                              Careers
                             </button>
                           </div>
                         </motion.div>
