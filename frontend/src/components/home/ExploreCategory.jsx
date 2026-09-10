@@ -300,16 +300,7 @@ const CATEGORY_CONFIG = [
   }
 ];
 
-const getMobileGridClasses = (index) => {
-  switch(index) {
-    case 0: return "col-span-2 row-span-1";
-    case 1: return "col-span-1 row-span-1";
-    case 2: return "col-span-1 row-span-2";
-    case 3: return "col-span-1 row-span-1";
-    case 4: return "col-span-2 row-span-1";
-    default: return "col-span-1 row-span-1";
-  }
-};
+
 
 // Resolve the full image URL from backend
 const resolveImage = (img) => {
@@ -683,40 +674,27 @@ const DesktopCategoryCard = ({
 };
 
 // =======================================================
-// MOBILE CATEGORY CARD (Asymmetrical Bento Box Grid)
+// MOBILE CATEGORY CARD (Balanced Clean Grid Card)
 // =======================================================
 const MobileCategoryCard = ({
   cat,
   index,
   onClick
 }) => {
-  const [activeImageIdx, setActiveImageIdx] = useState(0);
-  const products = cat.products || [];
-  const images = (cat.images && cat.images.length > 0) ? cat.images : (cat.img ? [cat.img] : [cat.fallback]);
-  
-  const safeIdx = images.length > 0 ? (activeImageIdx % images.length) : 0;
-  const currentImg = images[safeIdx] || cat.fallback;
-  const currentProduct = products[safeIdx] || null;
-  const activeProductDescription = deriveProductExcerpt(currentProduct, cat.temptationQuote);
-
-  // Staggered auto-cycle for mobile cards
-  useEffect(() => {
-    if (images.length <= 1) return;
-    const delay = 3200 + index * 450;
-    const timer = setInterval(() => {
-      setActiveImageIdx((prev) => (prev + 1) % images.length);
-    }, delay);
-    return () => clearInterval(timer);
-  }, [images.length, index]);
+  const isFeatured = index === 0;
+  const heroImage = cat.img || cat.fallback;
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
+      initial={{ opacity: 0, scale: 0.96 }}
       whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ delay: index * 0.07, duration: 0.45, ease: "easeOut" }}
+      viewport={{ once: true, margin: "-30px" }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ delay: index * 0.05, duration: 0.35, ease: "easeOut" }}
       onClick={onClick}
-      className={`relative rounded-2xl overflow-hidden group cursor-pointer shadow-sm hover:shadow-md border border-gray-100 transition-all duration-500 bg-white ${getMobileGridClasses(index)}`}
+      className={`relative rounded-2xl overflow-hidden group cursor-pointer shadow-xs hover:shadow-md border border-gray-100 transition-all duration-300 bg-white ${
+        isFeatured ? 'col-span-2' : 'col-span-1'
+      }`}
     >
       {/* Top Accent Line */}
       <div
@@ -724,94 +702,112 @@ const MobileCategoryCard = ({
         style={{ background: cat.accent }}
       />
 
-      {/* Main product image - object-contain - inside the white box! */}
-      <div className="absolute inset-0 flex items-center justify-center p-3 pb-12 bg-white">
-        <AnimatePresence mode="wait">
-          <motion.img
-            key={`${cat.title}-${safeIdx}`}
-            src={resolveImage(currentImg)}
-            alt={currentProduct?.name || cat.title}
-            width={300}
-            height={300}
-            loading="lazy"
-            initial={{ opacity: 0.5, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0.3 }}
-            transition={{ duration: 0.35 }}
-            className="max-h-full max-w-full object-contain filter drop-shadow-sm"
-            onError={(e) => { e.target.src = cat.fallback; }}
-          />
-        </AnimatePresence>
-
-        {/* Special Character mascot for mobile with action animation */}
-        {cat.characterImg && (
-          <motion.div
-            animate={cat.characterAnim || { y: [0, -4, 0] }}
-            transition={{ repeat: Infinity, duration: cat.characterAnimDuration || 2.2, ease: "easeInOut" }}
-            className="absolute -bottom-1 -right-1 z-20 pointer-events-none drop-shadow-md flex items-center justify-center"
-          >
-            <img
-              src={cat.characterImg}
-              alt=""
-              className="w-11 h-11 object-contain"
-            />
-            {cat.actionIcon && (
-              <motion.span
-                animate={cat.actionIconAnim || { y: [-2, -14], opacity: [0, 1, 0] }}
-                transition={{ repeat: Infinity, duration: cat.actionIconDuration || 1.8, ease: "easeOut" }}
-                className="absolute -top-1 -right-1 text-[10px] select-none pointer-events-none"
-              >
-                {cat.actionIcon}
-              </motion.span>
-            )}
-          </motion.div>
-        )}
-      </div>
-
-      {/* Gradient overlay for bottom text */}
-      <div
-        className="absolute inset-0 transition-opacity duration-500 pointer-events-none"
-        style={{ background: `linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.6) 45%, transparent 80%)` }}
-      />
-
-      {/* Top Header: Badge & Slide Dots */}
-      <div className="absolute top-2 left-2 right-2 z-10 flex items-center justify-between pointer-events-none">
-        <div
-          className="rounded-full px-2 py-0.5 shadow-xs"
-          style={{ background: cat.accent }}
-        >
-          <span className="text-white text-[9px] font-bold tracking-wider uppercase">{cat.badge}</span>
-        </div>
-        {images.length > 1 && (
-          <div className="flex items-center gap-1 bg-black/10 backdrop-blur-xs px-1.5 py-0.5 rounded-full">
-            {images.map((_, dIdx) => (
+      {isFeatured ? (
+        /* Top Featured Card (Bloom Cookies) — Balanced Horizontal Layout */
+        <div className="relative w-full min-h-[160px] flex flex-row items-center justify-between p-4 bg-white">
+          {/* Left Details */}
+          <div className="flex-1 flex flex-col justify-between h-full max-w-[58%] z-10 py-0.5">
+            <div>
               <span
-                key={dIdx}
-                className={`h-1 rounded-full transition-all duration-300 ${
-                  safeIdx === dIdx ? 'w-2.5 bg-gray-800' : 'w-1 bg-gray-400'
-                }`}
-              />
-            ))}
+                className="text-[9.5px] font-extrabold uppercase tracking-wider block mb-1"
+                style={{ color: cat.textAccent || cat.accent }}
+              >
+                {cat.subtitle}
+              </span>
+              <h3 className="font-black text-xl text-gray-900 tracking-tight leading-tight mb-1.5">
+                {cat.title}
+              </h3>
+              <p className="text-gray-500 text-[11px] font-medium line-clamp-2 leading-relaxed">
+                {cat.temptationQuote}
+              </p>
+            </div>
+            <div className="flex items-center gap-1 text-[12px] font-black text-[#662654] pt-2">
+              <span>Shop Collection</span>
+              <ArrowRight size={13} strokeWidth={2.5} />
+            </div>
           </div>
-        )}
-      </div>
 
-      {/* Bottom Information */}
-      <div className="absolute inset-0 p-3 flex flex-col justify-end z-10 pointer-events-none">
-        <h3 className="font-black text-[15px] leading-tight text-gray-900 tracking-tight">
-          {cat.title}
-        </h3>
-        {currentProduct && (
-          <span className="text-gray-800 text-[10px] font-extrabold truncate mt-0.5 block">
-            ✦ {currentProduct.name}
-          </span>
-        )}
-        {activeProductDescription && (
-          <p className="text-gray-600 text-[9px] font-medium line-clamp-1 mt-0.5 leading-tight opacity-90">
-            {activeProductDescription}
-          </p>
-        )}
-      </div>
+          {/* Right Hero Image Stage & Mascot */}
+          <div className="flex-1 flex items-center justify-center h-full relative pl-2">
+            <img
+              src={resolveImage(heroImage)}
+              alt={cat.title}
+              width={220}
+              height={140}
+              loading="lazy"
+              className="max-h-[120px] max-w-full object-contain filter drop-shadow-md z-10"
+              onError={(e) => { e.target.src = cat.fallback; }}
+            />
+
+            {/* Mascot */}
+            {cat.characterImg && (
+              <motion.div
+                animate={cat.characterAnim || { y: [0, -4, 0] }}
+                transition={{ repeat: Infinity, duration: cat.characterAnimDuration || 2.2, ease: "easeInOut" }}
+                className="absolute -bottom-1 -right-1 z-20 pointer-events-none drop-shadow-sm flex items-center justify-center"
+              >
+                <img
+                  src={cat.characterImg}
+                  alt=""
+                  className="w-11 h-11 object-contain"
+                />
+              </motion.div>
+            )}
+          </div>
+        </div>
+      ) : (
+        /* Regular Cards (Saffron, Petal Jam, Brew Flora, Medley Teas) — Vertical Symmetrical Card */
+        <div className="relative w-full h-[215px] flex flex-col justify-between p-3.5 bg-white">
+          {/* Top Category Label */}
+          <div className="flex items-center justify-between z-10">
+            <span
+              className="text-[9px] font-extrabold uppercase tracking-wider truncate"
+              style={{ color: cat.textAccent || cat.accent }}
+            >
+              {cat.subtitle}
+            </span>
+          </div>
+
+          {/* Clean Central Hero Image Stage */}
+          <div className="relative w-full flex-1 flex items-center justify-center min-h-[115px] max-h-[130px] my-1">
+            <img
+              src={resolveImage(heroImage)}
+              alt={cat.title}
+              width={160}
+              height={130}
+              loading="lazy"
+              className="max-h-[115px] max-w-full object-contain filter drop-shadow-md z-10 transition-transform duration-300 group-hover:scale-105"
+              onError={(e) => { e.target.src = cat.fallback; }}
+            />
+
+            {/* Mascot in bottom-right corner of image stage */}
+            {cat.characterImg && (
+              <motion.div
+                animate={cat.characterAnim || { y: [0, -4, 0] }}
+                transition={{ repeat: Infinity, duration: cat.characterAnimDuration || 2.2, ease: "easeInOut" }}
+                className="absolute -bottom-1 -right-1 z-20 pointer-events-none drop-shadow-sm flex items-center justify-center"
+              >
+                <img
+                  src={cat.characterImg}
+                  alt=""
+                  className="w-9 h-9 object-contain"
+                />
+              </motion.div>
+            )}
+          </div>
+
+          {/* Bottom Title & Action */}
+          <div className="pt-2 border-t border-gray-100/80 flex items-center justify-between z-10">
+            <h3 className="font-black text-[14px] text-gray-900 tracking-tight leading-tight truncate">
+              {cat.title}
+            </h3>
+            <div className="flex items-center gap-0.5 text-[#662654] font-bold text-[11px] flex-shrink-0 ml-1">
+              <span>View</span>
+              <ArrowRight size={12} strokeWidth={2.5} />
+            </div>
+          </div>
+        </div>
+      )}
     </motion.div>
   );
 };
@@ -896,7 +892,7 @@ const ExploreCategory = () => {
                 ...cat,
                 products: orderedProducts,
                 images: allImages,
-                img: allImages[0] || cat.fallback,
+                img: cat.img || allImages[0] || cat.fallback,
                 loading: false,
                 productCount: data.total || orderedProducts.length || cat.productCount || 0
               };
@@ -960,9 +956,9 @@ const ExploreCategory = () => {
         </div>
 
         {/* =========================================
-            MOBILE VIEW: Asymmetrical Bento Box Grid
+            MOBILE VIEW: Balanced Clean Grid
             ========================================= */}
-        <div className="grid md:hidden grid-cols-2 auto-rows-[150px] gap-3">
+        <div className="grid md:hidden grid-cols-2 gap-3 sm:gap-4">
           {categories.map((cat, index) => (
             <MobileCategoryCard
               key={`mobile-${cat.title}-${index}`}
