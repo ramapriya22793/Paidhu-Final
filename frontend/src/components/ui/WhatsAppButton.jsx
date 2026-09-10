@@ -25,26 +25,31 @@ const WhatsAppButton = () => {
       whileTap={{ scale: 0.94 }}
       className="fixed bottom-6 right-6 z-50 flex items-center justify-center group"
     >
-      <div className="relative w-14 h-14 md:w-16 md:h-16 rounded-full border-[3.5px] border-white shadow-[0_10px_30px_rgba(37,211,102,0.45)] bg-[#25D366] overflow-visible transition-shadow duration-300 group-hover:shadow-[0_12px_35px_rgba(37,211,102,0.6)]">
-        {/* WhatsApp Icon */}
-        <div className="w-full h-full rounded-full overflow-hidden flex items-center justify-center p-1 md:p-1.5 bg-[#25D366]">
+      <div className="relative w-15 h-15 md:w-18 md:h-18 rounded-full border-[3.5px] border-white shadow-[0_10px_30px_rgba(37,211,102,0.4)] bg-white overflow-visible transition-shadow duration-300 group-hover:shadow-[0_12px_35px_rgba(37,211,102,0.6)]">
+        {/* Mascot Flower Image */}
+        <div className="w-full h-full rounded-full overflow-hidden bg-[#fffdfa] flex items-center justify-center p-1.5">
+          <img 
+            src="/mascot.png" 
+            alt="Chat with us on WhatsApp" 
+            className="w-full h-full object-contain"
+          />
+        </div>
+
+        {/* Small WhatsApp Badge at bottom right */}
+        <div className="absolute -bottom-1 -right-1 w-6 h-6 md:w-6.5 md:h-6.5 bg-[#25D366] rounded-full border-2 border-white shadow-md flex items-center justify-center p-0.5 z-10">
           <WhatsAppIcon />
         </div>
         
         {/* Red Notification Badge */}
-        <div className="absolute -top-1.5 -right-1 w-6 h-6 md:w-7 md:h-7 bg-[#ef4444] text-white text-xs font-black flex items-center justify-center rounded-full shadow-md border-2 border-white z-10">
+        <div className="absolute -top-1.5 -right-1 w-6 h-6 md:w-6.5 md:h-6.5 bg-[#ef4444] text-white text-xs font-black flex items-center justify-center rounded-full shadow-md border-2 border-white z-10">
           1
         </div>
-
-        {/* Green Online Dot */}
-        <div className="absolute bottom-0 right-0 w-4 h-4 md:w-4.5 md:h-4.5 bg-[#22c55e] rounded-full border-2 border-white shadow-sm z-10"></div>
         
         {/* Pulse effect */}
-        <div className="absolute -inset-2 bg-[#25D366] rounded-full animate-ping opacity-25 group-hover:opacity-45 z-[-1] transition-opacity duration-300"></div>
+        <div className="absolute -inset-2 bg-[#25D366] rounded-full animate-ping opacity-25 group-hover:opacity-40 z-[-1] transition-opacity duration-300 pointer-events-none"></div>
       </div>
     </motion.a>
   );
 };
 
 export default WhatsAppButton;
-

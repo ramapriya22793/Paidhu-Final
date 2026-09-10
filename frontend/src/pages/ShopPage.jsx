@@ -82,6 +82,7 @@ const getCategoryIcon = (category) => {
     'Bloom Cookies': '/cat_bloom_cookies.jpg',
     'Saffron': '/cat_saffron.jpg',
     'Saffron Giftbox': '/cat_saffron_giftbox.png',
+    'Gift Box': '/cat_saffron_giftbox.png',
     'Petal Jam': '/cat_petal_jam.jpg',
     'Medley Teas': '/cat_medley_teas.png',
     'Brew Flora': '/cat_brew_flora.jpg',
@@ -742,7 +743,16 @@ const ShopPage = () => {
   const [appliedMaxPrice, setAppliedMaxPrice] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [showSortMenu, setShowSortMenu] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const defaultCategories = [
+    { name: 'Bloom Cookies', image: '/cat_bloom_cookies.jpg' },
+    { name: 'Saffron', image: '/cat_saffron.jpg' },
+    { name: 'Petal Jam', image: '/cat_petal_jam.jpg' },
+    { name: 'Brew Flora', image: '/cat_brew_flora.jpg' },
+    { name: 'Medley Teas', image: '/cat_medley_teas.png' },
+    { name: 'Gift Box', image: '/cat_saffron_giftbox.png' },
+    { name: 'Combos', image: '/cat_combos.png' }
+  ];
+  const [categories, setCategories] = useState(defaultCategories);
 
   // Dynamic meta: show specific category name when one is selected
   const meta = activeCategory
@@ -818,26 +828,34 @@ const ShopPage = () => {
     fetch(`${API_BASE}/api/products?limit=200&_t=${Date.now()}`, { cache: 'no-store' })
       .then(r => r.json())
       .then(data => {
+        const productsList = data.products || [];
         const desiredOrder = ['Bloom Cookies', 'Saffron', 'Saffron Giftbox', 'Petal Jam', 'Brew Flora', 'Medley Teas', 'Gift Box', 'Combos'];
         
         const categoryMap = {};
         productsList.forEach(p => {
-          if (p.category && !categoryMap[p.category]) {
-            categoryMap[p.category] = p.image || (p.productImages && p.productImages.length > 0 ? p.productImages[0].imageUrl : null);
+          let cat = p.category;
+          if (!cat) return;
+          if (cat.toLowerCase() === 'uncategorized') cat = 'Gift Box';
+          if (!categoryMap[cat]) {
+            categoryMap[cat] = p.image || (p.productImages && p.productImages.length > 0 ? p.productImages[0].imageUrl : null);
           }
         });
 
         // Filter and map to objects with names and images
         const cats = desiredOrder
-          .filter(c => productsList.some(p => p.category === c))
+          .filter(c => productsList.some(p => p.category === c || (c === 'Gift Box' && p.category && p.category.toLowerCase() === 'uncategorized')))
           .map(name => ({
             name,
-            image: categoryMap[name]
+            image: categoryMap[name] || getCategoryIcon(name)
           }));
 
-        setCategories(cats);
+        if (cats.length > 0) {
+          setCategories(cats);
+        }
       })
-      .catch(() => {});
+      .catch((err) => {
+        console.error('Failed to load categories', err);
+      });
   }, []);
 
   // Fetch products with caching and fallback hydration
