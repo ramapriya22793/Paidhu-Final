@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { API_BASE_URL } from './apiConfig';
 
-const API_URL = (import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/reviews';
+const API_URL = `${API_BASE_URL}/api/reviews`;
 
 const getAllReviews = async () => {
   const response = await axios.get(API_URL);

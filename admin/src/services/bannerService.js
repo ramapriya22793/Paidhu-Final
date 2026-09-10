@@ -1,7 +1,8 @@
 import axios from 'axios';
 import authService from './authService';
+import { API_BASE_URL } from './apiConfig';
 
-const API_URL = (import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/banners';
+const API_URL = `${API_BASE_URL}/api/banners`;
 
 const getConfig = () => ({
   headers: { Authorization: `Bearer ${authService.getToken()}` }

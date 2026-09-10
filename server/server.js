@@ -19,18 +19,32 @@ const ALLOWED_ORIGINS = [
   'http://localhost:5173',
   'http://localhost:5174',
   'http://localhost:3000',
+  'http://localhost:3001',
 ];
+
+const isAllowedOrigin = (origin) => {
+  if (!origin) return true;
+  if (ALLOWED_ORIGINS.includes(origin)) return true;
+  // Allow any localhost or 127.0.0.1 port (e.g. 5173, 5174, 3000, 3001, 4173)
+  if (/^https?:\/\/localhost(:\d+)?$/.test(origin)) return true;
+  if (/^https?:\/\/127\.0\.0\.1(:\d+)?$/.test(origin)) return true;
+  // Allow any Vercel deployment (preview or production)
+  if (/^https:\/\/([a-zA-Z0-9_-]+\.)*vercel\.app$/.test(origin)) return true;
+  // Allow any paidhuethicalfoods domain/subdomain
+  if (/^https:\/\/([a-zA-Z0-9_-]+\.)*paidhuethicalfoods\.com$/.test(origin)) return true;
+  return false;
+};
 
 app.use((req, res, next) => {
   const origin = req.headers.origin;
-  if (!origin || ALLOWED_ORIGINS.includes(origin)) {
+  if (isAllowedOrigin(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin || '*');
   } else {
     res.setHeader('Access-Control-Allow-Origin', 'https://www.paidhuethicalfoods.com');
   }
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Access-Control-Allow-Origin, X-HTTP-Method-Override, Content-Type, Authorization, Accept');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Access-Control-Allow-Origin, X-HTTP-Method-Override, Content-Type, Authorization, Accept, Cache-Control, Pragma, X-CSRF-Token, Accept-Version, Content-Length, Content-MD5, Date, X-Api-Version');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();

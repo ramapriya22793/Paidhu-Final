@@ -1,7 +1,8 @@
 import axios from 'axios';
 import authService from './authService';
+import { API_BASE_URL } from './apiConfig';
 
-const API_URL = (import.meta.env.VITE_API_URL || 'https://paidhu-final-anm2.vercel.app') + '/api/products';
+const API_URL = `${API_BASE_URL}/api/products`;
 
 const getConfig = () => ({
   headers: { Authorization: `Bearer ${authService.getToken()}` }
@@ -18,12 +19,7 @@ const getProducts = async () => {
 const getProductById = async (id) => {
   const response = await axios.get(`${API_URL}/${id}`, {
     ...getConfig(),
-    params: { _t: new Date().getTime() },
-    headers: {
-      ...getConfig().headers,
-      'Cache-Control': 'no-cache, no-store, must-revalidate',
-      'Pragma': 'no-cache'
-    }
+    params: { _t: new Date().getTime() }
   });
   return response.data;
 };
