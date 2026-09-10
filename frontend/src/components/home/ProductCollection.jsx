@@ -18,17 +18,17 @@ const COLLECTION_TERMS = {
     priorityIds: [20, 8, 3, 31, 22],
     shopUrl: "/shop/shop-all?tag=bestseller",
   },
-  "Crispy Bloom Cookies": {
+  "Bloom Cookies": {
     filter: (p) => /cookie/i.test(p.name + ' ' + (p.category?.name || p.category || '')),
     priorityIds: [8, 10, 9],
     shopUrl: "/shop/shop-by-category?category=Bloom%20Cookies",
   },
-  "Pure Kashmiri Saffron": {
+  "Pure Saffron": {
     filter: (p) => p.category?.toLowerCase() === 'saffron' || /saffron/i.test(p.name + ' ' + (p.description || '')),
     priorityIds: [20, 22, 21, 18],
     shopUrl: "/shop/shop-all?q=saffron",
   },
-  "Artisanal Petal Preserves": {
+  "Petal Jams": {
     filter: (p) => p.category?.toLowerCase().includes('jam') || /jam|gulkhand|syrup|preserve/i.test(p.name),
     priorityIds: [28, 4, 3, 29, 6],
     shopUrl: "/shop/shop-by-category?category=Petal%20Jam",
@@ -38,7 +38,7 @@ const COLLECTION_TERMS = {
     priorityIds: [12, 15, 14, 13, 11, 44],
     shopUrl: "/shop/shop-by-category?category=Brew%20Flora",
   },
-  "Fragrant Medley Teas": {
+  "Medley Teas": {
     filter: (p) => /medly|medley|tea\s*\(20\s*dips\)|dips/i.test(p.name),
     priorityIds: [45, 17, 18, 19, 31, 16],
     shopUrl: "/shop/shop-by-category?category=Medley%20Teas",
@@ -297,11 +297,21 @@ const ProductCollection = () => {
     }
   };
 
+  const getFallbackProducts = (cat) => {
+    return productsCache[cat] ||
+      fallbacks[cat] ||
+      (cat === "Bloom Cookies" ? fallbacks["Crispy Bloom Cookies"] : null) ||
+      (cat === "Pure Saffron" ? fallbacks["Pure Kashmiri Saffron"] : null) ||
+      (cat === "Petal Jams" ? fallbacks["Artisanal Petal Preserves"] : null) ||
+      (cat === "Medley Teas" ? fallbacks["Fragrant Medley Teas"] : null) ||
+      [];
+  };
+
   const [products, setProducts] = useState(() => {
-    return productsCache[activeCategory] || fallbacks[activeCategory] || [];
+    return getFallbackProducts(activeCategory);
   });
   const [loading, setLoading] = useState(() => {
-    const initialList = productsCache[activeCategory] || fallbacks[activeCategory] || [];
+    const initialList = getFallbackProducts(activeCategory);
     return initialList.length === 0;
   });
   const [addingId, setAddingId] = useState(null);
@@ -351,7 +361,7 @@ const ProductCollection = () => {
   useEffect(() => {
     let isMounted = true;
     
-    const instantList = productsCache[activeCategory] || fallbacks[activeCategory] || [];
+    const instantList = getFallbackProducts(activeCategory);
     setProducts(instantList);
     setLoading(instantList.length === 0);
 
@@ -445,7 +455,7 @@ const ProductCollection = () => {
           }
         }
 
-        const activeList = productsCache[activeCategory] || fallbacks[activeCategory] || [];
+        const activeList = productsCache[activeCategory] || getFallbackProducts(activeCategory);
         if (isMounted) {
           setProducts(activeList);
           setLoading(false);
