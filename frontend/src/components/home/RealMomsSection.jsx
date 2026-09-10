@@ -29,116 +29,116 @@ const RealMomsSection = () => {
   }, []);
 
   return (
-    <section className="relative w-full bg-[#faf7f3] overflow-hidden">
+    <section className="relative w-full bg-[#faf7f3] pt-0 pb-0 overflow-hidden">
       {/* Wavy Top SVG Divider */}
-      <div className="w-full overflow-hidden leading-[0] transform rotate-180">
-        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-[calc(100%+1.3px)] h-[25px] sm:h-[35px] md:h-[45px]">
+      <div className="absolute top-0 left-0 w-full overflow-hidden leading-[0] transform rotate-180 pointer-events-none z-10">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-[calc(100%+1.3px)] h-[35px] md:h-[60px]">
           <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="#e9e3d5"></path>
         </svg>
       </div>
 
-      <div className="w-full max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 md:pt-8 lg:pt-10 pb-8 sm:pb-10 md:pb-14">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 xl:gap-16 items-center">
+      <div className="w-full max-w-[1400px] mx-auto flex flex-col md:flex-row items-center justify-between pt-12 sm:pt-16 md:pt-24 pb-12 md:pb-0 px-5 sm:px-8 md:px-0 md:pl-16 lg:pl-24">
 
-          {/* Left Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
-            className="w-full lg:col-span-6 text-left"
+        {/* Left Content */}
+        <motion.div
+          initial={{ opacity: 0, x: -40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className="w-full md:w-1/2 text-left mb-8 md:mb-0 pr-0 md:pr-8 lg:pr-12"
+        >
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#522742] font-serif mb-4 tracking-tight">
+            Paidhu Community
+          </h2>
+          <p className="text-base sm:text-lg md:text-xl font-bold text-[#522742]/85 mb-5 max-w-md leading-snug">
+            A supportive space to share tips on clean eating, wholesome family nutrition, and pure culinary delights.
+          </p>
+
+          <div className="w-full h-px bg-[#522742]/20 mb-5"></div>
+
+          <ul className="space-y-3 mb-6 sm:mb-8">
+            <li className="flex items-start">
+              <span className="text-[#fbc225] mr-3 mt-1 text-xl leading-none">•</span>
+              <span className="text-[#4b3c43] font-medium text-sm sm:text-base md:text-lg">Connect with health-conscious families in your city</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-[#fbc225] mr-3 mt-1 text-xl leading-none">•</span>
+              <span className="text-[#4b3c43] font-medium text-sm sm:text-base md:text-lg">Get expert advice on wholesome nutrition, healthy growth, and natural wellness</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-[#fbc225] mr-3 mt-1 text-xl leading-none">•</span>
+              <span className="text-[#4b3c43] font-medium text-sm sm:text-base md:text-lg">Share unique, family-friendly recipes using floral petal jams and natural ingredients</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-[#fbc225] mr-3 mt-1 text-xl leading-none">•</span>
+              <span className="text-[#4b3c43] font-medium text-sm sm:text-base md:text-lg">Receive invitations to exclusive local meetups, workshops, and product tastings</span>
+            </li>
+          </ul>
+
+          {/* Slide dots */}
+          <div className="flex gap-2 mb-6">
+            {communitySlides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveSlide(i)}
+                className={`h-2 rounded-full transition-all duration-300 ${activeSlide === i ? 'w-7 bg-[#522742]' : 'w-2 bg-[#522742]/30 hover:bg-[#522742]/60'}`}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
+          </div>
+
+          <a
+            href="https://chat.whatsapp.com/EDlauzE5x1B6U23RamfCej?s=sh&p=a&ilr=0"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-[#522742] text-white text-sm font-black py-2.5 px-6 rounded-full hover:bg-[#662654] transition-colors flex items-center shadow-md w-fit"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#522742] font-serif mb-2 sm:mb-3 tracking-tight">
-              Paidhu Community
-            </h2>
-            <p className="text-sm sm:text-base md:text-lg font-bold text-[#522742]/85 mb-3 sm:mb-4 max-w-lg leading-snug">
-              A supportive space to share tips on clean eating, wholesome family nutrition, and pure culinary delights.
-            </p>
+            Join Our Community
+            <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </motion.div>
 
-            <div className="w-full h-px bg-[#522742]/20 mb-3 sm:mb-4"></div>
-
-            <ul className="space-y-2 sm:space-y-2.5 mb-4 sm:mb-6">
-              <li className="flex items-start">
-                <span className="text-[#fbc225] mr-2.5 mt-0.5 text-lg leading-none">•</span>
-                <span className="text-[#4b3c43] font-medium text-xs sm:text-sm md:text-base">Connect with health-conscious families in your city</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-[#fbc225] mr-2.5 mt-0.5 text-lg leading-none">•</span>
-                <span className="text-[#4b3c43] font-medium text-xs sm:text-sm md:text-base">Get expert advice on wholesome nutrition, healthy growth, and natural wellness</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-[#fbc225] mr-2.5 mt-0.5 text-lg leading-none">•</span>
-                <span className="text-[#4b3c43] font-medium text-xs sm:text-sm md:text-base">Share unique, family-friendly recipes using floral petal jams and natural ingredients</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-[#fbc225] mr-2.5 mt-0.5 text-lg leading-none">•</span>
-                <span className="text-[#4b3c43] font-medium text-xs sm:text-sm md:text-base">Receive invitations to exclusive local meetups, workshops, and product tastings</span>
-              </li>
-            </ul>
-
-            {/* Slide dots */}
-            <div className="flex gap-2 mb-4 sm:mb-6">
-              {communitySlides.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setActiveSlide(i)}
-                  className={`h-2 rounded-full transition-all duration-300 ${activeSlide === i ? 'w-7 bg-[#522742]' : 'w-2 bg-[#522742]/30 hover:bg-[#522742]/60'}`}
-                  aria-label={`Go to slide ${i + 1}`}
-                />
-              ))}
-            </div>
-
-            <a
-              href="https://chat.whatsapp.com/EDlauzE5x1B6U23RamfCej?s=sh&p=a&ilr=0"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-[#522742] text-white text-xs sm:text-sm font-black py-2.5 px-6 rounded-full hover:bg-[#662654] transition-colors inline-flex items-center shadow-md w-fit"
-            >
-              Join Our Community
-              <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </a>
-          </motion.div>
-
-          {/* Right — Real Community Slideshow Showcase (Restored Model with Rounded Card & Badges) */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.15, ease: 'easeOut' }}
-            className="w-full lg:col-span-6 relative flex justify-center items-center py-2"
+        {/* Right — Real community slideshow with wave clip */}
+        <motion.div
+          initial={{ opacity: 0, x: 40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.15, ease: 'easeOut' }}
+          className="w-full md:w-1/2 relative flex justify-end h-[360px] sm:h-[440px] md:h-[600px] lg:h-[700px]"
+        >
+          <div
+            className="w-full h-full bg-transparent overflow-hidden"
+            style={{
+              clipPath: 'url(#paidhu-wave-clip)',
+              WebkitClipPath: 'url(#paidhu-wave-clip)',
+            }}
           >
-            <div className="relative w-full h-[260px] sm:h-[340px] md:h-[440px] lg:h-[500px] rounded-2xl sm:rounded-3xl md:rounded-[2.5rem] overflow-hidden shadow-xl md:shadow-2xl border-2 sm:border-4 border-white bg-white/60">
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={activeSlide}
-                  src={communitySlides[activeSlide]}
-                  alt={`Paidhu Community ${activeSlide + 1}`}
-                  className="w-full h-full object-cover"
-                  initial={{ opacity: 0, scale: 1.03 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.98 }}
-                  transition={{ duration: 0.7 }}
-                />
-              </AnimatePresence>
-
-              {/* Gentle bottom gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent pointer-events-none" />
-
-              {/* Badges on the image */}
-              <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-5 right-3 sm:right-5 flex items-center justify-between z-10 pointer-events-none">
-                <span className="text-[10px] sm:text-xs font-bold text-white bg-[#522742]/85 backdrop-blur-md px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full shadow-sm">
-                  Paidhu Family Gatherings
-                </span>
-                <span className="text-[10px] sm:text-xs font-bold text-white/90 bg-black/40 backdrop-blur-md px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full">
-                  {activeSlide + 1} / {communitySlides.length}
-                </span>
-              </div>
-            </div>
-          </motion.div>
-        </div>
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={activeSlide}
+                src={communitySlides[activeSlide]}
+                alt={`Paidhu Community ${activeSlide + 1}`}
+                className="w-full h-full object-cover"
+                initial={{ opacity: 0, scale: 1.04 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.97 }}
+                transition={{ duration: 0.8 }}
+              />
+            </AnimatePresence>
+          </div>
+        </motion.div>
       </div>
+
+      {/* SVG Clip Path */}
+      <svg width="0" height="0" className="absolute pointer-events-none">
+        <defs>
+          <clipPath id="paidhu-wave-clip" clipPathUnits="objectBoundingBox">
+            <path d="M 0.15 0 C 0.3 0.1, -0.05 0.3, 0.05 0.5 C 0.15 0.7, -0.1 0.9, 0.2 1 L 1 1 L 1 0 Z" />
+          </clipPath>
+        </defs>
+      </svg>
     </section>
   );
 };
