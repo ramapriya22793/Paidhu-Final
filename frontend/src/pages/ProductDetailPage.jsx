@@ -1002,16 +1002,6 @@ const ProductDetailPage = () => {
 
               {/* Modal Body */}
               <div className="p-6 space-y-4">
-                <div className="bg-[#fff9f4] border border-[#d4af37]/30 rounded-2xl p-4 space-y-2">
-                  <div className="flex items-center gap-2 text-sm font-extrabold text-[#662654]">
-                    <CheckCircle2 size={16} className="text-[#d4af37]" />
-                    <span>Get 100% Free Expert Consultation</span>
-                  </div>
-                  <p className="text-xs text-gray-600 leading-relaxed">
-                    Our specialists provide doctor-approved guidance on exact strand dosage, trimester timing, and optimal preparation so you get the purest benefits.
-                  </p>
-                </div>
-
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   <Link
                     to="/saffron-guidance"
