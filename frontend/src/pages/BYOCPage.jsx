@@ -7,18 +7,53 @@ import SEO from '../components/seo/SEO';
 
 const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://paidhu-final-anm2.vercel.app');
 
-const allFallbackProducts = (() => {
+const isComboOrGift = (p) => {
+  if (!p) return false;
+  const name = (p.name || p.title || '').toLowerCase();
+  const cat = (p.category?.name || p.category || '').toLowerCase();
+  const tags = (p.tags || '').toLowerCase();
+  return /combo|gift\s*box|family\s*pack|giftbox|\bcombos\b/i.test(`${name} ${cat} ${tags}`);
+};
+
+const getCategoryIndex = (p) => {
+  const cat = p.category?.name || p.category || '';
+  const name = p.name || p.title || '';
+  if (/cookie/i.test(cat) || /cookie/i.test(name)) return 0;
+  if (/saffron/i.test(cat) || /saffron/i.test(name)) return 1;
+  if (/jam|gulkhand|preserve/i.test(cat) || /jam|gulkhand|preserve/i.test(name)) return 2;
+  if (/brew/i.test(cat) || /brew|aavaram|chamomile|blue\s*pea|lavender/i.test(name)) return 3;
+  if (/medley|tea\s*\(20\s*dips\)|dips/i.test(cat) || /medley|tea\s*\(20\s*dips\)|dips/i.test(name)) return 4;
+  return 999;
+};
+
+const filterAndSortBYOCProducts = (list) => {
+  if (!Array.isArray(list)) return [];
   const seen = new Set();
+  const filtered = [];
+  for (const p of list) {
+    if (!p || seen.has(p.id)) continue;
+    if (isComboOrGift(p)) continue;
+    seen.add(p.id);
+    filtered.push(p);
+  }
+  return filtered.sort((a, b) => {
+    const catA = getCategoryIndex(a);
+    const catB = getCategoryIndex(b);
+    if (catA !== catB) return catA - catB;
+    return (a.id || 0) - (b.id || 0);
+  });
+};
+
+const allFallbackProducts = (() => {
   const list = [];
   Object.values(fallbacks).forEach(categoryList => {
     categoryList.forEach(p => {
-      if (!seen.has(p.id) && p.raw) {
-        seen.add(p.id);
+      if (p.raw) {
         list.push(p.raw);
       }
     });
   });
-  return list;
+  return filterAndSortBYOCProducts(list);
 })();
 
 // Pricing logic perfectly mimicking the reference
@@ -31,18 +66,18 @@ const TIERS = [
 const MAX_ITEMS = 5;
 
 const BYOCPage = () => {
-  const [products, setProducts] = useState(allFallbackProducts.slice(0, 30));
+  const [products, setProducts] = useState(allFallbackProducts);
   const [bundle, setBundle] = useState([]);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const { addToCart, setIsCartOpen } = useCart();
 
   // Load products if backend is available
   useEffect(() => {
-    fetch(`${API_BASE}/api/products?limit=50&_t=${Date.now()}`, { cache: 'no-store' })
+    fetch(`${API_BASE}/api/products?limit=100&_t=${Date.now()}`, { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         if (data.products && data.products.length > 0) {
-          setProducts(data.products);
+          setProducts(filterAndSortBYOCProducts(data.products));
         }
       })
       .catch(() => console.log('Using fallback products for BYOC'));

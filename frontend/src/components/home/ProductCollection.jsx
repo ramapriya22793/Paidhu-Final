@@ -48,11 +48,6 @@ const COLLECTION_TERMS = {
     priorityIds: [4, 10, 13, 16, 45],
     shopUrl: "/shop/shop-all?q=hibiscus",
   },
-  "Deals of the Day": {
-    filter: (p) => p.isDealOfTheDay || (p.discountPrice && p.discountPrice < p.price) || p.tags?.toLowerCase().includes('deal') || [20, 28, 22, 10, 15].includes(p.id),
-    priorityIds: [20, 28, 22, 10, 15],
-    shopUrl: "/shop/deal-of-the-day",
-  },
   "Gift Boxes & Combos": {
     filter: (p) => p.category?.toLowerCase().includes('gift') || /gift|combo|box/i.test(p.name + ' ' + (p.tags || '')) || [30, 20, 8, 3].includes(p.id),
     priorityIds: [30, 20, 8, 3, 28],

@@ -98,11 +98,10 @@ const ProductDetailPage = () => {
   const [activeTab, setActiveTab] = useState('about'); // about, benefits, nutrition, faqs
   const [openFaq, setOpenFaq] = useState(null);
   
-  const { addToCart, wishlist, toggleWishlist } = useCart();
+  const { addToCart, wishlist, toggleWishlist, setShowSaffronGuidanceModal } = useCart();
   const isInWishlist = product && wishlist && wishlist.some(item => item.id === product.id);
   const [isAdding, setIsAdding] = useState(false);
   const [similarProducts, setSimilarProducts] = useState([]);
-  const [showSaffronGuidanceModal, setShowSaffronGuidanceModal] = useState(false);
 
   const isSaffron = isSaffronProduct(product, selectedVariant);
 
@@ -959,93 +958,6 @@ const ProductDetailPage = () => {
 
 
       </div>
-
-      {/* 🌸 Saffron Guidance Popup Modal (Triggered on Add to Cart) */}
-      <AnimatePresence>
-        {showSaffronGuidanceModal && (
-          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="bg-white rounded-3xl shadow-2xl border border-[#d4af37]/30 max-w-lg w-full overflow-hidden relative"
-            >
-              {/* Close Button */}
-              <button
-                onClick={() => setShowSaffronGuidanceModal(false)}
-                className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-black/20 hover:bg-black/40 text-white flex items-center justify-center transition-colors cursor-pointer"
-                aria-label="Close"
-              >
-                <X size={18} />
-              </button>
-
-              {/* Modal Top Header Banner */}
-              <div className="bg-gradient-to-r from-[#662654] via-[#85306e] to-[#662654] p-6 text-white text-center relative overflow-hidden">
-                <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border-2 border-white/20 p-1 mx-auto mb-3 shadow-lg flex items-center justify-center">
-                  <img 
-                    src="/saffron_icon.png" 
-                    alt="Saffron Guidance" 
-                    className="w-full h-full object-contain"
-                    onError={(e) => { e.target.src = '/mascot.png'; }}
-                  />
-                </div>
-                <span className="inline-block bg-[#d4af37] text-[#522742] text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full mb-1 shadow-sm">
-                  Added to Cart! 🌸
-                </span>
-                <h2 className="text-xl md:text-2xl font-black font-serif tracking-tight mt-1">
-                  Personalized Saffron Guidance
-                </h2>
-                <p className="text-xs text-white/80 mt-1 max-w-xs mx-auto">
-                  Are you using Kashmiri Mongra Saffron for pregnancy, newborn wellness, or family health?
-                </p>
-              </div>
-
-              {/* Modal Body */}
-              <div className="p-6 space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  <Link
-                    to="/saffron-guidance"
-                    onClick={() => setShowSaffronGuidanceModal(false)}
-                    className="flex items-center justify-center gap-2 bg-[#662654] hover:bg-[#4a1c3d] text-white text-xs font-black py-3 px-4 rounded-xl shadow-md transition-all text-center"
-                  >
-                    <span>Consult Guidance Form</span>
-                    <ArrowRight size={13} />
-                  </Link>
-
-                  <a
-                    href="https://wa.me/918754787774?text=Hi%20Paidhu%2C%20I%20just%20added%20Saffron%20to%20my%20cart%20and%20would%20love%20expert%20guidance%20for%20pregnancy%2Fwellness."
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => setShowSaffronGuidanceModal(false)}
-                    className="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black py-3 px-4 rounded-xl shadow-md transition-all text-center"
-                  >
-                    <MessageSquare size={14} />
-                    <span>WhatsApp Specialist</span>
-                  </a>
-                </div>
-
-                <div className="border-t border-gray-100 pt-3 flex items-center justify-between">
-                  <button
-                    onClick={() => setShowSaffronGuidanceModal(false)}
-                    className="text-xs font-bold text-gray-500 hover:text-gray-800 transition-colors py-1 cursor-pointer"
-                  >
-                    Continue Shopping
-                  </button>
-                  <Link
-                    to="/checkout"
-                    onClick={() => setShowSaffronGuidanceModal(false)}
-                    className="text-xs font-extrabold text-[#662654] hover:underline flex items-center gap-1 cursor-pointer"
-                  >
-                    <span>Proceed to Checkout</span>
-                    <ArrowRight size={13} />
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-
     </motion.div>
   );
 };

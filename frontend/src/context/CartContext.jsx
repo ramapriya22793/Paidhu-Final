@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { X, ArrowRight, MessageSquare } from 'lucide-react';
 
 const CartContext = createContext();
 
@@ -97,11 +99,22 @@ const formatBackendWishlistItem = (item) => {
   };
 };
 
+// Helper to detect if a product is a Saffron product
+const isSaffronProduct = (p) => {
+  if (!p) return false;
+  const name = String(p.name || p.title || '');
+  const cat = String(p.category?.name || p.category || '');
+  const desc = String(p.shortDescription || p.description || '');
+  const tags = String(p.tags || '');
+  return /saffron/i.test(`${name} ${cat} ${desc} ${tags}`);
+};
+
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [wishlist, setWishlist] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
+  const [showSaffronGuidanceModal, setShowSaffronGuidanceModal] = useState(false);
   const [cartBadgeAnimate, setCartBadgeAnimate] = useState(false);
   const [toasts, setToasts] = useState([]);
   const [token, setToken] = useState(safeGetItem('paidhu_token') || '');
@@ -252,6 +265,12 @@ export const CartProvider = ({ children }) => {
 
     setCartBadgeAnimate(true);
     showToast('Product added to cart', 'success');
+
+    // 🌸 Pop open Saffron Guidance modal when any saffron product is added to cart
+    if (isSaffronProduct(product)) {
+      setShowSaffronGuidanceModal(true);
+      setIsCartOpen(false);
+    }
 
     try {
       const res = await fetch(`${API_BASE}/api/cart/add`, {
@@ -631,10 +650,99 @@ export const CartProvider = ({ children }) => {
       toggleWishlist,
       removeFromWishlist,
       wishlistCount: wishlist.length,
+      // Saffron Guidance Modal
+      showSaffronGuidanceModal,
+      setShowSaffronGuidanceModal,
       // Toasts
       showToast
     }}>
       {children}
+
+      {/* 🌸 Global Saffron Guidance Popup Modal (Triggered on Add to Cart of any Saffron on any page) */}
+      <AnimatePresence>
+        {showSaffronGuidanceModal && (
+          <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="bg-white rounded-3xl shadow-2xl border border-[#d4af37]/30 max-w-lg w-full overflow-hidden relative"
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setShowSaffronGuidanceModal(false)}
+                className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-black/20 hover:bg-black/40 text-white flex items-center justify-center transition-colors cursor-pointer"
+                aria-label="Close"
+              >
+                <X size={18} />
+              </button>
+
+              {/* Modal Top Header Banner */}
+              <div className="bg-gradient-to-r from-[#662654] via-[#85306e] to-[#662654] p-6 text-white text-center relative overflow-hidden">
+                <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border-2 border-white/20 p-1 mx-auto mb-3 shadow-lg flex items-center justify-center">
+                  <img 
+                    src="/saffron_icon.png" 
+                    alt="Saffron Guidance" 
+                    className="w-full h-full object-contain"
+                    onError={(e) => { e.currentTarget.src = '/mascot.png'; }}
+                  />
+                </div>
+                <span className="inline-block bg-[#d4af37] text-[#522742] text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full mb-1 shadow-sm">
+                  Added to Cart! 🌸
+                </span>
+                <h2 className="text-xl md:text-2xl font-black font-serif tracking-tight mt-1">
+                  Personalized Saffron Guidance
+                </h2>
+                <p className="text-xs text-white/80 mt-1 max-w-xs mx-auto">
+                  Are you using Kashmiri Mongra Saffron for pregnancy, newborn wellness, or family health?
+                </p>
+              </div>
+
+              {/* Modal Body */}
+              <div className="p-6 space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <Link
+                    to="/saffron-guidance"
+                    onClick={() => setShowSaffronGuidanceModal(false)}
+                    className="flex items-center justify-center gap-2 bg-[#662654] hover:bg-[#4a1c3d] text-white text-xs font-black py-3 px-4 rounded-xl shadow-md transition-all text-center"
+                  >
+                    <span>Consult Guidance Form</span>
+                    <ArrowRight size={13} />
+                  </Link>
+
+                  <a
+                    href="https://wa.me/918754787774?text=Hi%20Paidhu%2C%20I%20just%20added%20Saffron%20to%20my%20cart%20and%20would%20love%20expert%20guidance%20for%20pregnancy%2Fwellness."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setShowSaffronGuidanceModal(false)}
+                    className="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black py-3 px-4 rounded-xl shadow-md transition-all text-center"
+                  >
+                    <MessageSquare size={14} />
+                    <span>WhatsApp Specialist</span>
+                  </a>
+                </div>
+
+                <div className="border-t border-gray-100 pt-3 flex items-center justify-between">
+                  <button
+                    onClick={() => setShowSaffronGuidanceModal(false)}
+                    className="text-xs font-bold text-gray-500 hover:text-gray-800 transition-colors py-1 cursor-pointer"
+                  >
+                    Continue Shopping
+                  </button>
+                  <Link
+                    to="/checkout"
+                    onClick={() => setShowSaffronGuidanceModal(false)}
+                    className="text-xs font-extrabold text-[#662654] hover:underline flex items-center gap-1 cursor-pointer"
+                  >
+                    <span>Proceed to Checkout</span>
+                    <ArrowRight size={13} />
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Floating toast notifications */}
       <div className="fixed bottom-5 right-5 z-[99999] flex flex-col gap-3 max-w-sm pointer-events-none">
