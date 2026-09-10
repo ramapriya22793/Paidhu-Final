@@ -37,46 +37,46 @@ const RealMomsSection = () => {
         </svg>
       </div>
 
-      <div className="w-full max-w-[1400px] mx-auto flex flex-col md:flex-row items-center justify-between pt-12 sm:pt-16 md:pt-24 pb-12 md:pb-0 px-5 sm:px-8 md:px-0 md:pl-16 lg:pl-24">
+      <div className="w-full max-w-[1400px] mx-auto flex flex-col md:flex-row items-center justify-between pt-6 sm:pt-8 md:pt-12 pb-6 md:pb-0 px-5 sm:px-8 md:px-0 md:pl-10 lg:pl-16">
 
         {/* Left Content */}
         <motion.div
-          initial={{ opacity: 0, x: -40 }}
+          initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="w-full md:w-1/2 text-left mb-8 md:mb-0 pr-0 md:pr-8 lg:pr-12"
+          className="w-full md:w-[48%] lg:w-[46%] text-left mb-6 md:mb-0 pr-0 md:pr-4 lg:pr-6"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#522742] font-serif mb-4 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[54px] font-bold text-[#522742] font-serif mb-3 tracking-tight">
             Paidhu Community
           </h2>
-          <p className="text-base sm:text-lg md:text-xl font-bold text-[#522742]/85 mb-5 max-w-md leading-snug">
+          <p className="text-sm sm:text-base md:text-lg font-bold text-[#522742]/85 mb-4 max-w-lg leading-snug">
             A supportive space to share tips on clean eating, wholesome family nutrition, and pure culinary delights.
           </p>
 
-          <div className="w-full h-px bg-[#522742]/20 mb-5"></div>
+          <div className="w-full h-px bg-[#522742]/20 mb-4"></div>
 
-          <ul className="space-y-3 mb-6 sm:mb-8">
+          <ul className="space-y-2 sm:space-y-2.5 mb-5 sm:mb-6">
             <li className="flex items-start">
-              <span className="text-[#fbc225] mr-3 mt-1 text-xl leading-none">•</span>
-              <span className="text-[#4b3c43] font-medium text-sm sm:text-base md:text-lg">Connect with health-conscious families in your city</span>
+              <span className="text-[#fbc225] mr-2.5 mt-0.5 text-lg leading-none">•</span>
+              <span className="text-[#4b3c43] font-medium text-xs sm:text-sm md:text-base">Connect with health-conscious families in your city</span>
             </li>
             <li className="flex items-start">
-              <span className="text-[#fbc225] mr-3 mt-1 text-xl leading-none">•</span>
-              <span className="text-[#4b3c43] font-medium text-sm sm:text-base md:text-lg">Get expert advice on wholesome nutrition, healthy growth, and natural wellness</span>
+              <span className="text-[#fbc225] mr-2.5 mt-0.5 text-lg leading-none">•</span>
+              <span className="text-[#4b3c43] font-medium text-xs sm:text-sm md:text-base">Get expert advice on wholesome nutrition, healthy growth, and natural wellness</span>
             </li>
             <li className="flex items-start">
-              <span className="text-[#fbc225] mr-3 mt-1 text-xl leading-none">•</span>
-              <span className="text-[#4b3c43] font-medium text-sm sm:text-base md:text-lg">Share unique, family-friendly recipes using floral petal jams and natural ingredients</span>
+              <span className="text-[#fbc225] mr-2.5 mt-0.5 text-lg leading-none">•</span>
+              <span className="text-[#4b3c43] font-medium text-xs sm:text-sm md:text-base">Share unique, family-friendly recipes using floral petal jams and natural ingredients</span>
             </li>
             <li className="flex items-start">
-              <span className="text-[#fbc225] mr-3 mt-1 text-xl leading-none">•</span>
-              <span className="text-[#4b3c43] font-medium text-sm sm:text-base md:text-lg">Receive invitations to exclusive local meetups, workshops, and product tastings</span>
+              <span className="text-[#fbc225] mr-2.5 mt-0.5 text-lg leading-none">•</span>
+              <span className="text-[#4b3c43] font-medium text-xs sm:text-sm md:text-base">Receive invitations to exclusive local meetups, workshops, and product tastings</span>
             </li>
           </ul>
 
           {/* Slide dots */}
-          <div className="flex gap-2 mb-6">
+          <div className="flex gap-2 mb-5 sm:mb-6">
             {communitySlides.map((_, i) => (
               <button
                 key={i}
@@ -91,7 +91,7 @@ const RealMomsSection = () => {
             href="https://chat.whatsapp.com/EDlauzE5x1B6U23RamfCej?s=sh&p=a&ilr=0"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-[#522742] text-white text-sm font-black py-2.5 px-6 rounded-full hover:bg-[#662654] transition-colors flex items-center shadow-md w-fit"
+            className="bg-[#522742] text-white text-xs sm:text-sm font-black py-2.5 px-6 rounded-full hover:bg-[#662654] transition-colors inline-flex items-center shadow-md w-fit"
           >
             Join Our Community
             <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -102,11 +102,11 @@ const RealMomsSection = () => {
 
         {/* Right — Real community slideshow with wave clip */}
         <motion.div
-          initial={{ opacity: 0, x: 40 }}
+          initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.15, ease: 'easeOut' }}
-          className="w-full md:w-1/2 relative flex justify-end h-[360px] sm:h-[440px] md:h-[600px] lg:h-[700px]"
+          className="w-full md:w-[52%] lg:w-[54%] relative flex justify-end h-[300px] sm:h-[380px] md:h-[480px] lg:h-[530px]"
         >
           <div
             className="w-full h-full bg-transparent overflow-hidden"
@@ -135,7 +135,7 @@ const RealMomsSection = () => {
       <svg width="0" height="0" className="absolute pointer-events-none">
         <defs>
           <clipPath id="paidhu-wave-clip" clipPathUnits="objectBoundingBox">
-            <path d="M 0.15 0 C 0.3 0.1, -0.05 0.3, 0.05 0.5 C 0.15 0.7, -0.1 0.9, 0.2 1 L 1 1 L 1 0 Z" />
+            <path d="M 0.08 0 C 0.16 0.12, -0.02 0.32, 0.04 0.5 C 0.12 0.68, -0.03 0.88, 0.09 1 L 1 1 L 1 0 Z" />
           </clipPath>
         </defs>
       </svg>

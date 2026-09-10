@@ -527,7 +527,7 @@ const CategoryNavigation = ({ categories, activeCategory, onCategoryChange }) =>
     ...categories.map(cat => ({
       id: cat.name,
       name: cat.name,
-      image: cat.image || getCategoryIcon(cat.name)
+      image: cat.name.toLowerCase().includes('brew flora') ? '/cat_brew_flora.jpg' : (cat.image || getCategoryIcon(cat.name))
     }))
   ];
 
@@ -846,7 +846,7 @@ const ShopPage = () => {
           .filter(c => productsList.some(p => p.category === c || (c === 'Gift Box' && p.category && p.category.toLowerCase() === 'uncategorized')))
           .map(name => ({
             name,
-            image: categoryMap[name] || getCategoryIcon(name)
+            image: name.toLowerCase().includes('brew flora') ? '/cat_brew_flora.jpg' : (categoryMap[name] || getCategoryIcon(name))
           }));
 
         if (cats.length > 0) {

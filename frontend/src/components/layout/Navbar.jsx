@@ -270,7 +270,7 @@ const Navbar = () => {
           })
           .map(name => ({
             name,
-            image: categoryMap[name] || CATEGORY_FALLBACK_IMAGES[name.toLowerCase()] || null
+            image: name.toLowerCase().includes('brew flora') ? '/cat_brew_flora.jpg' : (categoryMap[name] || CATEGORY_FALLBACK_IMAGES[name.toLowerCase()] || null)
           }));
         
         if (cats.length > 0) {
