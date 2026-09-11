@@ -367,8 +367,8 @@ const createProduct = async (req, res) => {
     if (productImages && Array.isArray(productImages) && productImages.length > 0) {
       await prisma.productImage.createMany({
         data: productImages.map(img => ({
-          imageUrl: img.imageUrl,
-          imagePath: img.imagePath,
+          imageUrl: typeof img === 'string' ? img : img.imageUrl,
+          imagePath: (typeof img === 'object' && img.imagePath) ? img.imagePath : '',
           productId: product.id
         }))
       });
@@ -465,8 +465,8 @@ const updateProduct = async (req, res) => {
       if (productImages.length > 0) {
         await prisma.productImage.createMany({
           data: productImages.map(img => ({
-            imageUrl: img.imageUrl,
-            imagePath: img.imagePath,
+            imageUrl: typeof img === 'string' ? img : img.imageUrl,
+            imagePath: (typeof img === 'object' && img.imagePath) ? img.imagePath : '',
             productId: product.id
           }))
         });

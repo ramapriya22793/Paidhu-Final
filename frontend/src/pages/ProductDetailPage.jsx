@@ -16,7 +16,12 @@ const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || (type
 
 const resolveImage = (img) => {
   if (!img) return null;
+  if (typeof img === 'object' && img.imageUrl) return resolveImage(img.imageUrl);
+  if (typeof img !== 'string') return null;
   if (img.startsWith('http')) return img;
+  if (img.startsWith('/') && (img.includes('.png') || img.includes('.jpg') || img.includes('.webp') || img.includes('.svg') || img.includes('saffron_'))) {
+    return img;
+  }
   return `${API_BASE}${img.startsWith('/') ? '' : '/'}${img}`;
 };
 
@@ -102,6 +107,8 @@ const ProductDetailPage = () => {
   const isInWishlist = product && wishlist && wishlist.some(item => item.id === product.id);
   const [isAdding, setIsAdding] = useState(false);
   const [similarProducts, setSimilarProducts] = useState([]);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const isSaffron = isSaffronProduct(product, selectedVariant);
 
@@ -202,7 +209,19 @@ const ProductDetailPage = () => {
     fetchProduct();
     // Scroll to top on mount
     window.scrollTo(0, 0);
+    setActiveImageIndex(0);
   }, [id]);
+
+  // Keyboard navigation for lightbox
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setLightboxOpen(false);
+    };
+    if (lightboxOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [lightboxOpen]);
 
 
   // Handler for variant change
@@ -297,8 +316,85 @@ const ProductDetailPage = () => {
     ? Math.round(((price - offerPrice) / price) * 100)
     : 0;
 
-  // Single product image
-  const productImage = resolveImage(product.image || '');
+  // 🌸 Saffron 5-item Signature Gallery (Matches user mockup)
+  const saffronGallery = [
+    {
+      full: resolveImage(product?.image) || '/saffron_highres_1.png',
+      thumb: '/saffron_thumb_1.png',
+      circle: '/saffron_circle_1.png',
+      title: 'Kashmiri Mongra Saffron Box & Bottle'
+    },
+    {
+      full: (product?.images && product.images[0] ? resolveImage(product.images[0]) : null) || '/saffron_highres_2.png',
+      thumb: '/saffron_thumb_2.png',
+      circle: '/saffron_circle_2.png',
+      title: 'Glass Vial Bottle with Cork Lid'
+    },
+    {
+      full: (product?.images && product.images[1] ? resolveImage(product.images[1]) : null) || '/saffron_highres_3.png',
+      thumb: '/saffron_thumb_3.png',
+      circle: '/saffron_circle_3.png',
+      title: 'Luxury Saffron Packaging Box'
+    },
+    {
+      full: (product?.images && product.images[2] ? resolveImage(product.images[2]) : null) || '/saffron_highres_4.png',
+      thumb: '/saffron_thumb_4.png',
+      circle: '/saffron_circle_4.png',
+      title: 'Quality & Lab Purity Certificate'
+    },
+    {
+      full: (product?.images && product.images[3] ? resolveImage(product.images[3]) : null) || '/saffron_highres_5.png',
+      thumb: '/saffron_thumb_5.png',
+      circle: '/saffron_circle_5.png',
+      title: 'Nutrition Facts & Analysis'
+    }
+  ];
+
+  // Standard gallery for other products
+  const standardGallery = [];
+  if (product && product.image) {
+    standardGallery.push({
+      full: resolveImage(product.image),
+      thumb: resolveImage(product.image),
+      title: product.name
+    });
+  }
+  if (product && Array.isArray(product.images)) {
+    product.images.forEach((img, idx) => {
+      const url = resolveImage(typeof img === 'string' ? img : img.imageUrl);
+      if (url && !standardGallery.some(g => g.full === url)) {
+        standardGallery.push({
+          full: url,
+          thumb: url,
+          title: `${product.name} - View ${idx + 1}`
+        });
+      }
+    });
+  }
+  if (product && Array.isArray(product.productImages)) {
+    product.productImages.forEach((img, idx) => {
+      const url = resolveImage(img.imageUrl);
+      if (url && !standardGallery.some(g => g.full === url)) {
+        standardGallery.push({
+          full: url,
+          thumb: url,
+          title: `${product.name} - View ${idx + 1}`
+        });
+      }
+    });
+  }
+  if (standardGallery.length === 0) {
+    standardGallery.push({
+      full: '/white_lotus_cookies_new.png',
+      thumb: '/white_lotus_cookies_new.png',
+      title: product?.name || 'Product'
+    });
+  }
+
+  const galleryItems = isSaffron ? saffronGallery : standardGallery;
+  const currentItem = galleryItems[activeImageIndex] || galleryItems[0];
+  const currentImage = currentItem?.full || '/white_lotus_cookies_new.png';
+  const productImage = currentImage;
 
   const breadcrumbItems = [
     { name: 'Shop', url: '/shop' },
@@ -335,68 +431,237 @@ const ProductDetailPage = () => {
 
       <div className="max-w-[1400px] mx-auto px-4 md:px-8">
         
-        {/* Breadcrumbs Navigation */}
-        <Breadcrumbs items={breadcrumbItems} />
-        
-        {/* Breadcrumb / Back Link */}
-        <Link 
-          to="/shop" 
-          className="group inline-flex items-center gap-2 text-gray-500 hover:text-[#662654] font-bold text-sm mb-4 transition-colors"
-        >
-          <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" /> Back to Shop
-        </Link>
+        {/* 🌸 Saffron Signature Breadcrumbs or Standard Breadcrumbs */}
+        {isSaffron ? (
+          <div className="w-full text-center py-3 mb-4">
+            <nav className="inline-flex items-center gap-2.5 sm:gap-4 text-xs sm:text-sm font-semibold tracking-[0.25em] text-[#334155] uppercase font-sans">
+              <Link to="/" className="hover:text-[#b91c1c] transition-colors">HOME</Link>
+              <span className="text-gray-300 font-light">-</span>
+              <Link to="/shop" className="hover:text-[#b91c1c] transition-colors">PRODUCTS</Link>
+              <span className="text-gray-300 font-light">-</span>
+              <span className="text-[#b91c1c] font-bold">KASHMIRI MONGRA</span>
+            </nav>
+          </div>
+        ) : (
+          <>
+            {/* Breadcrumbs Navigation */}
+            <Breadcrumbs items={breadcrumbItems} />
+            
+            {/* Breadcrumb / Back Link */}
+            <Link 
+              to="/shop" 
+              className="group inline-flex items-center gap-2 text-gray-500 hover:text-[#662654] font-bold text-sm mb-4 transition-colors"
+            >
+              <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" /> Back to Shop
+            </Link>
+          </>
+        )}
 
         {/* ── Main Product Section ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start bg-white p-6 md:p-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(102,38,84,0.03)] border border-gray-100/80 relative overflow-hidden">
+        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start p-6 md:p-10 rounded-[2.5rem] border border-gray-100/80 relative overflow-hidden ${
+          isSaffron ? 'bg-[#f8f9fd] shadow-[0_20px_50px_rgba(70,80,120,0.05)]' : 'bg-white shadow-[0_20px_50px_rgba(102,38,84,0.03)]'
+        }`}>
           
           {/* Decorative luxury radial background */}
           <div className="absolute top-[-10%] right-[-10%] w-[35%] aspect-square rounded-full bg-gradient-to-br from-[#662654]/5 to-transparent blur-[80px] pointer-events-none" />
           <div className="absolute bottom-[-10%] left-[-10%] w-[35%] aspect-square rounded-full bg-gradient-to-tr from-[#d4af37]/5 to-transparent blur-[80px] pointer-events-none" />
 
-          {/* 1. Left Column: Product Image with Zoom */}
-          <div>
-            <div
-              className="relative aspect-square bg-[#faf9f7] rounded-[2rem] overflow-hidden border border-gray-100 flex items-center justify-center shadow-inner"
-            >
-              <motion.img 
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ 
-                  opacity: 1,
-                  scale: 1,
-                }}
-                transition={{ type: 'spring', damping: 25, stiffness: 120 }}
-                src={productImage || '/white_lotus_cookies_new.png'} 
-                alt={product.name} 
-                title={product.name}
-                width="600"
-                height="600"
-                loading="eager"
-                className="w-full h-full object-contain p-6 pointer-events-none"
-                style={{ imageRendering: 'high-quality', WebkitBackfaceVisibility: 'hidden', WebkitTransform: 'translateZ(0)' }}
-                onLoad={() => setMainImgLoading(false)}
-                onError={(e) => {
-                  setMainImgLoading(false);
-                  if (e.currentTarget.src !== 'https://paidhuethicalfoods.com/white_lotus_cookies_new.png') {
-                    e.currentTarget.src = 'https://paidhuethicalfoods.com/white_lotus_cookies_new.png';
-                  }
-                }}
+          {/* 1. Left Column: Product Image Gallery */}
+          {isSaffron ? (
+            <div className="relative w-full rounded-[2.5rem] overflow-hidden p-4 sm:p-8 md:p-10 border border-[#dce1f0] shadow-xs bg-[#eef1f8] bg-[radial-gradient(#d5daf0_1.5px,transparent_1.5px)] [background-size:20px_20px]">
+              {/* Subtle Saffron Pattern Watermark */}
+              <div 
+                className="absolute inset-0 opacity-20 pointer-events-none bg-repeat bg-center"
+                style={{ backgroundImage: "url('/saffron_bg_pattern.png')", backgroundSize: "220px 220px" }}
               />
 
-              {mainImgLoading && (
-                <div className="absolute inset-0 bg-gradient-to-br from-[#faf9f7] via-[#f5f3ef] to-[#faf9f7] animate-pulse flex items-center justify-center">
-                  <div className="flex flex-col items-center gap-3">
-                    <span className="text-4xl animate-spin text-[#662654] opacity-35">🌸</span>
-                    <span className="text-[10px] font-black tracking-widest text-[#662654]/40 uppercase">Loading image…</span>
-                  </div>
+              {/* Ambient radial glows */}
+              <div className="absolute -top-12 -right-12 w-64 h-64 rounded-full bg-gradient-to-br from-red-500/10 to-transparent blur-3xl pointer-events-none" />
+              <div className="absolute -bottom-12 -left-12 w-64 h-64 rounded-full bg-gradient-to-tr from-amber-500/10 to-transparent blur-3xl pointer-events-none" />
+
+              {/* Flex Container: Curved Arc Thumbnails + Central Circle */}
+              <div className="relative flex flex-col md:flex-row items-center justify-center gap-6 lg:gap-8 w-full z-10">
+                
+                {/* 🌸 Curved Circular Thumbnails Arc along the left side */}
+                <div className="flex flex-row md:flex-col items-center justify-center gap-3 sm:gap-4 md:gap-3.5 z-20 order-2 md:order-1 shrink-0 overflow-x-auto max-w-full py-2 px-2">
+                  {saffronGallery.map((item, idx) => {
+                    // Arc curve offsets for desktop (md:):
+                    // Follows the curvature of the central white circle!
+                    const arcOffsets = [16, 0, -10, 0, 16];
+                    const xOffset = arcOffsets[idx] || 0;
+                    const isSelected = activeImageIndex === idx;
+
+                    return (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => {
+                          setActiveImageIndex(idx);
+                          setMainImgLoading(true);
+                        }}
+                        style={{
+                          transform: typeof window !== 'undefined' && window.innerWidth >= 768 
+                            ? `translateX(${xOffset}px)` 
+                            : undefined
+                        }}
+                        className={`group relative w-13 h-13 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full bg-white p-1 flex items-center justify-center cursor-pointer transition-all duration-300 shadow-md hover:scale-110 ${
+                          isSelected
+                            ? 'border-2 border-[#b91c1c] ring-3 ring-red-500/25 scale-105 shadow-xl z-10'
+                            : 'border border-gray-200/90 hover:border-red-300 opacity-90 hover:opacity-100'
+                        }`}
+                        title={item.title}
+                        aria-label={item.title}
+                      >
+                        <img
+                          src={item.thumb || item.circle || item.full}
+                          alt={item.title}
+                          className="w-full h-full object-contain rounded-full select-none pointer-events-none"
+                          loading="lazy"
+                        />
+                        {/* Selected Indicator */}
+                        {isSelected && (
+                          <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-[#b91c1c] border-2 border-white shadow-xs" />
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
-              )}
-              {discountPercent > 0 && (
-                <div className="absolute top-4 left-4 bg-gradient-to-r from-[#662654] to-[#d4af37] text-white px-4 py-1.5 text-[11px] font-black uppercase tracking-wider rounded-full shadow-lg z-10 flex items-center gap-1 border border-white/20">
-                  <span>✨</span> {discountPercent}% OFF
+
+                {/* 🌸 Central Large White Showcase Circle */}
+                <div className="relative w-full max-w-[320px] sm:max-w-[380px] md:max-w-[420px] lg:max-w-[460px] aspect-square rounded-full bg-white shadow-[0_20px_50px_rgba(30,41,59,0.08)] border border-white flex items-center justify-center p-6 sm:p-8 lg:p-10 order-1 md:order-2 group">
+                  
+                  {/* Discount badge if present */}
+                  {discountPercent > 0 && (
+                    <div className="absolute top-4 left-8 md:top-6 md:left-10 bg-gradient-to-r from-[#b91c1c] to-[#d4af37] text-white px-3.5 py-1 text-[11px] font-black uppercase tracking-wider rounded-full shadow-lg z-10 flex items-center gap-1 border border-white/20">
+                      <span>✨</span> {discountPercent}% OFF
+                    </div>
+                  )}
+
+                  {/* Active Image with smooth transition */}
+                  <div 
+                    className="w-full h-full flex items-center justify-center relative cursor-zoom-in"
+                    onClick={() => setLightboxOpen(true)}
+                    title="Click to zoom image"
+                  >
+                    <AnimatePresence mode="wait">
+                      <motion.img
+                        key={activeImageIndex}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.97 }}
+                        transition={{ duration: 0.28, ease: 'easeOut' }}
+                        src={currentImage}
+                        alt={saffronGallery[activeImageIndex]?.title || product.name}
+                        title={saffronGallery[activeImageIndex]?.title || product.name}
+                        className="w-full h-full object-contain select-none p-2"
+                        style={{ imageRendering: 'high-quality' }}
+                        onLoad={() => setMainImgLoading(false)}
+                      />
+                    </AnimatePresence>
+
+                    {mainImgLoading && (
+                      <div className="absolute inset-0 bg-white/70 backdrop-blur-xs rounded-full flex items-center justify-center">
+                        <div className="flex flex-col items-center gap-2">
+                          <span className="text-3xl animate-spin text-[#b91c1c]">🌸</span>
+                          <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Loading...</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* 🌸 Red Zoom Button at Bottom-Right */}
+                  <button
+                    type="button"
+                    onClick={() => setLightboxOpen(true)}
+                    className="absolute bottom-3 right-3 sm:bottom-5 sm:right-5 md:bottom-6 md:right-6 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white border-2 border-[#b91c1c] text-[#b91c1c] flex items-center justify-center shadow-lg hover:bg-[#b91c1c] hover:text-white transition-all duration-300 cursor-pointer z-10 hover:scale-110"
+                    title="Zoom Full View"
+                    aria-label="Zoom Full View"
+                  >
+                    <Plus size={20} className="stroke-[2.8]" />
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          ) : (
+            <div>
+              <div
+                className="relative aspect-square bg-[#faf9f7] rounded-[2rem] overflow-hidden border border-gray-100 flex items-center justify-center shadow-inner group cursor-zoom-in"
+                onClick={() => setLightboxOpen(true)}
+              >
+                <AnimatePresence mode="wait">
+                  <motion.img 
+                    key={activeImageIndex}
+                    initial={{ opacity: 0, scale: 0.96 }}
+                    animate={{ 
+                      opacity: 1,
+                      scale: 1,
+                    }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.25 }}
+                    src={currentImage} 
+                    alt={product.name} 
+                    title={product.name}
+                    width="600"
+                    height="600"
+                    loading="eager"
+                    className="w-full h-full object-contain p-6 select-none"
+                    style={{ imageRendering: 'high-quality', WebkitBackfaceVisibility: 'hidden', WebkitTransform: 'translateZ(0)' }}
+                    onLoad={() => setMainImgLoading(false)}
+                    onError={(e) => {
+                      setMainImgLoading(false);
+                      if (e.currentTarget.src !== 'https://paidhuethicalfoods.com/white_lotus_cookies_new.png') {
+                        e.currentTarget.src = 'https://paidhuethicalfoods.com/white_lotus_cookies_new.png';
+                      }
+                    }}
+                  />
+                </AnimatePresence>
+
+                {mainImgLoading && (
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#faf9f7] via-[#f5f3ef] to-[#faf9f7] animate-pulse flex items-center justify-center">
+                    <div className="flex flex-col items-center gap-3">
+                      <span className="text-4xl animate-spin text-[#662654] opacity-35">🌸</span>
+                      <span className="text-[10px] font-black tracking-widest text-[#662654]/40 uppercase">Loading image…</span>
+                    </div>
+                  </div>
+                )}
+                {discountPercent > 0 && (
+                  <div className="absolute top-4 left-4 bg-gradient-to-r from-[#662654] to-[#d4af37] text-white px-4 py-1.5 text-[11px] font-black uppercase tracking-wider rounded-full shadow-lg z-10 flex items-center gap-1 border border-white/20">
+                    <span>✨</span> {discountPercent}% OFF
+                  </div>
+                )}
+                <button
+                  type="button"
+                  onClick={(e) => { e.stopPropagation(); setLightboxOpen(true); }}
+                  className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-gray-700 shadow-md flex items-center justify-center transition-transform hover:scale-110 cursor-pointer"
+                  title="Zoom image"
+                >
+                  <Plus size={18} />
+                </button>
+              </div>
+
+              {/* Multiple Thumbnails Gallery for Standard Products */}
+              {galleryItems.length > 1 && (
+                <div className="flex items-center gap-3 mt-4 overflow-x-auto py-2">
+                  {galleryItems.map((item, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => {
+                        setActiveImageIndex(idx);
+                        setMainImgLoading(true);
+                      }}
+                      className={`w-16 h-16 rounded-2xl overflow-hidden border-2 p-1 bg-white transition-all shrink-0 cursor-pointer ${
+                        activeImageIndex === idx ? 'border-[#662654] shadow-md scale-105' : 'border-gray-200 opacity-70 hover:opacity-100'
+                      }`}
+                    >
+                      <img src={item.thumb || item.full} alt="" className="w-full h-full object-contain" />
+                    </button>
+                  ))}
                 </div>
               )}
             </div>
-          </div>
+          )}
 
           {/* 2. Right Column: Rich Info Panel */}
           <div className="space-y-6 lg:space-y-8">
@@ -952,6 +1217,112 @@ const ProductDetailPage = () => {
         )}
 
 
+
+        {/* 🌸 Fullscreen Lightbox Zoom Modal */}
+        <AnimatePresence>
+          {lightboxOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[999999] bg-black/90 backdrop-blur-md flex flex-col items-center justify-between p-4 sm:p-6"
+              onClick={() => setLightboxOpen(false)}
+            >
+              {/* Top Bar: Title & Close Button */}
+              <div className="w-full flex items-center justify-between z-30 max-w-5xl" onClick={(e) => e.stopPropagation()}>
+                <div className="text-white">
+                  <span className="text-xs font-bold uppercase tracking-widest text-[#d4af37]">
+                    {isSaffron ? 'Kashmiri Mongra Saffron Showcase' : 'Product Gallery'}
+                  </span>
+                  <h3 className="text-sm sm:text-base font-medium text-white/90 truncate max-w-xs sm:max-w-md">
+                    {galleryItems[activeImageIndex]?.title || product.name}
+                  </h3>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setLightboxOpen(false)}
+                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-all cursor-pointer border border-white/20 hover:scale-105"
+                  aria-label="Close Lightbox"
+                  title="Close (Esc)"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              {/* Central Area: Prev, Main Image, Next */}
+              <div className="relative w-full max-w-5xl flex-1 flex items-center justify-center p-2" onClick={(e) => e.stopPropagation()}>
+                {galleryItems.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => setActiveImageIndex((prev) => (prev > 0 ? prev - 1 : galleryItems.length - 1))}
+                    className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition-all cursor-pointer z-20 border border-white/20 hover:scale-110 shadow-xl"
+                    aria-label="Previous Image"
+                  >
+                    <ChevronLeft size={24} />
+                  </button>
+                )}
+
+                <div className="w-full h-full max-h-[70vh] flex items-center justify-center">
+                  <AnimatePresence mode="wait">
+                    <motion.img
+                      key={activeImageIndex}
+                      initial={{ opacity: 0, scale: 0.94 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.96 }}
+                      transition={{ duration: 0.22 }}
+                      src={currentImage}
+                      alt={galleryItems[activeImageIndex]?.title || product.name}
+                      className="max-w-full max-h-[70vh] object-contain rounded-2xl shadow-2xl bg-white/5 p-2 select-none"
+                    />
+                  </AnimatePresence>
+                </div>
+
+                {galleryItems.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => setActiveImageIndex((prev) => (prev < galleryItems.length - 1 ? prev + 1 : 0))}
+                    className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition-all cursor-pointer z-20 border border-white/20 hover:scale-110 shadow-xl"
+                    aria-label="Next Image"
+                  >
+                    <ChevronRight size={24} />
+                  </button>
+                )}
+              </div>
+
+              {/* Bottom Bar: Thumbnail Strip & Counter */}
+              <div className="flex flex-col items-center gap-2 z-30 max-w-xl w-full" onClick={(e) => e.stopPropagation()}>
+                <span className="text-white/60 text-xs font-semibold tracking-wider">
+                  {activeImageIndex + 1} / {galleryItems.length}
+                </span>
+
+                {galleryItems.length > 1 && (
+                  <div className="flex items-center gap-2.5 overflow-x-auto max-w-full py-1.5 px-2">
+                    {galleryItems.map((item, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => setActiveImageIndex(idx)}
+                        className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 transition-all shrink-0 cursor-pointer p-0.5 bg-white ${
+                          activeImageIndex === idx
+                            ? 'border-[#b91c1c] ring-2 ring-red-500/40 scale-110 shadow-xl'
+                            : 'border-white/30 opacity-60 hover:opacity-100'
+                        }`}
+                        title={item.title}
+                      >
+                        <img
+                          src={item.thumb || item.circle || item.full}
+                          alt=""
+                          className="w-full h-full object-contain rounded-full"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
       </div>
     </motion.div>
