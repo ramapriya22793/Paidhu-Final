@@ -502,14 +502,14 @@ const ProductDetailPage = () => {
               <div className="absolute -bottom-12 -left-12 w-64 h-64 rounded-full bg-gradient-to-tr from-amber-500/10 to-transparent blur-3xl pointer-events-none" />
 
               {/* Flex Container: Curved Arc Thumbnails + Central Circle */}
-              <div className="relative flex flex-col md:flex-row items-center justify-center gap-6 lg:gap-8 w-full z-10">
+              <div className="relative flex flex-col md:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-8 w-full z-10">
                 
-                {/* 🌸 Curved Circular Thumbnails Arc along the left side */}
-                <div className="flex flex-row md:flex-col items-center justify-center gap-3 sm:gap-4 md:gap-3.5 z-20 order-2 md:order-1 shrink-0 overflow-x-auto max-w-full py-2 px-2">
+                {/* 🌸 Curved Circular Thumbnails Arc along the left side (Always 100% visible, never covered) */}
+                <div className="flex flex-row md:flex-col items-center justify-center gap-2.5 sm:gap-3.5 md:gap-3 z-30 order-2 md:order-1 shrink-0 overflow-visible py-2 px-2">
                   {saffronGallery.map((item, idx) => {
                     // Arc curve offsets for desktop (md:):
-                    // Matches user reference (media_1789132865636.png) wrapping the left curve of the central circle
-                    const arcOffsets = [82, 30, 0, 30, 82];
+                    // Curves outward to the left so thumbnails remain 100% visible and never slide under the central circle!
+                    const arcOffsets = [0, -14, -28, -14, 0];
                     const xOffset = arcOffsets[idx] || 0;
                     const isSelected = activeImageIndex === idx;
 
@@ -524,9 +524,9 @@ const ProductDetailPage = () => {
                         style={{
                           '--arc-x': `${xOffset}px`
                         }}
-                        className={`group relative w-13 h-13 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full bg-white p-1 flex items-center justify-center cursor-pointer transition-all duration-300 shadow-md hover:scale-110 md:[transform:translateX(var(--arc-x))] ${
+                        className={`group relative w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-18 lg:h-18 rounded-full bg-white p-1 flex items-center justify-center cursor-pointer transition-all duration-300 shadow-md hover:scale-110 z-30 md:[transform:translateX(var(--arc-x))] ${
                           isSelected
-                            ? 'border-2 border-[#b91c1c] ring-2 ring-[#b91c1c]/25 scale-105 shadow-xl z-10'
+                            ? 'border-2 border-[#b91c1c] ring-2 ring-[#b91c1c]/25 scale-105 shadow-xl'
                             : 'border border-gray-200/90 hover:border-[#b91c1c]/50 opacity-90 hover:opacity-100'
                         }`}
                         title={item.title}
@@ -544,7 +544,7 @@ const ProductDetailPage = () => {
                 </div>
 
                 {/* 🌸 Central Large White Showcase Circle */}
-                <div className="relative w-full max-w-[320px] sm:max-w-[380px] md:max-w-[420px] lg:max-w-[460px] aspect-square rounded-full bg-white shadow-[0_20px_50px_rgba(30,41,59,0.08)] border border-white flex items-center justify-center p-6 sm:p-8 lg:p-10 order-1 md:order-2 group">
+                <div className="relative w-full max-w-[300px] sm:max-w-[360px] md:max-w-[400px] lg:max-w-[440px] aspect-square rounded-full bg-white shadow-[0_20px_50px_rgba(30,41,59,0.08)] border border-white flex items-center justify-center p-6 sm:p-8 lg:p-10 order-1 md:order-2 group z-10">
                   
                   {/* Discount badge if present */}
                   {discountPercent > 0 && (

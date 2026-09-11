@@ -262,7 +262,7 @@ const BYOCPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf8f6]">
+    <div className="min-h-screen bg-[#faf8f6] w-full max-w-full overflow-x-clip">
       <SEO 
         title="Build Your Own Cart"
         description="Mix and match your favorite Paidhu products. Choose at least 3 items to unlock special bundle pricing!"
@@ -273,10 +273,10 @@ const BYOCPage = () => {
         BUY 3 FOR ₹799 | 4 FOR ₹1049 | 5 FOR ₹1399 — BUY NOW!
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-8 md:py-12 flex flex-col lg:flex-row gap-8 items-start">
+      <div className="max-w-[1400px] w-full mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-6 md:py-10 flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
         
         {/* LEFT COLUMN: Product Grid */}
-        <div className="flex-1 w-full">
+        <div className="flex-1 min-w-0 w-full">
           <div className="mb-6">
             <h1 className="text-3xl md:text-4xl font-extrabold text-[#662654] mb-3 font-serif">Build Your Box</h1>
             <p className="text-gray-600 font-medium text-sm md:text-base max-w-2xl">
@@ -285,8 +285,8 @@ const BYOCPage = () => {
           </div>
 
           {/* Category Filter Tabs */}
-          <div className="mb-6">
-            <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div className="mb-6 w-full max-w-full overflow-hidden">
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none no-scrollbar w-full max-w-full">
               {BYOC_CATEGORIES.map(cat => {
                 const isActive = activeCategory === cat.id;
                 const count = categoryCounts[cat.id] || 0;
@@ -333,7 +333,7 @@ const BYOCPage = () => {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3.5 sm:gap-4 md:gap-5">
               {displayedProducts.map((product) => {
                 const inBundleCount = bundle.filter(b => 
                   String(b.id) === String(product.id) || 
@@ -442,7 +442,7 @@ const BYOCPage = () => {
         </div>
 
         {/* RIGHT COLUMN: Sticky Bundle Sidebar */}
-        <div className="w-full lg:w-[380px] xl:w-[420px] flex-shrink-0 lg:sticky lg:top-[120px] z-30">
+        <div id="byoc-sidebar" className="w-full lg:w-[320px] xl:w-[360px] flex-shrink-0 lg:sticky lg:top-[100px] z-20">
           <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.08)] border border-gray-100 overflow-hidden relative">
             
             {/* Sidebar Header */}
@@ -556,6 +556,30 @@ const BYOCPage = () => {
         </div>
 
       </div>
+
+      {/* Sticky Mobile Bar so bundle progress is NEVER hidden on smaller screens */}
+      {bundle.length > 0 && (
+        <div className="fixed bottom-4 left-4 right-4 z-50 lg:hidden flex justify-center">
+          <div className="bg-[#662654] text-white px-5 py-3 rounded-full shadow-2xl flex items-center justify-between w-full max-w-md border border-white/20 backdrop-blur-md">
+            <div className="flex items-center gap-2">
+              <span className="text-base">🌸</span>
+              <div>
+                <span className="text-xs font-extrabold uppercase tracking-wider block">My Bundle ({bundle.length}/{MAX_ITEMS})</span>
+                <span className="text-sm font-black">₹{currentTotal}</span>
+              </div>
+            </div>
+            <button
+              onClick={() => {
+                const sidebar = document.getElementById('byoc-sidebar');
+                if (sidebar) sidebar.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="bg-white text-[#662654] hover:bg-white/90 text-xs font-black uppercase px-4 py-2 rounded-full shadow-sm cursor-pointer"
+            >
+              {bundle.length < 3 ? `Add ${3 - bundle.length} more` : 'Checkout'}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
