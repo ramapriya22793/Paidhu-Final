@@ -162,6 +162,14 @@ const BYOCPage = () => {
     setBundle(newBundle);
   };
 
+  const handleRemoveProductFromBundle = (productId) => {
+    const idx = [...bundle].reverse().findIndex(item => item.id === productId);
+    if (idx !== -1) {
+      const realIdx = bundle.length - 1 - idx;
+      handleRemoveFromBundle(realIdx);
+    }
+  };
+
   const currentTier = [...TIERS].reverse().find(t => bundle.length >= t.items) || { items: 0, price: 0 };
   const currentTotal = bundle.length < 3 
     ? bundle.reduce((sum, item) => sum + (item.discountPrice || item.price), 0)
@@ -276,7 +284,7 @@ const BYOCPage = () => {
                     className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-200 cursor-pointer ${
                       isActive
                         ? 'bg-[#662654] text-white shadow-md shadow-[#662654]/25 ring-2 ring-[#662654]'
-                        : 'bg-white text-gray-700 hover:text-[#662654] hover:bg-[#faf4f8] border border-gray-200'
+                        : 'text-[#662654] bg-[#662654]/5 hover:bg-[#662654]/10 hover:shadow-[0_4px_10px_rgba(0,0,0,0.05)] border border-[#662654]/10'
                     }`}
                   >
                     <span className="text-sm">{cat.icon}</span>
@@ -349,14 +357,44 @@ const BYOCPage = () => {
                         {product.discountPrice && <span className="text-[11px] text-gray-400 line-through">₹{product.price}</span>}
                       </div>
 
-                      <button 
-                        onClick={() => handleAddToBundle(product)}
-                        disabled={bundle.length >= MAX_ITEMS}
-                        className="w-full bg-[#662654] hover:bg-[#4d1c3f] disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold text-xs py-2.5 rounded-lg flex items-center justify-between px-4 transition-colors cursor-pointer"
-                      >
-                        <span>{inBundleCount > 0 ? `Add Another (+1)` : 'Add to Bundle'}</span>
-                        <Plus size={14} strokeWidth={3} />
-                      </button>
+                      {inBundleCount > 0 ? (
+                        <div 
+                          onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                          className="w-full bg-[#662654] text-white rounded-full py-1.5 px-3 flex items-center justify-between shadow-[0_4px_12px_rgba(102,38,84,0.25)] transition-all duration-300"
+                        >
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveProductFromBundle(product.id)}
+                            className="w-7 h-7 rounded-full flex items-center justify-center bg-white/20 hover:bg-white text-white hover:text-[#662654] transition-colors cursor-pointer active:scale-90"
+                            title="Remove one from bundle"
+                          >
+                            <Minus size={13} strokeWidth={3} />
+                          </button>
+                          
+                          <span className="text-white font-black text-sm select-none px-2">
+                            {inBundleCount}
+                          </span>
+
+                          <button
+                            type="button"
+                            onClick={() => handleAddToBundle(product)}
+                            disabled={bundle.length >= MAX_ITEMS}
+                            className="w-7 h-7 rounded-full flex items-center justify-center bg-white/20 hover:bg-white text-white hover:text-[#662654] disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer active:scale-90"
+                            title="Add another to bundle"
+                          >
+                            <Plus size={13} strokeWidth={3} />
+                          </button>
+                        </div>
+                      ) : (
+                        <button 
+                          onClick={() => handleAddToBundle(product)}
+                          disabled={bundle.length >= MAX_ITEMS}
+                          className="w-full bg-[#662654] hover:bg-[#4d1c3f] disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold text-xs py-2.5 rounded-full flex items-center justify-between px-4 transition-colors cursor-pointer"
+                        >
+                          <span>Add to Bundle</span>
+                          <Plus size={14} strokeWidth={3} />
+                        </button>
+                      )}
                     </div>
                   </div>
                 );

@@ -24,8 +24,13 @@ const COLLECTION_TERMS = {
     shopUrl: "/shop/shop-by-category?category=Bloom%20Cookies",
   },
   "Pure Saffron": {
-    filter: (p) => p.category?.toLowerCase() === 'saffron' || /saffron/i.test(p.name + ' ' + (p.description || '')),
-    priorityIds: [20, 22, 21, 18],
+    filter: (p) => {
+      const name = (p.name || p.title || '').toLowerCase();
+      const cat = (p.category?.name || (typeof p.category === 'string' ? p.category : '') || '').toLowerCase();
+      if (name.includes('medley') || name.includes('tea') || name.includes('dips') || cat.includes('tea') || cat.includes('medley')) return false;
+      return cat === 'saffron' || /saffron/i.test(name);
+    },
+    priorityIds: [20, 22, 21],
     shopUrl: "/shop/shop-all?q=saffron",
   },
   "Petal Jams": {
@@ -260,7 +265,7 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
         {cartQty > 0 ? (
           <div 
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-            className="w-full mt-auto bg-[#662654] text-white rounded-full py-1 sm:py-1.5 px-3 flex items-center justify-between shadow-[0_4px_12px_rgba(102,38,84,0.2)] transition-all duration-300"
+            className="w-full mt-auto bg-[#662654] text-white rounded-full py-1.5 px-3 flex items-center justify-between shadow-[0_4px_12px_rgba(102,38,84,0.25)] transition-all duration-300"
           >
             <button
               type="button"
@@ -269,16 +274,15 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
                 e.stopPropagation();
                 updateQuantity(product.id, cartQty - 1, variantSize);
               }}
-              className="w-7 h-7 rounded-full flex items-center justify-center bg-white/20 hover:bg-white text-white hover:text-[#662654] transition-colors cursor-pointer active:scale-90"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center bg-white/20 hover:bg-white text-white hover:text-[#662654] transition-colors cursor-pointer active:scale-90"
               title="Decrease quantity"
             >
               <Minus size={13} strokeWidth={3} />
             </button>
             
-            <div className="flex items-center gap-1.5 font-black text-xs sm:text-sm">
-              <span className="text-white/75 text-[10px] uppercase tracking-wider hidden xs:inline">In Cart:</span>
-              <span className="text-white font-black">{cartQty}</span>
-            </div>
+            <span className="text-white font-black text-sm sm:text-base select-none px-2">
+              {cartQty}
+            </span>
 
             <button
               type="button"
@@ -287,7 +291,7 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
                 e.stopPropagation();
                 updateQuantity(product.id, cartQty + 1, variantSize);
               }}
-              className="w-7 h-7 rounded-full flex items-center justify-center bg-white/20 hover:bg-white text-white hover:text-[#662654] transition-colors cursor-pointer active:scale-90"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center bg-white/20 hover:bg-white text-white hover:text-[#662654] transition-colors cursor-pointer active:scale-90"
               title="Increase quantity"
             >
               <Plus size={13} strokeWidth={3} />
@@ -521,10 +525,10 @@ const ProductCollection = () => {
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
-              className={`relative whitespace-nowrap px-8 py-3 rounded-full text-[15px] font-extrabold tracking-wide transition-all duration-300 ${
+              className={`relative whitespace-nowrap px-8 py-3 rounded-full text-[15px] font-extrabold tracking-wide transition-all duration-300 cursor-pointer ${
                 activeCategory === category 
                   ? 'text-white bg-[#662654] shadow-[0_6px_20px_rgba(102,38,84,0.4)] scale-105' 
-                  : 'text-[#555] bg-transparent hover:text-[#662654] hover:bg-[#662654]/5 hover:shadow-[0_4px_10px_rgba(0,0,0,0.05)] hover:-translate-y-0.5'
+                  : 'text-[#662654] bg-[#662654]/5 hover:text-[#662654] hover:bg-[#662654]/10 hover:shadow-[0_4px_10px_rgba(0,0,0,0.05)] hover:-translate-y-0.5'
               }`}
             >
               {category}

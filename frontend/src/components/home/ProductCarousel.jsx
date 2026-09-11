@@ -325,7 +325,7 @@ const ProductCarousel = ({
                     {/* Add to Cart Full Button (Visible on Hover for desktop or Stepper if in cart) */}
                     {cartQty > 0 ? (
                       <div 
-                        className="w-full mt-4 bg-[#662654] text-white rounded-full py-2 flex items-center justify-between px-4 shadow-[0_4px_12px_rgba(102,38,84,0.15)]"
+                        className="w-full mt-4 bg-[#662654] text-white rounded-full py-1.5 flex items-center justify-between px-3 shadow-[0_4px_12px_rgba(102,38,84,0.2)]"
                         onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
                       >
                         <button 
@@ -334,12 +334,13 @@ const ProductCarousel = ({
                             e.stopPropagation();
                             updateQuantity(product.id, cartQty - 1);
                           }}
-                          className="w-7 h-7 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors cursor-pointer"
+                          className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/20 hover:bg-white text-white hover:text-[#662654] flex items-center justify-center transition-colors cursor-pointer active:scale-90"
+                          title="Decrease quantity"
                         >
-                          <Minus size={14} strokeWidth={2.5} />
+                          <Minus size={13} strokeWidth={3} />
                         </button>
-                        <span className="font-bold text-xs uppercase tracking-wider">
-                          In Cart: {cartQty}
+                        <span className="font-black text-sm text-white select-none px-2">
+                          {cartQty}
                         </span>
                         <button 
                           onClick={(e) => {
@@ -347,9 +348,10 @@ const ProductCarousel = ({
                             e.stopPropagation();
                             updateQuantity(product.id, cartQty + 1);
                           }}
-                          className="w-7 h-7 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors cursor-pointer"
+                          className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/20 hover:bg-white text-white hover:text-[#662654] flex items-center justify-center transition-colors cursor-pointer active:scale-90"
+                          title="Increase quantity"
                         >
-                          <Plus size={14} strokeWidth={2.5} />
+                          <Plus size={13} strokeWidth={3} />
                         </button>
                       </div>
                     ) : (

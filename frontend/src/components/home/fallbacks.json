@@ -2257,67 +2257,6 @@
         "offerPrice": null,
         "keywords": "saffron, powder, premium, buy online, healthy, paidhu, pure kesar, luxury saffron, authentic"
       }
-    },
-    {
-      "id": 18,
-      "badge": "Hand Blended",
-      "badgeColor": "bg-[#662654] text-white",
-      "image": "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787751146063-medleyteassaffron003png.png",
-      "images": [
-        "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787751146063-medleyteassaffron003png.png"
-      ],
-      "title": "Medly Teas- Saffron(20 Dips)",
-      "description": "Medly Saffron Tea is a premium herbal infusion crafted from high-quality tea leaves and pure saffron strands. Rich in natural antioxidants, this aromatic tea supports relaxation, improves digestion, and promotes overall wellness. Its smooth taste and soothing properties make it perfect for daily consumption, helping you enjoy a healthy and refreshing lifestyle.",
-      "originalPrice": 769,
-      "discountedPrice": 769,
-      "discountPercent": 0,
-      "raw": {
-        "id": 18,
-        "name": "Medly Teas- Saffron(20 Dips)",
-        "slug": "medly-teas-saffron-20-dips",
-        "description": "Medly Saffron Tea is a premium herbal tea crafted by blending high-quality tea leaves with pure saffron strands, offering a rich aroma, smooth taste, and natural health benefits. Medly Saffron Tea provides a perfect balance of flavor and wellness, making it an ideal choice for daily consumption.",
-        "categoryId": 5,
-        "price": 769,
-        "discountPrice": null,
-        "stock": 97,
-        "image": "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787751146063-medleyteassaffron003png.png",
-        "imagePath": "products/1787751146063-medleyteassaffron003png.png",
-        "featured": false,
-        "status": "ACTIVE",
-        "shortDescription": "Medly Saffron Tea is a premium herbal infusion crafted from high-quality tea leaves and pure saffron strands. Rich in natural antioxidants, this aromatic tea supports relaxation, improves digestion, and promotes overall wellness. Its smooth taste and soothing properties make it perfect for daily consumption, helping you enjoy a healthy and refreshing lifestyle.",
-        "ingredients": "",
-        "benefits": [],
-        "highlights": [],
-        "nutritionInfo": {
-          "fat": "",
-          "carbs": "",
-          "protein": "",
-          "calories": ""
-        },
-        "faqData": [],
-        "tags": "shop_all",
-        "seoTitle": "",
-        "seoDescription": "",
-        "seoKeywords": "medly, teas, saffron20, dips, premium, buy online, healthy, paidhu, medley teas, pure kesar, luxury saffron, authentic, herbal tea, natural, wellness",
-        "variants": [],
-        "createdAt": "2026-06-08T17:06:27.134Z",
-        "updatedAt": "2026-08-26T13:32:40.731Z",
-        "category": "Medley Teas",
-        "productImages": [
-          {
-            "id": 10,
-            "imageUrl": "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787751156705-medleyteassaffron004png.png",
-            "imagePath": "products/1787751156705-medleyteassaffron004png.png",
-            "productId": 18,
-            "createdAt": "2026-08-26T13:32:40.759Z"
-          }
-        ],
-        "images": [
-          "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787751146063-medleyteassaffron003png.png"
-        ],
-        "offerPrice": null,
-        "keywords": "medly, teas, saffron20, dips, premium, buy online, healthy, paidhu, medley teas, pure kesar, luxury saffron, authentic, herbal tea, natural, wellness"
-      }
     }
   ],
   "Hibiscus Infusions": [

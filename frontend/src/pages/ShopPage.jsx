@@ -363,7 +363,7 @@ const ProductCard = ({ product, index, navSection }) => {
         {cartQty > 0 ? (
           <div 
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-            className="w-full bg-[#662654] text-white rounded-full py-1 sm:py-1.5 px-3 flex items-center justify-between shadow-[0_4px_12px_rgba(102,38,84,0.2)] transition-all duration-300"
+            className="w-full bg-[#662654] text-white rounded-full py-1.5 px-3 flex items-center justify-between shadow-[0_4px_12px_rgba(102,38,84,0.25)] transition-all duration-300"
           >
             <button
               type="button"
@@ -372,16 +372,15 @@ const ProductCard = ({ product, index, navSection }) => {
                 e.stopPropagation();
                 updateQuantity(product.id, cartQty - 1, variantSize);
               }}
-              className="w-7 h-7 rounded-full flex items-center justify-center bg-white/20 hover:bg-white text-white hover:text-[#662654] transition-colors cursor-pointer active:scale-90"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center bg-white/20 hover:bg-white text-white hover:text-[#662654] transition-colors cursor-pointer active:scale-90"
               title="Decrease quantity"
             >
               <Minus size={13} strokeWidth={3} />
             </button>
             
-            <div className="flex items-center gap-1.5 font-black text-xs sm:text-sm">
-              <span className="text-white/75 text-[10px] uppercase tracking-wider hidden xs:inline">In Cart:</span>
-              <span className="text-white font-black">{cartQty}</span>
-            </div>
+            <span className="text-white font-black text-sm sm:text-base select-none px-2">
+              {cartQty}
+            </span>
 
             <button
               type="button"
@@ -390,7 +389,7 @@ const ProductCard = ({ product, index, navSection }) => {
                 e.stopPropagation();
                 updateQuantity(product.id, cartQty + 1, variantSize);
               }}
-              className="w-7 h-7 rounded-full flex items-center justify-center bg-white/20 hover:bg-white text-white hover:text-[#662654] transition-colors cursor-pointer active:scale-90"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center bg-white/20 hover:bg-white text-white hover:text-[#662654] transition-colors cursor-pointer active:scale-90"
               title="Increase quantity"
             >
               <Plus size={13} strokeWidth={3} />
