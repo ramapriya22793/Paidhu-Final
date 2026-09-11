@@ -333,7 +333,7 @@ const ProductCard = ({ product, index, navSection }) => {
                     className={`text-[11px] font-bold px-3 py-1.5 rounded-lg border transition-all ${
                       selectedVariant?.size === v.size
                         ? 'border-[#662654] bg-[#662654] text-white shadow-md'
-                        : 'border-gray-200 text-[#662654] bg-[#faf9f7] hover:border-[#662654]/50'
+                        : 'border-[#eddfe9] text-[#662654] bg-[#f6f2f5] hover:border-[#662654]/50'
                     }`}
                   >
                     {v.size}

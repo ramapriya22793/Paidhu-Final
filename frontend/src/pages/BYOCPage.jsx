@@ -284,7 +284,7 @@ const BYOCPage = () => {
                     className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-200 cursor-pointer ${
                       isActive
                         ? 'bg-[#662654] text-white shadow-md shadow-[#662654]/25 ring-2 ring-[#662654]'
-                        : 'text-[#662654] bg-[#662654]/5 hover:bg-[#662654]/10 hover:shadow-[0_4px_10px_rgba(0,0,0,0.05)] border border-[#662654]/10'
+                        : 'text-[#662654] bg-[#f6f2f5] hover:bg-[#eddfe9] hover:shadow-[0_4px_10px_rgba(102,38,84,0.08)] border border-[#eddfe9]'
                     }`}
                   >
                     <span className="text-sm">{cat.icon}</span>

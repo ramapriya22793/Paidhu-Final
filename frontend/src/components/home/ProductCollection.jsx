@@ -232,7 +232,7 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
                     className={`text-[11px] font-bold px-3 py-1.5 rounded-lg border transition-all ${
                       selectedVariant?.size === v.size
                         ? 'border-[#662654] bg-[#662654] text-white shadow-md'
-                        : 'border-gray-200 text-[#662654] bg-[#faf9f7] hover:border-[#662654]/50'
+                        : 'border-[#eddfe9] text-[#662654] bg-[#f6f2f5] hover:border-[#662654]/50'
                     }`}
                   >
                     {v.size}
@@ -528,7 +528,7 @@ const ProductCollection = () => {
               className={`relative whitespace-nowrap px-8 py-3 rounded-full text-[15px] font-extrabold tracking-wide transition-all duration-300 cursor-pointer ${
                 activeCategory === category 
                   ? 'text-white bg-[#662654] shadow-[0_6px_20px_rgba(102,38,84,0.4)] scale-105' 
-                  : 'text-[#662654] bg-[#662654]/5 hover:text-[#662654] hover:bg-[#662654]/10 hover:shadow-[0_4px_10px_rgba(0,0,0,0.05)] hover:-translate-y-0.5'
+                  : 'text-[#662654] bg-[#f6f2f5] hover:text-[#662654] hover:bg-[#eddfe9] hover:shadow-[0_4px_10px_rgba(102,38,84,0.08)] hover:-translate-y-0.5'
               }`}
             >
               {category}
