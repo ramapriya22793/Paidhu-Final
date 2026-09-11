@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus, ShoppingCart, Check, X, AlertCircle } from 'lucide-react';
 import { useCart } from '../context/CartContext';
@@ -10,25 +10,57 @@ const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || (type
 const isComboOrGift = (p) => {
   if (!p) return false;
   const name = (p.name || p.title || '').toLowerCase();
-  const cat = (p.category?.name || p.category || '').toLowerCase();
+  const cat = (p.category?.name || (typeof p.category === 'string' ? p.category : '') || '').toLowerCase();
   const tags = (p.tags || '').toLowerCase();
   return /combo|gift\s*box|family\s*pack|giftbox|\bcombos\b/i.test(`${name} ${cat} ${tags}`);
 };
 
-const getCategoryIndex = (p) => {
-  const cat = p.category?.name || p.category || '';
-  const name = p.name || p.title || '';
-  if (/cookie/i.test(cat) || /cookie/i.test(name)) return 0;
-  if (/saffron/i.test(cat) || /saffron/i.test(name)) return 1;
-  if (/jam|gulkhand|preserve/i.test(cat) || /jam|gulkhand|preserve/i.test(name)) return 2;
-  if (/brew/i.test(cat) || /brew|aavaram|chamomile|blue\s*pea|lavender/i.test(name)) return 3;
-  if (/medley|tea\s*\(20\s*dips\)|dips/i.test(cat) || /medley|tea\s*\(20\s*dips\)|dips/i.test(name)) return 4;
-  return 999;
+export const resolveCategory = (p) => {
+  if (!p) return 'Other';
+  const cat = (p.category?.name || (typeof p.category === 'string' ? p.category : '') || '').toLowerCase();
+  const name = (p.name || p.title || '').toLowerCase();
+
+  // 1. Authoritative category matching from backend/DB
+  if (cat.includes('cookie')) return 'Bloom Cookies';
+  if (cat.includes('jam') || cat.includes('gulkhand') || cat.includes('preserve')) return 'Petal Jam';
+  if (cat.includes('brew')) return 'Brew Flora';
+  if (cat.includes('medley') || cat.includes('dip')) return 'Medley Teas';
+  if (cat.includes('saffron')) {
+    if (name.includes('medley') || name.includes('tea bag') || name.includes('dips')) return 'Medley Teas';
+    return 'Saffron';
+  }
+
+  // 2. Secondary title/name matching
+  if (name.includes('cookie')) return 'Bloom Cookies';
+  if (name.includes('medley') || name.includes('dip') || (name.includes('tea') && !name.includes('brew'))) return 'Medley Teas';
+  if (name.includes('brew') || name.includes('flora')) return 'Brew Flora';
+  if (name.includes('jam') || name.includes('gulkhand') || name.includes('syrup')) return 'Petal Jam';
+  if (name.includes('saffron') || name.includes('mongra') || name.includes('negin')) return 'Saffron';
+
+  return 'Other';
 };
+
+const CATEGORY_ORDER = {
+  'Bloom Cookies': 0,
+  'Petal Jam': 1,
+  'Brew Flora': 2,
+  'Medley Teas': 3,
+  'Saffron': 4,
+  'Other': 5
+};
+
+const BYOC_CATEGORIES = [
+  { id: 'All', label: 'All Products', icon: '🌸' },
+  { id: 'Bloom Cookies', label: 'Bloom Cookies', icon: '🍪' },
+  { id: 'Petal Jam', label: 'Petal Jams', icon: '🍯' },
+  { id: 'Brew Flora', label: 'Brew Flora', icon: '🌺' },
+  { id: 'Medley Teas', label: 'Medley Teas', icon: '🍵' },
+  { id: 'Saffron', label: 'Pure Saffron', icon: '👑' }
+];
 
 const cleanName = (name) => {
   if (!name) return '';
-  return name.replace(/\s*\?+\s*/g, ' - ').replace(/\s+/g, ' ').trim();
+  return name.replace(/\s*\|\s*.*Paidhu.*$/i, '').replace(/\s*\?+\s*/g, ' - ').replace(/\s+/g, ' ').trim();
 };
 
 const filterAndSortBYOCProducts = (list) => {
@@ -41,9 +73,11 @@ const filterAndSortBYOCProducts = (list) => {
     if (!rawP || seenIds.has(rawP.id)) continue;
     if (isComboOrGift(rawP)) continue;
 
+    const resolvedCategory = resolveCategory(rawP);
     const p = {
       ...rawP,
-      name: cleanName(rawP.name || rawP.title)
+      name: cleanName(rawP.name || rawP.title),
+      resolvedCategory
     };
 
     const normKey = p.name.toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -55,8 +89,8 @@ const filterAndSortBYOCProducts = (list) => {
   }
 
   return filtered.sort((a, b) => {
-    const catA = getCategoryIndex(a);
-    const catB = getCategoryIndex(b);
+    const catA = CATEGORY_ORDER[a.resolvedCategory] ?? 999;
+    const catB = CATEGORY_ORDER[b.resolvedCategory] ?? 999;
     if (catA !== catB) return catA - catB;
     return (a.id || 0) - (b.id || 0);
   });
@@ -85,9 +119,25 @@ const MAX_ITEMS = 5;
 
 const BYOCPage = () => {
   const [products, setProducts] = useState(allFallbackProducts);
+  const [activeCategory, setActiveCategory] = useState('All');
   const [bundle, setBundle] = useState([]);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const { addToCart, setIsCartOpen } = useCart();
+
+  const categoryCounts = useMemo(() => {
+    const counts = { All: products.length };
+    BYOC_CATEGORIES.forEach(c => {
+      if (c.id !== 'All') {
+        counts[c.id] = products.filter(p => (p.resolvedCategory || resolveCategory(p)) === c.id).length;
+      }
+    });
+    return counts;
+  }, [products]);
+
+  const displayedProducts = useMemo(() => {
+    if (activeCategory === 'All') return products;
+    return products.filter(p => (p.resolvedCategory || resolveCategory(p)) === activeCategory);
+  }, [products, activeCategory]);
 
   // Load products if backend is available
   useEffect(() => {
@@ -206,51 +256,113 @@ const BYOCPage = () => {
         
         {/* LEFT COLUMN: Product Grid */}
         <div className="flex-1 w-full">
-          <div className="mb-8">
+          <div className="mb-6">
             <h1 className="text-3xl md:text-4xl font-extrabold text-[#662654] mb-3 font-serif">Build Your Box</h1>
             <p className="text-gray-600 font-medium text-sm md:text-base max-w-2xl">
               Mix and match your favorite Paidhu products. Choose at least 3 items to unlock special bundle pricing!
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-            {products.map((product) => (
-              <div key={product.id} className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col group relative">
-                
-                <div className="aspect-[4/5] overflow-hidden bg-[#f8f5f0] relative">
-                  <img 
-                    src={(product.image && typeof product.image === 'string' && product.image.startsWith('http')) ? product.image : (product.image ? `${API_BASE}${product.image}` : '/mascot.png')}
-                    alt={product.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    onError={e => { e.currentTarget.src = '/mascot.png'; }}
-                  />
-                  {product.discountPrice && product.price && product.discountPrice < product.price && (
-                    <div className="absolute top-2 left-2 bg-green-500 text-white text-[9px] font-bold px-2 py-0.5 rounded shadow-sm">
-                      {Math.round(((product.price - product.discountPrice) / product.price) * 100)}% OFF
-                    </div>
-                  )}
-                </div>
-
-                <div className="p-4 flex flex-col flex-1">
-                  <h3 className="text-[13px] font-bold text-gray-900 line-clamp-2 leading-tight mb-2 group-hover:text-[#662654] transition-colors">{product.name}</h3>
-                  
-                  <div className="flex items-baseline gap-2 mb-4 mt-auto">
-                    <span className="text-[15px] font-extrabold text-gray-900">₹{product.discountPrice || product.price}</span>
-                    {product.discountPrice && <span className="text-[11px] text-gray-400 line-through">₹{product.price}</span>}
-                  </div>
-
-                  <button 
-                    onClick={() => handleAddToBundle(product)}
-                    disabled={bundle.length >= MAX_ITEMS}
-                    className="w-full bg-[#662654] hover:bg-[#4d1c3f] disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold text-xs py-2.5 rounded-lg flex items-center justify-between px-4 transition-colors"
+          {/* Category Filter Tabs */}
+          <div className="mb-6">
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
+              {BYOC_CATEGORIES.map(cat => {
+                const isActive = activeCategory === cat.id;
+                const count = categoryCounts[cat.id] || 0;
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => setActiveCategory(cat.id)}
+                    className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                      isActive
+                        ? 'bg-[#662654] text-white shadow-md shadow-[#662654]/25 ring-2 ring-[#662654]'
+                        : 'bg-white text-gray-700 hover:text-[#662654] hover:bg-[#faf4f8] border border-gray-200'
+                    }`}
                   >
-                    <span>Add to Bundle</span>
-                    <Plus size={14} strokeWidth={3} />
+                    <span className="text-sm">{cat.icon}</span>
+                    <span>{cat.label}</span>
+                    <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-full ${
+                      isActive ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500'
+                    }`}>
+                      {count}
+                    </span>
                   </button>
-                </div>
-              </div>
-            ))}
+                );
+              })}
+            </div>
           </div>
+
+          {displayedProducts.length === 0 ? (
+            <div className="text-center py-12 bg-white rounded-2xl border border-gray-100 p-8">
+              <p className="text-gray-500 font-medium">No products found in this category.</p>
+              <button 
+                onClick={() => setActiveCategory('All')} 
+                className="mt-3 text-xs font-bold text-[#662654] hover:underline cursor-pointer"
+              >
+                Show All Products
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+              {displayedProducts.map((product) => {
+                const inBundleCount = bundle.filter(b => b.id === product.id).length;
+                const resolvedCat = product.resolvedCategory || resolveCategory(product);
+
+                return (
+                  <div 
+                    key={product.id} 
+                    className={`bg-white rounded-2xl border overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col group relative ${
+                      inBundleCount > 0 ? 'border-[#662654]/50 ring-2 ring-[#662654]/20' : 'border-gray-100'
+                    }`}
+                  >
+                    <div className="aspect-[4/5] overflow-hidden bg-[#f8f5f0] relative">
+                      <img 
+                        src={(product.image && typeof product.image === 'string' && product.image.startsWith('http')) ? product.image : (product.image ? `${API_BASE}${product.image}` : '/mascot.png')}
+                        alt={product.name}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        onError={e => { e.currentTarget.src = '/mascot.png'; }}
+                      />
+                      {product.discountPrice && product.price && product.discountPrice < product.price && (
+                        <div className="absolute top-2 left-2 bg-green-500 text-white text-[9px] font-bold px-2 py-0.5 rounded shadow-sm">
+                          {Math.round(((product.price - product.discountPrice) / product.price) * 100)}% OFF
+                        </div>
+                      )}
+                      {inBundleCount > 0 && (
+                        <div className="absolute top-2 right-2 bg-[#662654] text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow-sm flex items-center gap-1">
+                          <span>{inBundleCount} in box</span>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="p-4 flex flex-col flex-1">
+                      <div className="mb-1">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#662654] bg-[#fdf2f8] px-2 py-0.5 rounded">
+                          {resolvedCat}
+                        </span>
+                      </div>
+                      <h3 className="text-[13px] font-bold text-gray-900 line-clamp-2 leading-tight mb-2 group-hover:text-[#662654] transition-colors">
+                        {product.name}
+                      </h3>
+                      
+                      <div className="flex items-baseline gap-2 mb-4 mt-auto">
+                        <span className="text-[15px] font-extrabold text-gray-900">₹{product.discountPrice || product.price}</span>
+                        {product.discountPrice && <span className="text-[11px] text-gray-400 line-through">₹{product.price}</span>}
+                      </div>
+
+                      <button 
+                        onClick={() => handleAddToBundle(product)}
+                        disabled={bundle.length >= MAX_ITEMS}
+                        className="w-full bg-[#662654] hover:bg-[#4d1c3f] disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold text-xs py-2.5 rounded-lg flex items-center justify-between px-4 transition-colors cursor-pointer"
+                      >
+                        <span>{inBundleCount > 0 ? `Add Another (+1)` : 'Add to Bundle'}</span>
+                        <Plus size={14} strokeWidth={3} />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* RIGHT COLUMN: Sticky Bundle Sidebar */}
