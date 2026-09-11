@@ -19,23 +19,32 @@ export const resolveCategory = (p) => {
   if (!p) return 'Other';
   const cat = (p.category?.name || (typeof p.category === 'string' ? p.category : '') || '').toLowerCase();
   const name = (p.name || p.title || '').toLowerCase();
+  const tags = (typeof p.tags === 'string' ? p.tags : Array.isArray(p.tags) ? p.tags.join(' ') : '').toLowerCase();
+
+  // Combos, gifts, and assorted packs go to 'Other'
+  if (/combo|gift\s*box|family\s*pack|giftbox|\bcombos\b|gifting/i.test(`${name} ${cat} ${tags}`)) {
+    return 'Other';
+  }
 
   // 1. Authoritative category matching from backend/DB
   if (cat.includes('cookie')) return 'Bloom Cookies';
-  if (cat.includes('jam') || cat.includes('gulkhand') || cat.includes('preserve')) return 'Petal Jam';
-  if (cat.includes('brew') || cat.includes('flora')) return 'Brew Flora';
-  if (cat.includes('medley') || cat.includes('dip')) return 'Medley Teas';
   if (cat.includes('saffron')) {
     if (name.includes('medley') || name.includes('tea bag') || name.includes('dips')) return 'Medley Teas';
     return 'Saffron';
   }
+  if (cat.includes('jam') || cat.includes('gulkhand') || cat.includes('preserve')) return 'Petal Jam';
+  if (cat.includes('brew') || cat.includes('flora')) return 'Brew Flora';
+  if (cat.includes('medley') || cat.includes('dip')) return 'Medley Teas';
 
   // 2. Secondary title/name matching
   if (name.includes('cookie')) return 'Bloom Cookies';
-  if (name.includes('medley') || name.includes('dip') || (name.includes('tea') && !name.includes('brew') && !name.includes('flora'))) return 'Medley Teas';
-  if (name.includes('brew') || name.includes('flora') || name.includes('blue flora')) return 'Brew Flora';
+  if (name.includes('saffron') || name.includes('mongra') || name.includes('negin') || name.includes('kesar')) {
+    if (name.includes('medley') || name.includes('tea bag') || name.includes('dips')) return 'Medley Teas';
+    return 'Saffron';
+  }
   if (name.includes('jam') || name.includes('gulkhand') || name.includes('syrup')) return 'Petal Jam';
-  if (name.includes('saffron') || name.includes('mongra') || name.includes('negin') || name.includes('kesar')) return 'Saffron';
+  if (name.includes('brew') || name.includes('flora') || name.includes('blue flora')) return 'Brew Flora';
+  if (name.includes('medley') || name.includes('dip') || (name.includes('tea') && !name.includes('brew') && !name.includes('flora'))) return 'Medley Teas';
 
   return 'Other';
 };
@@ -50,12 +59,13 @@ const CATEGORY_ORDER = {
 };
 
 const BYOC_CATEGORIES = [
-  { id: 'All', label: 'All Products', icon: '🌸' },
-  { id: 'Bloom Cookies', label: 'Bloom Cookies', icon: '🍪' },
-  { id: 'Saffron', label: 'Pure Saffron', icon: '👑' },
-  { id: 'Petal Jam', label: 'Petal Jams', icon: '🍯' },
-  { id: 'Brew Flora', label: 'Brew Flora', icon: '🌺' },
-  { id: 'Medley Teas', label: 'Medley Teas', icon: '🍵' }
+  { id: 'All', label: 'All Products', image: '/Paidhulogo.png', icon: '🌸' },
+  { id: 'Bloom Cookies', label: 'Bloom Cookies', image: '/cat_bloom_cookies.png', icon: '🍪' },
+  { id: 'Saffron', label: 'Pure Saffron', image: '/cat_saffron.png', icon: '👑' },
+  { id: 'Petal Jam', label: 'Petal Jams', image: '/cat_petal_jam.png', icon: '🍯' },
+  { id: 'Brew Flora', label: 'Brew Flora', image: '/cat_brew_flora.png', icon: '🌺' },
+  { id: 'Medley Teas', label: 'Medley Teas', image: '/cat_medley_teas.png', icon: '🍵' },
+  { id: 'Other', label: 'Other Products', image: '/cat_combos.png', icon: '🎁' }
 ];
 
 const cleanName = (name) => {
@@ -71,7 +81,6 @@ const filterAndSortBYOCProducts = (list) => {
 
   for (const rawP of list) {
     if (!rawP || seenIds.has(rawP.id)) continue;
-    if (isComboOrGift(rawP)) continue;
 
     const resolvedCategory = resolveCategory(rawP);
     const p = {
@@ -285,13 +294,22 @@ const BYOCPage = () => {
                   <button
                     key={cat.id}
                     onClick={() => setActiveCategory(cat.id)}
-                    className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                    className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-200 cursor-pointer ${
                       isActive
                         ? 'bg-[#662654] text-white shadow-md shadow-[#662654]/25 ring-2 ring-[#662654]'
                         : 'text-[#662654] bg-[#f6f2f5] hover:bg-[#eddfe9] hover:shadow-[0_4px_10px_rgba(102,38,84,0.08)] border border-[#eddfe9]'
                     }`}
                   >
-                    <span className="text-sm">{cat.icon}</span>
+                    {cat.image ? (
+                      <img 
+                        src={cat.image} 
+                        alt={cat.label} 
+                        className="w-5 h-5 rounded-full object-cover border border-white/50 shadow-xs shrink-0 bg-white" 
+                        onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                      />
+                    ) : (
+                      <span className="text-sm">{cat.icon}</span>
+                    )}
                     <span>{cat.label}</span>
                     <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-full ${
                       isActive ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500'

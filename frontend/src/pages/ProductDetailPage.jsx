@@ -11,6 +11,7 @@ import { useCart } from '../context/CartContext';
 import SEO from '../components/seo/SEO';
 import ProductCarousel from '../components/home/ProductCarousel';
 import Breadcrumbs from '../components/ui/Breadcrumbs';
+import fallbacks from '../components/home/fallbacks.json';
 
 const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://paidhu-final-anm2.vercel.app');
 
@@ -156,24 +157,45 @@ const ProductDetailPage = () => {
           });
         }
 
-        // Fetch similar products in same category or matching keywords
+        // Fetch similar products in same category and also include other products
         try {
-          const listRes = await fetch(`${API_BASE}/api/products?limit=50&_t=${Date.now()}`, { cache: 'no-store' });
+          const listRes = await fetch(`${API_BASE}/api/products?limit=60&_t=${Date.now()}`, { cache: 'no-store' });
+          let all = [];
           if (listRes.ok) {
             const listData = await listRes.json();
-            const all = listData.products || [];
-            
-            // Filter products in the same category or matching type, excluding current product
-            let filtered = all.filter(p => p.id !== data.id && p.slug !== data.slug);
-            
-            if (data.category) {
-              const catMatches = filtered.filter(p => p.category?.toLowerCase() === data.category?.toLowerCase());
-              if (catMatches.length > 0) {
-                filtered = catMatches;
-              }
-            }
-            setSimilarProducts(filtered);
+            all = listData.products || [];
           }
+
+          // Merge with fallbacks to guarantee plenty of products across all categories
+          Object.values(fallbacks).forEach(catList => {
+            catList.forEach(p => {
+              const item = p.raw || p;
+              if (item && item.id && !all.some(existing => String(existing.id) === String(item.id))) {
+                all.push(item);
+              }
+            });
+          });
+
+          // 1. Same category items first (excluding current product)
+          const currentIdStr = String(data.id || '');
+          const currentSlug = data.slug || '';
+          const currentCat = (data.category || '').toLowerCase();
+
+          const catMatches = all.filter(p => 
+            String(p.id) !== currentIdStr && 
+            p.slug !== currentSlug && 
+            (currentCat && p.category?.toLowerCase() === currentCat)
+          );
+
+          // 2. All other products from other categories (Cookies, Saffron, Jams, Brew Flora, Teas, Combos)
+          const otherProducts = all.filter(p => 
+            String(p.id) !== currentIdStr && 
+            p.slug !== currentSlug && 
+            !catMatches.some(m => String(m.id) === String(p.id))
+          );
+
+          // Combined: Category similar items first, then all other products!
+          setSimilarProducts([...catMatches, ...otherProducts]);
         } catch (e) {
           console.error("Failed to fetch similar products:", e);
         }
