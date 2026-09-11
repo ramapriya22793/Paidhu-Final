@@ -180,7 +180,7 @@ function App() {
               <Route path="/shop" element={<ShopPage />} />
               <Route path="/shop/byoc" element={<BYOCPage />} />
               <Route path="/shop/build-your-box" element={<BYOCPage />} />
-              <Route path="/shop/blogs" element={<Navigate to="/shop/shop-all" replace />} />
+              <Route path="/shop/blogs" element={<BlogsPage />} />
               <Route path="/shop/:navSection" element={<ShopPage />} />
               <Route path="/product/:id" element={<ProductDetailPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
@@ -208,8 +208,8 @@ function App() {
               <Route path="/cancellation-policy" element={<LegalPage type="refund-policy" />} />
 
               <Route path="/legal/:type" element={<LegalPage />} />
-              <Route path="/blogs" element={<Navigate to="/shop/shop-all" replace />} />
-              <Route path="/blogs/:slug" element={<Navigate to="/shop/shop-all" replace />} />
+              <Route path="/blogs" element={<BlogsPage />} />
+              <Route path="/blogs/:slug" element={<BlogDetailPage />} />
               <Route path="/maintenance" element={<MaintenancePage />} />
               <Route path="/under-maintenance" element={<MaintenancePage />} />
 

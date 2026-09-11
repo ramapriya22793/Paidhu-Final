@@ -104,7 +104,7 @@ const navSlugMap = {
   'Bulk Orders':                 'bulk-orders',
   'Know us better':              'about-us',
   'Our Own Community':           'our-own-community',
-  'Blogs':                       'shop-all', // Navigates to Shop All per request while blog is being updated
+  'Blogs':                       '__direct__/blogs',
   'About Us':                    'about-us',
   'Careers':                     '__direct__/careers',
   'Saffron Guidance':            '__direct__/saffron-guidance',
@@ -176,7 +176,8 @@ const Navbar = () => {
     setIsWishlistOpen,
     removeFromWishlist,
     wishlistCount,
-    addToCart
+    addToCart,
+    removeBundle
   } = useCart();
 
   // Trigger badge wiggle animation when cartCount changes
@@ -347,6 +348,7 @@ const Navbar = () => {
     { name: 'Deal of the Day' },
     { name: 'Build your Box' },
     { name: 'Know us better' },
+    { name: 'Blogs' },
     { name: 'Saffron Guidance' }
   ];
 
@@ -672,15 +674,6 @@ const Navbar = () => {
                             <button
                               onClick={() => {
                                 setShowKnowUsDropdown(false);
-                                handleNavClick('Blogs');
-                              }}
-                              className="w-full text-left px-4 py-2 hover:bg-[#662654]/5 hover:text-[#662654] text-[#662654]/80 font-bold text-[13.5px] transition-colors cursor-pointer"
-                            >
-                              Blogs
-                            </button>
-                            <button
-                              onClick={() => {
-                                setShowKnowUsDropdown(false);
                                 handleNavClick('Our Own Community');
                               }}
                               className="w-full text-left px-4 py-2 hover:bg-[#662654]/5 hover:text-[#662654] text-[#662654]/80 font-bold text-[13.5px] transition-colors cursor-pointer"
@@ -905,15 +898,6 @@ const Navbar = () => {
                                 <button
                                   onClick={() => {
                                     setIsMobileMenuOpen(false);
-                                    handleNavClick('Blogs');
-                                  }}
-                                  className="text-left text-[#ede7d7]/85 font-medium text-sm py-2 hover:text-white transition-colors cursor-pointer"
-                                >
-                                  Blogs
-                                </button>
-                                <button
-                                  onClick={() => {
-                                    setIsMobileMenuOpen(false);
                                     handleNavClick('Our Own Community');
                                   }}
                                   className="text-left text-[#ede7d7]/85 font-medium text-sm py-2 hover:text-white transition-colors cursor-pointer"
@@ -1043,6 +1027,11 @@ const Navbar = () => {
                                     Size: {item.selectedVariant.size}
                                   </span>
                                 )}
+                                {item.variant?.endsWith('-byoc') && (
+                                  <span className="inline-block text-[9px] font-bold text-[#662654] bg-[#662654]/10 border border-[#662654]/20 px-2 py-0.5 rounded-md mt-0.5 ml-1">
+                                    ✨ Box Bundle
+                                  </span>
+                                )}
                                 <p className="text-[12px] font-black text-[#662654] mt-1">
                                   ₹{itemPrice.toLocaleString()}
                                 </p>
@@ -1051,15 +1040,17 @@ const Navbar = () => {
                               {/* Qty Selector & Delete */}
                               <div className="flex flex-col items-end gap-2">
                                 <button
-                                  onClick={() => removeFromCart(item.id, item.selectedVariant?.size)}
+                                  onClick={() => removeFromCart(item.id, item.variant || item.selectedVariant?.size)}
                                   className="text-gray-300 hover:text-rose-500 p-1 rounded transition-colors cursor-pointer"
+                                  title="Remove item"
                                 >
                                   <Trash2 size={14} />
                                 </button>
                                 <div className="flex items-center gap-1.5 border border-gray-200 rounded-full p-0.5 bg-gray-50">
                                   <button
-                                    onClick={() => updateQuantity(item.id, item.quantity - 1, item.selectedVariant?.size)}
+                                    onClick={() => updateQuantity(item.id, item.quantity - 1, item.variant || item.selectedVariant?.size)}
                                     className="w-5 h-5 rounded-full flex items-center justify-center text-gray-500 hover:bg-white active:scale-90 transition-all cursor-pointer"
+                                    title="Decrease quantity"
                                   >
                                     <Minus size={10} />
                                   </button>
@@ -1067,8 +1058,9 @@ const Navbar = () => {
                                     {item.quantity}
                                   </span>
                                   <button
-                                    onClick={() => updateQuantity(item.id, item.quantity + 1, item.selectedVariant?.size)}
+                                    onClick={() => updateQuantity(item.id, item.quantity + 1, item.variant || item.selectedVariant?.size)}
                                     className="w-5 h-5 rounded-full flex items-center justify-center text-gray-500 hover:bg-white active:scale-90 transition-all cursor-pointer"
+                                    title="Increase quantity"
                                   >
                                     <Plus size={10} />
                                   </button>

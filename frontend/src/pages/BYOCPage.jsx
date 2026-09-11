@@ -26,16 +26,34 @@ const getCategoryIndex = (p) => {
   return 999;
 };
 
+const cleanName = (name) => {
+  if (!name) return '';
+  return name.replace(/\s*\?+\s*/g, ' - ').replace(/\s+/g, ' ').trim();
+};
+
 const filterAndSortBYOCProducts = (list) => {
   if (!Array.isArray(list)) return [];
-  const seen = new Set();
+  const seenIds = new Set();
+  const seenNormalizedNames = new Set();
   const filtered = [];
-  for (const p of list) {
-    if (!p || seen.has(p.id)) continue;
-    if (isComboOrGift(p)) continue;
-    seen.add(p.id);
+
+  for (const rawP of list) {
+    if (!rawP || seenIds.has(rawP.id)) continue;
+    if (isComboOrGift(rawP)) continue;
+
+    const p = {
+      ...rawP,
+      name: cleanName(rawP.name || rawP.title)
+    };
+
+    const normKey = p.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (seenNormalizedNames.has(normKey)) continue;
+
+    seenIds.add(rawP.id);
+    seenNormalizedNames.add(normKey);
     filtered.push(p);
   }
+
   return filtered.sort((a, b) => {
     const catA = getCategoryIndex(a);
     const catB = getCategoryIndex(b);
@@ -106,14 +124,9 @@ const BYOCPage = () => {
     
     setIsAddingToCart(true);
     
-    // Calculate the discount to apply to each item to make the total match the tier price
-    const originalTotal = bundle.reduce((sum, item) => sum + (item.discountPrice || item.price), 0);
-    const discountFactor = currentTotal / originalTotal;
-    
-    // Add each item to the cart sequentially
+    // Group duplicate items in the bundle before adding to cart
+    const grouped = new Map();
     for (const item of bundle) {
-      const bundledPrice = Math.round((item.discountPrice || item.price) * discountFactor);
-      
       const variantRaw = item.variants && item.variants.length > 0 
         ? (typeof item.variants === 'string' ? JSON.parse(item.variants) : item.variants) 
         : [];
@@ -124,25 +137,57 @@ const BYOCPage = () => {
         return isJam ? sizeB - sizeA : sizeA - sizeB;
       }) : [];
       const variant = variantSorted.length > 0 ? variantSorted[0] : null;
-        
-      const bundledVariant = variant 
-        ? { ...variant, size: `${variant.size}-byoc`, offerPrice: bundledPrice } 
-        : { size: 'default-byoc', price: item.price, offerPrice: bundledPrice };
+      const baseVariantSize = variant ? variant.size : 'default';
+      const key = `${item.id}-${baseVariantSize}`;
+
+      if (!grouped.has(key)) {
+        grouped.set(key, {
+          item,
+          variant,
+          baseVariantSize,
+          count: 1,
+          unitPrice: Number(item.discountPrice || item.price)
+        });
+      } else {
+        grouped.get(key).count += 1;
+      }
+    }
+
+    // Exact mathematical distribution of tier price
+    const originalTotal = Array.from(grouped.values()).reduce((sum, g) => sum + (g.unitPrice * g.count), 0);
+    const discountFactor = currentTotal / originalTotal;
+    const groupEntries = Array.from(grouped.values());
+    let runningTotal = 0;
+
+    for (let i = 0; i < groupEntries.length; i++) {
+      const g = groupEntries[i];
+      let bundledUnitPrice = Math.round(g.unitPrice * discountFactor);
+      
+      if (i === groupEntries.length - 1) {
+        const remaining = currentTotal - runningTotal;
+        bundledUnitPrice = Math.max(1, Math.round(remaining / g.count));
+      } else {
+        runningTotal += (bundledUnitPrice * g.count);
+      }
+
+      const bundledVariant = g.variant 
+        ? { ...g.variant, size: `${g.variant.size}-byoc`, offerPrice: bundledUnitPrice } 
+        : { size: 'default-byoc', price: g.item.price, offerPrice: bundledUnitPrice };
       
       const productToAdd = {
-        ...item,
-        price: item.price,
-        discountPrice: bundledPrice // Override with discounted price
+        ...g.item,
+        price: g.item.price,
+        discountPrice: bundledUnitPrice
       };
       
-      await addToCart(productToAdd, 1, bundledVariant);
+      await addToCart(productToAdd, g.count, bundledVariant);
     }
     
     setTimeout(() => {
       setIsAddingToCart(false);
       setBundle([]);
       setIsCartOpen(true);
-    }, 1000);
+    }, 600);
   };
 
   return (

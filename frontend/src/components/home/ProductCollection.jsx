@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, ChevronRight, ChevronLeft, Check, Heart, ShoppingCart } from 'lucide-react';
+import { Plus, Minus, ChevronRight, ChevronLeft, Check, Heart, ShoppingCart } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import fallbacks from './fallbacks.json';
@@ -84,7 +84,7 @@ const cardVariants = {
 
 // ---------- COLLECTION PRODUCT CARD ----------
 const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId, isInWishlist, handleToggleWishlist }) => {
-  const { addToCart } = useCart();
+  const { addToCart, updateQuantity, getItemQuantity } = useCart();
   const raw = product.raw || {};
   const rawVariants = typeof raw.variants === 'string' 
     ? JSON.parse(raw.variants) 
@@ -98,6 +98,8 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
   const hasVariants = Array.isArray(variants) && variants.length > 0;
   
   const [selectedVariant, setSelectedVariant] = useState(hasVariants ? variants[0] : null);
+  const variantSize = selectedVariant?.size || 'default';
+  const cartQty = getItemQuantity ? getItemQuantity(product.id, variantSize) : 0;
 
   const currentPrice = selectedVariant 
     ? (selectedVariant.offerPrice && selectedVariant.offerPrice !== '' ? Number(selectedVariant.offerPrice) : Number(selectedVariant.price))
@@ -254,26 +256,64 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
           )}
         </div>
 
-        {/* Add to Cart Button */}
-        <motion.button 
-          onClick={handleAddToCartClick}
-          disabled={addingId === product.id}
-          whileHover={{ scale: 1.02, y: -1 }}
-          whileTap={{ scale: 0.98 }}
-          className="w-full mt-auto bg-gradient-to-r from-[#662654] to-[#7f2d68] hover:from-[#7a2e64] hover:to-[#913b7e] disabled:from-emerald-600 disabled:to-teal-500 text-white rounded-full py-2 sm:py-2.5 flex items-center justify-center gap-2 font-bold text-[10px] sm:text-xs uppercase tracking-wider shadow-[0_4px_12px_rgba(102,38,84,0.15)] hover:shadow-[0_6px_20px_rgba(102,38,84,0.3)] transition-all duration-300 group/btn cursor-pointer"
-        >
-          {addingId === product.id ? (
-            <>
-              <Check size={14} strokeWidth={3} className="text-white animate-bounce" />
-              <span>{product.status === 'PREORDER' ? 'Pre-ordered!' : 'Added!'}</span>
-            </>
-          ) : (
-            <>
-              <ShoppingCart size={13} strokeWidth={2.5} className="transform group-hover/btn:scale-110 transition-transform" />
-              <span>{product.status === 'PREORDER' ? 'Pre-order' : 'Add to Cart'}</span>
-            </>
-          )}
-        </motion.button>
+        {/* Add to Cart or Quantity Stepper */}
+        {cartQty > 0 ? (
+          <div 
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+            className="w-full mt-auto bg-[#662654] text-white rounded-full py-1 sm:py-1.5 px-3 flex items-center justify-between shadow-[0_4px_12px_rgba(102,38,84,0.2)] transition-all duration-300"
+          >
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                updateQuantity(product.id, cartQty - 1, variantSize);
+              }}
+              className="w-7 h-7 rounded-full flex items-center justify-center bg-white/20 hover:bg-white text-white hover:text-[#662654] transition-colors cursor-pointer active:scale-90"
+              title="Decrease quantity"
+            >
+              <Minus size={13} strokeWidth={3} />
+            </button>
+            
+            <div className="flex items-center gap-1.5 font-black text-xs sm:text-sm">
+              <span className="text-white/75 text-[10px] uppercase tracking-wider hidden xs:inline">In Cart:</span>
+              <span className="text-white font-black">{cartQty}</span>
+            </div>
+
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                updateQuantity(product.id, cartQty + 1, variantSize);
+              }}
+              className="w-7 h-7 rounded-full flex items-center justify-center bg-white/20 hover:bg-white text-white hover:text-[#662654] transition-colors cursor-pointer active:scale-90"
+              title="Increase quantity"
+            >
+              <Plus size={13} strokeWidth={3} />
+            </button>
+          </div>
+        ) : (
+          <motion.button 
+            onClick={handleAddToCartClick}
+            disabled={addingId === product.id}
+            whileHover={{ scale: 1.02, y: -1 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full mt-auto bg-gradient-to-r from-[#662654] to-[#7f2d68] hover:from-[#7a2e64] hover:to-[#913b7e] disabled:from-emerald-600 disabled:to-teal-500 text-white rounded-full py-2 sm:py-2.5 flex items-center justify-center gap-2 font-bold text-[10px] sm:text-xs uppercase tracking-wider shadow-[0_4px_12px_rgba(102,38,84,0.15)] hover:shadow-[0_6px_20px_rgba(102,38,84,0.3)] transition-all duration-300 group/btn cursor-pointer"
+          >
+            {addingId === product.id ? (
+              <>
+                <Check size={14} strokeWidth={3} className="text-white animate-bounce" />
+                <span>{product.status === 'PREORDER' ? 'Pre-ordered!' : 'Added!'}</span>
+              </>
+            ) : (
+              <>
+                <ShoppingCart size={13} strokeWidth={2.5} className="transform group-hover/btn:scale-110 transition-transform" />
+                <span>{product.status === 'PREORDER' ? 'Pre-order' : 'Add to Cart'}</span>
+              </>
+            )}
+          </motion.button>
+        )}
       </div>
     </motion.div>
   );

@@ -35,7 +35,7 @@ const calculateSummary = async (req, res) => {
     // items should be array of { productId, quantity, price }
     let subtotal = 0;
     if (items && items.length > 0) {
-      subtotal = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+      subtotal = items.reduce((acc, item) => acc + (Number(item.price || 0) * Number(item.quantity || 1)), 0);
     } else if (userId) {
       // Fetch from cart if items not directly provided
       const cartItems = await prisma.cartItem.findMany({

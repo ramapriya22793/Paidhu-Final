@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -103,7 +103,7 @@ const ProductDetailPage = () => {
   const [activeTab, setActiveTab] = useState('about'); // about, benefits, nutrition, faqs
   const [openFaq, setOpenFaq] = useState(null);
   
-  const { addToCart, wishlist, toggleWishlist } = useCart();
+  const { addToCart, updateQuantity, getItemQuantity, wishlist, toggleWishlist } = useCart();
   const isInWishlist = product && wishlist && wishlist.some(item => item.id === product.id);
   const [isAdding, setIsAdding] = useState(false);
   const [similarProducts, setSimilarProducts] = useState([]);
@@ -129,37 +129,6 @@ const ProductDetailPage = () => {
       setIsAdding(false);
     }
   };
-
-  const handleBuyNow = async () => {
-    if (isAdding) return;
-    setIsAdding(true);
-    try {
-      await addToCart({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        discountPrice: product.discountPrice || null,
-        image: product.image,
-        category: product.category,
-        shortDescription: product.shortDescription
-      }, quantity, selectedVariant);
-      navigate('/checkout');
-    } catch (err) {
-      console.error("Buy now error:", err);
-    } finally {
-      setIsAdding(false);
-    }
-  };
-
-  const saffronTitle = useMemo(() => {
-    if (!product?.name) return 'Kashmiri Mongra';
-    const clean = product.name.split('|')[0].split('–')[0].replace(/Saffron/i, '').trim();
-    return clean || 'Kashmiri Mongra';
-  }, [product?.name]);
-
-  const saffronDescription = useMemo(() => {
-    return "Experience the essence of Kashmir with our prized Kashmiri Mongra saffron, renowned for its deep red threads, distinct flavor, and unparalleled fragrance.";
-  }, []);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -489,28 +458,36 @@ const ProductDetailPage = () => {
         )}
 
         {/* ── Main Product Section ── */}
-        {isSaffron ? (
-          /* 🌸 Kashmiri Mongra Saffron Luxury Showcase Card (Matches Mockup media_1789119013603.png) */
-          <div className="relative w-full rounded-[2.5rem] overflow-hidden p-6 sm:p-10 md:p-12 lg:p-16 border border-[#d8dfef] shadow-[0_20px_50px_rgba(70,80,120,0.06)] bg-[#edf0f8]">
-            {/* Subtle Saffron Pattern Watermark across entire container */}
-            <div 
-              className="absolute inset-0 opacity-25 pointer-events-none bg-repeat bg-center"
-              style={{ backgroundImage: "url('/saffron_bg_pattern.png')", backgroundSize: "220px 220px" }}
-            />
+        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start p-6 md:p-10 rounded-[2.5rem] border border-gray-100/80 relative overflow-hidden ${
+          isSaffron ? 'bg-[#f8f9fd] shadow-[0_20px_50px_rgba(70,80,120,0.05)]' : 'bg-white shadow-[0_20px_50px_rgba(102,38,84,0.03)]'
+        }`}>
+          
+          {/* Decorative luxury radial background */}
+          <div className="absolute top-[-10%] right-[-10%] w-[35%] aspect-square rounded-full bg-gradient-to-br from-[#662654]/5 to-transparent blur-[80px] pointer-events-none" />
+          <div className="absolute bottom-[-10%] left-[-10%] w-[35%] aspect-square rounded-full bg-gradient-to-tr from-[#d4af37]/5 to-transparent blur-[80px] pointer-events-none" />
 
-            {/* Ambient radial glows */}
-            <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-gradient-to-br from-red-500/10 to-transparent blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full bg-gradient-to-tr from-amber-500/10 to-transparent blur-3xl pointer-events-none" />
+          {/* 1. Left Column: Product Image Gallery */}
+          {isSaffron ? (
+            <div className="relative w-full rounded-[2.5rem] overflow-hidden p-4 sm:p-8 md:p-10 border border-[#dce1f0] shadow-xs bg-[#eef1f8] bg-[radial-gradient(#d5daf0_1.5px,transparent_1.5px)] [background-size:20px_20px]">
+              {/* Subtle Saffron Pattern Watermark */}
+              <div 
+                className="absolute inset-0 opacity-20 pointer-events-none bg-repeat bg-center"
+                style={{ backgroundImage: "url('/saffron_bg_pattern.png')", backgroundSize: "220px 220px" }}
+              />
 
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
-              
-              {/* Left Column (Cols 1-7): Circular Showcase Disk & Curved Thumbnail Arc */}
-              <div className="lg:col-span-7 flex flex-col md:flex-row items-center justify-center gap-6 lg:gap-8">
+              {/* Ambient radial glows */}
+              <div className="absolute -top-12 -right-12 w-64 h-64 rounded-full bg-gradient-to-br from-red-500/10 to-transparent blur-3xl pointer-events-none" />
+              <div className="absolute -bottom-12 -left-12 w-64 h-64 rounded-full bg-gradient-to-tr from-amber-500/10 to-transparent blur-3xl pointer-events-none" />
+
+              {/* Flex Container: Curved Arc Thumbnails + Central Circle */}
+              <div className="relative flex flex-col md:flex-row items-center justify-center gap-6 lg:gap-8 w-full z-10">
                 
                 {/* 🌸 Curved Circular Thumbnails Arc along the left side */}
                 <div className="flex flex-row md:flex-col items-center justify-center gap-3 sm:gap-4 md:gap-3.5 z-20 order-2 md:order-1 shrink-0 overflow-x-auto max-w-full py-2 px-2">
                   {saffronGallery.map((item, idx) => {
-                    const arcOffsets = [18, 0, -12, 0, 18];
+                    // Arc curve offsets for desktop (md:):
+                    // Follows the curvature of the central white circle!
+                    const arcOffsets = [16, 0, -10, 0, 16];
                     const xOffset = arcOffsets[idx] || 0;
                     const isSelected = activeImageIndex === idx;
 
@@ -541,6 +518,7 @@ const ProductDetailPage = () => {
                           className="w-full h-full object-contain rounded-full select-none pointer-events-none"
                           loading="lazy"
                         />
+                        {/* Selected Indicator */}
                         {isSelected && (
                           <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-[#b91c1c] border-2 border-white shadow-xs" />
                         )}
@@ -550,13 +528,16 @@ const ProductDetailPage = () => {
                 </div>
 
                 {/* 🌸 Central Large White Showcase Circle */}
-                <div className="relative w-full max-w-[320px] sm:max-w-[380px] md:max-w-[430px] lg:max-w-[460px] aspect-square rounded-full bg-white shadow-[0_20px_50px_rgba(30,41,59,0.08)] border border-white flex items-center justify-center p-6 sm:p-8 lg:p-10 order-1 md:order-2 group">
+                <div className="relative w-full max-w-[320px] sm:max-w-[380px] md:max-w-[420px] lg:max-w-[460px] aspect-square rounded-full bg-white shadow-[0_20px_50px_rgba(30,41,59,0.08)] border border-white flex items-center justify-center p-6 sm:p-8 lg:p-10 order-1 md:order-2 group">
+                  
+                  {/* Discount badge if present */}
                   {discountPercent > 0 && (
                     <div className="absolute top-4 left-8 md:top-6 md:left-10 bg-gradient-to-r from-[#b91c1c] to-[#d4af37] text-white px-3.5 py-1 text-[11px] font-black uppercase tracking-wider rounded-full shadow-lg z-10 flex items-center gap-1 border border-white/20">
                       <span>✨</span> {discountPercent}% OFF
                     </div>
                   )}
 
+                  {/* Active Image with smooth transition */}
                   <div 
                     className="w-full h-full flex items-center justify-center relative cursor-zoom-in"
                     onClick={() => setLightboxOpen(true)}
@@ -588,191 +569,21 @@ const ProductDetailPage = () => {
                     )}
                   </div>
 
-                  {/* 🌸 Red Zoom Button at Bottom-Right matching Mockup */}
+                  {/* 🌸 Red Zoom Button at Bottom-Right */}
                   <button
                     type="button"
                     onClick={() => setLightboxOpen(true)}
-                    className="absolute bottom-3 right-3 sm:bottom-5 sm:right-5 md:bottom-6 md:right-6 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-white border-2 border-[#b91c1c] text-[#b91c1c] flex items-center justify-center shadow-lg hover:bg-[#b91c1c] hover:text-white transition-all duration-300 cursor-pointer z-10 hover:scale-110"
+                    className="absolute bottom-3 right-3 sm:bottom-5 sm:right-5 md:bottom-6 md:right-6 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white border-2 border-[#b91c1c] text-[#b91c1c] flex items-center justify-center shadow-lg hover:bg-[#b91c1c] hover:text-white transition-all duration-300 cursor-pointer z-10 hover:scale-110"
                     title="Zoom Full View"
                     aria-label="Zoom Full View"
                   >
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="11" cy="11" r="7" />
-                      <line x1="20" y1="20" x2="16" y2="16" />
-                      <line x1="11" y1="8" x2="11" y2="14" />
-                      <line x1="8" y1="11" x2="14" y2="11" />
-                    </svg>
+                    <Plus size={20} className="stroke-[2.8]" />
                   </button>
                 </div>
 
               </div>
-
-              {/* Right Column (Cols 8-12): Title, Description, Buy Now, Divider, Social Share */}
-              <div className="lg:col-span-5 flex flex-col justify-center text-left space-y-4 sm:space-y-5 lg:space-y-6">
-                
-                {/* 🌸 Title in Elegant Serif Red */}
-                <h1 className="font-serif text-3xl sm:text-4xl lg:text-[44px] leading-tight font-normal text-[#c21820] tracking-normal">
-                  {saffronTitle}
-                </h1>
-
-                {/* 🌸 Poetic Essence Description matching Mockup */}
-                <p className="text-gray-700 text-sm sm:text-base lg:text-[16px] leading-relaxed max-w-xl font-sans">
-                  {saffronDescription}
-                </p>
-
-                {/* Weight Options / Variants */}
-                {variants.length > 0 && (
-                  <div className="flex items-center gap-3 pt-1">
-                    <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Weight:</span>
-                    <div className="flex flex-wrap gap-2">
-                      {variants.map((v, i) => (
-                        <button
-                          key={i}
-                          type="button"
-                          onClick={() => handleVariantSelect(v)}
-                          className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
-                            selectedVariant?.size === v.size
-                              ? 'bg-[#c21820] text-white shadow-xs'
-                              : 'bg-white/80 text-gray-700 border border-gray-300 hover:bg-white'
-                          }`}
-                        >
-                          {v.size}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Pricing display */}
-                <div className="flex items-baseline gap-3 pt-1">
-                  <span className="text-2xl sm:text-3xl font-bold text-gray-900 font-sans">
-                    ₹{(offerPrice || price).toLocaleString()}
-                  </span>
-                  {offerPrice && price > offerPrice && (
-                    <span className="text-sm text-gray-400 line-through">
-                      ₹{price.toLocaleString()}
-                    </span>
-                  )}
-                  <span className="text-[11px] text-gray-500 font-medium">
-                    (Inclusive of all taxes)
-                  </span>
-                </div>
-
-                {/* Action Buttons: Prominent Red Buy Now Pill + Add to Cart & Qty */}
-                <div className="flex flex-wrap items-center gap-3 pt-1">
-                  {/* Buy Now Button from Mockup */}
-                  <button
-                    type="button"
-                    onClick={handleBuyNow}
-                    disabled={isAdding}
-                    className="bg-[#c21820] hover:bg-[#a9181f] text-white font-semibold text-sm sm:text-base px-8 sm:px-9 py-2.5 sm:py-3 rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer flex items-center justify-center gap-2"
-                  >
-                    {isAdding ? 'Processing…' : 'Buy Now'}
-                  </button>
-
-                  {/* Add to Cart Companion */}
-                  <button
-                    type="button"
-                    onClick={handleAddToCart}
-                    disabled={isAdding}
-                    className="bg-white/90 hover:bg-white text-[#c21820] border-2 border-[#c21820] font-bold text-xs sm:text-sm px-6 py-2.5 sm:py-3 rounded-full shadow-xs hover:shadow-md transition-all cursor-pointer flex items-center gap-2"
-                  >
-                    <ShoppingCart size={16} />
-                    <span>Add to Cart</span>
-                  </button>
-
-                  {/* Qty Selector */}
-                  <div className="flex items-center border border-gray-300 rounded-full p-0.5 bg-white shadow-xs">
-                    <button
-                      type="button"
-                      onClick={() => setQuantity(q => Math.max(1, q - 1))}
-                      disabled={quantity <= 1}
-                      className="w-7 h-7 rounded-full flex items-center justify-center text-gray-500 hover:text-[#c21820] disabled:opacity-30 cursor-pointer"
-                    >
-                      <Minus size={12} />
-                    </button>
-                    <span className="text-xs font-black text-gray-800 px-2">{quantity}</span>
-                    <button
-                      type="button"
-                      onClick={() => setQuantity(q => q + 1)}
-                      className="w-7 h-7 rounded-full flex items-center justify-center text-gray-500 hover:text-[#c21820] cursor-pointer"
-                    >
-                      <Plus size={12} />
-                    </button>
-                  </div>
-
-                  {/* Wishlist Button */}
-                  <button
-                    type="button"
-                    onClick={() => toggleWishlist(product)}
-                    className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all cursor-pointer ${
-                      isInWishlist ? 'border-[#c21820] bg-red-50 text-[#c21820]' : 'border-gray-300 bg-white/80 text-gray-400 hover:text-[#c21820]'
-                    }`}
-                    title={isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
-                  >
-                    <Heart size={18} className={isInWishlist ? 'animate-pulse' : ''} fill={isInWishlist ? "currentColor" : "none"} />
-                  </button>
-                </div>
-
-                {/* Thin Divider Line matching Mockup */}
-                <div className="w-full border-t border-gray-300/70 my-2" />
-
-                {/* Social Share Section matching Mockup */}
-                <div className="flex items-center gap-3 text-xs font-bold text-gray-600 tracking-wider">
-                  <span>SHARE :</span>
-                  <div className="flex items-center gap-2.5">
-                    <a
-                      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-8 h-8 rounded-full border border-gray-400/80 text-gray-700 hover:border-[#c21820] hover:text-[#c21820] hover:bg-white flex items-center justify-center transition-all cursor-pointer font-serif text-sm shadow-xs"
-                      title="Share on Facebook"
-                    >
-                      f
-                    </a>
-                    <a
-                      href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')}&text=${encodeURIComponent('Paidhu Kashmiri Mongra Saffron')}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-8 h-8 rounded-full border border-gray-400/80 text-gray-700 hover:border-[#c21820] hover:text-[#c21820] hover:bg-white flex items-center justify-center transition-all cursor-pointer font-serif text-sm shadow-xs"
-                      title="Share on Twitter"
-                    >
-                      t
-                    </a>
-                    <a
-                      href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-8 h-8 rounded-full border border-gray-400/80 text-gray-700 hover:border-[#c21820] hover:text-[#c21820] hover:bg-white flex items-center justify-center transition-all cursor-pointer font-serif text-xs font-bold shadow-xs"
-                      title="Share on LinkedIn"
-                    >
-                      in
-                    </a>
-                    <a
-                      href={`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')}&description=${encodeURIComponent('Paidhu Kashmiri Mongra Saffron')}&media=${encodeURIComponent(typeof window !== 'undefined' ? window.location.origin + '/saffron_highres_1.png' : '')}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-8 h-8 rounded-full border border-gray-400/80 text-gray-700 hover:border-[#c21820] hover:text-[#c21820] hover:bg-white flex items-center justify-center transition-all cursor-pointer font-serif text-sm shadow-xs"
-                      title="Share on Pinterest"
-                    >
-                      p
-                    </a>
-                  </div>
-                </div>
-
-              </div>
-
             </div>
-          </div>
-        ) : (
-          /* Standard Product Section for Non-Saffron Items */
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start p-6 md:p-10 rounded-[2.5rem] border border-gray-100/80 relative overflow-hidden bg-white shadow-[0_20px_50px_rgba(102,38,84,0.03)]">
-            
-            {/* Decorative luxury radial background */}
-            <div className="absolute top-[-10%] right-[-10%] w-[35%] aspect-square rounded-full bg-gradient-to-br from-[#662654]/5 to-transparent blur-[80px] pointer-events-none" />
-            <div className="absolute bottom-[-10%] left-[-10%] w-[35%] aspect-square rounded-full bg-gradient-to-tr from-[#d4af37]/5 to-transparent blur-[80px] pointer-events-none" />
-
-            {/* Standard Product Image Gallery */}
+          ) : (
             <div>
               <div
                 className="relative aspect-square bg-[#faf9f7] rounded-[2rem] overflow-hidden border border-gray-100 flex items-center justify-center shadow-inner group cursor-zoom-in"
@@ -850,267 +661,311 @@ const ProductDetailPage = () => {
                 </div>
               )}
             </div>
+          )}
 
-            {/* Standard Right Column: Rich Info Panel */}
-            <div className="space-y-6 lg:space-y-8">
-              <div>
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-xs font-black text-[#662654] uppercase tracking-widest bg-[#662654]/10 border border-[#662654]/10 px-3.5 py-1.5 rounded-full">
-                    {product.category}
-                  </span>
-                </div>
-                <h1 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight mt-3 leading-tight">
-                  {product.name}
-                </h1>
-              </div>
-
-              {/* Ratings and Reviews Summary */}
-              <div className="flex items-center gap-2.5 border-b border-gray-100 pb-5">
-                <div className="flex text-amber-400">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} size={16} fill="currentColor" className="stroke-current" />
-                  ))}
-                </div>
-                <span className="text-sm font-bold text-gray-700">4.8 / 5.0</span>
-                <span className="text-gray-300">|</span>
-                <span className="text-sm font-semibold text-[#662654] hover:text-[#d4af37] transition-colors hover:underline cursor-pointer">
-                  12 Reviews
+          {/* 2. Right Column: Rich Info Panel */}
+          <div className="space-y-6 lg:space-y-8">
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs font-black text-[#662654] uppercase tracking-widest bg-[#662654]/10 border border-[#662654]/10 px-3.5 py-1.5 rounded-full">
+                  {product.category}
                 </span>
+                {isSaffron && (
+                  <Link
+                    to="/saffron-guidance"
+                    className="inline-flex items-center gap-1.5 bg-gradient-to-r from-[#d4af37]/20 to-[#f5d061]/20 hover:from-[#d4af37]/30 hover:to-[#f5d061]/30 text-[#7a4f15] border border-[#d4af37]/40 text-[11px] font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full transition-all shadow-xs"
+                  >
+                    <Sparkles size={11} className="text-[#85581a]" />
+                    <span>Free Saffron Guidance Included</span>
+                  </Link>
+                )}
               </div>
+              <h1 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight mt-3 leading-tight">
+                {product.name}
+              </h1>
+            </div>
 
-              {/* Price Section */}
-              <div className="space-y-1">
-                <div className="flex items-baseline gap-3">
-                  {offerPrice ? (
-                    <>
-                      <span className="text-3xl font-black text-gray-900 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                        ₹{offerPrice.toLocaleString()}
-                      </span>
-                      <span className="text-lg text-gray-400 line-through">
-                        ₹{price.toLocaleString()}
-                      </span>
-                    </>
-                  ) : (
-                    <span className="text-3xl font-black text-gray-900">
+            {/* Ratings and Reviews Summary */}
+            <div className="flex items-center gap-2.5 border-b border-gray-100 pb-5">
+              <div className="flex text-amber-400">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} size={16} fill="currentColor" className="stroke-current" />
+                ))}
+              </div>
+              <span className="text-sm font-bold text-gray-700">4.8 / 5.0</span>
+              <span className="text-gray-300">|</span>
+              <span className="text-sm font-semibold text-[#662654] hover:text-[#d4af37] transition-colors hover:underline cursor-pointer">
+                12 Reviews
+              </span>
+            </div>
+
+            {/* Price Section */}
+            <div className="space-y-1">
+              <div className="flex items-baseline gap-3">
+                {offerPrice ? (
+                  <>
+                    <span className="text-3xl font-black text-gray-900 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                      ₹{offerPrice.toLocaleString()}
+                    </span>
+                    <span className="text-lg text-gray-400 line-through">
                       ₹{price.toLocaleString()}
                     </span>
-                  )}
-                </div>
-                <p className="text-[11px] text-gray-400 font-medium">Inclusive of all taxes</p>
+                  </>
+                ) : (
+                  <span className="text-3xl font-black text-gray-900">
+                    ₹{price.toLocaleString()}
+                  </span>
+                )}
               </div>
+              <p className="text-[11px] text-gray-400 font-medium">Inclusive of all taxes</p>
+            </div>
 
-              {/* Variants Selector */}
-              {variants.length > 0 && (
-                <div className="space-y-3">
-                  <span className="block text-xs font-black text-gray-400 uppercase tracking-wider">Select Option / Size</span>
-                  {variants.some(v => v.size.length > 15) ? (
-                    <div className="relative w-full max-w-md">
-                      <select
-                        value={selectedVariant?.size || ''}
-                        onChange={(e) => {
-                          const selected = variants.find(v => v.size === e.target.value);
-                          if (selected) handleVariantSelect(selected);
-                        }}
-                        className="w-full text-sm font-bold px-4 py-3 rounded-xl border border-gray-200 text-[#662654] bg-white hover:border-[#662654]/50 focus:outline-none focus:ring-2 focus:ring-[#662654]/20 focus:border-[#662654] appearance-none cursor-pointer pr-10 shadow-sm"
-                        aria-label="Select product variation option"
-                      >
-                        {variants.map((v, i) => (
-                          <option key={i} value={v.size}>
-                            {v.size}
-                          </option>
-                        ))}
-                      </select>
-                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-[#662654]">
-                        <svg className="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                          <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-                        </svg>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex flex-wrap gap-2.5">
+            {/* Variants Selector */}
+            {variants.length > 0 && (
+              <div className="space-y-3">
+                <span className="block text-xs font-black text-gray-400 uppercase tracking-wider">Select Option / Size</span>
+                {variants.some(v => v.size.length > 15) ? (
+                  <div className="relative w-full max-w-md">
+                    <select
+                      value={selectedVariant?.size || ''}
+                      onChange={(e) => {
+                        const selected = variants.find(v => v.size === e.target.value);
+                        if (selected) handleVariantSelect(selected);
+                      }}
+                      className="w-full text-sm font-bold px-4 py-3 rounded-xl border border-gray-200 text-[#662654] bg-white hover:border-[#662654]/50 focus:outline-none focus:ring-2 focus:ring-[#662654]/20 focus:border-[#662654] appearance-none cursor-pointer pr-10 shadow-sm"
+                      aria-label="Select product variation option"
+                    >
                       {variants.map((v, i) => (
-                        <button
-                          key={i}
-                          type="button"
-                          onClick={() => handleVariantSelect(v)}
-                          className={`text-sm font-bold px-5 py-2.5 rounded-xl border transition-all duration-300 ${
-                            selectedVariant?.size === v.size
-                              ? 'border-[#662654] bg-[#662654] text-white shadow-md shadow-[#662654]/20 scale-[1.02]'
-                              : 'border-gray-200 text-gray-600 bg-white hover:border-[#662654]/50 hover:bg-gray-50'
-                          }`}
-                        >
+                        <option key={i} value={v.size}>
                           {v.size}
-                        </button>
+                        </option>
                       ))}
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-[#662654]">
+                      <svg className="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                      </svg>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-wrap gap-2.5">
+                    {variants.map((v, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        onClick={() => handleVariantSelect(v)}
+                        className={`text-sm font-bold px-5 py-2.5 rounded-xl border transition-all duration-300 ${
+                          selectedVariant?.size === v.size
+                            ? 'border-[#662654] bg-[#662654] text-white shadow-md shadow-[#662654]/20 scale-[1.02]'
+                            : 'border-gray-200 text-gray-600 bg-white hover:border-[#662654]/50 hover:bg-gray-50'
+                        }`}
+                      >
+                        {v.size}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Stock status indicator */}
+            <div className="flex items-center gap-2">
+              <span className={`relative flex h-2 w-2`}>
+                <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${product.stock > 0 ? 'bg-emerald-400' : 'bg-rose-400'}`}></span>
+                <span className={`relative inline-flex rounded-full h-2 w-2 ${product.stock > 0 ? 'bg-emerald-500' : 'bg-rose-500'}`}></span>
+              </span>
+              <span className="text-xs font-bold text-gray-600">
+                {product.stock > 0 ? `In Stock (${product.stock} units available)` : 'Out of Stock'}
+              </span>
+            </div>
+
+            {/* Action Bar: Quantity & Add to Cart */}
+            {(() => {
+              const currentVariantSize = selectedVariant?.size || 'default';
+              const inCartQty = product ? (getItemQuantity(product.id, currentVariantSize) || (currentVariantSize === 'default' ? getItemQuantity(product.id) : 0)) : 0;
+              return (
+                <div className="flex flex-col sm:flex-row gap-4 border-t border-b border-gray-100 py-6">
+                  {/* Qty Selector */}
+                  {inCartQty > 0 ? (
+                    <div className="flex items-center justify-between border border-[#662654]/30 rounded-full p-1 bg-[#662654]/5 w-full sm:w-36 shadow-xs">
+                      <motion.button 
+                        onClick={() => updateQuantity(product.id, inCartQty - 1, currentVariantSize)}
+                        whileTap={{ scale: 0.8 }}
+                        className="w-8 h-8 rounded-full flex items-center justify-center text-[#662654] hover:bg-[#662654] hover:text-white transition-all cursor-pointer"
+                        title="Decrease quantity in cart"
+                      >
+                        <Minus size={14} strokeWidth={2.5} />
+                      </motion.button>
+                      <div className="flex flex-col items-center leading-none">
+                        <span className="text-sm font-black text-[#662654]">{inCartQty}</span>
+                        <span className="text-[9px] font-bold text-gray-500 uppercase tracking-wider">in cart</span>
+                      </div>
+                      <motion.button 
+                        onClick={() => updateQuantity(product.id, inCartQty + 1, currentVariantSize)}
+                        whileTap={{ scale: 0.8 }}
+                        className="w-8 h-8 rounded-full flex items-center justify-center text-[#662654] hover:bg-[#662654] hover:text-white transition-all cursor-pointer"
+                        title="Increase quantity in cart"
+                      >
+                        <Plus size={14} strokeWidth={2.5} />
+                      </motion.button>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between border border-gray-200 rounded-full p-1 bg-[#faf9f6] w-full sm:w-32 shadow-inner">
+                      <motion.button 
+                        onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                        disabled={quantity <= 1}
+                        whileTap={{ scale: 0.8 }}
+                        className="w-8 h-8 rounded-full flex items-center justify-center text-gray-500 hover:bg-white hover:text-[#662654] shadow-sm disabled:shadow-none transition-all disabled:opacity-30 cursor-pointer"
+                      >
+                        <Minus size={14} />
+                      </motion.button>
+                      <span className="text-sm font-black text-[#662654]">{quantity}</span>
+                      <motion.button 
+                        onClick={() => setQuantity(q => q + 1)}
+                        whileTap={{ scale: 0.8 }}
+                        className="w-8 h-8 rounded-full flex items-center justify-center text-gray-500 hover:bg-white hover:text-[#662654] shadow-sm transition-all cursor-pointer"
+                      >
+                        <Plus size={14} />
+                      </motion.button>
                     </div>
                   )}
+
+                  {/* Add To Cart Button */}
+                  <motion.button 
+                    onClick={inCartQty > 0 ? () => updateQuantity(product.id, inCartQty + 1, currentVariantSize) : handleAddToCart}
+                    disabled={isAdding}
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="flex-1 bg-gradient-to-r from-[#662654] via-[#7a2e64] to-[#662654] hover:brightness-110 disabled:bg-emerald-600 text-white rounded-full py-4 px-8 flex items-center justify-center gap-3 font-black text-sm uppercase tracking-wider transition-all shadow-xl shadow-[#662654]/20 hover:shadow-2xl hover:shadow-[#662654]/35 cursor-pointer relative overflow-hidden group"
+                  >
+                    {/* Shining reflection animation overlay on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-shimmer pointer-events-none" />
+                    
+                    {isAdding ? (
+                      <>
+                        <Check size={18} strokeWidth={3} className="text-white animate-bounce" />
+                        <span>{product.status === 'PREORDER' ? 'PRE-ORDERED!' : 'ADDED TO CART!'}</span>
+                      </>
+                    ) : inCartQty > 0 ? (
+                      <>
+                        <ShoppingCart size={18} strokeWidth={2.5} className="group-hover:scale-110 transition-transform" />
+                        <span>IN CART ({inCartQty}) — ADD ANOTHER (+1)</span>
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingCart size={18} strokeWidth={2.5} className="group-hover:scale-110 transition-transform" />
+                        <span>{product.status === 'PREORDER' ? 'PRE-ORDER NOW' : 'ADD TO CART'} — ₹{((offerPrice || price) * quantity).toLocaleString()}</span>
+                      </>
+                    )}
+                  </motion.button>
+
+                  {/* Wishlist Button */}
+                  <motion.button 
+                    onClick={() => toggleWishlist(product)}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.9 }}
+                    className={`w-12 h-12 rounded-full border flex items-center justify-center transition-all cursor-pointer ${
+                      isInWishlist ? 'border-[#662654] bg-[#662654]/5 text-[#662654]' : 'border-gray-200 text-gray-400 hover:text-[#662654]'
+                    }`}
+                  >
+                    <Heart size={18} className={isInWishlist ? 'fill-[#662654]' : ''} />
+                  </motion.button>
                 </div>
-              )}
+              );
+            })()}
 
-              {/* Stock status indicator */}
-              <div className="flex items-center gap-2">
-                <span className={`relative flex h-2 w-2`}>
-                  <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${product.stock > 0 ? 'bg-emerald-400' : 'bg-rose-400'}`}></span>
-                  <span className={`relative inline-flex rounded-full h-2 w-2 ${product.stock > 0 ? 'bg-emerald-500' : 'bg-rose-500'}`}></span>
-                </span>
-                <span className="text-xs font-bold text-gray-600">
-                  {product.stock > 0 ? `In Stock (${product.stock} units available)` : 'Out of Stock'}
-                </span>
-              </div>
-
-              {/* Action Bar: Quantity & Add to Cart */}
-              <div className="flex flex-col sm:flex-row gap-4 border-t border-b border-gray-100 py-6">
+            {/* 🌸 Saffron Guidance Box (Visible while viewing Saffron products) */}
+            {isSaffron && (
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="rounded-2xl p-4 md:p-5 bg-gradient-to-br from-[#fefbf6] via-[#fff8ef] to-[#fbf1f5] border border-[#d4af37]/50 shadow-[0_4px_20px_rgba(212,175,55,0.12)] relative overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[#d4af37]/10 rounded-full blur-2xl pointer-events-none -mr-10 -mt-10" />
                 
-                {/* Qty Selector */}
-                <div className="flex items-center justify-between border border-gray-200 rounded-full p-1 bg-[#faf9f6] w-full sm:w-32 shadow-inner">
-                  <motion.button 
-                    onClick={() => setQuantity(q => Math.max(1, q - 1))}
-                    disabled={quantity <= 1}
-                    whileTap={{ scale: 0.8 }}
-                    className="w-8 h-8 rounded-full flex items-center justify-center text-gray-500 hover:bg-white hover:text-[#662654] shadow-sm disabled:shadow-none transition-all disabled:opacity-30 cursor-pointer"
-                  >
-                    <Minus size={14} />
-                  </motion.button>
-                  <span className="text-sm font-black text-[#662654]">{quantity}</span>
-                  <motion.button 
-                    onClick={() => setQuantity(q => q + 1)}
-                    whileTap={{ scale: 0.8 }}
-                    className="w-8 h-8 rounded-full flex items-center justify-center text-gray-500 hover:bg-white hover:text-[#662654] shadow-sm transition-all cursor-pointer"
-                  >
-                    <Plus size={14} />
-                  </motion.button>
+                <div className="flex items-start gap-3.5 relative z-10">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#662654] to-[#9b3b82] p-1 flex-shrink-0 shadow-md flex items-center justify-center">
+                    <img 
+                      src="/saffron_icon.png" 
+                      alt="Saffron Guidance" 
+                      className="w-full h-full object-contain drop-shadow-sm" 
+                      onError={(e) => { e.target.src = '/mascot.png'; }} 
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-black uppercase tracking-widest bg-[#d4af37]/20 text-[#85581a] px-2.5 py-0.5 rounded-full border border-[#d4af37]/40 flex items-center gap-1">
+                        <Sparkles size={10} className="text-[#85581a]" />
+                        Free Saffron Guidance
+                      </span>
+                    </div>
+                    <h3 className="text-sm md:text-[15px] font-black text-[#662654] mt-1.5 font-serif leading-snug">
+                      Need Guidance on Saffron for Pregnancy or Daily Wellness?
+                    </h3>
+                    <p className="text-xs text-gray-600 mt-1 leading-relaxed">
+                      Doctor-aligned advice on Kashmiri Mongra Saffron dosage, right trimester timing, warm milk preparation, and family wellness benefits.
+                    </p>
+
+                    {/* Quick highlight pills */}
+                    <div className="flex flex-wrap gap-2 mt-2.5 text-[11px] font-bold text-[#662654]/90">
+                      <span className="bg-white/80 border border-[#d4af37]/30 rounded-md px-2 py-0.5 shadow-xs flex items-center gap-1">
+                        🌸 Trimester-wise Dosage
+                      </span>
+                      <span className="bg-white/80 border border-[#d4af37]/30 rounded-md px-2 py-0.5 shadow-xs flex items-center gap-1">
+                        🥛 Warm Milk Protocol
+                      </span>
+                      <span className="bg-white/80 border border-[#d4af37]/30 rounded-md px-2 py-0.5 shadow-xs flex items-center gap-1">
+                        🏥 Doctor-Approved
+                      </span>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex flex-wrap items-center gap-2.5 mt-3.5">
+                      <Link
+                        to="/saffron-guidance"
+                        className="inline-flex items-center gap-1.5 bg-[#662654] hover:bg-[#4a1c3d] text-white text-xs font-black px-4 py-2.5 rounded-full shadow-md hover:shadow-lg transition-all cursor-pointer"
+                      >
+                        <span>Consult Saffron Guidance</span>
+                        <ArrowRight size={13} />
+                      </Link>
+                      <a
+                        href="https://wa.me/918754787774?text=Hi%20Paidhu%2C%20I%20am%20viewing%20the%20Saffron%20Gift%20Box%20%2F%20Kashmiri%20Mongra%20Saffron%20and%20would%20like%20expert%20saffron%20guidance%20for%20pregnancy%2Fwellness."
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black px-3.5 py-2.5 rounded-full shadow-md hover:shadow-lg transition-all cursor-pointer"
+                      >
+                        <MessageSquare size={13} />
+                        <span>WhatsApp Expert</span>
+                      </a>
+                    </div>
+                  </div>
                 </div>
+              </motion.div>
+            )}
 
-                {/* Add To Cart Button */}
-                <motion.button 
-                  onClick={handleAddToCart}
-                  disabled={isAdding}
-                  whileHover={{ scale: 1.02, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="flex-1 bg-gradient-to-r from-[#662654] via-[#7a2e64] to-[#662654] hover:brightness-110 disabled:bg-emerald-600 text-white rounded-full py-4 px-8 flex items-center justify-center gap-3 font-black text-sm uppercase tracking-wider transition-all shadow-xl shadow-[#662654]/20 hover:shadow-2xl hover:shadow-[#662654]/35 cursor-pointer relative overflow-hidden group"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-shimmer pointer-events-none" />
-                  
-                  {isAdding ? (
-                    <>
-                      <Check size={18} strokeWidth={3} className="text-white animate-bounce" />
-                      <span>{product.status === 'PREORDER' ? 'PRE-ORDERED!' : 'ADDED TO CART!'}</span>
-                    </>
-                  ) : (
-                    <>
-                      <ShoppingCart size={18} strokeWidth={2.5} className="group-hover:scale-110 transition-transform" />
-                      <span>{product.status === 'PREORDER' ? 'PRE-ORDER NOW' : 'ADD TO CART'} — ₹{((offerPrice || price) * quantity).toLocaleString()}</span>
-                    </>
-                  )}
-                </motion.button>
-
-                {/* Wishlist Button */}
-                <motion.button 
-                  onClick={() => toggleWishlist(product)}
-                  whileHover={{ scale: 1.08 }}
-                  whileTap={{ scale: 0.9 }}
-                  className={`w-12 h-12 rounded-full border flex items-center justify-center transition-all cursor-pointer ${
-                    isInWishlist ? 'border-[#662654] bg-[#662654]/5 text-[#662654]' : 'border-gray-200 text-gray-400 hover:text-[#662654]'
-                  }`}
-                >
-                  <Heart size={20} className={isInWishlist ? 'animate-pulse' : ''} fill={isInWishlist ? "currentColor" : "none"} />
-                </motion.button>
-              </div>
-
-              {/* Value Props Strip */}
-              <div className="grid grid-cols-3 gap-3 text-center text-gray-500 pt-2">
-                <motion.div whileHover={{ y: -3 }} className="flex flex-col items-center p-3 rounded-2xl bg-white border border-gray-100 shadow-[0_4px_12px_rgba(0,0,0,0.02)]">
-                  <div className="w-10 h-10 rounded-full bg-[#662654]/5 flex items-center justify-center mb-1.5">
-                    <ShieldCheck size={20} className="text-[#662654]" />
-                  </div>
-                  <span className="text-[10px] font-black uppercase tracking-wider text-gray-700">100% Pure</span>
-                </motion.div>
-                <motion.div whileHover={{ y: -3 }} className="flex flex-col items-center p-3 rounded-2xl bg-white border border-gray-100 shadow-[0_4px_12px_rgba(0,0,0,0.02)]">
-                  <div className="w-10 h-10 rounded-full bg-[#662654]/5 flex items-center justify-center mb-1.5">
-                    <CheckCircle2 size={20} className="text-[#662654]" />
-                  </div>
-                  <span className="text-[10px] font-black uppercase tracking-wider text-gray-700">Family Approved</span>
-                </motion.div>
-                <motion.div whileHover={{ y: -3 }} className="flex flex-col items-center p-3 rounded-2xl bg-white border border-gray-100 shadow-[0_4px_12px_rgba(0,0,0,0.02)]">
-                  <div className="w-10 h-10 rounded-full bg-[#662654]/5 flex items-center justify-center mb-1.5">
-                    <Info size={20} className="text-[#662654]" />
-                  </div>
-                  <span className="text-[10px] font-black uppercase tracking-wider text-gray-700">Zero Sugar</span>
-                </motion.div>
-              </div>
+            {/* Value Props Strip */}
+            <div className="grid grid-cols-3 gap-3 text-center text-gray-500 pt-2">
+              <motion.div whileHover={{ y: -3 }} className="flex flex-col items-center p-3 rounded-2xl bg-white border border-gray-100 shadow-[0_4px_12px_rgba(0,0,0,0.02)]">
+                <div className="w-10 h-10 rounded-full bg-[#662654]/5 flex items-center justify-center mb-1.5">
+                  <ShieldCheck size={20} className="text-[#662654]" />
+                </div>
+                <span className="text-[10px] font-black uppercase tracking-wider text-gray-700">100% Pure</span>
+              </motion.div>
+              <motion.div whileHover={{ y: -3 }} className="flex flex-col items-center p-3 rounded-2xl bg-white border border-gray-100 shadow-[0_4px_12px_rgba(0,0,0,0.02)]">
+                <div className="w-10 h-10 rounded-full bg-[#662654]/5 flex items-center justify-center mb-1.5">
+                  <CheckCircle2 size={20} className="text-[#662654]" />
+                </div>
+                <span className="text-[10px] font-black uppercase tracking-wider text-gray-700">Family Approved</span>
+              </motion.div>
+              <motion.div whileHover={{ y: -3 }} className="flex flex-col items-center p-3 rounded-2xl bg-white border border-gray-100 shadow-[0_4px_12px_rgba(0,0,0,0.02)]">
+                <div className="w-10 h-10 rounded-full bg-[#662654]/5 flex items-center justify-center mb-1.5">
+                  <Info size={20} className="text-[#662654]" />
+                </div>
+                <span className="text-[10px] font-black uppercase tracking-wider text-gray-700">Zero Sugar</span>
+              </motion.div>
             </div>
           </div>
-        )}
-
-        {/* 🌸 Saffron Guidance Box (Prominently displayed below Saffron Showcase) */}
-        {isSaffron && (
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-8 rounded-3xl p-5 md:p-7 bg-gradient-to-br from-[#fefbf6] via-[#fff8ef] to-[#fbf1f5] border border-[#d4af37]/50 shadow-[0_4px_25px_rgba(212,175,55,0.12)] relative overflow-hidden"
-          >
-            <div className="absolute top-0 right-0 w-36 h-36 bg-[#d4af37]/10 rounded-full blur-2xl pointer-events-none -mr-10 -mt-10" />
-            
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
-              <div className="flex items-start gap-4">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#b91c1c] to-[#e11d48] p-1.5 flex-shrink-0 shadow-md flex items-center justify-center">
-                  <img 
-                    src="/saffron_icon.png" 
-                    alt="Saffron Guidance" 
-                    className="w-full h-full object-contain drop-shadow-sm" 
-                    onError={(e) => { e.target.src = '/mascot.png'; }} 
-                  />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-black uppercase tracking-widest bg-[#d4af37]/20 text-[#85581a] px-2.5 py-0.5 rounded-full border border-[#d4af37]/40 flex items-center gap-1">
-                      <Sparkles size={10} className="text-[#85581a]" />
-                      Free Saffron Guidance Included
-                    </span>
-                  </div>
-                  <h3 className="text-base md:text-lg font-black text-gray-900 mt-1.5 font-serif leading-snug">
-                    Need Guidance on Kashmiri Mongra Saffron for Pregnancy or Family Wellness?
-                  </h3>
-                  <p className="text-xs sm:text-sm text-gray-600 mt-1 leading-relaxed max-w-2xl">
-                    Doctor-aligned advice on Kashmiri Mongra Saffron dosage, right trimester timing, warm milk preparation, and authenticity verification.
-                  </p>
-
-                  <div className="flex flex-wrap gap-2 mt-2.5 text-[11px] font-bold text-[#b91c1c]">
-                    <span className="bg-white/90 border border-[#d4af37]/40 rounded-lg px-2.5 py-1 shadow-xs flex items-center gap-1">
-                      🌸 Trimester-wise Dosage
-                    </span>
-                    <span className="bg-white/90 border border-[#d4af37]/40 rounded-lg px-2.5 py-1 shadow-xs flex items-center gap-1">
-                      🥛 Warm Milk Protocol
-                    </span>
-                    <span className="bg-white/90 border border-[#d4af37]/40 rounded-lg px-2.5 py-1 shadow-xs flex items-center gap-1">
-                      🏥 Doctor-Approved
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Guidance Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3 shrink-0">
-                <Link
-                  to="/saffron-guidance"
-                  className="inline-flex items-center gap-1.5 bg-[#b91c1c] hover:bg-[#991b1b] text-white text-xs sm:text-sm font-black px-5 py-3 rounded-full shadow-md hover:shadow-lg transition-all cursor-pointer hover:scale-105"
-                >
-                  <span>Consult Saffron Guidance</span>
-                  <ArrowRight size={14} />
-                </Link>
-                <a
-                  href="https://wa.me/918754787774?text=Hi%20Paidhu%2C%20I%20am%20viewing%20the%20Kashmiri%20Mongra%20Saffron%20and%20would%20like%20expert%20saffron%20guidance%20for%20pregnancy%2Fwellness."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-black px-4 py-3 rounded-full shadow-md hover:shadow-lg transition-all cursor-pointer hover:scale-105"
-                >
-                  <MessageSquare size={14} />
-                  <span>WhatsApp Expert</span>
-                </a>
-              </div>
-            </div>
-          </motion.div>
-        )}
+        </div>
 
         {/* ── Detailed Tabs Section (Below the fold) ── */}
         <div className="mt-12 md:mt-16 bg-white rounded-[2.5rem] shadow-[0_10px_35px_rgba(0,0,0,0.01)] border border-gray-100/60 overflow-hidden">
@@ -1374,19 +1229,56 @@ const ProductDetailPage = () => {
                         )}
                       </div>
 
-                      <motion.button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          addToCart(simProd, 1);
-                        }}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        className="w-7 h-7 rounded-full bg-[#662654] hover:bg-[#7a2e64] text-white flex items-center justify-center shadow-md transition-all cursor-pointer"
-                        title="Add to Cart"
-                      >
-                        <Plus size={16} strokeWidth={2.5} />
-                      </motion.button>
+                      {(() => {
+                        const simQty = getItemQuantity(simProd.id, 'default') || getItemQuantity(simProd.id);
+                        if (simQty > 0) {
+                          return (
+                            <div 
+                              className="flex items-center gap-1 bg-[#662654] text-white rounded-full px-2 py-0.5 shadow-sm"
+                              onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                            >
+                              <button 
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  updateQuantity(simProd.id, simQty - 1);
+                                }}
+                                className="w-5 h-5 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
+                                title="Decrease quantity"
+                              >
+                                <Minus size={11} strokeWidth={2.5} />
+                              </button>
+                              <span className="text-xs font-bold px-1 min-w-[14px] text-center">{simQty}</span>
+                              <button 
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  updateQuantity(simProd.id, simQty + 1);
+                                }}
+                                className="w-5 h-5 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
+                                title="Increase quantity"
+                              >
+                                <Plus size={11} strokeWidth={2.5} />
+                              </button>
+                            </div>
+                          );
+                        }
+                        return (
+                          <motion.button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              addToCart(simProd, 1);
+                            }}
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            className="w-7 h-7 rounded-full bg-[#662654] hover:bg-[#7a2e64] text-white flex items-center justify-center shadow-md transition-all cursor-pointer"
+                            title="Add to Cart"
+                          >
+                            <Plus size={16} strokeWidth={2.5} />
+                          </motion.button>
+                        );
+                      })()}
 
                     </div>
                   </motion.div>

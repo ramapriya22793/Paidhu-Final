@@ -3,7 +3,7 @@ import { useParams, useSearchParams, Link, Navigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search, SlidersHorizontal, X, ChevronDown, ChevronLeft, ChevronRight,
-  ShoppingCart, Heart, ArrowUpDown, Plus, Check
+  ShoppingCart, Heart, ArrowUpDown, Plus, Minus, Check
 } from 'lucide-react';
 import PageBanner from '../components/ui/PageBanner';
 import paidhuLogo from '../assets/paidhulogo.png';
@@ -155,7 +155,7 @@ const DealCountdown = () => {
 
 const ProductCard = ({ product, index, navSection }) => {
   const [isAdding, setIsAdding] = useState(false);
-  const { addToCart, wishlist, toggleWishlist } = useCart();
+  const { addToCart, updateQuantity, wishlist, toggleWishlist, getItemQuantity } = useCart();
 
   const variantsRaw = typeof product.variants === 'string' 
     ? JSON.parse(product.variants) 
@@ -186,6 +186,8 @@ const ProductCard = ({ product, index, navSection }) => {
         : null);
 
   const isInWishlist = wishlist && wishlist.some(item => item.id === product.id);
+  const variantSize = selectedVariant?.size || 'default';
+  const cartQty = getItemQuantity ? getItemQuantity(product.id, variantSize) : 0;
 
   const handleAddToCart = async (e) => {
     e.preventDefault();
@@ -357,26 +359,64 @@ const ProductCard = ({ product, index, navSection }) => {
 
 
 
-        {/* Add to Cart */}
-        <motion.button 
-          onClick={handleAddToCart}
-          disabled={isAdding}
-          whileHover={{ scale: 1.02, y: -1 }}
-          whileTap={{ scale: 0.98 }}
-          className="w-full bg-gradient-to-r from-[#662654] to-[#7f2d68] hover:from-[#7a2e64] hover:to-[#913b7e] disabled:from-emerald-600 disabled:to-teal-500 text-white rounded-full py-2 sm:py-2.5 flex items-center justify-center gap-2 font-bold text-[10px] sm:text-xs uppercase tracking-wider shadow-[0_4px_12px_rgba(102,38,84,0.15)] hover:shadow-[0_6px_20px_rgba(102,38,84,0.3)] transition-all duration-300 group/btn cursor-pointer"
-        >
-          {isAdding ? (
-            <>
-              <Check size={14} strokeWidth={3} className="text-white animate-bounce" />
-              <span>{isPreorder ? 'Pre-ordered!' : 'Added!'}</span>
-            </>
-          ) : (
-            <>
-              <ShoppingCart size={13} strokeWidth={2.5} className="transform group-hover/btn:scale-110 transition-transform" />
-              <span>{isPreorder ? 'Pre-order' : 'Add to Cart'}</span>
-            </>
-          )}
-        </motion.button>
+        {/* Add to Cart or Quantity Stepper */}
+        {cartQty > 0 ? (
+          <div 
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+            className="w-full bg-[#662654] text-white rounded-full py-1 sm:py-1.5 px-3 flex items-center justify-between shadow-[0_4px_12px_rgba(102,38,84,0.2)] transition-all duration-300"
+          >
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                updateQuantity(product.id, cartQty - 1, variantSize);
+              }}
+              className="w-7 h-7 rounded-full flex items-center justify-center bg-white/20 hover:bg-white text-white hover:text-[#662654] transition-colors cursor-pointer active:scale-90"
+              title="Decrease quantity"
+            >
+              <Minus size={13} strokeWidth={3} />
+            </button>
+            
+            <div className="flex items-center gap-1.5 font-black text-xs sm:text-sm">
+              <span className="text-white/75 text-[10px] uppercase tracking-wider hidden xs:inline">In Cart:</span>
+              <span className="text-white font-black">{cartQty}</span>
+            </div>
+
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                updateQuantity(product.id, cartQty + 1, variantSize);
+              }}
+              className="w-7 h-7 rounded-full flex items-center justify-center bg-white/20 hover:bg-white text-white hover:text-[#662654] transition-colors cursor-pointer active:scale-90"
+              title="Increase quantity"
+            >
+              <Plus size={13} strokeWidth={3} />
+            </button>
+          </div>
+        ) : (
+          <motion.button 
+            onClick={handleAddToCart}
+            disabled={isAdding}
+            whileHover={{ scale: 1.02, y: -1 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full bg-gradient-to-r from-[#662654] to-[#7f2d68] hover:from-[#7a2e64] hover:to-[#913b7e] disabled:from-emerald-600 disabled:to-teal-500 text-white rounded-full py-2 sm:py-2.5 flex items-center justify-center gap-2 font-bold text-[10px] sm:text-xs uppercase tracking-wider shadow-[0_4px_12px_rgba(102,38,84,0.15)] hover:shadow-[0_6px_20px_rgba(102,38,84,0.3)] transition-all duration-300 group/btn cursor-pointer"
+          >
+            {isAdding ? (
+              <>
+                <Check size={14} strokeWidth={3} className="text-white animate-bounce" />
+                <span>{isPreorder ? 'Pre-ordered!' : 'Added!'}</span>
+              </>
+            ) : (
+              <>
+                <ShoppingCart size={13} strokeWidth={2.5} className="transform group-hover/btn:scale-110 transition-transform" />
+                <span>{isPreorder ? 'Pre-order' : 'Add to Cart'}</span>
+              </>
+            )}
+          </motion.button>
+        )}
       </div>
     </motion.div>
   );

@@ -78,7 +78,7 @@ const formatBackendCartItem = (item) => {
     shortDescription: p.shortDescription || p.description,
     selectedVariant,
     quantity: item.quantity,
-    variant: item.variant
+    variant: item.variant || (selectedVariant ? selectedVariant.size : 'default')
   };
 };
 
@@ -223,7 +223,7 @@ export const CartProvider = ({ children }) => {
     // Optimistically update React cart state
     setCart(prevCart => {
       const existingItemIndex = prevCart.findIndex(
-        item => Number(item.id) === Number(product.id) && (item.selectedVariant?.size || 'default') === variantSize
+        item => Number(item.id) === Number(product.id) && (item.variant === variantSize || (item.selectedVariant?.size || 'default') === variantSize)
       );
       if (existingItemIndex > -1) {
         const newCart = [...prevCart];
@@ -244,7 +244,8 @@ export const CartProvider = ({ children }) => {
           category: product.category?.name || product.category || 'Uncategorized',
           shortDescription: product.shortDescription || product.description,
           selectedVariant,
-          quantity: quantity
+          quantity: quantity,
+          variant: variantSize
         };
         return [...prevCart, newItem];
       }
@@ -302,12 +303,18 @@ export const CartProvider = ({ children }) => {
   const removeFromCart = async (productId, variantSize = null) => {
     if (!token) return;
     const previousCart = [...cart];
-    const targetVariant = variantSize || 'default';
+    
+    // Find matching item to determine true backend variant
+    const targetItem = cart.find(
+      item => Number(item.id) === Number(productId) && 
+        (item.variant === variantSize || (item.selectedVariant?.size || 'default') === variantSize || (item.variant && item.variant.replace('-byoc', '') === variantSize))
+    );
+    const targetVariant = targetItem?.variant || variantSize || 'default';
     isMutatingRef.current += 1;
 
     // Optimistically remove item from React cart state
     setCart(prevCart => prevCart.filter(
-      item => !(Number(item.id) === Number(productId) && (item.selectedVariant?.size || 'default') === targetVariant)
+      item => !(Number(item.id) === Number(productId) && (item.variant === targetVariant || (item.selectedVariant?.size || 'default') === targetVariant))
     ));
     showToast('Removed from cart', 'success');
 
@@ -363,12 +370,16 @@ export const CartProvider = ({ children }) => {
     }
 
     const previousCart = [...cart];
-    const targetVariant = variantSize || 'default';
+    const targetItem = cart.find(
+      item => Number(item.id) === Number(productId) && 
+        (item.variant === variantSize || (item.selectedVariant?.size || 'default') === variantSize || (item.variant && item.variant.replace('-byoc', '') === variantSize))
+    );
+    const targetVariant = targetItem?.variant || variantSize || 'default';
     isMutatingRef.current += 1;
 
     // Optimistically update item quantity in React cart state
     setCart(prevCart => prevCart.map(item => {
-      if (Number(item.id) === Number(productId) && (item.selectedVariant?.size || 'default') === targetVariant) {
+      if (Number(item.id) === Number(productId) && (item.variant === targetVariant || (item.selectedVariant?.size || 'default') === targetVariant)) {
         return { ...item, quantity };
       }
       return item;
@@ -564,34 +575,58 @@ export const CartProvider = ({ children }) => {
     
     // Count total quantity of BYOC items
     const totalByocQty = byocItems.reduce((sum, item) => sum + item.quantity, 0);
-    
-    // Determine the bundle total price based on total quantity
-    let bundleTotal = 0;
-    if (totalByocQty >= 5) {
-      bundleTotal = 1399;
-    } else if (totalByocQty === 4) {
-      bundleTotal = 1049;
-    } else if (totalByocQty === 3) {
-      bundleTotal = 799;
-    } else {
-      // Less than 3 items, no bundle discount applies
-      return rawCart;
+    if (totalByocQty < 3) return rawCart;
+
+    // Calculate bundle price supporting any quantity combinations (3 for 799, 4 for 1049, 5 for 1399)
+    let remaining = totalByocQty;
+    let bundleTarget = 0;
+    while (remaining >= 5) {
+      if (remaining === 6) {
+        bundleTarget += 799 * 2;
+        remaining -= 6;
+        break;
+      }
+      if (remaining === 7) {
+        bundleTarget += 799 + 1049;
+        remaining -= 7;
+        break;
+      }
+      bundleTarget += 1399;
+      remaining -= 5;
     }
-    
-    // Calculate original total of the BYOC items (using their regular prices)
+    if (remaining === 4) {
+      bundleTarget += 1049;
+      remaining = 0;
+    } else if (remaining === 3) {
+      bundleTarget += 799;
+      remaining = 0;
+    }
+
+    // Original total of the bundled items
     const originalTotal = byocItems.reduce((sum, item) => {
       const price = item.selectedVariant ? Number(item.selectedVariant.price) : Number(item.price);
       return sum + (price * item.quantity);
     }, 0);
     
     if (originalTotal === 0) return rawCart;
+
+    // If there are unbundled items left over (e.g. 1 or 2 items beyond full tiers), add their proportional regular price
+    const finalTarget = bundleTarget + (remaining > 0 ? (originalTotal / totalByocQty) * remaining : 0);
+    const discountFactor = finalTarget / originalTotal;
     
-    const discountFactor = bundleTotal / originalTotal;
-    
-    // Apply the discount factor to each BYOC item's offerPrice
-    const discountedByocItems = byocItems.map(item => {
+    // Apply the discount factor to each BYOC item's offerPrice with exact total matching
+    let runningDiscountedTotal = 0;
+    const discountedByocItems = byocItems.map((item, idx) => {
       const regularPrice = item.selectedVariant ? Number(item.selectedVariant.price) : Number(item.price);
-      const discountedPrice = Math.round(regularPrice * discountFactor);
+      let discountedPrice = Math.round(regularPrice * discountFactor);
+      
+      if (idx === byocItems.length - 1) {
+        const remainingAmt = Math.round(finalTarget) - runningDiscountedTotal;
+        discountedPrice = Math.max(1, Math.round(remainingAmt / (item.quantity || 1)));
+      } else {
+        runningDiscountedTotal += (discountedPrice * item.quantity);
+      }
+
       return {
         ...item,
         offerPrice: discountedPrice
@@ -610,6 +645,24 @@ export const CartProvider = ({ children }) => {
     return acc + (itemPrice * item.quantity);
   }, 0);
 
+  // Helper to query item quantity currently in cart for any product and variant
+  const getItemQuantity = (productId, variantSize = null) => {
+    const targetVariant = variantSize || 'default';
+    const found = formattedCart.find(
+      item => Number(item.id) === Number(productId) && 
+        (item.variant === targetVariant || (item.selectedVariant?.size || 'default') === targetVariant || (item.variant && item.variant.replace('-byoc', '') === targetVariant))
+    );
+    return found ? found.quantity : 0;
+  };
+
+  // Helper to remove all BYOC bundle items in one click
+  const removeBundle = async () => {
+    const byocItems = cart.filter(item => item.variant?.endsWith('-byoc'));
+    for (const item of byocItems) {
+      await removeFromCart(item.id, item.variant);
+    }
+  };
+
   return (
     <CartContext.Provider value={{
       cart: formattedCart,
@@ -619,6 +672,8 @@ export const CartProvider = ({ children }) => {
       removeFromCart,
       updateQuantity,
       clearCart,
+      removeBundle,
+      getItemQuantity,
       cartCount,
       cartTotal,
       isCartLoaded,

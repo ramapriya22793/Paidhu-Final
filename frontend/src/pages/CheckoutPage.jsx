@@ -226,7 +226,7 @@ const CheckoutPage = () => {
       const checkoutItems = cart.map(item => ({
         productId: item.id,
         quantity: item.quantity,
-        price: item.price
+        price: Number(item.offerPrice || item.price)
       }));
 
       const res = await fetch(`${API_BASE}/api/checkout/calculate`, {
@@ -278,7 +278,7 @@ const CheckoutPage = () => {
       const checkoutItems = cart.map(item => ({
         productId: item.id,
         quantity: item.quantity,
-        price: item.price
+        price: Number(item.offerPrice || item.price)
       }));
 
       const res = await fetch(`${API_BASE}/api/checkout/calculate`, {
@@ -379,7 +379,7 @@ const CheckoutPage = () => {
       const checkoutItems = cart.map(item => ({
         productId: item.id,
         quantity: item.quantity,
-        price: item.price
+        price: Number(item.offerPrice || item.price)
       }));
 
       const shippingAddressStr = `${formData.addressLine1}, ${formData.addressLine2 ? formData.addressLine2 + ', ' : ''}${formData.city}, ${formData.state} - ${formData.pincode}. Phone: ${formData.phone}`;
