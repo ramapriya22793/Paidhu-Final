@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Star, ChevronDown, ChevronUp, Plus, Minus, ShoppingCart, 
   ShieldCheck, CheckCircle2, Heart, Info, HelpCircle, ArrowLeft, Check,
-  ChevronLeft, ChevronRight, MessageSquare, Sparkles, ArrowRight, X
+  ChevronLeft, ChevronRight, MessageSquare, Sparkles, ArrowRight, X, ZoomIn
 } from 'lucide-react';
 
 import { useCart } from '../context/CartContext';
@@ -486,8 +486,8 @@ const ProductDetailPage = () => {
                 <div className="flex flex-row md:flex-col items-center justify-center gap-3 sm:gap-4 md:gap-3.5 z-20 order-2 md:order-1 shrink-0 overflow-x-auto max-w-full py-2 px-2">
                   {saffronGallery.map((item, idx) => {
                     // Arc curve offsets for desktop (md:):
-                    // Follows the curvature of the central white circle!
-                    const arcOffsets = [16, 0, -10, 0, 16];
+                    // Matches user reference (media_1789132865636.png) wrapping the left curve of the central circle
+                    const arcOffsets = [82, 30, 0, 30, 82];
                     const xOffset = arcOffsets[idx] || 0;
                     const isSelected = activeImageIndex === idx;
 
@@ -500,14 +500,12 @@ const ProductDetailPage = () => {
                           setMainImgLoading(true);
                         }}
                         style={{
-                          transform: typeof window !== 'undefined' && window.innerWidth >= 768 
-                            ? `translateX(${xOffset}px)` 
-                            : undefined
+                          '--arc-x': `${xOffset}px`
                         }}
-                        className={`group relative w-13 h-13 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full bg-white p-1 flex items-center justify-center cursor-pointer transition-all duration-300 shadow-md hover:scale-110 ${
+                        className={`group relative w-13 h-13 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full bg-white p-1 flex items-center justify-center cursor-pointer transition-all duration-300 shadow-md hover:scale-110 md:[transform:translateX(var(--arc-x))] ${
                           isSelected
-                            ? 'border-2 border-[#b91c1c] ring-3 ring-red-500/25 scale-105 shadow-xl z-10'
-                            : 'border border-gray-200/90 hover:border-red-300 opacity-90 hover:opacity-100'
+                            ? 'border-2 border-[#b91c1c] ring-2 ring-[#b91c1c]/25 scale-105 shadow-xl z-10'
+                            : 'border border-gray-200/90 hover:border-[#b91c1c]/50 opacity-90 hover:opacity-100'
                         }`}
                         title={item.title}
                         aria-label={item.title}
@@ -518,10 +516,6 @@ const ProductDetailPage = () => {
                           className="w-full h-full object-contain rounded-full select-none pointer-events-none"
                           loading="lazy"
                         />
-                        {/* Selected Indicator */}
-                        {isSelected && (
-                          <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-[#b91c1c] border-2 border-white shadow-xs" />
-                        )}
                       </button>
                     );
                   })}
@@ -573,11 +567,11 @@ const ProductDetailPage = () => {
                   <button
                     type="button"
                     onClick={() => setLightboxOpen(true)}
-                    className="absolute bottom-3 right-3 sm:bottom-5 sm:right-5 md:bottom-6 md:right-6 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white border-2 border-[#b91c1c] text-[#b91c1c] flex items-center justify-center shadow-lg hover:bg-[#b91c1c] hover:text-white transition-all duration-300 cursor-pointer z-10 hover:scale-110"
+                    className="absolute bottom-3 right-3 sm:bottom-5 sm:right-5 md:bottom-6 md:right-6 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white border-2 border-[#b91c1c] text-[#b91c1c] flex items-center justify-center shadow-lg hover:bg-[#b91c1c] hover:text-white transition-all duration-300 cursor-pointer z-10 hover:scale-110"
                     title="Zoom Full View"
                     aria-label="Zoom Full View"
                   >
-                    <Plus size={20} className="stroke-[2.8]" />
+                    <ZoomIn size={22} className="stroke-[2.5]" />
                   </button>
                 </div>
 

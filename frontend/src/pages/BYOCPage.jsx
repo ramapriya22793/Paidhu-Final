@@ -23,7 +23,7 @@ export const resolveCategory = (p) => {
   // 1. Authoritative category matching from backend/DB
   if (cat.includes('cookie')) return 'Bloom Cookies';
   if (cat.includes('jam') || cat.includes('gulkhand') || cat.includes('preserve')) return 'Petal Jam';
-  if (cat.includes('brew')) return 'Brew Flora';
+  if (cat.includes('brew') || cat.includes('flora')) return 'Brew Flora';
   if (cat.includes('medley') || cat.includes('dip')) return 'Medley Teas';
   if (cat.includes('saffron')) {
     if (name.includes('medley') || name.includes('tea bag') || name.includes('dips')) return 'Medley Teas';
@@ -32,30 +32,30 @@ export const resolveCategory = (p) => {
 
   // 2. Secondary title/name matching
   if (name.includes('cookie')) return 'Bloom Cookies';
-  if (name.includes('medley') || name.includes('dip') || (name.includes('tea') && !name.includes('brew'))) return 'Medley Teas';
-  if (name.includes('brew') || name.includes('flora')) return 'Brew Flora';
+  if (name.includes('medley') || name.includes('dip') || (name.includes('tea') && !name.includes('brew') && !name.includes('flora'))) return 'Medley Teas';
+  if (name.includes('brew') || name.includes('flora') || name.includes('blue flora')) return 'Brew Flora';
   if (name.includes('jam') || name.includes('gulkhand') || name.includes('syrup')) return 'Petal Jam';
-  if (name.includes('saffron') || name.includes('mongra') || name.includes('negin')) return 'Saffron';
+  if (name.includes('saffron') || name.includes('mongra') || name.includes('negin') || name.includes('kesar')) return 'Saffron';
 
   return 'Other';
 };
 
 const CATEGORY_ORDER = {
   'Bloom Cookies': 0,
-  'Petal Jam': 1,
-  'Brew Flora': 2,
-  'Medley Teas': 3,
-  'Saffron': 4,
+  'Saffron': 1,
+  'Petal Jam': 2,
+  'Brew Flora': 3,
+  'Medley Teas': 4,
   'Other': 5
 };
 
 const BYOC_CATEGORIES = [
   { id: 'All', label: 'All Products', icon: '🌸' },
   { id: 'Bloom Cookies', label: 'Bloom Cookies', icon: '🍪' },
+  { id: 'Saffron', label: 'Pure Saffron', icon: '👑' },
   { id: 'Petal Jam', label: 'Petal Jams', icon: '🍯' },
   { id: 'Brew Flora', label: 'Brew Flora', icon: '🌺' },
-  { id: 'Medley Teas', label: 'Medley Teas', icon: '🍵' },
-  { id: 'Saffron', label: 'Pure Saffron', icon: '👑' }
+  { id: 'Medley Teas', label: 'Medley Teas', icon: '🍵' }
 ];
 
 const cleanName = (name) => {
@@ -163,7 +163,11 @@ const BYOCPage = () => {
   };
 
   const handleRemoveProductFromBundle = (productId) => {
-    const idx = [...bundle].reverse().findIndex(item => item.id === productId);
+    const pIdStr = String(productId);
+    const idx = [...bundle].reverse().findIndex(item => 
+      String(item.id) === pIdStr || 
+      (item._id && String(item._id) === pIdStr)
+    );
     if (idx !== -1) {
       const realIdx = bundle.length - 1 - idx;
       handleRemoveFromBundle(realIdx);
@@ -313,7 +317,10 @@ const BYOCPage = () => {
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
               {displayedProducts.map((product) => {
-                const inBundleCount = bundle.filter(b => b.id === product.id).length;
+                const inBundleCount = bundle.filter(b => 
+                  String(b.id) === String(product.id) || 
+                  (b._id && product._id && String(b._id) === String(product._id))
+                ).length;
                 const resolvedCat = product.resolvedCategory || resolveCategory(product);
 
                 return (
@@ -326,7 +333,7 @@ const BYOCPage = () => {
                     <div className="aspect-[4/5] overflow-hidden bg-[#f8f5f0] relative">
                       <img 
                         src={(product.image && typeof product.image === 'string' && product.image.startsWith('http')) ? product.image : (product.image ? `${API_BASE}${product.image}` : '/mascot.png')}
-                        alt={product.name}
+                        alt={product.name} 
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         onError={e => { e.currentTarget.src = '/mascot.png'; }}
                       />
@@ -364,22 +371,30 @@ const BYOCPage = () => {
                         >
                           <button
                             type="button"
-                            onClick={() => handleRemoveProductFromBundle(product.id)}
-                            className="w-7 h-7 rounded-full flex items-center justify-center bg-white/20 hover:bg-white text-white hover:text-[#662654] transition-colors cursor-pointer active:scale-90"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleRemoveProductFromBundle(product.id || product._id);
+                            }}
+                            className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center bg-white/20 hover:bg-white text-white hover:text-[#662654] transition-colors cursor-pointer active:scale-90"
                             title="Remove one from bundle"
                           >
                             <Minus size={13} strokeWidth={3} />
                           </button>
                           
-                          <span className="text-white font-black text-sm select-none px-2">
+                          <span className="text-white font-black text-sm sm:text-base select-none px-2">
                             {inBundleCount}
                           </span>
 
                           <button
                             type="button"
-                            onClick={() => handleAddToBundle(product)}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleAddToBundle(product);
+                            }}
                             disabled={bundle.length >= MAX_ITEMS}
-                            className="w-7 h-7 rounded-full flex items-center justify-center bg-white/20 hover:bg-white text-white hover:text-[#662654] disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer active:scale-90"
+                            className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center bg-white/20 hover:bg-white text-white hover:text-[#662654] disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer active:scale-90"
                             title="Add another to bundle"
                           >
                             <Plus size={13} strokeWidth={3} />
@@ -387,9 +402,14 @@ const BYOCPage = () => {
                         </div>
                       ) : (
                         <button 
-                          onClick={() => handleAddToBundle(product)}
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleAddToBundle(product);
+                          }}
                           disabled={bundle.length >= MAX_ITEMS}
-                          className="w-full bg-[#662654] hover:bg-[#4d1c3f] disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold text-xs py-2.5 rounded-full flex items-center justify-between px-4 transition-colors cursor-pointer"
+                          className="w-full bg-[#662654] hover:bg-[#4d1c3f] disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold text-xs py-2.5 rounded-full flex items-center justify-between px-4 transition-colors cursor-pointer shadow-sm active:scale-95"
                         >
                           <span>Add to Bundle</span>
                           <Plus size={14} strokeWidth={3} />

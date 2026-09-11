@@ -13,23 +13,23 @@ const BrandCharactersBanner = () => {
   const [activeChar, setActiveChar] = useState(null);
 
   return (
-    <section className="relative w-full min-h-[380px] sm:min-h-[430px] md:h-[500px] bg-[#ede7d7] overflow-hidden flex flex-col justify-end pt-2 sm:pt-4">
+    <section className="relative w-full min-h-[220px] sm:min-h-[280px] md:min-h-[440px] md:h-[480px] bg-[#ede7d7] overflow-hidden flex flex-col justify-end pt-2 sm:pt-4">
       {/* Decorative Wave at the top connecting to the previous section */}
       <div className="absolute top-0 left-0 w-full overflow-hidden leading-[0] z-0">
-        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-[25px] md:h-[50px]">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-[20px] sm:h-[30px] md:h-[50px]">
           <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" className="fill-[#662554] opacity-10"></path>
         </svg>
       </div>
 
       {/* Playful Animated Callout Above Characters */}
-      <div className="relative z-10 w-full flex justify-center pt-2 sm:pt-4 pb-2 px-4">
+      <div className="relative z-10 w-full flex justify-center pt-1 sm:pt-3 pb-2 sm:pb-3 px-4">
         <motion.div
-          initial={{ opacity: 0, y: -12, scale: 0.92 }}
+          initial={{ opacity: 0, y: -10, scale: 0.94 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
           animate={{
-            y: [0, -5, 0],
+            y: [0, -4, 0],
           }}
           transition={{
             y: {
@@ -43,22 +43,22 @@ const BrandCharactersBanner = () => {
           onClick={() => {
             setActiveChar(prev => (prev === null ? 0 : (prev + 1) % characters.length));
           }}
-          className="inline-flex items-center gap-2 sm:gap-2.5 px-4 sm:px-6 py-1.5 sm:py-2 rounded-full bg-white/95 hover:bg-white shadow-[0_6px_20px_rgba(102,37,84,0.12)] border border-[#662554]/20 cursor-pointer backdrop-blur-md transition-all group"
+          className="inline-flex items-center gap-1.5 sm:gap-2.5 px-3.5 sm:px-6 py-1 sm:py-2 rounded-full bg-white/95 hover:bg-white shadow-[0_4px_16px_rgba(102,37,84,0.12)] border border-[#662554]/20 cursor-pointer backdrop-blur-md transition-all group"
         >
           <motion.span 
             animate={{ rotate: [0, 20, -20, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="text-base sm:text-lg"
+            className="text-sm sm:text-lg"
           >
             🌸
           </motion.span>
-          <span className="font-serif font-extrabold text-[#662554] text-xs sm:text-sm md:text-base tracking-wide group-hover:text-[#8A3673] transition-colors">
+          <span className="font-serif font-extrabold text-[#662554] text-[11px] sm:text-sm md:text-base tracking-wide group-hover:text-[#8A3673] transition-colors">
             Curious About Me? Tap to Discover!
           </span>
           <motion.span
             animate={{ scale: [1, 1.3, 1], opacity: [0.7, 1, 0.7] }}
             transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-            className="text-amber-500 text-sm sm:text-base"
+            className="text-amber-500 text-xs sm:text-base"
           >
             ✨
           </motion.span>
@@ -66,7 +66,7 @@ const BrandCharactersBanner = () => {
       </div>
 
       {/* Main Content / Characters */}
-      <div className="relative w-full max-w-[1400px] mx-auto flex-1 flex justify-center md:justify-around items-end z-10 px-4 md:px-8 gap-3 sm:gap-6 md:gap-8">
+      <div className="relative w-full max-w-[1400px] mx-auto flex justify-center md:justify-around items-end z-10 px-2 sm:px-4 md:px-8 gap-2 sm:gap-6 md:gap-8 pb-0">
         {characters.map((char, idx) => (
           <motion.div 
             key={idx} 
@@ -115,14 +115,14 @@ const BrandCharactersBanner = () => {
               width={200}
               height={244}
               loading="lazy"
-              className="w-[58px] sm:w-[90px] md:w-[150px] lg:w-[190px] object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.12)]"
+              className="w-[64px] xs:w-[72px] sm:w-[95px] md:w-[150px] lg:w-[190px] object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.12)]"
             />
           </motion.div>
         ))}
       </div>
 
       {/* The "Table" / Foreground */}
-      <div className="relative w-full h-[75px] md:h-[120px] bg-[#662554] z-20 shadow-[0_-15px_30px_rgba(0,0,0,0.15)] flex flex-col items-center justify-center">
+      <div className="relative w-full h-[68px] sm:h-[75px] md:h-[120px] bg-[#662554] z-20 shadow-[0_-15px_30px_rgba(0,0,0,0.15)] flex flex-col items-center justify-center">
         
         {/* Table Top Highlight/Depth */}
         <div className="absolute top-0 left-0 w-full h-2 md:h-3.5 bg-[#8A3673]"></div>
