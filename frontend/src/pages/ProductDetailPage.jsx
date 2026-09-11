@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -131,6 +131,8 @@ const ProductDetailPage = () => {
   };
 
   const handleBuyNow = async () => {
+    if (isAdding) return;
+    setIsAdding(true);
     try {
       await addToCart({
         id: product.id,
@@ -143,17 +145,21 @@ const ProductDetailPage = () => {
       }, quantity, selectedVariant);
       navigate('/checkout');
     } catch (err) {
-      console.error('Buy Now error:', err);
-      navigate('/cart');
+      console.error("Buy now error:", err);
+    } finally {
+      setIsAdding(false);
     }
   };
 
-  // Set default active image to index 1 (glass bottle with cork as shown in mockup) on first load of saffron
-  useEffect(() => {
-    if (isSaffron && activeImageIndex === 0) {
-      setActiveImageIndex(1);
-    }
-  }, [isSaffron]);
+  const saffronTitle = useMemo(() => {
+    if (!product?.name) return 'Kashmiri Mongra';
+    const clean = product.name.split('|')[0].split('–')[0].replace(/Saffron/i, '').trim();
+    return clean || 'Kashmiri Mongra';
+  }, [product?.name]);
+
+  const saffronDescription = useMemo(() => {
+    return "Experience the essence of Kashmir with our prized Kashmiri Mongra saffron, renowned for its deep red threads, distinct flavor, and unparalleled fragrance.";
+  }, []);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -484,27 +490,27 @@ const ProductDetailPage = () => {
 
         {/* ── Main Product Section ── */}
         {isSaffron ? (
-          <div className="w-full rounded-[2.5rem] overflow-hidden border border-[#d5daf0] shadow-[0_20px_50px_rgba(70,80,120,0.06)] bg-[#eef1f8] relative p-6 sm:p-10 lg:p-12 xl:p-14 mb-12">
-            {/* Subtle Saffron Pattern Watermark across entire section */}
+          /* 🌸 Kashmiri Mongra Saffron Luxury Showcase Card (Matches Mockup media_1789119013603.png) */
+          <div className="relative w-full rounded-[2.5rem] overflow-hidden p-6 sm:p-10 md:p-12 lg:p-16 border border-[#d8dfef] shadow-[0_20px_50px_rgba(70,80,120,0.06)] bg-[#edf0f8]">
+            {/* Subtle Saffron Pattern Watermark across entire container */}
             <div 
-              className="absolute inset-0 opacity-30 pointer-events-none bg-repeat bg-center"
-              style={{ backgroundImage: "url('/saffron_bg_pattern.png')", backgroundSize: "240px 240px" }}
+              className="absolute inset-0 opacity-25 pointer-events-none bg-repeat bg-center"
+              style={{ backgroundImage: "url('/saffron_bg_pattern.png')", backgroundSize: "220px 220px" }}
             />
-            {/* Ambient radial glows */}
-            <div className="absolute -top-12 -right-12 w-80 h-80 rounded-full bg-gradient-to-br from-red-500/10 to-transparent blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-12 -left-12 w-80 h-80 rounded-full bg-gradient-to-tr from-amber-500/10 to-transparent blur-3xl pointer-events-none" />
 
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-14 items-center">
+            {/* Ambient radial glows */}
+            <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-gradient-to-br from-red-500/10 to-transparent blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full bg-gradient-to-tr from-amber-500/10 to-transparent blur-3xl pointer-events-none" />
+
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
               
-              {/* 🌸 LEFT: Curved Arc Thumbnails + Central Circle Showcase */}
-              <div className="lg:col-span-7 flex flex-col md:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-4 lg:gap-6">
+              {/* Left Column (Cols 1-7): Circular Showcase Disk & Curved Thumbnail Arc */}
+              <div className="lg:col-span-7 flex flex-col md:flex-row items-center justify-center gap-6 lg:gap-8">
                 
-                {/* 5 Curved Circular Thumbnails Arc along the left side */}
-                <div className="flex flex-row md:flex-col items-center justify-center gap-3 sm:gap-4 md:gap-4 lg:gap-5 order-2 md:order-1 shrink-0 z-20 py-2 px-1">
+                {/* 🌸 Curved Circular Thumbnails Arc along the left side */}
+                <div className="flex flex-row md:flex-col items-center justify-center gap-3 sm:gap-4 md:gap-3.5 z-20 order-2 md:order-1 shrink-0 overflow-x-auto max-w-full py-2 px-2">
                   {saffronGallery.map((item, idx) => {
-                    // Arc curve offsets for desktop (md:):
-                    // Tracing gracefully along the circular showcase perimeter!
-                    const arcOffsets = [48, 12, 0, 16, 56];
+                    const arcOffsets = [18, 0, -12, 0, 18];
                     const xOffset = arcOffsets[idx] || 0;
                     const isSelected = activeImageIndex === idx;
 
@@ -521,10 +527,10 @@ const ProductDetailPage = () => {
                             ? `translateX(${xOffset}px)` 
                             : undefined
                         }}
-                        className={`group relative w-13 h-13 sm:w-16 sm:h-16 md:w-16 md:h-16 lg:w-18 lg:h-18 rounded-full bg-white p-1 flex items-center justify-center cursor-pointer transition-all duration-300 shadow-md hover:scale-108 ${
+                        className={`group relative w-13 h-13 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full bg-white p-1 flex items-center justify-center cursor-pointer transition-all duration-300 shadow-md hover:scale-110 ${
                           isSelected
-                            ? 'border-2 border-[#c31c22] ring-3 ring-red-500/20 scale-105 shadow-xl z-10'
-                            : 'border border-gray-200/90 hover:border-red-300 opacity-85 hover:opacity-100'
+                            ? 'border-2 border-[#b91c1c] ring-3 ring-red-500/25 scale-105 shadow-xl z-10'
+                            : 'border border-gray-200/90 hover:border-red-300 opacity-90 hover:opacity-100'
                         }`}
                         title={item.title}
                         aria-label={item.title}
@@ -535,22 +541,22 @@ const ProductDetailPage = () => {
                           className="w-full h-full object-contain rounded-full select-none pointer-events-none"
                           loading="lazy"
                         />
+                        {isSelected && (
+                          <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-[#b91c1c] border-2 border-white shadow-xs" />
+                        )}
                       </button>
                     );
                   })}
                 </div>
 
                 {/* 🌸 Central Large White Showcase Circle */}
-                <div className="relative w-full max-w-[320px] sm:max-w-[380px] md:max-w-[420px] lg:max-w-[450px] aspect-square rounded-full bg-white shadow-[0_20px_50px_rgba(30,41,59,0.08)] border border-white flex items-center justify-center p-6 sm:p-8 lg:p-10 order-1 md:order-2 group">
-                  
-                  {/* Discount badge if present */}
+                <div className="relative w-full max-w-[320px] sm:max-w-[380px] md:max-w-[430px] lg:max-w-[460px] aspect-square rounded-full bg-white shadow-[0_20px_50px_rgba(30,41,59,0.08)] border border-white flex items-center justify-center p-6 sm:p-8 lg:p-10 order-1 md:order-2 group">
                   {discountPercent > 0 && (
-                    <div className="absolute top-4 left-8 md:top-6 md:left-10 bg-gradient-to-r from-[#c31c22] to-[#d4af37] text-white px-3.5 py-1 text-[11px] font-black uppercase tracking-wider rounded-full shadow-lg z-10 flex items-center gap-1 border border-white/20">
+                    <div className="absolute top-4 left-8 md:top-6 md:left-10 bg-gradient-to-r from-[#b91c1c] to-[#d4af37] text-white px-3.5 py-1 text-[11px] font-black uppercase tracking-wider rounded-full shadow-lg z-10 flex items-center gap-1 border border-white/20">
                       <span>✨</span> {discountPercent}% OFF
                     </div>
                   )}
 
-                  {/* Active Image with smooth crossfade transition */}
                   <div 
                     className="w-full h-full flex items-center justify-center relative cursor-zoom-in"
                     onClick={() => setLightboxOpen(true)}
@@ -575,87 +581,59 @@ const ProductDetailPage = () => {
                     {mainImgLoading && (
                       <div className="absolute inset-0 bg-white/70 backdrop-blur-xs rounded-full flex items-center justify-center">
                         <div className="flex flex-col items-center gap-2">
-                          <span className="text-3xl animate-spin text-[#c31c22]">🌸</span>
+                          <span className="text-3xl animate-spin text-[#b91c1c]">🌸</span>
                           <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Loading...</span>
                         </div>
                       </div>
                     )}
                   </div>
 
-                  {/* 🌸 Red Zoom Magnifying Glass Icon (+) on Bottom-Right Circle Edge */}
+                  {/* 🌸 Red Zoom Button at Bottom-Right matching Mockup */}
                   <button
                     type="button"
-                    onClick={(e) => { e.stopPropagation(); setLightboxOpen(true); }}
-                    className="absolute w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center transition-transform hover:scale-115 cursor-pointer z-20 group"
-                    style={{ right: '12%', bottom: '5%' }}
+                    onClick={() => setLightboxOpen(true)}
+                    className="absolute bottom-3 right-3 sm:bottom-5 sm:right-5 md:bottom-6 md:right-6 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-white border-2 border-[#b91c1c] text-[#b91c1c] flex items-center justify-center shadow-lg hover:bg-[#b91c1c] hover:text-white transition-all duration-300 cursor-pointer z-10 hover:scale-110"
                     title="Zoom Full View"
                     aria-label="Zoom Full View"
                   >
-                    <svg viewBox="0 0 36 36" fill="none" className="w-full h-full text-[#c31c22] drop-shadow-sm">
-                      <circle cx="15" cy="15" r="11" fill="white" stroke="currentColor" strokeWidth="2.5" />
-                      <path d="M15 9.5V20.5M9.5 15H20.5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-                      <path d="M23 23L31 31" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="11" cy="11" r="7" />
+                      <line x1="20" y1="20" x2="16" y2="16" />
+                      <line x1="11" y1="8" x2="11" y2="14" />
+                      <line x1="8" y1="11" x2="14" y2="11" />
                     </svg>
                   </button>
                 </div>
 
               </div>
 
-              {/* 🌸 RIGHT: Saffron Info Panel matching mockup */}
-              <div className="lg:col-span-5 flex flex-col justify-center space-y-5 lg:space-y-6">
+              {/* Right Column (Cols 8-12): Title, Description, Buy Now, Divider, Social Share */}
+              <div className="lg:col-span-5 flex flex-col justify-center text-left space-y-4 sm:space-y-5 lg:space-y-6">
                 
-                {/* Title in Red Serif matching mockup */}
-                <div>
-                  <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#c31c22] font-normal tracking-wide leading-tight">
-                    {product.name?.toLowerCase().includes('mongra') || product.name?.toLowerCase().includes('kashmiri')
-                      ? 'Kashmiri  Mongra'
-                      : product.name}
-                  </h1>
-                </div>
+                {/* 🌸 Title in Elegant Serif Red */}
+                <h1 className="font-serif text-3xl sm:text-4xl lg:text-[44px] leading-tight font-normal text-[#c21820] tracking-normal">
+                  {saffronTitle}
+                </h1>
 
-                {/* Description matching mockup */}
-                <p className="text-gray-700 text-sm sm:text-base leading-relaxed max-w-xl font-normal">
-                  {product.name?.toLowerCase().includes('mongra') || product.name?.toLowerCase().includes('kashmiri')
-                    ? 'Experience the essence of Kashmir with our prized Kashmiri Mongra saffron, renowned for its deep red threads, distinct flavor, and unparalleled fragrance.'
-                    : (product.shortDescription || product.description || 'Experience the essence of Kashmir with our prized Kashmiri Mongra saffron, renowned for its deep red threads, distinct flavor, and unparalleled fragrance.')}
+                {/* 🌸 Poetic Essence Description matching Mockup */}
+                <p className="text-gray-700 text-sm sm:text-base lg:text-[16px] leading-relaxed max-w-xl font-sans">
+                  {saffronDescription}
                 </p>
 
-                {/* Pricing & Offer */}
-                <div className="flex items-baseline gap-3 pt-1">
-                  {offerPrice ? (
-                    <>
-                      <span className="text-3xl font-black text-gray-900">
-                        ₹{offerPrice.toLocaleString()}
-                      </span>
-                      <span className="text-lg text-gray-400 line-through">
-                        ₹{price.toLocaleString()}
-                      </span>
-                      <span className="text-xs font-bold text-[#c31c22] bg-red-100/70 px-2.5 py-0.5 rounded-full border border-red-200">
-                        {discountPercent}% OFF
-                      </span>
-                    </>
-                  ) : (
-                    <span className="text-3xl font-black text-gray-900">
-                      ₹{price.toLocaleString()}
-                    </span>
-                  )}
-                  <span className="text-xs text-gray-400">Inclusive of all taxes</span>
-                </div>
-
-                {/* Variants Selector */}
+                {/* Weight Options / Variants */}
                 {variants.length > 0 && (
-                  <div className="space-y-2 pt-1">
-                    <span className="block text-xs font-bold text-gray-500 uppercase tracking-wider">Select Size / Pack</span>
-                    <div className="flex flex-wrap gap-2.5">
+                  <div className="flex items-center gap-3 pt-1">
+                    <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Weight:</span>
+                    <div className="flex flex-wrap gap-2">
                       {variants.map((v, i) => (
                         <button
                           key={i}
                           type="button"
                           onClick={() => handleVariantSelect(v)}
-                          className={`text-xs sm:text-sm font-bold px-4 py-2 rounded-full border transition-all duration-300 cursor-pointer ${
+                          className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
                             selectedVariant?.size === v.size
-                              ? 'border-[#c31c22] bg-[#c31c22] text-white shadow-md'
-                              : 'border-gray-300 text-gray-700 bg-white hover:border-[#c31c22] hover:bg-gray-50'
+                              ? 'bg-[#c21820] text-white shadow-xs'
+                              : 'bg-white/80 text-gray-700 border border-gray-300 hover:bg-white'
                           }`}
                         >
                           {v.size}
@@ -665,140 +643,121 @@ const ProductDetailPage = () => {
                   </div>
                 )}
 
-                {/* Action Buttons: Buy Now (red pill matching mockup) + Qty + Add to Cart + Wishlist */}
-                <div className="pt-2 flex flex-wrap items-center gap-3.5 sm:gap-4">
-                  {/* Red Pill 'Buy Now' Button matching mockup */}
-                  <motion.button
+                {/* Pricing display */}
+                <div className="flex items-baseline gap-3 pt-1">
+                  <span className="text-2xl sm:text-3xl font-bold text-gray-900 font-sans">
+                    ₹{(offerPrice || price).toLocaleString()}
+                  </span>
+                  {offerPrice && price > offerPrice && (
+                    <span className="text-sm text-gray-400 line-through">
+                      ₹{price.toLocaleString()}
+                    </span>
+                  )}
+                  <span className="text-[11px] text-gray-500 font-medium">
+                    (Inclusive of all taxes)
+                  </span>
+                </div>
+
+                {/* Action Buttons: Prominent Red Buy Now Pill + Add to Cart & Qty */}
+                <div className="flex flex-wrap items-center gap-3 pt-1">
+                  {/* Buy Now Button from Mockup */}
+                  <button
                     type="button"
                     onClick={handleBuyNow}
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="bg-[#c31c22] hover:bg-[#a5151b] text-white font-medium text-sm sm:text-base px-8 sm:px-10 py-3 rounded-full shadow-lg shadow-red-700/25 transition-all cursor-pointer flex items-center justify-center gap-2"
+                    disabled={isAdding}
+                    className="bg-[#c21820] hover:bg-[#a9181f] text-white font-semibold text-sm sm:text-base px-8 sm:px-9 py-2.5 sm:py-3 rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer flex items-center justify-center gap-2"
                   >
-                    <span>Buy Now</span>
-                  </motion.button>
+                    {isAdding ? 'Processing…' : 'Buy Now'}
+                  </button>
 
-                  {/* Qty Selector */}
-                  <div className="flex items-center justify-between border border-gray-300 rounded-full p-1 bg-white shadow-xs w-28">
-                    <button 
-                      type="button"
-                      onClick={() => setQuantity(q => Math.max(1, q - 1))}
-                      disabled={quantity <= 1}
-                      className="w-7 h-7 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-100 disabled:opacity-30 cursor-pointer"
-                    >
-                      <Minus size={13} />
-                    </button>
-                    <span className="text-sm font-bold text-gray-800">{quantity}</span>
-                    <button 
-                      type="button"
-                      onClick={() => setQuantity(q => q + 1)}
-                      className="w-7 h-7 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-100 cursor-pointer"
-                    >
-                      <Plus size={13} />
-                    </button>
-                  </div>
-
-                  {/* Add to Cart secondary button */}
-                  <motion.button 
+                  {/* Add to Cart Companion */}
+                  <button
                     type="button"
                     onClick={handleAddToCart}
                     disabled={isAdding}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="border-2 border-[#662654] text-[#662654] hover:bg-[#662654] hover:text-white rounded-full py-2.5 px-5 flex items-center gap-2 font-bold text-xs uppercase tracking-wider transition-all cursor-pointer bg-white"
+                    className="bg-white/90 hover:bg-white text-[#c21820] border-2 border-[#c21820] font-bold text-xs sm:text-sm px-6 py-2.5 sm:py-3 rounded-full shadow-xs hover:shadow-md transition-all cursor-pointer flex items-center gap-2"
                   >
-                    {isAdding ? (
-                      <>
-                        <Check size={16} className="text-emerald-500" />
-                        <span>ADDED!</span>
-                      </>
-                    ) : (
-                      <>
-                        <ShoppingCart size={15} />
-                        <span>ADD TO CART</span>
-                      </>
-                    )}
-                  </motion.button>
+                    <ShoppingCart size={16} />
+                    <span>Add to Cart</span>
+                  </button>
 
-                  {/* Wishlist Button */}
-                  <motion.button 
-                    type="button"
-                    onClick={() => toggleWishlist(product)}
-                    whileHover={{ scale: 1.08 }}
-                    whileTap={{ scale: 0.9 }}
-                    className={`w-11 h-11 rounded-full border flex items-center justify-center transition-all cursor-pointer bg-white ${
-                      isInWishlist ? 'border-[#c31c22] text-[#c31c22]' : 'border-gray-300 text-gray-400 hover:text-[#c31c22]'
-                    }`}
-                    title={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
-                  >
-                    <Heart size={18} fill={isInWishlist ? "currentColor" : "none"} />
-                  </motion.button>
-                </div>
-
-                {/* Divider matching mockup */}
-                <div className="w-full max-w-lg border-t border-gray-300/60 pt-2" />
-
-                {/* SHARE Section matching mockup: SHARE : (f) (t) (in) (p) */}
-                <div className="flex items-center gap-3">
-                  <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">SHARE :</span>
-                  <div className="flex items-center gap-2">
-                    {/* Facebook */}
+                  {/* Qty Selector */}
+                  <div className="flex items-center border border-gray-300 rounded-full p-0.5 bg-white shadow-xs">
                     <button
                       type="button"
-                      onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank')}
-                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-gray-400/80 text-gray-700 bg-white/60 hover:bg-white hover:border-gray-900 hover:text-gray-900 flex items-center justify-center transition-all cursor-pointer"
-                      title="Share on Facebook"
-                      aria-label="Share on Facebook"
+                      onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                      disabled={quantity <= 1}
+                      className="w-7 h-7 rounded-full flex items-center justify-center text-gray-500 hover:text-[#c21820] disabled:opacity-30 cursor-pointer"
                     >
-                      <span className="text-xs font-serif font-bold">f</span>
+                      <Minus size={12} />
                     </button>
-
-                    {/* Twitter / X */}
+                    <span className="text-xs font-black text-gray-800 px-2">{quantity}</span>
                     <button
                       type="button"
-                      onClick={() => window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(product.name)}`, '_blank')}
-                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-gray-400/80 text-gray-700 bg-white/60 hover:bg-white hover:border-gray-900 hover:text-gray-900 flex items-center justify-center transition-all cursor-pointer"
-                      title="Share on Twitter / X"
-                      aria-label="Share on Twitter"
+                      onClick={() => setQuantity(q => q + 1)}
+                      className="w-7 h-7 rounded-full flex items-center justify-center text-gray-500 hover:text-[#c21820] cursor-pointer"
                     >
-                      <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">
-                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                      </svg>
-                    </button>
-
-                    {/* LinkedIn */}
-                    <button
-                      type="button"
-                      onClick={() => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`, '_blank')}
-                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-gray-400/80 text-gray-700 bg-white/60 hover:bg-white hover:border-gray-900 hover:text-gray-900 flex items-center justify-center transition-all cursor-pointer"
-                      title="Share on LinkedIn"
-                      aria-label="Share on LinkedIn"
-                    >
-                      <span className="text-[11px] font-sans font-bold">in</span>
-                    </button>
-
-                    {/* Pinterest */}
-                    <button
-                      type="button"
-                      onClick={() => window.open(`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(window.location.href)}&media=${encodeURIComponent(window.location.origin + currentImage)}&description=${encodeURIComponent(product.name)}`, '_blank')}
-                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-gray-400/80 text-gray-700 bg-white/60 hover:bg-white hover:border-gray-900 hover:text-gray-900 flex items-center justify-center transition-all cursor-pointer"
-                      title="Share on Pinterest"
-                      aria-label="Share on Pinterest"
-                    >
-                      <span className="text-xs font-serif font-bold italic">p</span>
+                      <Plus size={12} />
                     </button>
                   </div>
+
+                  {/* Wishlist Button */}
+                  <button
+                    type="button"
+                    onClick={() => toggleWishlist(product)}
+                    className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all cursor-pointer ${
+                      isInWishlist ? 'border-[#c21820] bg-red-50 text-[#c21820]' : 'border-gray-300 bg-white/80 text-gray-400 hover:text-[#c21820]'
+                    }`}
+                    title={isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
+                  >
+                    <Heart size={18} className={isInWishlist ? 'animate-pulse' : ''} fill={isInWishlist ? "currentColor" : "none"} />
+                  </button>
                 </div>
 
-                {/* Free Saffron Guidance link */}
-                <div className="pt-2">
-                  <Link
-                    to="/saffron-guidance"
-                    className="inline-flex items-center gap-2 bg-gradient-to-r from-[#d4af37]/20 to-[#f5d061]/20 hover:from-[#d4af37]/30 hover:to-[#f5d061]/30 text-[#7a4f15] border border-[#d4af37]/40 text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full transition-all shadow-xs"
-                  >
-                    <Sparkles size={13} className="text-[#85581a]" />
-                    <span>Free Doctor-Aligned Saffron Guidance Included</span>
-                  </Link>
+                {/* Thin Divider Line matching Mockup */}
+                <div className="w-full border-t border-gray-300/70 my-2" />
+
+                {/* Social Share Section matching Mockup */}
+                <div className="flex items-center gap-3 text-xs font-bold text-gray-600 tracking-wider">
+                  <span>SHARE :</span>
+                  <div className="flex items-center gap-2.5">
+                    <a
+                      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-8 h-8 rounded-full border border-gray-400/80 text-gray-700 hover:border-[#c21820] hover:text-[#c21820] hover:bg-white flex items-center justify-center transition-all cursor-pointer font-serif text-sm shadow-xs"
+                      title="Share on Facebook"
+                    >
+                      f
+                    </a>
+                    <a
+                      href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')}&text=${encodeURIComponent('Paidhu Kashmiri Mongra Saffron')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-8 h-8 rounded-full border border-gray-400/80 text-gray-700 hover:border-[#c21820] hover:text-[#c21820] hover:bg-white flex items-center justify-center transition-all cursor-pointer font-serif text-sm shadow-xs"
+                      title="Share on Twitter"
+                    >
+                      t
+                    </a>
+                    <a
+                      href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-8 h-8 rounded-full border border-gray-400/80 text-gray-700 hover:border-[#c21820] hover:text-[#c21820] hover:bg-white flex items-center justify-center transition-all cursor-pointer font-serif text-xs font-bold shadow-xs"
+                      title="Share on LinkedIn"
+                    >
+                      in
+                    </a>
+                    <a
+                      href={`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')}&description=${encodeURIComponent('Paidhu Kashmiri Mongra Saffron')}&media=${encodeURIComponent(typeof window !== 'undefined' ? window.location.origin + '/saffron_highres_1.png' : '')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-8 h-8 rounded-full border border-gray-400/80 text-gray-700 hover:border-[#c21820] hover:text-[#c21820] hover:bg-white flex items-center justify-center transition-all cursor-pointer font-serif text-sm shadow-xs"
+                      title="Share on Pinterest"
+                    >
+                      p
+                    </a>
+                  </div>
                 </div>
 
               </div>
@@ -806,12 +765,14 @@ const ProductDetailPage = () => {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start p-6 md:p-10 rounded-[2.5rem] border border-gray-100/80 relative overflow-hidden bg-white shadow-[0_20px_50px_rgba(102,38,84,0.03)] mb-12">
+          /* Standard Product Section for Non-Saffron Items */
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start p-6 md:p-10 rounded-[2.5rem] border border-gray-100/80 relative overflow-hidden bg-white shadow-[0_20px_50px_rgba(102,38,84,0.03)]">
+            
             {/* Decorative luxury radial background */}
             <div className="absolute top-[-10%] right-[-10%] w-[35%] aspect-square rounded-full bg-gradient-to-br from-[#662654]/5 to-transparent blur-[80px] pointer-events-none" />
             <div className="absolute bottom-[-10%] left-[-10%] w-[35%] aspect-square rounded-full bg-gradient-to-tr from-[#d4af37]/5 to-transparent blur-[80px] pointer-events-none" />
 
-            {/* 1. Left Column: Product Image Gallery */}
+            {/* Standard Product Image Gallery */}
             <div>
               <div
                 className="relative aspect-square bg-[#faf9f7] rounded-[2rem] overflow-hidden border border-gray-100 flex items-center justify-center shadow-inner group cursor-zoom-in"
@@ -890,7 +851,7 @@ const ProductDetailPage = () => {
               )}
             </div>
 
-            {/* 2. Right Column: Rich Info Panel */}
+            {/* Standard Right Column: Rich Info Panel */}
             <div className="space-y-6 lg:space-y-8">
               <div>
                 <div className="flex flex-wrap items-center gap-2">
@@ -1077,9 +1038,78 @@ const ProductDetailPage = () => {
                   <span className="text-[10px] font-black uppercase tracking-wider text-gray-700">Zero Sugar</span>
                 </motion.div>
               </div>
-
             </div>
           </div>
+        )}
+
+        {/* 🌸 Saffron Guidance Box (Prominently displayed below Saffron Showcase) */}
+        {isSaffron && (
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-8 rounded-3xl p-5 md:p-7 bg-gradient-to-br from-[#fefbf6] via-[#fff8ef] to-[#fbf1f5] border border-[#d4af37]/50 shadow-[0_4px_25px_rgba(212,175,55,0.12)] relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-36 h-36 bg-[#d4af37]/10 rounded-full blur-2xl pointer-events-none -mr-10 -mt-10" />
+            
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
+              <div className="flex items-start gap-4">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#b91c1c] to-[#e11d48] p-1.5 flex-shrink-0 shadow-md flex items-center justify-center">
+                  <img 
+                    src="/saffron_icon.png" 
+                    alt="Saffron Guidance" 
+                    className="w-full h-full object-contain drop-shadow-sm" 
+                    onError={(e) => { e.target.src = '/mascot.png'; }} 
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-black uppercase tracking-widest bg-[#d4af37]/20 text-[#85581a] px-2.5 py-0.5 rounded-full border border-[#d4af37]/40 flex items-center gap-1">
+                      <Sparkles size={10} className="text-[#85581a]" />
+                      Free Saffron Guidance Included
+                    </span>
+                  </div>
+                  <h3 className="text-base md:text-lg font-black text-gray-900 mt-1.5 font-serif leading-snug">
+                    Need Guidance on Kashmiri Mongra Saffron for Pregnancy or Family Wellness?
+                  </h3>
+                  <p className="text-xs sm:text-sm text-gray-600 mt-1 leading-relaxed max-w-2xl">
+                    Doctor-aligned advice on Kashmiri Mongra Saffron dosage, right trimester timing, warm milk preparation, and authenticity verification.
+                  </p>
+
+                  <div className="flex flex-wrap gap-2 mt-2.5 text-[11px] font-bold text-[#b91c1c]">
+                    <span className="bg-white/90 border border-[#d4af37]/40 rounded-lg px-2.5 py-1 shadow-xs flex items-center gap-1">
+                      🌸 Trimester-wise Dosage
+                    </span>
+                    <span className="bg-white/90 border border-[#d4af37]/40 rounded-lg px-2.5 py-1 shadow-xs flex items-center gap-1">
+                      🥛 Warm Milk Protocol
+                    </span>
+                    <span className="bg-white/90 border border-[#d4af37]/40 rounded-lg px-2.5 py-1 shadow-xs flex items-center gap-1">
+                      🏥 Doctor-Approved
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Guidance Action Buttons */}
+              <div className="flex flex-wrap items-center gap-3 shrink-0">
+                <Link
+                  to="/saffron-guidance"
+                  className="inline-flex items-center gap-1.5 bg-[#b91c1c] hover:bg-[#991b1b] text-white text-xs sm:text-sm font-black px-5 py-3 rounded-full shadow-md hover:shadow-lg transition-all cursor-pointer hover:scale-105"
+                >
+                  <span>Consult Saffron Guidance</span>
+                  <ArrowRight size={14} />
+                </Link>
+                <a
+                  href="https://wa.me/918754787774?text=Hi%20Paidhu%2C%20I%20am%20viewing%20the%20Kashmiri%20Mongra%20Saffron%20and%20would%20like%20expert%20saffron%20guidance%20for%20pregnancy%2Fwellness."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-black px-4 py-3 rounded-full shadow-md hover:shadow-lg transition-all cursor-pointer hover:scale-105"
+                >
+                  <MessageSquare size={14} />
+                  <span>WhatsApp Expert</span>
+                </a>
+              </div>
+            </div>
+          </motion.div>
         )}
 
         {/* ── Detailed Tabs Section (Below the fold) ── */}
@@ -1250,63 +1280,6 @@ const ProductDetailPage = () => {
           </div>
 
         </div>
-
-        {/* 🌸 Saffron Guidance Consultation Banner below tabs */}
-        {isSaffron && (
-          <div className="mt-8">
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="rounded-3xl p-6 md:p-8 bg-gradient-to-br from-[#fefbf6] via-[#fff8ef] to-[#fbf1f5] border border-[#d4af37]/50 shadow-[0_6px_25px_rgba(212,175,55,0.12)] relative overflow-hidden"
-            >
-              <div className="absolute top-0 right-0 w-48 h-48 bg-[#d4af37]/10 rounded-full blur-3xl pointer-events-none -mr-12 -mt-12" />
-              
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 relative z-10">
-                <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#662654] to-[#9b3b82] p-2 flex-shrink-0 shadow-md flex items-center justify-center">
-                    <img 
-                      src="/saffron_icon.png" 
-                      alt="Saffron Guidance" 
-                      className="w-full h-full object-contain drop-shadow-sm" 
-                      onError={(e) => { e.target.src = '/mascot.png'; }} 
-                    />
-                  </div>
-                  <div>
-                    <span className="text-[10px] font-black uppercase tracking-widest bg-[#d4af37]/20 text-[#85581a] px-3 py-1 rounded-full border border-[#d4af37]/40 inline-flex items-center gap-1">
-                      <Sparkles size={11} className="text-[#85581a]" />
-                      Free Saffron Guidance
-                    </span>
-                    <h3 className="text-base sm:text-lg font-black text-[#662654] mt-1.5 font-serif leading-snug">
-                      Need Guidance on Kashmiri Mongra Saffron for Pregnancy or Family Wellness?
-                    </h3>
-                    <p className="text-xs sm:text-sm text-gray-600 mt-1 leading-relaxed max-w-2xl">
-                      Doctor-aligned advice on Kashmiri Mongra Saffron dosage, right trimester timing, warm milk preparation, and family wellness benefits.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-3 shrink-0">
-                  <Link
-                    to="/saffron-guidance"
-                    className="inline-flex items-center gap-2 bg-[#662654] hover:bg-[#4a1c3d] text-white text-xs sm:text-sm font-bold px-5 py-3 rounded-full shadow-md hover:shadow-lg transition-all cursor-pointer"
-                  >
-                    <span>Consult Saffron Guidance</span>
-                    <ArrowRight size={14} />
-                  </Link>
-                  <a
-                    href="https://wa.me/918754787774?text=Hi%20Paidhu%2C%20I%20am%20viewing%20the%20Kashmiri%20Mongra%20Saffron%20and%20would%20like%20expert%20saffron%20guidance%20for%20pregnancy%2Fwellness."
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold px-5 py-3 rounded-full shadow-md hover:shadow-lg transition-all cursor-pointer"
-                  >
-                    <MessageSquare size={14} />
-                    <span>WhatsApp Expert</span>
-                  </a>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        )}
 
         {/* ── Internal Links Section (SEO) ── */}
         {product.productSeo?.internalLinks && product.productSeo.internalLinks.length > 0 && (
