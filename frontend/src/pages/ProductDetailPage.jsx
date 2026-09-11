@@ -338,34 +338,48 @@ const ProductDetailPage = () => {
     ? Math.round(((price - offerPrice) / price) * 100)
     : 0;
 
-  // 🌸 Saffron 5-item Signature Gallery (Matches user mockup)
+  // Helper to filter out the flat square box graphic for Saffron
+  const isSquareBoxGraphic = (url) => {
+    if (!url || typeof url !== 'string') return false;
+    return url.includes('saffronsuperneigin') || url.includes('saffron_test');
+  };
+
+  const getSaffronImage = (customImg, defaultAsset) => {
+    const resolved = resolveImage(customImg);
+    if (resolved && !isSquareBoxGraphic(resolved)) {
+      return resolved;
+    }
+    return defaultAsset;
+  };
+
+  // 🌸 Saffron 5-item Signature Gallery (Matches user mockup without flat square box)
   const saffronGallery = [
     {
-      full: resolveImage(product?.image) || '/saffron_highres_1.png',
-      thumb: '/saffron_thumb_1.png',
+      full: getSaffronImage(product?.image, '/saffron_highres_1.png'),
+      thumb: '/saffron_circle_1.png',
       circle: '/saffron_circle_1.png',
       title: 'Kashmiri Mongra Saffron Box & Bottle'
     },
     {
-      full: (product?.images && product.images[0] ? resolveImage(product.images[0]) : null) || '/saffron_highres_2.png',
+      full: getSaffronImage(product?.images && product.images[0], '/saffron_highres_2.png'),
       thumb: '/saffron_thumb_2.png',
       circle: '/saffron_circle_2.png',
       title: 'Glass Vial Bottle with Cork Lid'
     },
     {
-      full: (product?.images && product.images[1] ? resolveImage(product.images[1]) : null) || '/saffron_highres_3.png',
+      full: getSaffronImage(product?.images && product.images[1], '/saffron_highres_3.png'),
       thumb: '/saffron_thumb_3.png',
       circle: '/saffron_circle_3.png',
       title: 'Luxury Saffron Packaging Box'
     },
     {
-      full: (product?.images && product.images[2] ? resolveImage(product.images[2]) : null) || '/saffron_highres_4.png',
+      full: getSaffronImage(product?.images && product.images[2], '/saffron_highres_4.png'),
       thumb: '/saffron_thumb_4.png',
       circle: '/saffron_circle_4.png',
       title: 'Quality & Lab Purity Certificate'
     },
     {
-      full: (product?.images && product.images[3] ? resolveImage(product.images[3]) : null) || '/saffron_highres_5.png',
+      full: getSaffronImage(product?.images && product.images[3], '/saffron_highres_5.png'),
       thumb: '/saffron_thumb_5.png',
       circle: '/saffron_circle_5.png',
       title: 'Nutrition Facts & Analysis'
@@ -490,17 +504,7 @@ const ProductDetailPage = () => {
 
           {/* 1. Left Column: Product Image Gallery */}
           {isSaffron ? (
-            <div className="relative w-full rounded-[2.5rem] overflow-hidden p-4 sm:p-8 md:p-10 border border-[#dce1f0] shadow-xs bg-[#eef1f8] bg-[radial-gradient(#d5daf0_1.5px,transparent_1.5px)] [background-size:20px_20px]">
-              {/* Subtle Saffron Pattern Watermark */}
-              <div 
-                className="absolute inset-0 opacity-20 pointer-events-none bg-repeat bg-center"
-                style={{ backgroundImage: "url('/saffron_bg_pattern.png')", backgroundSize: "220px 220px" }}
-              />
-
-              {/* Ambient radial glows */}
-              <div className="absolute -top-12 -right-12 w-64 h-64 rounded-full bg-gradient-to-br from-red-500/10 to-transparent blur-3xl pointer-events-none" />
-              <div className="absolute -bottom-12 -left-12 w-64 h-64 rounded-full bg-gradient-to-tr from-amber-500/10 to-transparent blur-3xl pointer-events-none" />
-
+            <div className="relative w-full flex items-center justify-center p-2 sm:p-4">
               {/* Flex Container: Curved Arc Thumbnails + Central Circle */}
               <div className="relative flex flex-col md:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-8 w-full z-10">
                 
@@ -519,7 +523,19 @@ const ProductDetailPage = () => {
                         type="button"
                         onClick={() => {
                           setActiveImageIndex(idx);
-                          setMainImgLoading(true);
+                          setMainImgLoading(false);
+                        }}
+                        onMouseEnter={() => {
+                          setActiveImageIndex(idx);
+                          setMainImgLoading(false);
+                        }}
+                        onTouchStart={() => {
+                          setActiveImageIndex(idx);
+                          setMainImgLoading(false);
+                        }}
+                        onPointerDown={() => {
+                          setActiveImageIndex(idx);
+                          setMainImgLoading(false);
                         }}
                         style={{
                           '--arc-x': `${xOffset}px`
@@ -543,8 +559,8 @@ const ProductDetailPage = () => {
                   })}
                 </div>
 
-                {/* 🌸 Central Large White Showcase Circle */}
-                <div className="relative w-full max-w-[300px] sm:max-w-[360px] md:max-w-[400px] lg:max-w-[440px] aspect-square rounded-full bg-white shadow-[0_20px_50px_rgba(30,41,59,0.08)] border border-white flex items-center justify-center p-6 sm:p-8 lg:p-10 order-1 md:order-2 group z-10">
+                {/* 🌸 Central Large White Showcase Circle - Pure normal circle with no bends or design */}
+                <div className="relative w-full max-w-[320px] sm:max-w-[380px] md:max-w-[420px] lg:max-w-[460px] aspect-square rounded-full bg-white shadow-[0_20px_50px_rgba(30,41,59,0.08)] flex items-center justify-center p-6 sm:p-8 lg:p-10 order-1 md:order-2 group z-10">
                   
                   {/* Discount badge if present */}
                   {discountPercent > 0 && (
@@ -555,7 +571,7 @@ const ProductDetailPage = () => {
 
                   {/* Active Image with smooth transition */}
                   <div 
-                    className="w-full h-full flex items-center justify-center relative cursor-zoom-in"
+                    className="w-full h-full flex items-center justify-center relative cursor-zoom-in rounded-full overflow-hidden"
                     onClick={() => setLightboxOpen(true)}
                     title="Click to zoom image"
                   >
@@ -565,7 +581,7 @@ const ProductDetailPage = () => {
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.97 }}
-                        transition={{ duration: 0.28, ease: 'easeOut' }}
+                        transition={{ duration: 0.22, ease: 'easeOut' }}
                         src={currentImage}
                         alt={saffronGallery[activeImageIndex]?.title || product.name}
                         title={saffronGallery[activeImageIndex]?.title || product.name}
