@@ -720,9 +720,6 @@ const ProductCollection = () => {
           {/* Product Grid / Horizontal Scroller */}
           <div 
             ref={productsScrollRef}
-            variants={gridVariants}
-            initial="hidden"
-            animate="show"
             key={activeCategory}
             className="flex overflow-x-auto gap-3.5 sm:gap-6 pb-4 snap-x snap-mandatory hide-scrollbar sm:grid sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 sm:overflow-visible sm:pb-0 scroll-smooth pr-10 sm:pr-0 pl-0.5"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
