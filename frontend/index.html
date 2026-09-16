@@ -6,45 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#522742" />
-    
-    <!-- Google tag (gtag.js) - Google Ads -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18092378259"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
 
-      gtag('config', 'AW-18092378259');
-    </script>
+    <!-- DNS Prefetch for all external domains (faster DNS resolution) -->
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://connect.facebook.net" />
+    <link rel="dns-prefetch" href="https://checkout.razorpay.com" />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="dns-prefetch" href="https://fonts.cdnfonts.com" />
+    <link rel="dns-prefetch" href="https://ljrwcciuacjbwocsxiqc.supabase.co" />
+    <link rel="dns-prefetch" href="https://paidhu-final-anm2.vercel.app" />
 
-    <!-- Google tag (gtag.js) - Google Analytics GA4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6H1Z7K1H8P"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+    <!-- Preconnect only the most critical origins -->
+    <link rel="preconnect" href="https://paidhu-final-anm2.vercel.app" crossorigin />
+    <link rel="preconnect" href="https://ljrwcciuacjbwocsxiqc.supabase.co" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-      gtag('config', 'G-6H1Z7K1H8P');
-    </script>
+    <!-- Preload hero banner image for fastest LCP -->
+    <link rel="preload" href="/banner_tea.jpeg" as="image" fetchpriority="high" />
 
-    <!-- Meta Pixel Code -->
-    <script>
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '923500987257124');
-      fbq('track', 'PageView');
-    </script>
-    <!-- End Meta Pixel Code -->
+    <!-- Preload Primary Webfonts -->
+    <link rel="preload" href="/fonts/FrancoisOne-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/AvenirLTStd-Roman.woff" as="font" type="font/woff" crossorigin />
+    <link rel="preload" href="/fonts/AvenirLTStd-Medium.woff" as="font" type="font/woff" crossorigin />
+    <link rel="preload" href="/fonts/AvenirLTStd-Heavy.woff" as="font" type="font/woff" crossorigin />
+
+    <!-- Fonts with display=swap to prevent FOUT blocking render -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Francois+One&display=swap" rel="stylesheet" />
+    <link href="https://fonts.cdnfonts.com/css/avenir-lt-std" rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript><link href="https://fonts.cdnfonts.com/css/avenir-lt-std" rel="stylesheet" /></noscript>
 
     <!-- Primary Meta Tags -->
-    <title>Paidhu Ethical Foods | Premium Edible Flowers, Saffron & Floral Foods</title>
-    <meta name="title" content="Paidhu Ethical Foods | Premium Edible Flowers, Saffron & Floral Foods" />
+    <title>Paidhu Ethical Foods | Premium Edible Flowers, Saffron &amp; Floral Foods</title>
+    <meta name="title" content="Paidhu Ethical Foods | Premium Edible Flowers, Saffron &amp; Floral Foods" />
     <meta name="description" content="Discover premium edible flowers, authentic saffron, floral foods and natural ingredients from Paidhu Ethical Foods, thoughtfully crafted for modern kitchens." />
     <meta name="keywords" content="Paidhu Ethical Foods, edible flowers, dried edible flowers, edible flower petals, saffron, Kashmiri saffron, floral foods, natural ingredients, edible botanicals, premium floral products" />
     
@@ -52,38 +49,57 @@
     <meta name="facebook-domain-verification" content="6uk8fpav8dzspgcpqyegb6islvchzm" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.paidhuethicalfoods.com/" />
-    <meta property="og:title" content="Paidhu Ethical Foods | Premium Edible Flowers, Saffron & Floral Foods" />
+    <meta property="og:title" content="Paidhu Ethical Foods | Premium Edible Flowers, Saffron &amp; Floral Foods" />
     <meta property="og:description" content="Discover premium edible flowers, authentic saffron, floral foods and natural ingredients from Paidhu Ethical Foods, thoughtfully crafted for modern kitchens." />
     <meta property="og:image" content="https://www.paidhuethicalfoods.com/Paidhulogo.png" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://www.paidhuethicalfoods.com/" />
-    <meta property="twitter:title" content="Paidhu Ethical Foods | Premium Edible Flowers, Saffron & Floral Foods" />
+    <meta property="twitter:title" content="Paidhu Ethical Foods | Premium Edible Flowers, Saffron &amp; Floral Foods" />
     <meta property="twitter:description" content="Discover premium edible flowers, authentic saffron, floral foods and natural ingredients from Paidhu Ethical Foods, thoughtfully crafted for modern kitchens." />
     <meta property="twitter:image" content="https://www.paidhuethicalfoods.com/Paidhulogo.png" />
-    
-    <link rel="preconnect" href="https://images.unsplash.com" />
-    <link rel="preconnect" href="https://ljrwcciuacjbwocsxiqc.supabase.co" />
-    <link rel="preconnect" href="https://paidhu-final-anm2.vercel.app" />
-    <!-- Preload Primary Webfonts: Francois One & Avenir LT -->
-    <link rel="preload" href="/fonts/FrancoisOne-Regular.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/AvenirLTStd-Roman.woff" as="font" type="font/woff" crossorigin />
-    <link rel="preload" href="/fonts/AvenirLTStd-Medium.woff" as="font" type="font/woff" crossorigin />
-    <link rel="preload" href="/fonts/AvenirLTStd-Heavy.woff" as="font" type="font/woff" crossorigin />
 
-    <!-- Fonts: Francois One (Headings) & Avenir LT (Body) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Francois+One&display=swap" rel="stylesheet" />
-    <link href="https://fonts.cdnfonts.com/css/avenir-lt-std" rel="stylesheet" />
-    <!-- Razorpay Checkout SDK -->
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <!-- Razorpay SDK: deferred so it does NOT block render -->
+    <script defer src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <!-- Google Analytics — loaded async (already non-blocking) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18092378259"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'AW-18092378259');
+      gtag('config', 'G-6H1Z7K1H8P');
+    </script>
+    <!-- GA4 script loaded via same gtag instance above — no second script tag needed -->
   </head>
   <body>
+    <!-- Meta Pixel: deferred via requestIdleCallback to not block FCP -->
     <noscript><img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=923500987257124&ev=PageView&noscript=1"
     /></noscript>
+    <script>
+      // Defer Facebook Pixel until browser is idle to avoid TBT impact
+      function loadFbPixel() {
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '923500987257124');
+        fbq('track', 'PageView');
+      }
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadFbPixel);
+      } else {
+        setTimeout(loadFbPixel, 3000);
+      }
+    </script>
+
     <div id="root">
       <!-- SEO Fallback Content & Internal Links for Search Engine Crawlers -->
       <nav style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;" aria-label="Crawlers Internal Links Navigation">
@@ -100,8 +116,8 @@
           <li><a href="/shop/byoc">Build Your Own Combo (BYOC)</a></li>
           <li><a href="/shop/our-own-community">Our Own Community</a></li>
           <li><a href="/about-us">About Us</a></li>
-          <li><a href="/blogs">Paidhu Blogs & Journals</a></li>
-          <li><a href="/saffron-guidance">Saffron Guidance & Quality Guide</a></li>
+          <li><a href="/blogs">Paidhu Blogs &amp; Journals</a></li>
+          <li><a href="/saffron-guidance">Saffron Guidance &amp; Quality Guide</a></li>
           <li><a href="/careers">Careers at Paidhu</a></li>
         </ul>
       </nav>

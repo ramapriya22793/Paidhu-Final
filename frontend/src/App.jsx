@@ -105,12 +105,7 @@ const BrandCharactersBanner = safeLazy(() => import('./components/home/BrandChar
 
 // ---------- HOME PAGE ----------
 const HomePage = () => (
-  <motion.main 
-    initial={{ opacity: 0, y: 15 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.55, ease: 'easeOut' }}
-    className="flex-1"
-  >
+  <main className="flex-1">
     <SEO 
       slug="home"
       url="https://www.paidhuethicalfoods.com/"
@@ -128,7 +123,7 @@ const HomePage = () => (
       <BrandCharactersBanner />
     </Suspense>
 
-  </motion.main>
+  </main>
 );
 
 function App() {

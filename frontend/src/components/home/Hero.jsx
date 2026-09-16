@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -54,8 +53,8 @@ const getBannerLink = (slide) => {
 
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [slides, setSlides] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // Start with FALLBACK_SLIDES immediately — no loading spinner, instant LCP
+  const [slides, setSlides] = useState(FALLBACK_SLIDES);
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth < 768 : false);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
@@ -91,63 +90,31 @@ const Hero = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Fetch ALL active banners strictly for the 'home' page slug
+  // Silently upgrade to backend banners in background — fallbacks shown instantly above
   useEffect(() => {
     fetch(`${API_BASE}/api/banners/active/home?t=${Date.now()}`)
       .then(r => r.ok ? r.json() : [])
       .then(homeBanners => {
-        if (homeBanners && homeBanners.length > 0) {
-          const activeBanners = homeBanners.filter(b => (b.isActive === true || b.isActive === 'true') && (b.webImage || b.webImagePath));
-          if (activeBanners.length > 0) {
-            // Map backend banners to slide format
-            const backendSlides = activeBanners.map(b => ({
-              id: `banner-${b.id}`,
-              image: resolveUrl(b.webImage || b.webImagePath),
-              mobileImage: resolveUrl(b.mobileImage || b.mobileImagePath),
-              bgColor: 'bg-[#faf5eb]',
-              isBackendBanner: true,
-              category: b.category || null,
-            })).filter(s => s.image);
-            if (backendSlides.length > 0) {
-              setSlides(backendSlides);
-              setLoading(false);
-              return;
-            }
-          }
+        if (!homeBanners || homeBanners.length === 0) return;
+        const activeBanners = homeBanners.filter(b => (b.isActive === true || b.isActive === 'true') && (b.webImage || b.webImagePath));
+        if (activeBanners.length === 0) return;
+        const backendSlides = activeBanners.map(b => ({
+          id: `banner-${b.id}`,
+          image: resolveUrl(b.webImage || b.webImagePath),
+          mobileImage: resolveUrl(b.mobileImage || b.mobileImagePath),
+          bgColor: 'bg-[#faf5eb]',
+          isBackendBanner: true,
+          category: b.category || null,
+        })).filter(s => s.image);
+        if (backendSlides.length > 0) {
+          setSlides(backendSlides);
+          setCurrentSlide(0);
         }
-        setSlides([]);
-        setLoading(false);
       })
       .catch(() => {
-        setSlides([]);
-        setLoading(false);
+        // Keep fallback slides — already showing
       });
   }, []);
-
-  // Preload first slide image as soon as slides are determined
-  useEffect(() => {
-    if (slides && slides.length > 0) {
-      const firstSlide = slides[0];
-      const isMobileDevice = window.innerWidth < 768;
-      const imageUrl = (isMobileDevice && firstSlide.mobileImage) ? firstSlide.mobileImage : firstSlide.image;
-      
-      if (imageUrl) {
-        // Remove existing slide preload link if any
-        const existingLink = document.getElementById('hero-banner-preload');
-        if (existingLink) {
-          existingLink.remove();
-        }
-        
-        const link = document.createElement('link');
-        link.id = 'hero-banner-preload';
-        link.rel = 'preload';
-        link.as = 'image';
-        link.href = imageUrl;
-        link.setAttribute('fetchpriority', 'high');
-        document.head.appendChild(link);
-      }
-    }
-  }, [slides]);
 
   // Auto-slide every 6 seconds
   useEffect(() => {
@@ -160,19 +127,6 @@ const Hero = () => {
 
   const nextSlide = () => setCurrentSlide(prev => (prev === slides.length - 1 ? 0 : prev + 1));
   const prevSlide = () => setCurrentSlide(prev => (prev === 0 ? slides.length - 1 : prev - 1));
-
-  if (loading) {
-    return (
-      <div className="w-full bg-[#f8f4ef] py-3 md:py-4 px-3 sm:px-4 lg:px-6">
-        <div 
-          className="relative w-full overflow-hidden rounded-[28px] md:rounded-[36px] animate-pulse bg-gradient-to-r from-[#e8e0d5] via-[#f0e8db] to-[#e8e0d5]"
-          style={{ aspectRatio: isMobile ? '2 / 1' : '2.4 / 1' }}
-        />
-      </div>
-    );
-  }
-
-  if (slides.length === 0) return null;
 
   const current = slides[currentSlide];
   if (!current) return null;
@@ -195,99 +149,77 @@ const Hero = () => {
         onTouchEnd={onTouchEnd}
       >
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={current.id}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.6, ease: "easeInOut" }}
-            className={`absolute inset-0 w-full h-full flex items-center justify-center ${current.bgColor || 'bg-white'}`}
+        {/* CSS fade transition — replaces framer-motion to reduce TBT */}
+        {slides.map((slide, index) => (
+          <div
+            key={slide.id}
+            className="absolute inset-0 w-full h-full flex items-center justify-center"
+            style={{
+              opacity: index === currentSlide ? 1 : 0,
+              transition: 'opacity 0.5s ease-in-out',
+              pointerEvents: index === currentSlide ? 'auto' : 'none',
+              backgroundColor: slide.bgColor?.replace('bg-', '') || '#f8f4ef',
+            }}
           >
             {/* Image Wrapper - Clickable full-bleed object-cover */}
             <Link 
-              to={getBannerLink(current)} 
+              to={getBannerLink(slide)} 
               className="absolute inset-0 w-full h-full block cursor-pointer z-10"
+              tabIndex={index === currentSlide ? 0 : -1}
             >
               {/* Mobile image (if backend banner has separate mobile img) */}
-              {current.mobileImage && (
+              {slide.mobileImage && (
                 <img
-                  src={current.mobileImage}
-                  alt={current.headline || 'Paidhu Banner'}
+                  src={slide.mobileImage}
+                  alt={slide.headline || 'Paidhu Banner'}
                   width={600}
                   height={300}
-                  className="md:hidden w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.015]"
-                  loading="eager"
-                  fetchPriority="high"
+                  className="md:hidden w-full h-full object-cover object-center"
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  fetchPriority={index === 0 ? 'high' : 'auto'}
                 />
               )}
 
               {/* Web / main image */}
               <img
-                src={current.image}
-                alt={current.headline || 'Paidhu Banner'}
+                src={slide.image}
+                alt={slide.headline || 'Paidhu Banner'}
                 width={1440}
                 height={600}
-                className={`${current.mobileImage ? 'hidden md:block' : 'block'} w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.015]`}
-                loading="eager"
-                fetchPriority="high"
+                className={`${slide.mobileImage ? 'hidden md:block' : 'block'} w-full h-full object-cover object-center`}
+                loading={index === 0 ? 'eager' : 'lazy'}
+                fetchPriority={index === 0 ? 'high' : 'auto'}
               />
 
               {/* Gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none" />
             </Link>
 
-            {/* Glassmorphic floating text overlay for fallback/text banners */}
-            {!current.isBackendBanner && !current.hideTextOverlay && current.headline && (
+            {/* Text overlay for fallback/text banners (no motion — pure CSS) */}
+            {!slide.isBackendBanner && !slide.hideTextOverlay && slide.headline && (
               <div className="absolute inset-0 bg-black/20 z-20 flex items-center px-6 sm:px-12 md:px-20 lg:px-32 pointer-events-none">
                 <div className="max-w-xl text-white pointer-events-auto">
-                  <motion.span 
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2, duration: 0.6 }}
-                    className="inline-block px-3 py-1 bg-white/10 border border-white/20 backdrop-blur-md rounded-full text-xs font-bold uppercase tracking-wider text-[#ffd700] mb-4 shadow-sm"
+                  <span className="inline-block px-3 py-1 bg-white/10 border border-white/20 backdrop-blur-md rounded-full text-xs font-bold uppercase tracking-wider text-[#ffd700] mb-4 shadow-sm">
+                    {slide.subheading || 'Exclusive Deal'}
+                  </span>
+                  <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-none mb-4 uppercase drop-shadow-md">
+                    {slide.headline}
+                  </h1>
+                  <p className="text-xs sm:text-sm md:text-base text-white/90 font-medium leading-relaxed mb-6 drop-shadow">
+                    {slide.description}
+                  </p>
+                  <Link 
+                    to="/shop"
+                    className="inline-flex items-center gap-3 bg-gradient-to-r from-[#d4af37] to-[#fde047] hover:from-[#ffd700] hover:to-[#fff] text-[#662654] font-black uppercase text-xs sm:text-sm tracking-wider px-8 py-3.5 rounded-full shadow-[0_8px_30px_rgba(212,175,55,0.3)] hover:shadow-[0_12px_40px_rgba(212,175,55,0.5)] transition-all duration-300 transform hover:-translate-y-0.5"
                   >
-                    {current.subheading || 'Exclusive Deal'}
-                  </motion.span>
-                  <motion.h1 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3, duration: 0.7 }}
-                    className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-none mb-4 uppercase drop-shadow-md"
-                  >
-                    {current.headline}
-                  </motion.h1>
-                  <motion.p 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4, duration: 0.7 }}
-                    className="text-xs sm:text-sm md:text-base text-white/90 font-medium leading-relaxed mb-6 drop-shadow"
-                  >
-                    {current.description}
-                  </motion.p>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5, duration: 0.7 }}
-                  >
-                    <Link 
-                      to="/shop"
-                      className="inline-flex items-center gap-3 bg-gradient-to-r from-[#d4af37] to-[#fde047] hover:from-[#ffd700] hover:to-[#fff] text-[#662654] font-black uppercase text-xs sm:text-sm tracking-wider px-8 py-3.5 rounded-full shadow-[0_8px_30px_rgba(212,175,55,0.3)] hover:shadow-[0_12px_40px_rgba(212,175,55,0.5)] transition-all duration-300 transform hover:-translate-y-0.5"
-                    >
-                      <span>{current.cta || 'Shop Now'}</span>
-                      <motion.span 
-                        animate={{ x: [0, 5, 0] }}
-                        transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-                      >
-                        ➔
-                      </motion.span>
-                    </Link>
-                  </motion.div>
+                    <span>{slide.cta || 'Shop Now'}</span>
+                    <span>➔</span>
+                  </Link>
                 </div>
               </div>
             )}
-          </motion.div>
-        </AnimatePresence>
+          </div>
+        ))}
 
         {/* Glassmorphic Navigation Arrows (always visible on mobile/tablet, hover-only on desktop) */}
         <button
