@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 
@@ -118,8 +117,7 @@ const Footer = () => {
               <div className="flex space-x-4 lg:justify-end">
                 {/* Instagram */}
                 <div className="relative group">
-                  <motion.a 
-                    whileHover={{ scale: 1.1, color: "#ede7d7" }} 
+                  <a 
                     href="https://www.instagram.com/paidhu_edibleflower/" 
                     target="_blank" 
                     rel="noopener noreferrer" 
@@ -127,7 +125,7 @@ const Footer = () => {
                     aria-label="Follow us on Instagram"
                   >
                     <InstagramIcon size={24} />
-                  </motion.a>
+                  </a>
                   <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1 bg-black text-[#fdfaf6] text-[10px] font-bold rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50 shadow-md">
                     Instagram
                     <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black" />
@@ -136,8 +134,7 @@ const Footer = () => {
 
                 {/* YouTube */}
                 <div className="relative group">
-                  <motion.a 
-                    whileHover={{ scale: 1.1, color: "#ede7d7" }} 
+                  <a 
                     href="https://www.youtube.com/@Paidhu" 
                     target="_blank" 
                     rel="noopener noreferrer" 
@@ -145,7 +142,7 @@ const Footer = () => {
                     aria-label="Subscribe to our YouTube channel"
                   >
                     <YoutubeIcon size={24} />
-                  </motion.a>
+                  </a>
                   <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1 bg-black text-[#fdfaf6] text-[10px] font-bold rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50 shadow-md">
                     YouTube
                     <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black" />
@@ -154,8 +151,7 @@ const Footer = () => {
 
                 {/* WhatsApp */}
                 <div className="relative group">
-                  <motion.a 
-                    whileHover={{ scale: 1.1, color: "#ede7d7" }} 
+                  <a 
                     href="https://wa.me/918754787774" 
                     target="_blank" 
                     rel="noopener noreferrer" 
@@ -163,7 +159,7 @@ const Footer = () => {
                     aria-label="Contact us on WhatsApp"
                   >
                     <MessageCircleIcon size={24} />
-                  </motion.a>
+                  </a>
                   <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1 bg-black text-[#fdfaf6] text-[10px] font-bold rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50 shadow-md">
                     WhatsApp
                     <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black" />

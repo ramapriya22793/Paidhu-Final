@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { X, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 
 const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://paidhu-final-anm2.vercel.app');
@@ -152,20 +151,12 @@ const AuthModal = ({ isOpen, onClose, onLoginSuccess, user, onLogout }) => {
   if (!isOpen) return null;
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999]"
-            onClick={onClose}
-          />
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+    <>
+      <div
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999]"
+        onClick={onClose}
+      />
+          <div
             className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-md bg-white rounded-2xl shadow-2xl z-[10000] overflow-hidden flex flex-col max-h-[90vh]"
           >
             <div className="flex justify-between items-center p-5 border-b border-gray-100 bg-gray-50/50">
@@ -386,11 +377,9 @@ const AuthModal = ({ isOpen, onClose, onLoginSuccess, user, onLogout }) => {
                 </form>
               )}
 
-            </div>
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
+        </div>
+      </div>
+    </>
   );
 };
 

@@ -2,15 +2,14 @@ import React, { lazy, Suspense, useEffect } from 'react';
 import { Routes, Route, useNavigate, useLocation, Link, Navigate } from 'react-router-dom';
 
 import Navbar from './components/layout/Navbar';
-import Footer from './components/layout/Footer';
 import Hero from './components/home/Hero';
 import ProductCollection from './components/home/ProductCollection';
-import WhatsAppButton from './components/ui/WhatsAppButton';
-import TiffinModal from './components/home/TiffinModal';
 import { CartProvider } from './context/CartContext';
-import { motion } from 'framer-motion';
 import SEO from './components/seo/SEO';
 import MaintenancePage from './pages/MaintenancePage';
+
+const Footer = lazy(() => import('./components/layout/Footer'));
+const WhatsAppButton = lazy(() => import('./components/ui/WhatsAppButton'));
 
 // MAINTENANCE MODE SWITCH:
 // Set to true to display the Under Maintenance page across the store with WhatsApp navigation.

@@ -7,37 +7,19 @@
     <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#522742" />
 
-    <!-- DNS Prefetch for all external domains (faster DNS resolution) -->
-    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-    <link rel="dns-prefetch" href="https://connect.facebook.net" />
-    <link rel="dns-prefetch" href="https://checkout.razorpay.com" />
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-    <link rel="dns-prefetch" href="https://fonts.cdnfonts.com" />
-    <link rel="dns-prefetch" href="https://ljrwcciuacjbwocsxiqc.supabase.co" />
-    <link rel="dns-prefetch" href="https://paidhu-final-anm2.vercel.app" />
-
-    <!-- Preconnect only the most critical origins -->
-    <link rel="preconnect" href="https://paidhu-final-anm2.vercel.app" crossorigin />
-    <link rel="preconnect" href="https://ljrwcciuacjbwocsxiqc.supabase.co" crossorigin />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-    <!-- Preload hero banner image for fastest LCP -->
+    <!-- Preload critical assets for fastest LCP & FCP -->
     <link rel="preload" href="/banner_tea.jpeg" as="image" fetchpriority="high" />
-
-    <!-- Preload Primary Webfonts -->
     <link rel="preload" href="/fonts/FrancoisOne-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/AvenirLTStd-Roman.woff" as="font" type="font/woff" crossorigin />
-    <link rel="preload" href="/fonts/AvenirLTStd-Medium.woff" as="font" type="font/woff" crossorigin />
-    <link rel="preload" href="/fonts/AvenirLTStd-Heavy.woff" as="font" type="font/woff" crossorigin />
 
-    <!-- Fonts with display=swap to prevent FOUT blocking render -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Francois+One&display=swap" rel="stylesheet" />
-    <link href="https://fonts.cdnfonts.com/css/avenir-lt-std" rel="stylesheet" media="print" onload="this.media='all'" />
-    <noscript><link href="https://fonts.cdnfonts.com/css/avenir-lt-std" rel="stylesheet" /></noscript>
+    <!-- DNS Prefetch for background services -->
+    <link rel="dns-prefetch" href="https://paidhu-final-anm2.vercel.app" />
+    <link rel="dns-prefetch" href="https://ljrwcciuacjbwocsxiqc.supabase.co" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://connect.facebook.net" />
+
+    <!-- Preconnect to backend API -->
+    <link rel="preconnect" href="https://paidhu-final-anm2.vercel.app" crossorigin />
 
     <!-- Primary Meta Tags -->
     <title>Paidhu Ethical Foods | Premium Edible Flowers, Saffron &amp; Floral Foods</title>
@@ -59,46 +41,12 @@
     <meta property="twitter:title" content="Paidhu Ethical Foods | Premium Edible Flowers, Saffron &amp; Floral Foods" />
     <meta property="twitter:description" content="Discover premium edible flowers, authentic saffron, floral foods and natural ingredients from Paidhu Ethical Foods, thoughtfully crafted for modern kitchens." />
     <meta property="twitter:image" content="https://www.paidhuethicalfoods.com/Paidhulogo.png" />
-
-    <!-- Razorpay SDK: deferred so it does NOT block render -->
-    <script defer src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
-    <!-- Google Analytics — loaded async (already non-blocking) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18092378259"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'AW-18092378259');
-      gtag('config', 'G-6H1Z7K1H8P');
-    </script>
-    <!-- GA4 script loaded via same gtag instance above — no second script tag needed -->
   </head>
   <body>
-    <!-- Meta Pixel: deferred via requestIdleCallback to not block FCP -->
+    <!-- Meta Pixel NoScript Fallback -->
     <noscript><img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=923500987257124&ev=PageView&noscript=1"
     /></noscript>
-    <script>
-      // Defer Facebook Pixel until browser is idle to avoid TBT impact
-      function loadFbPixel() {
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '923500987257124');
-        fbq('track', 'PageView');
-      }
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(loadFbPixel);
-      } else {
-        setTimeout(loadFbPixel, 3000);
-      }
-    </script>
 
     <div id="root">
       <!-- SEO Fallback Content & Internal Links for Search Engine Crawlers -->
@@ -122,6 +70,58 @@
         </ul>
       </nav>
     </div>
+
+    <!-- Main React App Script -->
     <script type="module" src="/src/main.jsx"></script>
+
+    <!-- Deferred Third-Party Analytics (GTM, GA4, Meta Pixel) -->
+    <script>
+      (function() {
+        var analyticsLoaded = false;
+        function loadAnalytics() {
+          if (analyticsLoaded) return;
+          analyticsLoaded = true;
+
+          // 1. Google Tag Manager / GA4
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          window.gtag = gtag;
+          gtag('js', new Date());
+          gtag('config', 'AW-18092378259');
+          gtag('config', 'G-6H1Z7K1H8P');
+
+          var gaScript = document.createElement('script');
+          gaScript.async = true;
+          gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=AW-18092378259';
+          document.head.appendChild(gaScript);
+
+          // 2. Meta Pixel
+          !function(f,b,e,v,n,t,s)
+          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+          n.queue=[];t=b.createElement(e);t.async=!0;
+          t.src=v;s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s)}(window, document,'script',
+          'https://connect.facebook.net/en_US/fbevents.js');
+          fbq('init', '923500987257124');
+          fbq('track', 'PageView');
+        }
+
+        // Trigger analytics after first user gesture, or idle after 3.5s
+        var events = ['touchstart', 'scroll', 'mousemove', 'keydown', 'click'];
+        function onUserInteraction() {
+          loadAnalytics();
+          events.forEach(function(e) { window.removeEventListener(e, onUserInteraction, { passive: true }); });
+        }
+        events.forEach(function(e) { window.addEventListener(e, onUserInteraction, { passive: true, once: true }); });
+
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(function() { setTimeout(loadAnalytics, 3500); });
+        } else {
+          setTimeout(loadAnalytics, 4000);
+        }
+      })();
+    </script>
   </body>
 </html>

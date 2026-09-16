@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+
 
 const CartContext = createContext();
 
@@ -693,14 +693,9 @@ export const CartProvider = ({ children }) => {
 
       {/* Floating toast notifications */}
       <div className="fixed bottom-5 right-5 z-[99999] flex flex-col gap-3 max-w-sm pointer-events-none">
-        <AnimatePresence>
+        
           {toasts.map(t => (
-            <motion.div
-              key={t.id}
-              initial={{ opacity: 0, y: 20, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -20, scale: 0.9 }}
-              transition={{ type: 'spring', damping: 25, stiffness: 350 }}
+            <div key={t.id}
               className={`pointer-events-auto flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-xl text-white text-sm font-semibold border ${
                 t.type === 'error' 
                   ? 'bg-rose-600 border-rose-500 shadow-rose-900/10' 
@@ -713,9 +708,9 @@ export const CartProvider = ({ children }) => {
                 {t.type === 'error' ? '!' : '✓'}
               </span>
               <span className="flex-1">{t.message}</span>
-            </motion.div>
+            </div>
           ))}
-        </AnimatePresence>
+        
       </div>
     </CartContext.Provider>
   );

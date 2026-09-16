@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
 import { Plus, Minus, ChevronRight, ChevronLeft, Check, Heart, ShoppingCart } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
@@ -68,25 +67,6 @@ const resolveImage = (img) => {
   return `${API_BASE}${img.startsWith('/') ? '' : '/'}${img}`;
 };
 
-const gridVariants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.04
-    }
-  }
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 15 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', damping: 20, stiffness: 100 }
-  }
-};
-
 // ---------- COLLECTION PRODUCT CARD ----------
 const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId, isInWishlist, handleToggleWishlist }) => {
   const { addToCart, updateQuantity, getItemQuantity } = useCart();
@@ -145,10 +125,7 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
   };
 
   return (
-    <motion.div 
-      variants={cardVariants}
-      whileHover={{ y: -8, scale: 1.01 }}
-      whileTap={{ scale: 0.98 }}
+    <div 
       className="w-full h-full bg-white rounded-2xl border border-gray-100 hover:shadow-[0_12px_30px_rgba(102,38,84,0.08)] transition-all duration-300 overflow-hidden flex flex-col group shadow-sm"
     >
       {/* Image Area */}
@@ -159,18 +136,18 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
           </div>
         )}
         {/* Wishlist Button */}
-        <motion.button
+        <button
+          type="button"
           onClick={(e) => handleToggleWishlist(e, product)}
-          whileHover={{ scale: 1.15 }}
-          whileTap={{ scale: 0.9 }}
-          className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md transition-all duration-200 hover:bg-white"
+          className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md transition-all duration-200 hover:bg-white cursor-pointer"
+          aria-label="Toggle Wishlist"
         >
           <Heart
             size={14}
             className={isInWishlist(product.id) ? 'fill-[#662654] text-[#662654]' : 'text-gray-400'}
             strokeWidth={2}
           />
-        </motion.button>
+        </button>
         <img 
           src={product.image} 
           alt={product.title} 
@@ -298,11 +275,10 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
             </button>
           </div>
         ) : (
-          <motion.button 
+          <button 
+            type="button"
             onClick={handleAddToCartClick}
             disabled={addingId === product.id}
-            whileHover={{ scale: 1.02, y: -1 }}
-            whileTap={{ scale: 0.98 }}
             className="w-full mt-auto bg-gradient-to-r from-[#662654] to-[#7f2d68] hover:from-[#7a2e64] hover:to-[#913b7e] disabled:from-emerald-600 disabled:to-teal-500 text-white rounded-full py-2 sm:py-2.5 flex items-center justify-center gap-2 font-bold text-[10px] sm:text-xs uppercase tracking-wider shadow-[0_4px_12px_rgba(102,38,84,0.15)] hover:shadow-[0_6px_20px_rgba(102,38,84,0.3)] transition-all duration-300 group/btn cursor-pointer"
           >
             {addingId === product.id ? (
@@ -316,10 +292,10 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
                 <span>{product.status === 'PREORDER' ? 'Pre-order' : 'Add to Cart'}</span>
               </>
             )}
-          </motion.button>
+          </button>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 };
 
@@ -742,7 +718,7 @@ const ProductCollection = () => {
           </div>
 
           {/* Product Grid / Horizontal Scroller */}
-          <motion.div 
+          <div 
             ref={productsScrollRef}
             variants={gridVariants}
             initial="hidden"
@@ -787,7 +763,7 @@ const ProductCollection = () => {
                   />
                 </div>
               )))}
-          </motion.div>
+          </div>
 
           {/* Right Arrow Button & Edge Fade */}
           <div 

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, ShoppingCart, User, Menu, X, ChevronDown, Grid3X3, Trash2, Minus, Plus, ArrowRight, Lock, Heart } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import paidhuLogo from '../../assets/paidhulogo.png';
 import { useCart } from '../../context/CartContext';
@@ -189,13 +188,14 @@ const Navbar = () => {
     }
   }, [cartCount, setCartBadgeAnimate]);
 
-  // Typewriter effect
+  // Typewriter effect (starts after 2.5s to prevent initial load re-rendering)
   useEffect(() => {
-    const typeSpeed = isDeleting ? 40 : 80;
+    let timer;
+    const typeSpeed = isDeleting ? 50 : 100;
     const currentPhrase = searchPhrases[currentPhraseIndex];
-    const timer = setTimeout(() => {
+    timer = setTimeout(() => {
       if (!isDeleting && currentText === currentPhrase) {
-        setTimeout(() => setIsDeleting(true), 2000);
+        setTimeout(() => setIsDeleting(true), 2500);
       } else if (isDeleting && currentText === '') {
         setIsDeleting(false);
         setCurrentPhraseIndex(prev => (prev + 1) % searchPhrases.length);
@@ -211,11 +211,11 @@ const Navbar = () => {
   // Scroll detection
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Fetch products and map categories from backend (stale-while-revalidate with live sync)
+  // Fetch products and map categories from backend (deferred to not block initial paint)
   useEffect(() => {
     let cachedCats = null;
     let cachedProducts = null;
@@ -226,7 +226,7 @@ const Navbar = () => {
       console.error("Failed to read cache from localStorage", e);
     }
 
-    // Hydrate immediately to prevent layout shift
+    // Hydrate immediately from cache
     if (cachedCats && cachedProducts) {
       try {
         let parsedCats = JSON.parse(cachedCats).map(c => {
@@ -242,14 +242,15 @@ const Navbar = () => {
       } catch (e) {}
     }
 
-    // Always fetch fresh products and categories live from backend to reflect any admin updates
-    fetch(`${API_BASE}/api/products?limit=200&_t=${Date.now()}`, { cache: 'no-store' })
-      .then(r => r.json())
-      .then(data => {
-        const productsList = data.products || [];
-        if (productsList.length > 0) {
-          setAllProducts(productsList);
-        }
+    // Defer live products/categories fetch by 2.5s so initial paint is instant
+    const fetchTimer = setTimeout(() => {
+      fetch(`${API_BASE}/api/products?limit=200&_t=${Date.now()}`)
+        .then(r => r.json())
+        .then(data => {
+          const productsList = data.products || [];
+          if (productsList.length > 0) {
+            setAllProducts(productsList);
+          }
         const categoryMap = {};
         
         productsList.forEach(p => {
@@ -290,6 +291,8 @@ const Navbar = () => {
       .catch(() => {
         setCategories(prev => (prev && prev.length > 0 ? prev : defaultCategoriesList));
       });
+    }, 2500);
+    return () => clearTimeout(fetchTimer);
   }, []);
 
   // Close dropdown on outside click
@@ -359,7 +362,7 @@ const Navbar = () => {
 
 
   return (
-    <motion.header
+    <header
       className={`w-full z-50 bg-[#662654] transition-all duration-300 font-sans ${isScrolled ? 'shadow-md' : ''}`}
     >
 
@@ -452,7 +455,7 @@ const Navbar = () => {
 
           {/* Center: Logo */}
           <div className="flex w-1/2 lg:w-1/3 justify-center z-10">
-            <motion.div whileHover={{ scale: 1.05 }} className="flex items-center justify-center">
+            <div className="flex items-center justify-center">
               <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center justify-center">
                 <img
                   src={paidhuLogo}
@@ -462,57 +465,46 @@ const Navbar = () => {
                   className="h-10 md:h-12 lg:h-14 w-auto object-contain drop-shadow-sm"
                 />
               </Link>
-            </motion.div>
+            </div>
           </div>
 
           {/* Right: Icons */}
           <div className="flex w-1/4 lg:w-1/3 justify-end items-center space-x-5 text-[#ede7d7]">
-            <motion.button
+            <button
               onClick={() => setIsAuthModalOpen(true)}
-              whileHover={{ scale: 1.1 }}
               className="hover:text-white transition-colors hidden lg:flex items-center cursor-pointer"
             >
               <User size={24} strokeWidth={1.5} />
-            </motion.button>
+            </button>
             
             {/* Wishlist Icon */}
-            <motion.button
+            <button
               onClick={() => setIsWishlistOpen(true)}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
               className="hover:text-white transition-colors relative"
             >
               <Heart size={24} strokeWidth={1.5} />
               {wishlistCount > 0 && (
-                <motion.span 
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
+                <span
                   className="absolute -top-1.5 -right-2 bg-[var(--color-brand-gold)] text-white text-[10px] w-4.5 h-4.5 flex items-center justify-center rounded-full font-bold shadow-sm"
                 >
                   {wishlistCount}
-                </motion.span>
+                </span>
               )}
-            </motion.button>
+            </button>
 
-            <motion.button
+            <button
               onClick={() => setIsCartOpen(true)}
-              animate={cartBadgeAnimate ? { scale: [1, 1.25, 0.95, 1.1, 1], rotate: [0, -10, 10, -5, 5, 0] } : {}}
-              transition={{ duration: 0.5 }}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
               className="hover:text-white transition-colors relative"
             >
               <ShoppingCart size={24} strokeWidth={1.5} />
               {cartCount > 0 && (
-                <motion.span 
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
+                <span
                   className="absolute -top-1.5 -right-2 bg-[var(--color-brand-gold)] text-white text-[10px] w-4.5 h-4.5 flex items-center justify-center rounded-full font-bold shadow-sm"
                 >
                   {cartCount}
-                </motion.span>
+                </span>
               )}
-            </motion.button>
+            </button>
           </div>
         </div>
       </div>
@@ -545,13 +537,9 @@ const Navbar = () => {
                     </button>
 
                     {/* ── Category Dropdown ── */}
-                    <AnimatePresence>
+                    
                       {showCatDropdown && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 8, scale: 0.97 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: 8, scale: 0.97 }}
-                          transition={{ duration: 0.15, ease: 'easeOut' }}
+                        <div
                           className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[520px] z-[9999]"
                         >
                           <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
@@ -623,9 +611,9 @@ const Navbar = () => {
                               </button>
                             </div>
                           </div>
-                        </motion.div>
+                        </div>
                       )}
-                    </AnimatePresence>
+                    
                   </div>
                 );
               }
@@ -652,13 +640,9 @@ const Navbar = () => {
                     </button>
 
                     {/* ── Know us better Dropdown ── */}
-                    <AnimatePresence>
+                    
                       {showKnowUsDropdown && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 8, scale: 0.97 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: 8, scale: 0.97 }}
-                          transition={{ duration: 0.15, ease: 'easeOut' }}
+                        <div
                           className="absolute top-full left-0 pt-2 w-48 z-[9999]"
                         >
                           <div className="bg-white rounded-xl shadow-2xl border border-gray-100 py-1.5 overflow-hidden flex flex-col">
@@ -690,9 +674,9 @@ const Navbar = () => {
                               Careers
                             </button>
                           </div>
-                        </motion.div>
+                        </div>
                       )}
-                    </AnimatePresence>
+                    
                   </div>
                 );
               }
@@ -715,12 +699,9 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
+      
         {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
+          <div
             className="lg:hidden bg-[#662654] border-b border-[#ede7d7]/10 overflow-hidden"
           >
             <div className="px-4 py-4">
@@ -812,12 +793,9 @@ const Navbar = () => {
                             className={`transition-transform duration-200 ${mobileCatOpen ? 'rotate-180' : ''}`}
                           />
                         </button>
-                        <AnimatePresence>
+                        
                           {mobileCatOpen && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: 'auto', opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
+                            <div
                               className="overflow-hidden"
                             >
                               <div className="pl-4 pb-2 pt-1 grid grid-cols-2 gap-1">
@@ -856,9 +834,9 @@ const Navbar = () => {
                                   );
                                 })}
                               </div>
-                            </motion.div>
+                            </div>
                           )}
-                        </AnimatePresence>
+                        
                       </div>
                     );
                   }
@@ -877,12 +855,9 @@ const Navbar = () => {
                             className={`transition-transform duration-200 ${mobileKnowUsOpen ? 'rotate-180' : ''}`}
                           />
                         </button>
-                        <AnimatePresence>
+                        
                           {mobileKnowUsOpen && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: 'auto', opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
+                            <div
                               className="overflow-hidden"
                             >
                               <div className="pl-4 pb-2 pt-1 flex flex-col space-y-1">
@@ -905,9 +880,9 @@ const Navbar = () => {
                                   Our Own Community
                                 </button>
                               </div>
-                            </motion.div>
+                            </div>
                           )}
-                        </AnimatePresence>
+                        
                       </div>
                     );
                   }
@@ -924,28 +899,21 @@ const Navbar = () => {
                 })}
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
+      
       {/* Shopping Cart Drawer */}
-      <AnimatePresence>
+      
         {isCartOpen && (
           <>
             {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+            <div
               onClick={() => setIsCartOpen(false)}
               className="fixed inset-0 bg-black/55 backdrop-blur-[2px] z-[9998]"
             />
 
             {/* Drawer Container */}
-            <motion.div
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            <div
               className="fixed top-0 right-0 bottom-0 w-full max-w-md bg-white shadow-2xl z-[9999] flex flex-col h-full"
             >
               {/* Drawer Header */}
@@ -992,20 +960,15 @@ const Navbar = () => {
 
                     {/* Cart Items */}
                     <div className="space-y-3">
-                      <AnimatePresence initial={false}>
+                      
                         {cart.map((item) => {
                           const resolvedImg = resolveSingleImage(item.image) || 'https://images.unsplash.com/photo-1599598425947-330026217432?q=80&w=100&auto=format&fit=crop';
                             
                           const itemPrice = item.offerPrice || item.price;
                           
                           return (
-                            <motion.div
+                            <div
                               key={`${item.id}-${item.selectedVariant?.size || 'default'}`}
-                              layout
-                              initial={{ opacity: 0, y: 15 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, x: -100 }}
-                              transition={{ duration: 0.2 }}
                               className="flex items-center gap-4 bg-white p-3 rounded-2xl border border-gray-100 hover:shadow-md transition-shadow group/item"
                             >
                               {/* Product Thumbnail */}
@@ -1066,10 +1029,10 @@ const Navbar = () => {
                                   </button>
                                 </div>
                               </div>
-                            </motion.div>
+                            </div>
                           );
                         })}
-                      </AnimatePresence>
+                      
                     </div>
                   </div>
                 )}
@@ -1104,30 +1067,23 @@ const Navbar = () => {
                   </div>
                 </div>
               )}
-            </motion.div>
+            </div>
           </>
         )}
-      </AnimatePresence>
+      
 
       {/* Wishlist Drawer */}
-      <AnimatePresence>
+      
         {isWishlistOpen && (
           <>
             {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+            <div
               onClick={() => setIsWishlistOpen(false)}
               className="fixed inset-0 bg-black/55 backdrop-blur-[2px] z-[9998]"
             />
 
             {/* Drawer Container */}
-            <motion.div
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            <div
               className="fixed top-0 right-0 bottom-0 w-full max-w-md bg-white shadow-2xl z-[9999] flex flex-col h-full"
             >
               {/* Drawer Header */}
@@ -1170,20 +1126,15 @@ const Navbar = () => {
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    <AnimatePresence initial={false}>
+                    
                       {wishlist.map((item) => {
                         const resolvedImg = resolveSingleImage(item.image) || 'https://images.unsplash.com/photo-1599598425947-330026217432?q=80&w=100&auto=format&fit=crop';
                           
                         const itemPrice = item.offerPrice || item.price;
                         
                         return (
-                          <motion.div
+                          <div
                             key={item.id}
-                            layout
-                            initial={{ opacity: 0, y: 15 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, x: 100 }}
-                            transition={{ duration: 0.2 }}
                             className="flex items-center gap-4 bg-white p-3 rounded-2xl border border-gray-100 hover:shadow-md transition-shadow group/item"
                           >
                             {/* Product Thumbnail */}
@@ -1221,17 +1172,17 @@ const Navbar = () => {
                                 <Trash2 size={14} />
                               </button>
                             </div>
-                          </motion.div>
+                          </div>
                         );
                       })}
-                    </AnimatePresence>
+                    
                   </div>
                 )}
               </div>
-            </motion.div>
+            </div>
           </>
         )}
-      </AnimatePresence>
+      
 
       <AuthModal 
         isOpen={isAuthModalOpen} 
@@ -1247,7 +1198,7 @@ const Navbar = () => {
           setIsAuthModalOpen(false);
         }}
       />
-    </motion.header>
+    </header>
   );
 };
 
