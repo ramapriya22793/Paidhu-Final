@@ -31,6 +31,14 @@ jobs:
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
 
+      - name: Diagnostic Vercel Auth
+        working-directory: ./frontend
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          WHOAMI_OUT=$(vercel whoami --token="$VERCEL_TOKEN" 2>&1 || true)
+          echo "::error title=VercelAuthDebug::Token length: ${#VERCEL_TOKEN}, Whoami: ${WHOAMI_OUT}"
+
       - name: Link and Pull Vercel Environment (Frontend)
         working-directory: ./frontend
         env:
@@ -40,7 +48,9 @@ jobs:
         run: |
           mkdir -p .vercel
           echo '{"orgId":"team_C2b0pSd5lkEwPzlzMXiZAQ1S","projectId":"prj_HqL7cAuq6qR3bL94sLR3w1Wd58t3"}' > .vercel/project.json
-          vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+          PULL_OUT=$(vercel pull --yes --environment=production --token="$VERCEL_TOKEN" 2>&1 || true)
+          echo "::error title=VercelPullDebug::Pull output: ${PULL_OUT}"
+          vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
 
       - name: Run Vercel build (generate .vercel/output)
         working-directory: ./frontend
