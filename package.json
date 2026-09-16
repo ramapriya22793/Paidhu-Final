@@ -6,6 +6,7 @@
     "build": "npm run build --prefix frontend && npm run build --prefix admin",
     "build:frontend": "npm run build --prefix frontend",
     "build:admin": "npm run build --prefix admin",
-    "start:server": "npm start --prefix server"
+    "start:server": "npm start --prefix server",
+    "postinstall": "npm --prefix server install && npm --prefix server run postinstall"
   }
 }

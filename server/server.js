@@ -233,7 +233,12 @@ const initializeAdmin = async () => {
   }
 };
 
-initializeAdmin();
+if (!process.env.VERCEL) {
+  initializeAdmin();
+} else {
+  // On Vercel serverless, execute in background without stalling request execution
+  initializeAdmin().catch((err) => console.error("Admin init notice:", err.message));
+}
 
 app.get("/", (req, res) => {
   res.send("Paidhu API Running");
