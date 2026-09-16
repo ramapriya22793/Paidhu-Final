@@ -718,26 +718,26 @@ const ProductCollection = () => {
           </button>
         </div>
 
-        {/* Product Scroller & Grid Container with Mobile Navigation Arrows */}
+        {/* Product Scroller & Grid Container with Navigation Arrows */}
         <div className="relative group/prodScroller">
           
-          {/* Mobile Left Arrow Button & Edge Fade */}
+          {/* Left Arrow Button & Edge Fade */}
           <div 
-            className={`sm:hidden absolute left-0 top-1/2 -translate-y-1/2 z-30 flex items-center transition-opacity duration-300 pointer-events-none ${
-              canScrollProdLeft ? 'opacity-100' : 'opacity-0'
+            className={`absolute left-0 top-1/2 -translate-y-1/2 z-30 flex items-center transition-opacity duration-300 pointer-events-none ${
+              canScrollProdLeft ? 'opacity-100' : 'opacity-40'
             }`}
           >
-            <div className="w-8 h-64 bg-gradient-to-r from-white via-white/80 to-transparent pointer-events-none" />
+            <div className="w-8 sm:w-12 h-64 bg-gradient-to-r from-white via-white/80 to-transparent pointer-events-none" />
             <button
               type="button"
               onClick={() => scrollProducts('left')}
               aria-label="Scroll products left"
               tabIndex={canScrollProdLeft ? 0 : -1}
-              className={`absolute left-0 z-40 w-9 h-9 rounded-full bg-white text-[#662654] shadow-[0_4px_16px_rgba(102,38,84,0.3)] border border-[#662654]/25 flex items-center justify-center hover:bg-[#662654] hover:text-white transition-all duration-200 active:scale-90 cursor-pointer ${
-                canScrollProdLeft ? 'pointer-events-auto' : 'pointer-events-none'
+              className={`absolute left-0 z-40 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white text-[#662654] shadow-[0_4px_18px_rgba(102,38,84,0.32)] border border-[#662654]/25 flex items-center justify-center hover:bg-[#662654] hover:text-white transition-all duration-200 active:scale-90 cursor-pointer ${
+                canScrollProdLeft ? 'pointer-events-auto hover:scale-105' : 'pointer-events-none opacity-40'
               }`}
             >
-              <ChevronLeft size={20} strokeWidth={2.5} />
+              <ChevronLeft size={22} strokeWidth={2.5} />
             </button>
           </div>
 
@@ -789,23 +789,23 @@ const ProductCollection = () => {
               )))}
           </motion.div>
 
-          {/* Mobile Right Arrow Button & Edge Fade */}
+          {/* Right Arrow Button & Edge Fade */}
           <div 
-            className={`sm:hidden absolute right-0 top-1/2 -translate-y-1/2 z-30 flex items-center justify-end transition-opacity duration-300 pointer-events-none ${
-              canScrollProdRight ? 'opacity-100' : 'opacity-0'
+            className={`absolute right-0 top-1/2 -translate-y-1/2 z-30 flex items-center justify-end transition-opacity duration-300 pointer-events-none ${
+              canScrollProdRight ? 'opacity-100' : 'opacity-40'
             }`}
           >
-            <div className="w-10 h-64 bg-gradient-to-l from-white via-white/80 to-transparent pointer-events-none" />
+            <div className="w-10 sm:w-14 h-64 bg-gradient-to-l from-white via-white/80 to-transparent pointer-events-none" />
             <button
               type="button"
               onClick={() => scrollProducts('right')}
               aria-label="Scroll products right"
               tabIndex={canScrollProdRight ? 0 : -1}
-              className={`absolute right-0 z-40 w-9 h-9 rounded-full bg-white text-[#662654] shadow-[0_4px_16px_rgba(102,38,84,0.3)] border border-[#662654]/25 flex items-center justify-center hover:bg-[#662654] hover:text-white transition-all duration-200 active:scale-90 cursor-pointer ${
-                canScrollProdRight ? 'pointer-events-auto' : 'pointer-events-none'
+              className={`absolute right-0 z-40 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white text-[#662654] shadow-[0_4px_18px_rgba(102,38,84,0.32)] border border-[#662654]/25 flex items-center justify-center hover:bg-[#662654] hover:text-white transition-all duration-200 active:scale-90 cursor-pointer ${
+                canScrollProdRight ? 'pointer-events-auto hover:scale-105' : 'pointer-events-none opacity-40'
               }`}
             >
-              <ChevronRight size={20} strokeWidth={2.5} />
+              <ChevronRight size={22} strokeWidth={2.5} />
             </button>
           </div>
         </div>
