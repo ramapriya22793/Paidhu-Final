@@ -87,18 +87,18 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
   const cartQty = getItemQuantity ? getItemQuantity(product.id, variantSize) : 0;
 
   const currentPrice = selectedVariant 
-    ? (selectedVariant.offerPrice && selectedVariant.offerPrice !== '' ? Number(selectedVariant.offerPrice) : Number(selectedVariant.price))
-    : product.discountedPrice;
+    ? (selectedVariant.offerPrice && selectedVariant.offerPrice !== '' ? Number(selectedVariant.offerPrice) : Number(selectedVariant.price || 0))
+    : Number(product.discountedPrice ?? product.originalPrice ?? 0);
 
   const originalPrice = selectedVariant 
-    ? (selectedVariant.offerPrice && selectedVariant.offerPrice !== '' ? Number(selectedVariant.price) : null)
-    : (product.originalPrice > product.discountedPrice ? product.originalPrice : null);
+    ? (selectedVariant.offerPrice && selectedVariant.offerPrice !== '' ? Number(selectedVariant.price || 0) : null)
+    : (product.originalPrice && Number(product.originalPrice) > Number(product.discountedPrice || 0) ? Number(product.originalPrice) : null);
 
   const discountPercent = selectedVariant
     ? (selectedVariant.offerPrice && selectedVariant.offerPrice !== '' 
-        ? Math.round(((Number(selectedVariant.price) - Number(selectedVariant.offerPrice)) / Number(selectedVariant.price)) * 100) 
+        ? Math.round(((Number(selectedVariant.price || 0) - Number(selectedVariant.offerPrice)) / Number(selectedVariant.price || 1)) * 100) 
         : null)
-    : product.discountPercent;
+    : (product.discountPercent ?? 0);
 
   const handleAddToCartClick = async (e) => {
     e.preventDefault();
@@ -224,11 +224,11 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
         {/* Price Section */}
         <div className="flex items-baseline gap-2 mb-2 sm:mb-3">
           <span className="text-[15px] sm:text-[16px] font-bold text-gray-900">
-            ₹{currentPrice.toLocaleString('en-IN')}
+            ₹{(currentPrice || 0).toLocaleString('en-IN')}
           </span>
-          {originalPrice > currentPrice && (
+          {originalPrice && originalPrice > currentPrice && (
             <span className="text-[11px] sm:text-[12px] text-gray-400 line-through">
-              ₹{originalPrice.toLocaleString('en-IN')}
+              ₹{(originalPrice || 0).toLocaleString('en-IN')}
             </span>
           )}
           {discountPercent > 0 && (
