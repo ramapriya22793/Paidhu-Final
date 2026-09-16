@@ -624,6 +624,21 @@ const ProductCollection = () => {
 
       <div className="max-w-[1600px] mx-auto px-4 md:px-8">
         
+        {/* Mobile Category Swipe Notification */}
+        <div className="flex sm:hidden items-center justify-between px-1 mb-2">
+          <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#662654]">
+            Categories
+          </span>
+          <button
+            type="button"
+            onClick={() => scrollTabs('right')}
+            className="flex items-center gap-1 text-[11px] font-extrabold text-[#662654] bg-[#f6f2f5] hover:bg-[#eddfe9] px-2.5 py-1 rounded-full shadow-xs active:scale-95 transition-all cursor-pointer"
+          >
+            <span>Swipe for more options</span>
+            <ChevronRight size={13} strokeWidth={3} className="animate-pulse text-[#662654]" />
+          </button>
+        </div>
+
         {/* Category Tabs with Scroll Arrows */}
         <div className="relative mb-6 border-b border-gray-100 pb-4">
           {/* Left Arrow & Fade Gradient */}
@@ -688,6 +703,21 @@ const ProductCollection = () => {
           </div>
         </div>
 
+        {/* Mobile Product Swipe Notification */}
+        <div className="flex sm:hidden items-center justify-between px-1 mb-2.5">
+          <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#662654]">
+            {activeCategory} ({products.length})
+          </span>
+          <button
+            type="button"
+            onClick={() => scrollProducts('right')}
+            className="flex items-center gap-1 text-[11px] font-extrabold text-white bg-[#662654] hover:bg-[#7e3168] px-3 py-1 rounded-full shadow-xs active:scale-95 transition-all cursor-pointer"
+          >
+            <span>Swipe to view all products</span>
+            <ChevronRight size={13} strokeWidth={3} className="animate-pulse text-white" />
+          </button>
+        </div>
+
         {/* Product Scroller & Grid Container with Mobile Navigation Arrows */}
         <div className="relative group/prodScroller">
           
@@ -725,7 +755,7 @@ const ProductCollection = () => {
               Array.from({ length: 5 }).map((_, idx) => (
                 <div 
                   key={`skeleton-${idx}`} 
-                  className="w-[43vw] max-w-[175px] flex-shrink-0 snap-center sm:w-auto sm:max-w-none sm:snap-align-none"
+                  className="w-[42vw] max-w-[170px] flex-shrink-0 snap-center sm:w-auto sm:max-w-none sm:snap-align-none"
                 >
                   <div className="w-full bg-white rounded-2xl border border-gray-100 overflow-hidden flex flex-col shadow-sm animate-pulse">
                     <div className="aspect-square bg-gray-50 flex items-center justify-center p-4">
@@ -746,7 +776,7 @@ const ProductCollection = () => {
               </div>
             ) : (
               products.slice(0, 10).map((product) => (
-                <div key={product.id} className="w-[43vw] max-w-[175px] flex-shrink-0 snap-center sm:w-auto sm:max-w-none sm:snap-align-none">
+                <div key={product.id} className="w-[42vw] max-w-[170px] flex-shrink-0 snap-center sm:w-auto sm:max-w-none sm:snap-align-none">
                   <CollectionProductCard
                     product={product}
                     activeCategory={activeCategory}
