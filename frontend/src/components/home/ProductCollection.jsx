@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Minus, ChevronRight, ChevronLeft, Check, Heart, ShoppingCart } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -326,6 +326,48 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
 const ProductCollection = () => {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState("Bestsellers");
+  const tabsRef = useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = () => {
+    if (tabsRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = tabsRef.current;
+      setCanScrollLeft(scrollLeft > 10);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    const el = tabsRef.current;
+    if (el) {
+      el.addEventListener('scroll', checkScroll, { passive: true });
+      window.addEventListener('resize', checkScroll);
+      return () => {
+        el.removeEventListener('scroll', checkScroll);
+        window.removeEventListener('resize', checkScroll);
+      };
+    }
+  }, []);
+
+  const scrollTabs = (direction) => {
+    if (tabsRef.current) {
+      const scrollAmount = tabsRef.current.clientWidth * 0.7;
+      tabsRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+      setTimeout(checkScroll, 350);
+    }
+  };
+
+  const handleCategorySelect = (category, e) => {
+    setActiveCategory(category);
+    if (e?.currentTarget) {
+      e.currentTarget.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+  };
 
   const handleViewAllClick = () => {
     const config = COLLECTION_TERMS[activeCategory];
@@ -519,21 +561,62 @@ const ProductCollection = () => {
 
       <div className="max-w-[1600px] mx-auto px-4 md:px-8">
         
-        {/* Category Tabs */}
-        <div className="flex overflow-x-auto hide-scrollbar space-x-4 pb-8 mb-6 border-b border-gray-100 items-center">
-          {categories.map((category) => (
+        {/* Category Tabs with Scroll Arrows */}
+        <div className="relative mb-6 border-b border-gray-100 pb-4">
+          {/* Left Arrow Button */}
+          {canScrollLeft && (
             <button
-              key={category}
-              onClick={() => setActiveCategory(category)}
-              className={`relative whitespace-nowrap px-8 py-3 rounded-full text-[15px] font-extrabold tracking-wide transition-all duration-300 cursor-pointer ${
-                activeCategory === category 
-                  ? 'text-white bg-[#662654] shadow-[0_6px_20px_rgba(102,38,84,0.4)] scale-105' 
-                  : 'text-[#662654] bg-[#f6f2f5] hover:text-[#662654] hover:bg-[#eddfe9] hover:shadow-[0_4px_10px_rgba(102,38,84,0.08)] hover:-translate-y-0.5'
-              }`}
+              type="button"
+              onClick={() => scrollTabs('left')}
+              aria-label="Scroll options left"
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/95 backdrop-blur-xs text-[#662654] shadow-[0_4px_16px_rgba(102,38,84,0.2)] border border-gray-200/80 flex items-center justify-center hover:bg-[#662654] hover:text-white transition-all duration-200 active:scale-95 cursor-pointer -ml-1 sm:ml-0"
             >
-              {category}
+              <ChevronLeft size={20} strokeWidth={2.5} />
             </button>
-          ))}
+          )}
+
+          {/* Left Gradient Edge Mask */}
+          {canScrollLeft && (
+            <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 sm:w-12 bg-gradient-to-r from-white via-white/80 to-transparent z-10" />
+          )}
+
+          {/* Scrollable Tabs */}
+          <div 
+            ref={tabsRef}
+            className="flex overflow-x-auto hide-scrollbar space-x-3 sm:space-x-4 py-2 px-1 items-center scroll-smooth"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={(e) => handleCategorySelect(category, e)}
+                className={`relative whitespace-nowrap px-6 sm:px-8 py-2.5 sm:py-3 rounded-full text-sm sm:text-[15px] font-extrabold tracking-wide transition-all duration-300 cursor-pointer shrink-0 ${
+                  activeCategory === category 
+                    ? 'text-white bg-[#662654] shadow-[0_6px_20px_rgba(102,38,84,0.4)] scale-105' 
+                    : 'text-[#662654] bg-[#f6f2f5] hover:text-[#662654] hover:bg-[#eddfe9] hover:shadow-[0_4px_10px_rgba(102,38,84,0.08)] hover:-translate-y-0.5'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+
+          {/* Right Gradient Edge Mask */}
+          {canScrollRight && (
+            <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:w-12 bg-gradient-to-l from-white via-white/80 to-transparent z-10" />
+          )}
+
+          {/* Right Arrow Button */}
+          {canScrollRight && (
+            <button
+              type="button"
+              onClick={() => scrollTabs('right')}
+              aria-label="Scroll options right"
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/95 backdrop-blur-xs text-[#662654] shadow-[0_4px_16px_rgba(102,38,84,0.2)] border border-gray-200/80 flex items-center justify-center hover:bg-[#662654] hover:text-white transition-all duration-200 active:scale-95 cursor-pointer -mr-1 sm:mr-0 animate-pulse hover:animate-none"
+            >
+              <ChevronRight size={20} strokeWidth={2.5} />
+            </button>
+          )}
         </div>
 
         {/* Product Grid */}
