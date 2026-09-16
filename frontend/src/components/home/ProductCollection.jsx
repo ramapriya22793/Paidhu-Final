@@ -340,25 +340,36 @@ const ProductCollection = () => {
 
   useEffect(() => {
     checkScroll();
+    const t1 = setTimeout(checkScroll, 100);
+    const t2 = setTimeout(checkScroll, 400);
+    const t3 = setTimeout(checkScroll, 1000);
     const el = tabsRef.current;
     if (el) {
       el.addEventListener('scroll', checkScroll, { passive: true });
       window.addEventListener('resize', checkScroll);
       return () => {
+        clearTimeout(t1);
+        clearTimeout(t2);
+        clearTimeout(t3);
         el.removeEventListener('scroll', checkScroll);
         window.removeEventListener('resize', checkScroll);
       };
     }
   }, []);
 
+  useEffect(() => {
+    checkScroll();
+  }, [activeCategory]);
+
   const scrollTabs = (direction) => {
     if (tabsRef.current) {
-      const scrollAmount = tabsRef.current.clientWidth * 0.7;
+      const scrollAmount = Math.max(tabsRef.current.clientWidth * 0.75, 220);
       tabsRef.current.scrollBy({
         left: direction === 'left' ? -scrollAmount : scrollAmount,
         behavior: 'smooth'
       });
       setTimeout(checkScroll, 350);
+      setTimeout(checkScroll, 700);
     }
   };
 
@@ -367,6 +378,8 @@ const ProductCollection = () => {
     if (e?.currentTarget) {
       e.currentTarget.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     }
+    setTimeout(checkScroll, 400);
+    setTimeout(checkScroll, 750);
   };
 
   const handleViewAllClick = () => {
@@ -563,34 +576,37 @@ const ProductCollection = () => {
         
         {/* Category Tabs with Scroll Arrows */}
         <div className="relative mb-6 border-b border-gray-100 pb-4">
-          {/* Left Arrow Button */}
-          {canScrollLeft && (
+          {/* Left Arrow & Fade Gradient */}
+          <div 
+            className={`absolute left-0 top-0 bottom-4 z-20 flex items-center transition-opacity duration-300 pointer-events-none ${
+              canScrollLeft ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <div className="w-10 sm:w-16 h-full bg-gradient-to-r from-white via-white/95 to-transparent" />
             <button
               type="button"
               onClick={() => scrollTabs('left')}
               aria-label="Scroll options left"
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/95 backdrop-blur-xs text-[#662654] shadow-[0_4px_16px_rgba(102,38,84,0.2)] border border-gray-200/80 flex items-center justify-center hover:bg-[#662654] hover:text-white transition-all duration-200 active:scale-95 cursor-pointer -ml-1 sm:ml-0"
+              tabIndex={canScrollLeft ? 0 : -1}
+              className={`absolute left-0 z-30 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white text-[#662654] shadow-[0_4px_16px_rgba(102,38,84,0.25)] border border-[#662654]/20 flex items-center justify-center hover:bg-[#662654] hover:text-white transition-all duration-200 active:scale-90 cursor-pointer ${
+                canScrollLeft ? 'pointer-events-auto' : 'pointer-events-none'
+              }`}
             >
               <ChevronLeft size={20} strokeWidth={2.5} />
             </button>
-          )}
-
-          {/* Left Gradient Edge Mask */}
-          {canScrollLeft && (
-            <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 sm:w-12 bg-gradient-to-r from-white via-white/80 to-transparent z-10" />
-          )}
+          </div>
 
           {/* Scrollable Tabs */}
           <div 
             ref={tabsRef}
-            className="flex overflow-x-auto hide-scrollbar space-x-3 sm:space-x-4 py-2 px-1 items-center scroll-smooth"
+            className="flex overflow-x-auto hide-scrollbar space-x-2.5 sm:space-x-4 py-2 px-1 items-center scroll-smooth pr-14 sm:pr-16"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {categories.map((category) => (
               <button
                 key={category}
                 onClick={(e) => handleCategorySelect(category, e)}
-                className={`relative whitespace-nowrap px-6 sm:px-8 py-2.5 sm:py-3 rounded-full text-sm sm:text-[15px] font-extrabold tracking-wide transition-all duration-300 cursor-pointer shrink-0 ${
+                className={`relative whitespace-nowrap px-5 sm:px-8 py-2.5 sm:py-3 rounded-full text-sm sm:text-[15px] font-extrabold tracking-wide transition-all duration-300 cursor-pointer shrink-0 ${
                   activeCategory === category 
                     ? 'text-white bg-[#662654] shadow-[0_6px_20px_rgba(102,38,84,0.4)] scale-105' 
                     : 'text-[#662654] bg-[#f6f2f5] hover:text-[#662654] hover:bg-[#eddfe9] hover:shadow-[0_4px_10px_rgba(102,38,84,0.08)] hover:-translate-y-0.5'
@@ -601,22 +617,25 @@ const ProductCollection = () => {
             ))}
           </div>
 
-          {/* Right Gradient Edge Mask */}
-          {canScrollRight && (
-            <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:w-12 bg-gradient-to-l from-white via-white/80 to-transparent z-10" />
-          )}
-
-          {/* Right Arrow Button */}
-          {canScrollRight && (
+          {/* Right Arrow & Fade Gradient */}
+          <div 
+            className={`absolute right-0 top-0 bottom-4 z-20 flex items-center justify-end transition-opacity duration-300 pointer-events-none ${
+              canScrollRight ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <div className="w-12 sm:w-20 h-full bg-gradient-to-l from-white via-white/95 to-transparent" />
             <button
               type="button"
               onClick={() => scrollTabs('right')}
               aria-label="Scroll options right"
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/95 backdrop-blur-xs text-[#662654] shadow-[0_4px_16px_rgba(102,38,84,0.2)] border border-gray-200/80 flex items-center justify-center hover:bg-[#662654] hover:text-white transition-all duration-200 active:scale-95 cursor-pointer -mr-1 sm:mr-0 animate-pulse hover:animate-none"
+              tabIndex={canScrollRight ? 0 : -1}
+              className={`absolute right-0 z-30 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white text-[#662654] shadow-[0_4px_16px_rgba(102,38,84,0.25)] border border-[#662654]/20 flex items-center justify-center hover:bg-[#662654] hover:text-white transition-all duration-200 active:scale-90 cursor-pointer ${
+                canScrollRight ? 'pointer-events-auto' : 'pointer-events-none'
+              }`}
             >
               <ChevronRight size={20} strokeWidth={2.5} />
             </button>
-          )}
+          </div>
         </div>
 
         {/* Product Grid */}

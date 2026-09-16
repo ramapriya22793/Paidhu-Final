@@ -31,6 +31,17 @@ jobs:
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
 
+      - name: Link and Pull Vercel Environment (Frontend)
+        working-directory: ./frontend
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: team_C2b0pSd5lkEwPzlzMXiZAQ1S
+          VERCEL_PROJECT_ID: prj_HqL7cAuq6qR3bL94sLR3w1Wd58t3
+        run: |
+          mkdir -p .vercel
+          echo '{"orgId":"team_C2b0pSd5lkEwPzlzMXiZAQ1S","projectId":"prj_HqL7cAuq6qR3bL94sLR3w1Wd58t3"}' > .vercel/project.json
+          vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+
       - name: Run Vercel build (generate .vercel/output)
         working-directory: ./frontend
         env:
@@ -39,8 +50,11 @@ jobs:
           VERCEL_PROJECT_ID: prj_HqL7cAuq6qR3bL94sLR3w1Wd58t3
         run: vercel build --prod --token=$VERCEL_TOKEN
 
-      - name: Copy prebuilt output to root
-        run: cp -r frontend/.vercel/output .vercel/output
+      - name: Copy prebuilt output and project metadata to root
+        run: |
+          mkdir -p .vercel
+          echo '{"orgId":"team_C2b0pSd5lkEwPzlzMXiZAQ1S","projectId":"prj_HqL7cAuq6qR3bL94sLR3w1Wd58t3"}' > .vercel/project.json
+          cp -r frontend/.vercel/output .vercel/output
 
       - name: Deploy to Vercel Production (paidhu.com)
         env:
@@ -52,6 +66,7 @@ jobs:
   deploy-backend:
     name: Deploy Backend API
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -71,6 +86,8 @@ jobs:
           VERCEL_ORG_ID: team_C2b0pSd5lkEwPzlzMXiZAQ1S
           VERCEL_PROJECT_ID: prj_fSwlGoKHjgTeFjyCLENapBP6lk3j
         run: |
+          mkdir -p .vercel
+          echo '{"orgId":"team_C2b0pSd5lkEwPzlzMXiZAQ1S","projectId":"prj_fSwlGoKHjgTeFjyCLENapBP6lk3j"}' > .vercel/project.json
           vercel pull --yes --environment=production --token=$VERCEL_TOKEN
           vercel build --prod --token=$VERCEL_TOKEN
           vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
