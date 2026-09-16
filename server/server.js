@@ -244,6 +244,11 @@ app.get("/", (req, res) => {
   res.send("Paidhu API Running");
 });
 
+// Health/ping endpoint for cron-job keep-alive
+app.get("/api/ping", (req, res) => {
+  res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
 // Custom 404 API Handler
 app.use((req, res) => {
   res.status(404).json({ message: "API Endpoint not found" });
