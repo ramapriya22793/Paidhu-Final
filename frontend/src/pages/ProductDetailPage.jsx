@@ -32,28 +32,44 @@ const resolveProductName = (name) => {
   return name.replace(/\s*\?+\s*/g, ' - ').trim();
 };
 
-// Detect if a product is saffron-related (Saffron 1G, Saffron Gift Box, Kashmiri Mongra, etc.)
-const isSaffronProduct = (p, selectedVariant) => {
+// Detect if a product is strictly a pure saffron product (e.g. Kashmiri Mongra, Super Neigin, Saffron Powder, Saffron Giftbox)
+const isSaffronProduct = (p) => {
   if (!p) return false;
-  const str = [
-    p.name,
-    p.slug,
-    typeof p.category === 'object' ? p.category?.name : p.category,
-    typeof p.tags === 'string' ? p.tags : Array.isArray(p.tags) ? p.tags.join(' ') : '',
-    p.description,
-    p.shortDescription,
-    selectedVariant?.size,
-    selectedVariant?.name,
-    ...(Array.isArray(p.variants) ? p.variants.map(v => v.size || v.name) : [])
-  ].filter(Boolean).join(' ').toLowerCase();
+  const name = (p.name || '').toLowerCase();
+  const slug = (p.slug || '').toLowerCase();
+  const cat = (typeof p.category === 'object' ? p.category?.name : p.category || '').toLowerCase();
 
+  // Exclude non-pure-saffron items: combos, teas, cookies, jams, brew flora, dry flowers
+  if (
+    name.includes('combo') ||
+    name.includes('tea') ||
+    name.includes('cookie') ||
+    name.includes('jam') ||
+    name.includes('brew flora') ||
+    name.includes('dry flower') ||
+    name.includes('baby krishna') ||
+    name.includes('gulkhand') ||
+    name.includes('syrup') ||
+    cat.includes('combo') ||
+    cat.includes('tea') ||
+    cat.includes('cookie') ||
+    cat.includes('jam') ||
+    cat.includes('brew flora')
+  ) {
+    return false;
+  }
+
+  // Pure Saffron checks
   return (
-    str.includes('saffron') ||
-    str.includes('mongra') ||
-    str.includes('neign') ||
-    str.includes('gift-box') ||
-    str.includes('gift box') ||
-    str.includes('kesar')
+    cat === 'saffron' ||
+    name.includes('mongra') ||
+    name.includes('neigin') ||
+    name.includes('saffron powder') ||
+    name.includes('kashmiri saffron') ||
+    name.includes('saffron giftbox') ||
+    (name.includes('saffron') && !name.includes('tea') && !name.includes('combo')) ||
+    slug.includes('mongra') ||
+    slug.includes('saffron')
   );
 };
 
@@ -475,7 +491,7 @@ const ProductDetailPage = () => {
               <span className="text-gray-300 font-light">-</span>
               <Link to="/shop" className="hover:text-[#b91c1c] transition-colors">PRODUCTS</Link>
               <span className="text-gray-300 font-light">-</span>
-              <span className="text-[#b91c1c] font-bold">KASHMIRI MONGRA</span>
+              <span className="text-[#b91c1c] font-bold">{(product.name || 'KASHMIRI MONGRA').toUpperCase()}</span>
             </nav>
           </div>
         ) : (
