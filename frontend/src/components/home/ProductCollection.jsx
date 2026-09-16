@@ -382,6 +382,56 @@ const ProductCollection = () => {
     setTimeout(checkScroll, 750);
   };
 
+  // Product scroller navigation (Mobile / Horizontal Scroll)
+  const productsScrollRef = useRef(null);
+  const [canScrollProdLeft, setCanScrollProdLeft] = useState(false);
+  const [canScrollProdRight, setCanScrollProdRight] = useState(true);
+
+  const checkProdScroll = () => {
+    if (productsScrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = productsScrollRef.current;
+      setCanScrollProdLeft(scrollLeft > 10);
+      setCanScrollProdRight(scrollLeft < scrollWidth - clientWidth - 10);
+    }
+  };
+
+  const scrollProducts = (direction) => {
+    if (productsScrollRef.current) {
+      const scrollAmount = Math.max(productsScrollRef.current.clientWidth * 0.75, 240);
+      productsScrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+      setTimeout(checkProdScroll, 350);
+      setTimeout(checkProdScroll, 700);
+    }
+  };
+
+  useEffect(() => {
+    const el = productsScrollRef.current;
+    if (el) {
+      el.addEventListener('scroll', checkProdScroll, { passive: true });
+      window.addEventListener('resize', checkProdScroll);
+      return () => {
+        el.removeEventListener('scroll', checkProdScroll);
+        window.removeEventListener('resize', checkProdScroll);
+      };
+    }
+  }, []);
+
+  useEffect(() => {
+    if (productsScrollRef.current) {
+      productsScrollRef.current.scrollLeft = 0;
+    }
+    checkProdScroll();
+    const t1 = setTimeout(checkProdScroll, 150);
+    const t2 = setTimeout(checkProdScroll, 500);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, [activeCategory]);
+
   const handleViewAllClick = () => {
     const config = COLLECTION_TERMS[activeCategory];
     if (config?.shopUrl) {
@@ -638,52 +688,97 @@ const ProductCollection = () => {
           </div>
         </div>
 
-        {/* Product Grid */}
-        <motion.div 
-          variants={gridVariants}
-          initial="hidden"
-          animate="show"
-          key={activeCategory}
-          className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory hide-scrollbar sm:grid sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 sm:gap-6 sm:overflow-visible sm:pb-0"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
-          {loading ? (
-            Array.from({ length: 5 }).map((_, idx) => (
-              <div 
-                key={`skeleton-${idx}`} 
-                className="w-[46vw] max-w-[185px] flex-shrink-0 snap-center sm:w-auto sm:max-w-none sm:snap-align-none"
-              >
-                <div className="w-full bg-white rounded-2xl border border-gray-100 overflow-hidden flex flex-col shadow-sm animate-pulse">
-                  <div className="aspect-square bg-gray-50 flex items-center justify-center p-4">
-                    <div className="w-4/5 h-4/5 bg-gray-200 rounded-lg" />
-                  </div>
-                  <div className="p-4 flex flex-col flex-1 space-y-3">
-                    <div className="h-4 bg-gray-200 rounded w-3/4" />
-                    <div className="h-3 bg-gray-200 rounded w-5/6" />
-                    <div className="mt-auto h-4 bg-gray-200 rounded w-1/2" />
-                    <div className="h-10 bg-gray-200 rounded-full w-full" />
+        {/* Product Scroller & Grid Container with Mobile Navigation Arrows */}
+        <div className="relative group/prodScroller">
+          
+          {/* Mobile Left Arrow Button & Edge Fade */}
+          <div 
+            className={`sm:hidden absolute left-0 top-1/2 -translate-y-1/2 z-30 flex items-center transition-opacity duration-300 pointer-events-none ${
+              canScrollProdLeft ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <div className="w-8 h-64 bg-gradient-to-r from-white via-white/80 to-transparent pointer-events-none" />
+            <button
+              type="button"
+              onClick={() => scrollProducts('left')}
+              aria-label="Scroll products left"
+              tabIndex={canScrollProdLeft ? 0 : -1}
+              className={`absolute left-0 z-40 w-9 h-9 rounded-full bg-white text-[#662654] shadow-[0_4px_16px_rgba(102,38,84,0.3)] border border-[#662654]/25 flex items-center justify-center hover:bg-[#662654] hover:text-white transition-all duration-200 active:scale-90 cursor-pointer ${
+                canScrollProdLeft ? 'pointer-events-auto' : 'pointer-events-none'
+              }`}
+            >
+              <ChevronLeft size={20} strokeWidth={2.5} />
+            </button>
+          </div>
+
+          {/* Product Grid / Horizontal Scroller */}
+          <motion.div 
+            ref={productsScrollRef}
+            variants={gridVariants}
+            initial="hidden"
+            animate="show"
+            key={activeCategory}
+            className="flex overflow-x-auto gap-3.5 sm:gap-6 pb-4 snap-x snap-mandatory hide-scrollbar sm:grid sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 sm:overflow-visible sm:pb-0 scroll-smooth pr-10 sm:pr-0 pl-0.5"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {loading ? (
+              Array.from({ length: 5 }).map((_, idx) => (
+                <div 
+                  key={`skeleton-${idx}`} 
+                  className="w-[43vw] max-w-[175px] flex-shrink-0 snap-center sm:w-auto sm:max-w-none sm:snap-align-none"
+                >
+                  <div className="w-full bg-white rounded-2xl border border-gray-100 overflow-hidden flex flex-col shadow-sm animate-pulse">
+                    <div className="aspect-square bg-gray-50 flex items-center justify-center p-4">
+                      <div className="w-4/5 h-4/5 bg-gray-200 rounded-lg" />
+                    </div>
+                    <div className="p-4 flex flex-col flex-1 space-y-3">
+                      <div className="h-4 bg-gray-200 rounded w-3/4" />
+                      <div className="h-3 bg-gray-200 rounded w-5/6" />
+                      <div className="mt-auto h-4 bg-gray-200 rounded w-1/2" />
+                      <div className="h-10 bg-gray-200 rounded-full w-full" />
+                    </div>
                   </div>
                 </div>
+              ))
+            ) : products.length === 0 ? (
+              <div className="col-span-full py-12 flex flex-col items-center justify-center text-gray-500">
+                <p className="text-base font-semibold">No products found in this category.</p>
               </div>
-            ))
-          ) : products.length === 0 ? (
-            <div className="col-span-full py-12 flex flex-col items-center justify-center text-gray-500">
-              <p className="text-base font-semibold">No products found in this category.</p>
-            </div>
-          ) : (
-            products.slice(0, 5).map((product) => (
-              <div key={product.id} className="w-[46vw] max-w-[185px] flex-shrink-0 snap-center sm:w-auto sm:max-w-none sm:snap-align-none">
-                <CollectionProductCard
-                  product={product}
-                  activeCategory={activeCategory}
-                  addingId={addingId}
-                  setAddingId={setAddingId}
-                  isInWishlist={isInWishlist}
-                  handleToggleWishlist={handleToggleWishlist}
-                />
-              </div>
-            )))}
-        </motion.div>
+            ) : (
+              products.slice(0, 10).map((product) => (
+                <div key={product.id} className="w-[43vw] max-w-[175px] flex-shrink-0 snap-center sm:w-auto sm:max-w-none sm:snap-align-none">
+                  <CollectionProductCard
+                    product={product}
+                    activeCategory={activeCategory}
+                    addingId={addingId}
+                    setAddingId={setAddingId}
+                    isInWishlist={isInWishlist}
+                    handleToggleWishlist={handleToggleWishlist}
+                  />
+                </div>
+              )))}
+          </motion.div>
+
+          {/* Mobile Right Arrow Button & Edge Fade */}
+          <div 
+            className={`sm:hidden absolute right-0 top-1/2 -translate-y-1/2 z-30 flex items-center justify-end transition-opacity duration-300 pointer-events-none ${
+              canScrollProdRight ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <div className="w-10 h-64 bg-gradient-to-l from-white via-white/80 to-transparent pointer-events-none" />
+            <button
+              type="button"
+              onClick={() => scrollProducts('right')}
+              aria-label="Scroll products right"
+              tabIndex={canScrollProdRight ? 0 : -1}
+              className={`absolute right-0 z-40 w-9 h-9 rounded-full bg-white text-[#662654] shadow-[0_4px_16px_rgba(102,38,84,0.3)] border border-[#662654]/25 flex items-center justify-center hover:bg-[#662654] hover:text-white transition-all duration-200 active:scale-90 cursor-pointer ${
+                canScrollProdRight ? 'pointer-events-auto' : 'pointer-events-none'
+              }`}
+            >
+              <ChevronRight size={20} strokeWidth={2.5} />
+            </button>
+          </div>
+        </div>
 
         {/* Bottom Actions */}
         <div className="mt-6 flex justify-center items-center w-full">
