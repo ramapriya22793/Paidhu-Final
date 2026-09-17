@@ -482,32 +482,6 @@ const ProductDetailPage = () => {
       />
 
       <div className="max-w-[1400px] mx-auto px-4 md:px-8">
-        
-        {/* 🌸 Saffron Signature Breadcrumbs or Standard Breadcrumbs */}
-        {isSaffron ? (
-          <div className="w-full text-center py-3 mb-4">
-            <nav className="inline-flex items-center gap-2.5 sm:gap-4 text-xs sm:text-sm font-semibold tracking-[0.25em] text-[#334155] uppercase font-sans">
-              <Link to="/" className="hover:text-[#b91c1c] transition-colors">HOME</Link>
-              <span className="text-gray-300 font-light">-</span>
-              <Link to="/shop" className="hover:text-[#b91c1c] transition-colors">PRODUCTS</Link>
-              <span className="text-gray-300 font-light">-</span>
-              <span className="text-[#b91c1c] font-bold">{(product.name || 'KASHMIRI MONGRA').toUpperCase()}</span>
-            </nav>
-          </div>
-        ) : (
-          <>
-            {/* Breadcrumbs Navigation */}
-            <Breadcrumbs items={breadcrumbItems} />
-            
-            {/* Breadcrumb / Back Link */}
-            <Link 
-              to="/shop" 
-              className="group inline-flex items-center gap-2 text-gray-500 hover:text-[#662654] font-bold text-sm mb-4 transition-colors"
-            >
-              <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" /> Back to Shop
-            </Link>
-          </>
-        )}
 
         {/* ── Main Product Section ── */}
         <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start p-6 md:p-10 rounded-[2.5rem] border border-gray-100/80 relative overflow-hidden ${
@@ -714,21 +688,7 @@ const ProductDetailPage = () => {
           {/* 2. Right Column: Rich Info Panel */}
           <div className="space-y-6 lg:space-y-8">
             <div>
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs font-black text-[#662654] uppercase tracking-widest bg-[#662654]/10 border border-[#662654]/10 px-3.5 py-1.5 rounded-full">
-                  {product.category}
-                </span>
-                {isSaffron && (
-                  <Link
-                    to="/saffron-guidance"
-                    className="inline-flex items-center gap-1.5 bg-gradient-to-r from-[#d4af37]/20 to-[#f5d061]/20 hover:from-[#d4af37]/30 hover:to-[#f5d061]/30 text-[#7a4f15] border border-[#d4af37]/40 text-[11px] font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full transition-all shadow-xs"
-                  >
-                    <Sparkles size={11} className="text-[#85581a]" />
-                    <span>Free Saffron Guidance Included</span>
-                  </Link>
-                )}
-              </div>
-              <h1 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight mt-3 leading-tight">
+              <h1 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight leading-tight">
                 {product.name}
               </h1>
             </div>
