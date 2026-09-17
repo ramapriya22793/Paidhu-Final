@@ -42,13 +42,46 @@ const getImageProxy = (req, res) => {
   }
 };
 
+// Category filter helper (includes Saffron Gift Box when filtering Saffron)
+const buildCategoryCondition = (category) => {
+  if (!category || category === 'Shop All') return null;
+  const catLower = category.toLowerCase().trim();
+  if (catLower === 'saffron') {
+    return {
+      OR: [
+        { category: { name: { equals: 'Saffron', mode: 'insensitive' } } },
+        { category: { name: { equals: 'Saffron Giftbox', mode: 'insensitive' } } },
+        { category: { name: { equals: 'Gift Box', mode: 'insensitive' } } },
+        { id: 30 },
+        { name: { contains: 'Gift Box', mode: 'insensitive' } },
+        { name: { contains: 'Saffron Giftbox', mode: 'insensitive' } }
+      ]
+    };
+  }
+  if (catLower === 'saffron giftbox' || catLower === 'gift box') {
+    return {
+      OR: [
+        { category: { name: { equals: 'Saffron Giftbox', mode: 'insensitive' } } },
+        { category: { name: { equals: 'Gift Box', mode: 'insensitive' } } },
+        { id: 30 },
+        { name: { contains: 'Gift Box', mode: 'insensitive' } },
+        { name: { contains: 'Saffron Giftbox', mode: 'insensitive' } }
+      ]
+    };
+  }
+  return { category: { name: { equals: category, mode: 'insensitive' } } };
+};
+
 // NAV SECTION → FILTER MAPPING
 // Maps each navbar header to a Prisma where-clause builder
 
 const navSectionFilters = {
   'shop-all': () => ({}),
   'deal-of-the-day': () => ({ status: { in: ['ACTIVE', 'PREORDER'] } }),
-  'shop-by-category': (extra) => extra?.category ? { category: { name: { equals: extra.category, mode: 'insensitive' } } } : {},
+  'shop-by-category': (extra) => {
+    const catCond = buildCategoryCondition(extra?.category);
+    return catCond || {};
+  },
   'for-your-family': () => ({ 
     OR: [
       { category: { name: { equals: 'Combos', mode: 'insensitive' } } },
@@ -106,7 +139,8 @@ const getProducts = async (req, res) => {
     } else {
       // Legacy category / tag filters
       if (category && category !== 'Shop All') {
-        where.category = { name: { equals: category, mode: 'insensitive' } };
+        const catCond = buildCategoryCondition(category);
+        if (catCond) where = { ...where, ...catCond };
       }
       if (tag) {
         where.tags = { contains: tag, mode: 'insensitive' };
@@ -114,8 +148,9 @@ const getProducts = async (req, res) => {
     }
 
     // Apply global category filter if provided and not already applied by nav section smart filter
-    if (category && category !== 'Shop All' && !where.category) {
-      where.category = { name: { equals: category, mode: 'insensitive' } };
+    if (category && category !== 'Shop All' && !where.category && !where.OR) {
+      const catCond = buildCategoryCondition(category);
+      if (catCond) where = { ...where, ...catCond };
     }
 
     // Full-text search

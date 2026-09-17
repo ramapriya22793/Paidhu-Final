@@ -683,7 +683,22 @@ const ShopPage = () => {
   const getInitialFallbackProducts = () => {
     let list = allFallbackProducts;
     if (activeCategory) {
-      list = list.filter(p => p.category?.name === activeCategory || p.category === activeCategory);
+      const activeCatLower = activeCategory.toLowerCase().trim();
+      if (activeCatLower === 'saffron') {
+        list = list.filter(p => {
+          const cat = (typeof p.category === 'object' ? p.category?.name : p.category || '').toLowerCase();
+          const name = (p.name || '').toLowerCase();
+          return cat === 'saffron' || cat === 'saffron giftbox' || cat === 'gift box' || name.includes('gift box') || name.includes('saffron') || p.id === 30;
+        });
+      } else if (activeCatLower === 'saffron giftbox' || activeCatLower === 'gift box') {
+        list = list.filter(p => {
+          const cat = (typeof p.category === 'object' ? p.category?.name : p.category || '').toLowerCase();
+          const name = (p.name || '').toLowerCase();
+          return cat === 'saffron giftbox' || cat === 'gift box' || name.includes('gift box') || p.id === 30;
+        });
+      } else {
+        list = list.filter(p => p.category?.name === activeCategory || p.category === activeCategory);
+      }
     }
     if (navSection === 'deal-of-the-day') {
       list = list.filter(p => p.tags && p.tags.toLowerCase().includes("deal"));
@@ -724,6 +739,7 @@ const ShopPage = () => {
       if (p.id === 20 || /mongra|kashmiri/i.test(title)) return 1;
       if (p.id === 22 || /negin|neigin/i.test(title)) return 2;
       if (p.id === 21 || /powder/i.test(title)) return 3;
+      if (p.id === 30 || /gift box|giftbox/i.test(title)) return 4;
       return 99;
     };
     list = [...list].sort((a, b) => {
@@ -990,6 +1006,7 @@ const ShopPage = () => {
             if (p.id === 20 || /mongra|kashmiri/i.test(title)) return 1;
             if (p.id === 22 || /negin|neigin/i.test(title)) return 2;
             if (p.id === 21 || /powder/i.test(title)) return 3;
+            if (p.id === 30 || /gift box|giftbox/i.test(title)) return 4;
             return 99;
           };
 

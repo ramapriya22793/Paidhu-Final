@@ -81,12 +81,12 @@ const CATEGORY_CONFIG = [
     borderClass: "border-[#f0dbc0]",
     img: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787745899482-paidhukashmirimongrapng.png",
     fallback: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787745899482-paidhukashmirimongrapng.png",
-    productCount: 3,
+    productCount: 4,
     products: [
       {
         id: 20,
         name: "Kashmiri Mongra",
-        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787745899482-paidhukashmirimongrapng.png",
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787745888642-paidhukashmirimongra02png.png",
         shortDescription: "Experience the essence of Kashmir with our prized Kashmiri Mongra saffron, renowned for its deep red threads, distinct flavor, and unparalleled fragrance."
       },
       {
@@ -100,12 +100,19 @@ const CATEGORY_CONFIG = [
         name: "Saffron Powder",
         image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787747041682-saffronpowder002png.png",
         shortDescription: "Premium saffron powder from Paidhu is carefully sourced to ensure purity and superior quality. Known for its rich aroma and vibrant color."
+      },
+      {
+        id: 30,
+        name: "Saffron Gift Box",
+        image: "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/gift-box-big-2.jpg",
+        shortDescription: "Get our delightful gift box of various saffron combos and give yourself a savory treat. A lovely luxury present for connoisseurs."
       }
     ],
     images: [
-      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787745899482-paidhukashmirimongrapng.png",
+      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787745888642-paidhukashmirimongra02png.png",
       "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787746786285-saffronsuperneigin001png.png",
-      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787747041682-saffronpowder002png.png"
+      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787747041682-saffronpowder002png.png",
+      "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/gift-box-big-2.jpg"
     ]
   },
   {
