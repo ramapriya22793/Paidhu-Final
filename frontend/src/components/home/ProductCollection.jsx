@@ -10,15 +10,19 @@ const productsCache = {};
 let allProductsMemory = null;
 let lastFetchTime = 0;
 
-// Thematic terms directly based on Paidhu's floral food products (mouth-watering product temptation, non-health/non-medicinal)
+// Thematic terms directly based on Paidhu's floral food products
 const COLLECTION_TERMS = {
   "Bestsellers": {
-    filter: (p) => p.tags?.toLowerCase().includes("bestseller") || [20, 8, 3, 31, 22].includes(p.id),
-    priorityIds: [20, 8, 3, 31, 22],
+    filter: (p) => (p.tags && p.tags.toLowerCase().includes("bestseller")) || [20, 8, 3, 31, 22, 10, 4, 15].includes(p.id),
+    priorityIds: [20, 8, 3, 31, 22, 10, 4, 15],
     shopUrl: "/shop/shop-all?tag=bestseller",
   },
   "Bloom Cookies": {
-    filter: (p) => /cookie/i.test(p.name + ' ' + (p.category?.name || p.category || '')),
+    filter: (p) => {
+      const name = (p.name || p.title || '').toLowerCase();
+      const cat = (p.category?.name || (typeof p.category === 'string' ? p.category : '') || '').toLowerCase();
+      return cat.includes('cookie') || name.includes('cookie');
+    },
     priorityIds: [8, 10, 9],
     shopUrl: "/shop/shop-by-category?category=Bloom%20Cookies",
   },
@@ -26,35 +30,57 @@ const COLLECTION_TERMS = {
     filter: (p) => {
       const name = (p.name || p.title || '').toLowerCase();
       const cat = (p.category?.name || (typeof p.category === 'string' ? p.category : '') || '').toLowerCase();
-      if (name.includes('medley') || name.includes('tea') || name.includes('dips') || cat.includes('tea') || cat.includes('medley')) return false;
-      return cat === 'saffron' || /saffron/i.test(name);
+      if (name.includes('tea') || name.includes('dips') || cat.includes('tea') || cat.includes('medley') || name.includes('cookie') || name.includes('jam') || name.includes('syrup')) return false;
+      return cat.includes('saffron') || cat.includes('gift box') || name.includes('saffron') || name.includes('mongra') || name.includes('negin') || name.includes('neigin') || name.includes('gift box') || p.id === 30;
     },
-    priorityIds: [20, 22, 21],
-    shopUrl: "/shop/shop-all?q=saffron",
+    priorityIds: [20, 22, 21, 30],
+    shopUrl: "/shop/shop-by-category?category=Saffron",
   },
   "Petal Jams": {
-    filter: (p) => p.category?.toLowerCase().includes('jam') || /jam|gulkhand|syrup|preserve/i.test(p.name),
+    filter: (p) => {
+      const name = (p.name || p.title || '').toLowerCase();
+      const cat = (p.category?.name || (typeof p.category === 'string' ? p.category : '') || '').toLowerCase();
+      return cat.includes('jam') || /jam|gulkhand|syrup|preserve/i.test(name);
+    },
     priorityIds: [28, 4, 3, 29, 6],
     shopUrl: "/shop/shop-by-category?category=Petal%20Jam",
   },
   "Exotic Flower Brews": {
-    filter: (p) => /brew\s*flora|whole\s*flower|chamomile|blue\s*pea|lavender|aavaram\s*poo/i.test(p.name),
-    priorityIds: [12, 15, 14, 13, 11, 44],
+    filter: (p) => {
+      const name = (p.name || p.title || '').toLowerCase();
+      const cat = (p.category?.name || (typeof p.category === 'string' ? p.category : '') || '').toLowerCase();
+      if (name.includes('dips') || name.includes('medley') || name.includes('medly') || cat.includes('medley')) return false;
+      return cat.includes('brew flora') || /brew\s*flora|whole\s*flower/i.test(name) || [11, 12, 13, 14, 15, 44].includes(p.id);
+    },
+    priorityIds: [11, 12, 13, 15, 14, 44],
     shopUrl: "/shop/shop-by-category?category=Brew%20Flora",
   },
   "Medley Teas": {
-    filter: (p) => /medly|medley|tea\s*\(20\s*dips\)|dips/i.test(p.name),
-    priorityIds: [45, 17, 18, 19, 31, 16],
+    filter: (p) => {
+      const name = (p.name || p.title || '').toLowerCase();
+      const cat = (p.category?.name || (typeof p.category === 'string' ? p.category : '') || '').toLowerCase();
+      return cat.includes('medley') || /medly|medley|dips/i.test(name) || [45, 16, 17, 18, 19, 31].includes(p.id);
+    },
+    priorityIds: [45, 16, 17, 18, 19, 31],
     shopUrl: "/shop/shop-by-category?category=Medley%20Teas",
   },
   "Ruby Hibiscus Delights": {
-    filter: (p) => /hibiscus/i.test(p.name + ' ' + (p.description || '')),
-    priorityIds: [4, 10, 13, 16, 45],
+    filter: (p) => {
+      const name = (p.name || p.title || '').toLowerCase();
+      const desc = (p.description || p.shortDescription || '').toLowerCase();
+      const cat = (p.category?.name || (typeof p.category === 'string' ? p.category : '') || '').toLowerCase();
+      return /hibiscus|sinensis|chembaruthi/i.test(name + ' ' + desc + ' ' + cat);
+    },
+    priorityIds: [10, 4, 6, 13, 45, 16],
     shopUrl: "/shop/shop-all?q=hibiscus",
   },
   "Gift Boxes & Combos": {
-    filter: (p) => p.category?.toLowerCase().includes('gift') || /gift|combo|box/i.test(p.name + ' ' + (p.tags || '')) || [30, 20, 8, 3].includes(p.id),
-    priorityIds: [30, 20, 8, 3, 28],
+    filter: (p) => {
+      const name = (p.name || p.title || '').toLowerCase();
+      const cat = (p.category?.name || (typeof p.category === 'string' ? p.category : '') || '').toLowerCase();
+      return cat.includes('combo') || cat.includes('gift') || /gift|combo|box/i.test(name + ' ' + (p.tags || '')) || p.id === 30 || p.id === 47;
+    },
+    priorityIds: [30, 47],
     shopUrl: "/shop/shop-all?tag=family_combos",
   }
 };
@@ -555,15 +581,7 @@ const ProductCollection = () => {
               });
             }
 
-            // If fewer than 5 products, backfill with general products to fill the 5-column row
-            if (matched.length < 5) {
-              for (const p of allProducts) {
-                if (matched.length >= 5) break;
-                if (!matched.some(m => m.id === p.id)) {
-                  matched.push(p);
-                }
-              }
-            }
+
 
             // Deduplicate by title
             const seen = new Set();
