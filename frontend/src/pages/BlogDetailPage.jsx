@@ -16,6 +16,7 @@ import {
   ShoppingBag
 } from 'lucide-react';
 import SEO from '../components/seo/SEO';
+import { getRealisticBlogImage } from '../utils/blogImages';
 
 const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://paidhu-final-anm2.vercel.app');
 
@@ -96,93 +97,8 @@ const BlogDetailPage = () => {
     }
   };
 
-  const getCuratedFloralImage = (title = '', category = '', originalUrl = '') => {
-    const text = (title + ' ' + (category || '')).toLowerCase();
-
-    if (text.includes('jasmine') && (text.includes('omelette') || text.includes('egg') || text.includes('breakfast'))) {
-      return 'https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=800&auto=format&fit=crop';
-    }
-    if (text.includes('chamomile')) {
-      return 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?q=80&w=800&auto=format&fit=crop';
-    }
-    if (text.includes('hibiscus') || text.includes('sembaruthi')) {
-      return '/blogs/hibiscus_dip_tea.png';
-    }
-    if (text.includes('blue pea') || text.includes('butterfly pea') || text.includes('bluepea') || text.includes('blue bloom')) {
-      return '/blogs/blue_pea_dip_tea.png';
-    }
-    if (text.includes('lavender')) {
-      return '/blogs/lavender_dip_tea.png';
-    }
-    if (text.includes('saffron')) {
-      return '/blogs/saffron_herbal_tea.png';
-    }
-    if (text.includes('fruit salad') || text.includes('rainbow flower')) {
-      return '/blogs/rainbow_flower_salad.png';
-    }
-    if (text.includes('panna cotta')) {
-      return '/blogs/bluepea_panna_cotta.png';
-    }
-    if (text.includes('halwa') || text.includes('marigold')) {
-      return '/blogs/marigold_halwa.png';
-    }
-    if (text.includes('rose') || text.includes('gulkand') || text.includes('damask')) {
-      return '/blogs/rose_petal_delicacy.png';
-    }
-    if (text.includes('aavaram') || text.includes('cassia') || text.includes('kondrai') || text.includes('golden bloom') || text.includes('yellow bloom')) {
-      return '/blogs/aavaram_dip_tea.png';
-    }
-    if (text.includes('banana flower') || text.includes('vazhaipoo') || text.includes('chapati roll') || text.includes('pakora') || text.includes('sandwich')) {
-      return 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=800&auto=format&fit=crop';
-    }
-    if (text.includes('drumstick flower') || text.includes('moringa') || text.includes('curd rice') || text.includes('neer mor')) {
-      return 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop';
-    }
-    if (text.includes('dandelion') || text.includes('sambar')) {
-      return 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?q=80&w=800&auto=format&fit=crop';
-    }
-    if (text.includes('dosa')) {
-      return 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?q=80&w=800&auto=format&fit=crop';
-    }
-    if (text.includes('pumpkin flower') || text.includes('fritter')) {
-      return 'https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=800&auto=format&fit=crop';
-    }
-    if (text.includes('neem') || text.includes('rasam') || text.includes('herbal tea') || text.includes('traditional')) {
-      return '/blogs/aavaram_dip_tea.png';
-    }
-    if (text.includes('jasmine') || text.includes('payasam') || text.includes('sweet') || text.includes('dessert')) {
-      return '/blogs/rose_petal_delicacy.png';
-    }
-
-    const isGeneric = !originalUrl || 
-      originalUrl.includes('wp.paidhu.com/wp-content') ||
-      originalUrl.includes('placeholder') || 
-      originalUrl.includes('default') || 
-      originalUrl.includes('child') || 
-      originalUrl.includes('camera') || 
-      originalUrl.includes('toy') ||
-      originalUrl.includes('teacora') ||
-      originalUrl.includes('516627145497') ||
-      originalUrl.includes('kms') ||
-      originalUrl.includes('broccoli') ||
-      originalUrl.includes('galaxy') ||
-      originalUrl.includes('546852199-2d7e912e98c6') ||
-      originalUrl.includes('564890369478-c89ca6d9cde9') ||
-      originalUrl.includes('space');
-
-    if (originalUrl && !isGeneric && (originalUrl.startsWith('http') || originalUrl.startsWith('/blogs/'))) {
-      return originalUrl;
-    }
-
-    return 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?q=80&w=800&auto=format&fit=crop';
-  };
-
   const getBlogImageSrc = (b) => {
-    const img = b?.featuredImage || b?.image;
-    if (img && typeof img === 'string' && img.trim() && !img.includes('placeholder') && !img.includes('kms') && (img.startsWith('http') || img.startsWith('/blogs/'))) {
-      return img;
-    }
-    return getCuratedFloralImage(b?.title, b?.category, img);
+    return getRealisticBlogImage(b);
   };
 
   // Generate Table of Contents from h2/h3 tags
