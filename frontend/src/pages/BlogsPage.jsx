@@ -259,11 +259,14 @@ const BlogsPage = () => {
       return originalUrl;
     }
 
-    return '/blogs/aavaram_dip_tea.png';
+    return 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?q=80&w=800&auto=format&fit=crop';
   };
 
   const getBlogImageSrc = (blog) => {
     const img = blog?.featuredImage || blog?.image;
+    if (img && typeof img === 'string' && img.trim() && !img.includes('placeholder') && !img.includes('kms') && (img.startsWith('http') || img.startsWith('/blogs/'))) {
+      return img;
+    }
     return getCuratedFloralImage(blog?.title, blog?.category, img);
   };
 
