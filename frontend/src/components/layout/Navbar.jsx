@@ -3,7 +3,7 @@ import { Search, ShoppingCart, User, Menu, X, ChevronDown, Grid3X3, Trash2, Minu
 import { Link, useNavigate } from 'react-router-dom';
 import paidhuLogo from '../../assets/paidhulogo.png';
 import { useCart } from '../../context/CartContext';
-import AuthModal from './AuthModal';
+const AuthModal = React.lazy(() => import('./AuthModal'));
 
 // Helper to match categories to relevant icons based on the product category type
 const getCategoryIcon = (categoryName) => {
@@ -1184,20 +1184,24 @@ const Navbar = () => {
         )}
       
 
-      <AuthModal 
-        isOpen={isAuthModalOpen} 
-        onClose={() => setIsAuthModalOpen(false)} 
-        user={user}
-        onLoginSuccess={(loggedInUser) => {
-          console.log('User logged in successfully:', loggedInUser);
-          setUser(loggedInUser);
-        }}
-        onLogout={() => {
-          localStorage.removeItem('paidhu_token');
-          setUser(null);
-          setIsAuthModalOpen(false);
-        }}
-      />
+      {isAuthModalOpen && (
+        <React.Suspense fallback={null}>
+          <AuthModal 
+            isOpen={isAuthModalOpen} 
+            onClose={() => setIsAuthModalOpen(false)} 
+            user={user}
+            onLoginSuccess={(loggedInUser) => {
+              console.log('User logged in successfully:', loggedInUser);
+              setUser(loggedInUser);
+            }}
+            onLogout={() => {
+              localStorage.removeItem('paidhu_token');
+              setUser(null);
+              setIsAuthModalOpen(false);
+            }}
+          />
+        </React.Suspense>
+      )}
     </header>
   );
 };

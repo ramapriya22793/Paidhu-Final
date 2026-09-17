@@ -151,7 +151,10 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
         <img 
           src={product.image} 
           alt={product.title} 
+          width={300}
+          height={300}
           loading="lazy"
+          decoding="async"
           className="w-full h-full object-contain p-3 transition-transform duration-500 ease-out group-hover:scale-105"
           style={{ imageRendering: 'high-quality', WebkitBackfaceVisibility: 'hidden', WebkitTransform: 'translateZ(0)' }}
         />
