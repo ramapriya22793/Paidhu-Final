@@ -356,94 +356,65 @@ const ProductDetailPage = () => {
 
 
 
-  // Helper to filter out flat square box graphics for Saffron
-  const isSquareBoxGraphic = (url) => {
-    if (!url || typeof url !== 'string') return false;
-    return url.includes('saffronsuperneigin') || url.includes('saffron_test');
-  };
-
-  const getSaffronImage = (customImg, defaultAsset) => {
-    const resolved = resolveImage(customImg);
-    if (resolved && !isSquareBoxGraphic(resolved)) {
-      return resolved;
-    }
-    return defaultAsset;
-  };
-
-  // 🌸 Saffron 5-item Signature Gallery with round thumbnails
-  const saffronGallery = [
-    {
-      full: getSaffronImage(product?.image, '/saffron_highres_1.png'),
-      thumb: '/saffron_circle_1.png',
-      circle: '/saffron_circle_1.png',
-      title: 'Kashmiri Mongra Saffron Box & Bottle'
-    },
-    {
-      full: getSaffronImage(product?.images && product.images[0], '/saffron_highres_2.png'),
-      thumb: '/saffron_thumb_2.png',
-      circle: '/saffron_circle_2.png',
-      title: 'Glass Vial Bottle with Cork Lid'
-    },
-    {
-      full: getSaffronImage(product?.images && product.images[1], '/saffron_highres_3.png'),
-      thumb: '/saffron_thumb_3.png',
-      circle: '/saffron_circle_3.png',
-      title: 'Luxury Saffron Packaging Box'
-    },
-    {
-      full: getSaffronImage(product?.images && product.images[2], '/saffron_highres_4.png'),
-      thumb: '/saffron_thumb_4.png',
-      circle: '/saffron_circle_4.png',
-      title: 'Quality & Lab Purity Certificate'
-    },
-    {
-      full: getSaffronImage(product?.images && product.images[3], '/saffron_highres_5.png'),
-      thumb: '/saffron_thumb_5.png',
-      circle: '/saffron_circle_5.png',
-      title: 'Nutrition Facts & Analysis'
-    }
-  ];
-
-  // Standard gallery for other products
-  const standardGallery = [];
+  // Collect all admin-uploaded product images strictly
+  const galleryItems = [];
   const addImageToGallery = (rawUrl, title) => {
+    if (!rawUrl) return;
     const url = resolveImage(rawUrl);
-    if (url && !standardGallery.some(g => g.full === url)) {
-      standardGallery.push({
+    if (url && !galleryItems.some(g => g.full === url)) {
+      galleryItems.push({
         full: url,
         thumb: url,
+        circle: url,
         title: title || product?.name || 'Product Image'
       });
     }
   };
 
   if (product) {
-    if (product.image) addImageToGallery(product.image, product.name);
-    if (Array.isArray(product.images)) {
-      product.images.forEach((img, idx) => {
-        const url = typeof img === 'string' ? img : (img.imageUrl || img.url || img.imagePath);
-        addImageToGallery(url, `${product.name} - View ${idx + 1}`);
+    // 1. Primary main image uploaded by admin
+    if (product.image) {
+      addImageToGallery(product.image, `${product.name} - View 1`);
+    }
+
+    // 2. Extra images uploaded by admin in images field
+    let extraImages = product.images;
+    if (typeof extraImages === 'string') {
+      extraImages = parseJsonField(extraImages);
+    }
+    if (Array.isArray(extraImages)) {
+      extraImages.forEach((img, idx) => {
+        const url = typeof img === 'string' ? img : (img?.imageUrl || img?.url || img?.imagePath);
+        if (url) addImageToGallery(url, `${product.name} - View ${galleryItems.length + 1}`);
       });
     }
-    if (Array.isArray(product.productImages)) {
-      product.productImages.forEach((img, idx) => {
-        const url = typeof img === 'string' ? img : (img.imageUrl || img.url || img.imagePath);
-        addImageToGallery(url, `${product.name} - View ${idx + 1}`);
+
+    // 3. Product images uploaded by admin in productImages field
+    let extraProductImages = product.productImages;
+    if (typeof extraProductImages === 'string') {
+      extraProductImages = parseJsonField(extraProductImages);
+    }
+    if (Array.isArray(extraProductImages)) {
+      extraProductImages.forEach((img, idx) => {
+        const url = typeof img === 'string' ? img : (img?.imageUrl || img?.url || img?.imagePath);
+        if (url) addImageToGallery(url, `${product.name} - View ${galleryItems.length + 1}`);
       });
     }
   }
 
-  if (standardGallery.length === 0) {
-    standardGallery.push({
-      full: '/white_lotus_cookies_new.png',
-      thumb: '/white_lotus_cookies_new.png',
+  // Fallback ONLY if product has absolutely zero images
+  if (galleryItems.length === 0) {
+    const fallbackImg = isSaffron ? '/saffron_highres_1.png' : '/white_lotus_cookies_new.png';
+    galleryItems.push({
+      full: fallbackImg,
+      thumb: fallbackImg,
+      circle: fallbackImg,
       title: product?.name || 'Product'
     });
   }
 
-  const galleryItems = isSaffron ? saffronGallery : standardGallery;
   const currentItem = galleryItems[activeImageIndex] || galleryItems[0];
-  const currentImage = currentItem?.full || '/white_lotus_cookies_new.png';
+  const currentImage = currentItem?.full || (isSaffron ? '/saffron_highres_1.png' : '/white_lotus_cookies_new.png');
   const productImage = currentImage;
 
   const breadcrumbItems = [
@@ -496,52 +467,52 @@ const ProductDetailPage = () => {
               {/* Flex Container: Side Round Thumbnails + Central Circle */}
               <div className="relative flex flex-col md:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-8 w-full z-10">
                 
-                {/* 🌸 Side Circular Thumbnails (Arranged in curved arc) */}
-                <div className="flex flex-row md:flex-col items-center justify-center gap-2.5 sm:gap-3.5 md:gap-3 z-30 order-2 md:order-1 shrink-0 overflow-visible py-2 px-2">
-                  {galleryItems.map((item, idx) => {
-                    const arcOffsets = [0, -14, -28, -14, 0];
-                    const xOffset = arcOffsets[idx] || 0;
-                    const isSelected = activeImageIndex === idx;
+                {/* 🌸 Side Circular Thumbnails (Only shown when admin added multiple images) */}
+                {galleryItems.length > 1 && (
+                  <div className="flex flex-row md:flex-col items-center justify-center gap-3 sm:gap-3.5 z-30 order-2 md:order-1 shrink-0 overflow-visible py-2 px-2">
+                    {galleryItems.map((item, idx) => {
+                      const isSelected = activeImageIndex === idx;
 
-                    return (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={() => {
-                          setActiveImageIndex(idx);
-                          setMainImgLoading(false);
-                        }}
-                        onMouseEnter={() => {
-                          setActiveImageIndex(idx);
-                          setMainImgLoading(false);
-                        }}
-                        onTouchStart={() => {
-                          setActiveImageIndex(idx);
-                          setMainImgLoading(false);
-                        }}
-                        style={{
-                          transform: typeof window !== 'undefined' && window.innerWidth >= 768 ? `translateX(${xOffset}px)` : 'none',
-                        }}
-                        className={`group/thumb relative rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer ${
-                          isSelected 
-                            ? 'w-14 h-14 sm:w-16 sm:h-16 ring-3 ring-[#b91c1c] ring-offset-2 ring-offset-[#f8f9fd] shadow-lg scale-110 z-20' 
-                            : 'w-12 h-12 sm:w-14 sm:h-14 opacity-80 hover:opacity-100 hover:scale-105 border-2 border-white/90 shadow-md bg-white'
-                        }`}
-                        title={item.title}
-                        aria-label={item.title}
-                      >
-                        <div className="w-full h-full rounded-full overflow-hidden bg-white p-1 flex items-center justify-center">
-                          <img 
-                            src={item.circle || item.thumb || item.full} 
-                            alt={item.title}
-                            className="w-full h-full object-contain rounded-full transition-transform duration-300 group-hover/thumb:scale-110 select-none"
-                            loading="lazy"
-                          />
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
+                      return (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => {
+                            setActiveImageIndex(idx);
+                            setMainImgLoading(false);
+                          }}
+                          onMouseEnter={() => {
+                            setActiveImageIndex(idx);
+                            setMainImgLoading(false);
+                          }}
+                          onTouchStart={() => {
+                            setActiveImageIndex(idx);
+                            setMainImgLoading(false);
+                          }}
+                          className={`group/thumb relative rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer ${
+                            isSelected 
+                              ? 'w-14 h-14 sm:w-16 sm:h-16 ring-4 ring-[#b91c1c]/25 ring-offset-2 ring-offset-[#f8f9fd] border-2 border-[#b91c1c] shadow-[0_6px_20px_rgba(185,28,28,0.3)] scale-110 z-20 bg-white' 
+                              : 'w-12 h-12 sm:w-14 sm:h-14 border-2 border-gray-300 shadow-[0_4px_12px_rgba(0,0,0,0.12)] bg-white hover:border-[#b91c1c] hover:scale-105 opacity-100'
+                          }`}
+                          title={item.title}
+                          aria-label={item.title}
+                        >
+                          <div className="w-full h-full rounded-full overflow-hidden bg-white p-1.5 flex items-center justify-center">
+                            <img 
+                              src={item.thumb || item.circle || item.full} 
+                              alt={item.title}
+                              className="w-full h-full object-contain rounded-full transition-transform duration-300 group-hover/thumb:scale-110 select-none"
+                              loading="eager"
+                              onError={(e) => {
+                                e.currentTarget.src = isSaffron ? '/saffron_highres_1.png' : '/white_lotus_cookies_new.png';
+                              }}
+                            />
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
 
                 {/* 🌸 Central Large Circular Product Frame */}
                 <div className="relative w-[280px] h-[280px] sm:w-[350px] sm:h-[350px] md:w-[400px] md:h-[400px] lg:w-[440px] lg:h-[440px] aspect-square rounded-full border-4 border-white/90 shadow-[0_20px_60px_rgba(185,28,28,0.12)] bg-gradient-to-b from-white via-[#faf7f2] to-[#f4ece1] flex items-center justify-center p-6 md:p-8 order-1 md:order-2 z-20">
