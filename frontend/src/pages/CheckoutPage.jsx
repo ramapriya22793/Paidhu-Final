@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowLeft, CreditCard, Truck, ShieldCheck, 
   Percent, ChevronRight, Check, AlertCircle, ShoppingBag, 
-  MapPin, User, Mail, Phone, Lock, Sparkles, Banknote,
+  MapPin, User, Mail, Phone, Lock, Sparkles,
   QrCode, Clock, Smartphone, ExternalLink, X, RefreshCw, CheckCircle2 
 } from 'lucide-react';
 import QRCode from 'qrcode';
@@ -795,84 +795,31 @@ const CheckoutPage = () => {
                 Payment Method
               </h2>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                
-                {/* Option 1: Razorpay Secure Online Checkout (UPI / QR / Cards / NetBanking) */}
-                <button
-                  type="button"
-                  onClick={() => setPaymentMethod('Online')}
-                  className={`relative flex items-start gap-4 p-5 rounded-2xl border-2 transition-all duration-300 text-left cursor-pointer ${
-                    paymentMethod === 'Online'
-                      ? 'border-[#662654] bg-[#662654]/[0.03] shadow-[0_10px_25px_rgba(102,38,84,0.08)] ring-2 ring-[#662654]/20'
-                      : 'border-gray-200 bg-white hover:border-[#662654]/30'
-                  }`}
-                >
-                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 ${
-                    paymentMethod === 'Online' ? 'border-[#662654]' : 'border-gray-300'
-                  }`}>
-                    {paymentMethod === 'Online' && <div className="w-2.5 h-2.5 rounded-full bg-[#662654]" />}
-                  </div>
-                  <div className="space-y-1.5 flex-1">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-bold text-gray-900 flex items-center gap-1.5">
-                        <div className="w-6 h-6 rounded-md bg-[#662654]/10 flex items-center justify-center text-[#662654]">
-                          <CreditCard size={14} />
-                        </div>
-                        Razorpay Secure Checkout
-                      </span>
-                    </div>
-                    <span className="block text-[11.5px] font-medium text-gray-500 leading-snug">
-                      UPI QR Code, Google Pay, PhonePe, Paytm, Cards &amp; NetBanking.
+              <div className="relative flex items-start gap-4 p-5 rounded-2xl border-2 border-[#662654] bg-[#662654]/[0.03] shadow-[0_10px_25px_rgba(102,38,84,0.08)] ring-2 ring-[#662654]/20">
+                <div className="w-5 h-5 rounded-full border-2 border-[#662654] flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#662654]" />
+                </div>
+                <div className="space-y-1.5 flex-1">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-bold text-gray-900 flex items-center gap-1.5">
+                      <div className="w-6 h-6 rounded-md bg-[#662654]/10 flex items-center justify-center text-[#662654]">
+                        <CreditCard size={14} />
+                      </div>
+                      Razorpay 100% Secure Online Payment
                     </span>
-                    <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                      <span className="text-[9px] font-black text-[#cca43b] bg-[#cca43b]/10 px-2 py-0.5 rounded-full uppercase tracking-wide">
-                        Instant Pay
-                      </span>
-                      <span className="text-[9px] font-bold text-gray-600 bg-gray-100 px-2 py-0.5 rounded-full">
-                        UPI • QR • Cards • NetBanking
-                      </span>
-                    </div>
                   </div>
-                </button>
-
-                {/* Option 2: Cash on Delivery (COD) */}
-                <button
-                  type="button"
-                  onClick={() => setPaymentMethod('COD')}
-                  className={`relative flex items-start gap-4 p-5 rounded-2xl border-2 transition-all duration-300 text-left cursor-pointer ${
-                    paymentMethod === 'COD'
-                      ? 'border-[#662654] bg-[#662654]/[0.03] shadow-[0_10px_25px_rgba(102,38,84,0.08)] ring-2 ring-[#662654]/20'
-                      : 'border-gray-200 bg-white hover:border-[#662654]/30'
-                  }`}
-                >
-                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 ${
-                    paymentMethod === 'COD' ? 'border-[#662654]' : 'border-gray-300'
-                  }`}>
-                    {paymentMethod === 'COD' && <div className="w-2.5 h-2.5 rounded-full bg-[#662654]" />}
-                  </div>
-                  <div className="space-y-1.5 flex-1">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-bold text-gray-900 flex items-center gap-1.5">
-                        <div className="w-6 h-6 rounded-md bg-emerald-500/10 flex items-center justify-center text-emerald-700">
-                          <Banknote size={14} />
-                        </div>
-                        Cash on Delivery (COD)
-                      </span>
-                    </div>
-                    <span className="block text-[11.5px] font-medium text-gray-500 leading-snug">
-                      Pay cash easily upon delivery at your doorstep.
+                  <span className="block text-[11.5px] font-medium text-gray-500 leading-snug">
+                    Instant &amp; secure checkout via UPI (Google Pay, PhonePe, Paytm), Credit/Debit Cards, and NetBanking.
+                  </span>
+                  <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                    <span className="text-[9px] font-black text-[#cca43b] bg-[#cca43b]/10 px-2 py-0.5 rounded-full uppercase tracking-wide">
+                      Instant &amp; Safe
                     </span>
-                    <div className="flex items-center gap-1.5 pt-1">
-                      <span className="text-[9px] font-black text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full uppercase tracking-wide">
-                        Doorstep
-                      </span>
-                      <span className="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
-                        Available
-                      </span>
-                    </div>
+                    <span className="text-[9px] font-bold text-gray-600 bg-gray-100 px-2 py-0.5 rounded-full">
+                      UPI • GPay • PhonePe • Cards • NetBanking
+                    </span>
                   </div>
-                </button>
-
+                </div>
               </div>
             </div>
 
@@ -904,9 +851,7 @@ const CheckoutPage = () => {
                     ? 'OPENING RAZORPAY...' 
                     : (loadingSummary || isSummaryOutdated) 
                       ? 'CALCULATING FEES...' 
-                      : paymentMethod === 'Online'
-                        ? `PAY VIA RAZORPAY ₹${(summary?.totalPrice ?? 0).toLocaleString()}`
-                        : 'CONFIRM CASH ON DELIVERY'}
+                      : `PAY VIA RAZORPAY ₹${(summary?.totalPrice ?? 0).toLocaleString()}`}
                 </span>
                 <ChevronRight size={16} />
               </motion.button>
@@ -1049,9 +994,7 @@ const CheckoutPage = () => {
                       ? 'OPENING RAZORPAY...' 
                       : (loadingSummary || isSummaryOutdated) 
                         ? 'CALCULATING FEES...' 
-                        : paymentMethod === 'Online'
-                          ? `PAY VIA RAZORPAY ₹${(summary?.totalPrice ?? 0).toLocaleString()}`
-                          : 'CONFIRM CASH ON DELIVERY'}
+                        : `PAY VIA RAZORPAY ₹${(summary?.totalPrice ?? 0).toLocaleString()}`}
                   </span>
                   <ChevronRight size={16} className="transform group-hover/btn:translate-x-1 transition-transform" />
                 </motion.button>
