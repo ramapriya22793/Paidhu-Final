@@ -92,8 +92,6 @@ const CareersPage = safeLazy(() => import('./pages/CareersPage'));
 const BlogsPage = safeLazy(() => import('./pages/BlogsPage'));
 const BlogDetailPage = safeLazy(() => import('./pages/BlogDetailPage'));
 
-import LazyMount from './components/ui/LazyMount';
-
 // Safe Lazy load below-the-fold home components
 const ExploreCategory = safeLazy(() => import('./components/home/ExploreCategory'));
 const BenefitsMarquee = safeLazy(() => import('./components/home/BenefitsMarquee'));
@@ -116,24 +114,12 @@ const HomePage = () => (
     <ProductCollection />
     
     <Suspense fallback={null}>
-      <LazyMount minHeight="300px">
-        <ExploreCategory />
-      </LazyMount>
-      <LazyMount minHeight="350px">
-        <FeaturedBento />
-      </LazyMount>
-      <LazyMount minHeight="300px">
-        <PaidhuSpotlight />
-      </LazyMount>
-      <LazyMount minHeight="300px">
-        <StorytellingVideo />
-      </LazyMount>
-      <LazyMount minHeight="300px">
-        <RealMomsSection />
-      </LazyMount>
-      <LazyMount minHeight="250px">
-        <BrandCharactersBanner />
-      </LazyMount>
+      <ExploreCategory />
+      <FeaturedBento />
+      <PaidhuSpotlight />
+      <StorytellingVideo />
+      <RealMomsSection />
+      <BrandCharactersBanner />
     </Suspense>
 
   </main>
@@ -245,11 +231,9 @@ function App() {
 
 
 
-        <LazyMount minHeight="150px">
-          <Suspense fallback={null}>
-            <Footer />
-          </Suspense>
-        </LazyMount>
+        <Suspense fallback={null}>
+          <Footer />
+        </Suspense>
         <WhatsAppButton />
       </div>
     </CartProvider>
