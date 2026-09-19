@@ -5,7 +5,7 @@ const supabase = require('../utils/supabaseClient');
 
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 15 * 1024 * 1024 }
+  limits: { fileSize: 100 * 1024 * 1024 }
 });
 
 router.post('/', upload.any(), async (req, res) => {
@@ -25,6 +25,7 @@ router.post('/', upload.any(), async (req, res) => {
       .from('products')
       .upload(fileName, file.buffer, {
         contentType: file.mimetype || 'image/jpeg',
+        cacheControl: '31536000',
         upsert: true
       });
 

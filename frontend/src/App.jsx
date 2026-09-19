@@ -97,7 +97,7 @@ const ExploreCategory = safeLazy(() => import('./components/home/ExploreCategory
 const BenefitsMarquee = safeLazy(() => import('./components/home/BenefitsMarquee'));
 const FeaturedBento = safeLazy(() => import('./components/home/FeaturedBento'));
 const PaidhuSpotlight = safeLazy(() => import('./components/home/PaidhuSpotlight'));
-const StorytellingVideo = safeLazy(() => import('./components/home/StorytellingVideo'));
+const CustomerVideoReels = safeLazy(() => import('./components/home/CustomerVideoReels'));
 const RealMomsSection = safeLazy(() => import('./components/home/RealMomsSection'));
 const BrandCharactersBanner = safeLazy(() => import('./components/home/BrandCharactersBanner'));
 
@@ -117,7 +117,7 @@ const HomePage = () => (
       <ExploreCategory />
       <FeaturedBento />
       <PaidhuSpotlight />
-      <StorytellingVideo />
+      <CustomerVideoReels />
       <RealMomsSection />
       <BrandCharactersBanner />
     </Suspense>

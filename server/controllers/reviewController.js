@@ -18,15 +18,16 @@ const getReviewsForProduct = async (req, res) => {
 
 const getAllReviews = async (req, res) => {
   try {
-    const { approved, minRating } = req.query;
+    const { approved, minRating, hasVideo } = req.query;
     const where = {};
     if (approved === 'true') where.isApproved = true;
     if (minRating) where.rating = { gte: Number(minRating) };
+    if (hasVideo === 'true') where.video = { not: null };
 
     const reviews = await prisma.review.findMany({
       where,
       include: {
-        product: { select: { name: true, image: true } }
+        product: { select: { id: true, name: true, image: true, price: true, slug: true } }
       },
       orderBy: { createdAt: 'desc' }
     });

@@ -198,3 +198,169 @@ export const deleteImage = async (imagePath) => {
     return { success: false, error: error.message || "Failed to delete image" };
   }
 };
+
+const SUPABASE_DIRECT_URL = 'https://xittsoabiuzuzrzdjktb.supabase.co';
+const SUPABASE_DIRECT_KEY = 'sb_publishable_SuDUNZP6gbn0BuyMcTbrNA_k75HNFAj';
+
+/**
+ * Ultra-fast direct video uploader with real-time percentage progress callback (0% -> 100%).
+ * Uses direct REST XHR streaming straight to Supabase Storage with CDN caching.
+ */
+export const uploadVideoWithProgress = (file, folder = 'reviews/videos', onProgress = () => {}) => {
+  return new Promise((resolve, reject) => {
+    if (!file) {
+      return reject(new Error('No video file selected'));
+    }
+
+    const fileExt = (file.name || 'video.mp4').split('.').pop() || 'mp4';
+    const cleanName = (file.name || 'video').replace(/[^a-zA-Z0-9]/g, '').slice(0, 30);
+    const fileName = `${folder}/${Date.now()}-${cleanName}.${fileExt}`;
+
+    // Direct Supabase Storage REST endpoint (Fastest path - direct CDN pipeline)
+    const uploadUrl = `${SUPABASE_DIRECT_URL}/storage/v1/object/${BUCKET_NAME}/${fileName}`;
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', uploadUrl, true);
+
+    // Supabase Authorization & Cache headers
+    xhr.setRequestHeader('Authorization', `Bearer ${SUPABASE_DIRECT_KEY}`);
+    xhr.setRequestHeader('apikey', SUPABASE_DIRECT_KEY);
+    xhr.setRequestHeader('Content-Type', file.type || 'video/mp4');
+    xhr.setRequestHeader('x-upsert', 'true');
+    xhr.setRequestHeader('cache-control', '31536000');
+
+    // Live XHR upload progress
+    xhr.upload.onprogress = (event) => {
+      if (event.lengthComputable && event.total > 0) {
+        const percent = Math.min(99, Math.round((event.loaded / event.total) * 100));
+        onProgress({
+          percent,
+          loaded: event.loaded,
+          total: event.total,
+          loadedMB: (event.loaded / (1024 * 1024)).toFixed(1),
+          totalMB: (event.total / (1024 * 1024)).toFixed(1)
+        });
+      }
+    };
+
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        const publicUrl = `${SUPABASE_DIRECT_URL}/storage/v1/object/public/${BUCKET_NAME}/${fileName}`;
+        onProgress({
+          percent: 100,
+          loaded: file.size,
+          total: file.size,
+          loadedMB: (file.size / (1024 * 1024)).toFixed(1),
+          totalMB: (file.size / (1024 * 1024)).toFixed(1)
+        });
+        resolve({
+          publicUrl,
+          videoPath: fileName,
+          error: null
+        });
+      } else {
+        console.warn(`Direct XHR upload returned status ${xhr.status}, attempting fallback...`);
+        fallbackVideoUpload(file, folder, fileName, onProgress)
+          .then(resolve)
+          .catch(reject);
+      }
+    };
+
+    xhr.onerror = () => {
+      console.warn("Direct XHR upload network error, attempting fallback...");
+      fallbackVideoUpload(file, folder, fileName, onProgress)
+        .then(resolve)
+        .catch(reject);
+    };
+
+    xhr.ontimeout = () => {
+      console.warn("Direct XHR upload timeout, attempting fallback...");
+      fallbackVideoUpload(file, folder, fileName, onProgress)
+        .then(resolve)
+        .catch(reject);
+    };
+
+    // Send binary video directly to Supabase storage
+    xhr.send(file);
+  });
+};
+
+const fallbackVideoUpload = async (file, folder, fileName, onProgress) => {
+  // 1. Try Supabase JS SDK
+  if (supabase) {
+    try {
+      const { data, error } = await supabase.storage
+        .from(BUCKET_NAME)
+        .upload(fileName, file, {
+          contentType: file.type || 'video/mp4',
+          cacheControl: '31536000',
+          upsert: true
+        });
+
+      if (!error && data) {
+        const { data: pubData } = supabase.storage.from(BUCKET_NAME).getPublicUrl(fileName);
+        onProgress({
+          percent: 100,
+          loaded: file.size,
+          total: file.size,
+          loadedMB: (file.size / (1024 * 1024)).toFixed(1),
+          totalMB: (file.size / (1024 * 1024)).toFixed(1)
+        });
+        return { publicUrl: pubData.publicUrl, videoPath: fileName, error: null };
+      }
+    } catch (e) {
+      console.warn("SDK upload fallback failed, attempting server upload:", e);
+    }
+  }
+
+  // 2. Server API fallback with XHR progress
+  return new Promise((resolve, reject) => {
+    const fd = new FormData();
+    fd.append('file', file);
+    fd.append('folder', folder);
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', `${API_BASE_URL}/api/upload`, true);
+
+    xhr.upload.onprogress = (event) => {
+      if (event.lengthComputable && event.total > 0) {
+        const percent = Math.min(99, Math.round((event.loaded / event.total) * 100));
+        onProgress({
+          percent,
+          loaded: event.loaded,
+          total: event.total,
+          loadedMB: (event.loaded / (1024 * 1024)).toFixed(1),
+          totalMB: (event.total / (1024 * 1024)).toFixed(1)
+        });
+      }
+    };
+
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        try {
+          const json = JSON.parse(xhr.responseText);
+          if (json.success && json.publicUrl) {
+            onProgress({
+              percent: 100,
+              loaded: file.size,
+              total: file.size,
+              loadedMB: (file.size / (1024 * 1024)).toFixed(1),
+              totalMB: (file.size / (1024 * 1024)).toFixed(1)
+            });
+            resolve({ publicUrl: json.publicUrl, videoPath: json.imagePath || fileName, error: null });
+          } else {
+            reject(new Error(json.error || 'Server upload failed'));
+          }
+        } catch (err) {
+          reject(new Error('Invalid server response during video upload'));
+        }
+      } else {
+        reject(new Error(`Upload failed with status ${xhr.status}`));
+      }
+    };
+
+    xhr.onerror = () => reject(new Error('Network error during video upload'));
+    xhr.send(fd);
+  });
+};
+
