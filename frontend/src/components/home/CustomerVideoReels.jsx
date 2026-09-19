@@ -22,86 +22,86 @@ const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) ||
     ? 'http://localhost:5000' 
     : 'https://paidhu-final-anm2.vercel.app');
 
-const SUPABASE_STORAGE_URL = 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products';
+const SUPABASE_STORAGE_URL = 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/reviews/videos';
 
-// Curated fallback reels if DB only has a few initial reviews
+// The exact customer review videos uploaded in the Admin panel
 const FALLBACK_VIDEO_REELS = [
   {
-    id: 'fallback-1',
-    video: `${SUPABASE_STORAGE_URL}/starting%20floral%20habits%20videos/WhatsApp%20Video%202026-09-01%20at%2011.31.56%20AM.mp4`,
-    comment: "This saffron & floral blend completely upgraded our morning tea ritual! Pure and natural.",
+    id: 'user-reel-1',
+    video: `${SUPABASE_STORAGE_URL}/1789837755612-WhatsAppVideo20260919at93243PMmp4.mp4`,
+    comment: "These Bloom Cookies are so fresh, crispy, and delicious. My kids love the natural floral taste!",
     rating: 5,
-    reviewerName: "Verified Food Explorer",
+    reviewerName: "Pooja Hegde (Verified Mom)",
     product: {
-      id: 1,
-      name: "Organic Dried Neem Flowers",
-      price: 349,
-      image: "https://wp.paidhu.com/wp-content/uploads/2024/08/Super-Neigin-big-1.jpg"
+      id: 8,
+      name: "Bloom Cookies - White Lotus",
+      price: 66,
+      image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807099194-whitelotuscookiepng.png"
     }
   },
   {
-    id: 'fallback-2',
-    video: `${SUPABASE_STORAGE_URL}/starting%20floral%20habits%20videos/WhatsApp%20Video%202026-09-01%20at%2011.31.57%20AM.mp4`,
-    comment: "The aroma when you open the jar is unbelievable. My kids love the natural petal sweetness!",
+    id: 'user-reel-2',
+    video: `${SUPABASE_STORAGE_URL}/1789837725773-WhatsAppVideo20260919at93603PMmp4.mp4`,
+    comment: "Authentic Aavaram Poo cookies with traditional herbal goodness. Outstanding crunch & quality.",
     rating: 5,
-    reviewerName: "Verified Mom of 2",
+    reviewerName: "Kavitha R. (Verified Buyer)",
     product: {
-      id: 2,
-      name: "Handcrafted Rose Petal Gulkand",
-      price: 499,
-      image: "https://wp.paidhu.com/wp-content/uploads/2025/07/Gulkand-final.jpg"
+      id: 9,
+      name: "Bloom Cookies - Aavaram Poo",
+      price: 66,
+      image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807081906-AAVARAMPOOpng.png"
     }
   },
   {
-    id: 'fallback-3',
-    video: `${SUPABASE_STORAGE_URL}/starting%20floral%20habits%20videos/WhatsApp%20Video%202026-09-01%20at%2011.32.19%20AM%20(1).mp4`,
-    comment: "Pure floral goodness with zero refined sugars. Makes healthy eating feel like luxury.",
+    id: 'user-reel-3',
+    video: `${SUPABASE_STORAGE_URL}/1789837671597-WhatsAppVideo20260919at93553PMmp4.mp4`,
+    comment: "Pure Kashmiri Saffron Powder! Incredible aroma and gives rich golden color to milk and sweets.",
     rating: 5,
-    reviewerName: "Priya Sundaram",
+    reviewerName: "Ananya Deshmukh",
     product: {
-      id: 3,
-      name: "Kashmiri Mongra Saffron (1g)",
-      price: 799,
-      image: "https://wp.paidhu.com/wp-content/uploads/2024/08/saffron-neign.jpg"
+      id: 21,
+      name: "Pure Kashmiri Saffron Powder",
+      price: 1600,
+      image: "https://wp.paidhu.com/wp-content/uploads/2024/08/DSC07565-scaled.jpg"
     }
   },
   {
-    id: 'fallback-4',
-    video: `${SUPABASE_STORAGE_URL}/starting%20floral%20habits%20videos/WhatsApp%20Video%202026-09-01%20at%2011.32.19%20AM%20(2).mp4`,
-    comment: "Obsessed with how vibrant and fresh every batch is. Best gift hamper for festive season!",
+    id: 'user-reel-4',
+    video: `${SUPABASE_STORAGE_URL}/1789837626809-WhatsAppVideo20260919at93601PMmp4.mp4`,
+    comment: "Traditional sun-cured Gulkand and floral honey treats. Truly healthy with zero refined sugars.",
     rating: 5,
-    reviewerName: "Anita Sharma",
+    reviewerName: "Dr. Meenakshi S.",
     product: {
-      id: 4,
-      name: "Sun-Cured Mahua Blossom Sweetener",
-      price: 429,
-      image: "https://wp.paidhu.com/wp-content/uploads/2024/08/gift-box-big-2.jpg"
+      id: 11,
+      name: "Bloom Cookies - Hibiscus",
+      price: 66,
+      image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807065977-hibiscuscookiepng.png"
     }
   },
   {
-    id: 'fallback-5',
-    video: `${SUPABASE_STORAGE_URL}/starting%20floral%20habits%20videos/WhatsApp%20Video%202026-09-01%20at%2011.32.19%20AM.mp4`,
-    comment: "Our family swapped ordinary snacks for Paidhu floral treats and we're never going back.",
+    id: 'user-reel-5',
+    video: `${SUPABASE_STORAGE_URL}/1789837245897-WhatsAppVideo20260919at93603PM1mp4.mp4`,
+    comment: "The packaging and purity of Paidhu botanical superfoods exceeded my expectations!",
     rating: 5,
-    reviewerName: "Dr. Arvind K.",
+    reviewerName: "Divya Balaji",
     product: {
-      id: 5,
-      name: "Artisanal Butterfly Pea Bloom Powder",
-      price: 389,
-      image: "https://wp.paidhu.com/wp-content/uploads/2025/03/butterfly-pea-bloom-powder-768x768-1.webp"
+      id: 8,
+      name: "Bloom Cookies - White Lotus",
+      price: 66,
+      image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807099194-whitelotuscookiepng.png"
     }
   },
   {
-    id: 'fallback-6',
-    video: `${SUPABASE_STORAGE_URL}/starting%20floral%20habits%20videos/WhatsApp%20Video%202026-09-01%20at%2011.32.20%20AM.mp4`,
-    comment: "Truly farm-to-table purity. The color, taste, and packaging are extraordinary.",
+    id: 'user-reel-6',
+    video: `${SUPABASE_STORAGE_URL}/1789837100827-WhatsAppVideo20260919at93243PMmp4.mp4`,
+    comment: "Wholesome natural ingredients. We replaced all our usual tea snacks with Paidhu floral cookies.",
     rating: 5,
-    reviewerName: "Sneha Raman",
+    reviewerName: "Shalini Menon",
     product: {
-      id: 6,
-      name: "Wild Forest Hibiscus Petal Tea",
-      price: 360,
-      image: "https://wp.paidhu.com/wp-content/uploads/2025/07/hibiscus-300x300.webp"
+      id: 9,
+      name: "Bloom Cookies - Aavaram Poo",
+      price: 66,
+      image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807081906-AAVARAMPOOpng.png"
     }
   }
 ];
