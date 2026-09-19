@@ -106,109 +106,55 @@ const FALLBACK_VIDEO_REELS = [
   }
 ];
 
-// Single Reel Card
-const ReelCard = ({ review, isHovered, onHover, onClick, isGlobalMuted }) => {
+// Single Reel Card with simultaneous continuous autoplay & clean unobstructed full-screen video
+const ReelCard = ({ review, onClick, isGlobalMuted }) => {
   const videoRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     if (!videoRef.current) return;
-    if (isHovered) {
-      videoRef.current.muted = isGlobalMuted;
-      const playPromise = videoRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => setIsPlaying(true))
-          .catch(() => setIsPlaying(false));
-      }
-    } else {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
-      setIsPlaying(false);
+    videoRef.current.muted = isGlobalMuted;
+    const playPromise = videoRef.current.play();
+    if (playPromise !== undefined) {
+      playPromise.catch((err) => {
+        // Auto-play was prevented (e.g. browser policy), ensure muted and retry
+        if (videoRef.current) {
+          videoRef.current.muted = true;
+          videoRef.current.play().catch(() => {});
+        }
+      });
     }
-  }, [isHovered, isGlobalMuted]);
+  }, [isGlobalMuted, review.video]);
 
   return (
     <motion.div
-      whileHover={{ y: -6, scale: 1.02 }}
+      whileHover={{ y: -8, scale: 1.03 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
-      onMouseEnter={onHover}
       onClick={onClick}
       className="relative shrink-0 w-[240px] sm:w-[270px] md:w-[290px] aspect-[9/16] rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl border-2 border-[#522742]/10 bg-black cursor-pointer group select-none"
     >
-      {/* Background Video Element */}
+      {/* Background Autoplay Video Element */}
       <video
         ref={videoRef}
         src={review.video ? (review.video.includes('#') ? review.video : `${review.video}#t=0.001`) : ''}
         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         loop
+        autoPlay
         playsInline
         muted={isGlobalMuted}
-        preload="metadata"
+        preload="auto"
       />
 
-      {/* Dark Vignette Overlay for Crisp Readability */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/40 pointer-events-none" />
+      {/* Subtle Bottom Vignette */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-      {/* Top Header Badge & Play Indicator */}
-      <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between z-10">
-        <div className="flex items-center gap-1.5 bg-black/50 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/15">
-          <CheckCircle2 size={12} className="text-[#38ef7d]" />
-          <span className="text-[10px] font-bold text-white tracking-wide">Verified Review</span>
-        </div>
-
-        <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-[#d4af37] group-hover:text-[#522742] transition-colors shadow-sm">
-          {isPlaying ? <Pause size={14} /> : <Play size={14} className="ml-0.5" />}
-        </div>
-      </div>
-
-      {/* Bottom Content Overlay */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 z-10 flex flex-col justify-end text-left space-y-2.5">
-        
-        {/* Rating Stars */}
-        <div className="flex items-center gap-1">
-          {[...Array(review.rating || 5)].map((_, i) => (
-            <Star key={i} size={13} className="fill-[#fbc225] text-[#fbc225]" />
-          ))}
-          <span className="text-white/80 text-[11px] font-bold ml-1">5.0</span>
-        </div>
-
-        {/* Review Comment Snippet */}
-        <p className="text-white text-xs sm:text-sm font-medium leading-snug line-clamp-2 drop-shadow-sm">
-          "{review.comment || 'Amazing natural floral product! Highly recommended.'}"
-        </p>
-
-        {/* Associated Product Pill */}
-        {review.product && (
-          <div className="flex items-center gap-2.5 bg-white/95 backdrop-blur-md p-2 rounded-2xl shadow-md border border-white/40 hover:bg-white transition-all">
-            {review.product.image ? (
-              <img
-                src={review.product.image}
-                alt={review.product.name}
-                className="w-10 h-10 rounded-xl object-contain bg-gray-50 border border-gray-100 shrink-0"
-              />
-            ) : (
-              <div className="w-10 h-10 rounded-xl bg-[#522742]/10 flex items-center justify-center text-[#522742] shrink-0">
-                <ShoppingBag size={16} />
-              </div>
-            )}
-            
-            <div className="flex-1 min-w-0">
-              <h4 className="text-[11px] sm:text-xs font-bold text-gray-900 truncate">
-                {review.product.name}
-              </h4>
-              {review.product.price && (
-                <span className="text-[11px] font-black text-[#522742]">
-                  ₹{review.product.price}
-                </span>
-              )}
-            </div>
-
-            <div className="w-6 h-6 rounded-full bg-[#522742] text-white flex items-center justify-center shrink-0 group-hover:translate-x-0.5 transition-transform">
-              <ArrowRight size={12} />
-            </div>
-          </div>
-        )}
+      {/* Hover Expand/Play Indicator */}
+      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/20">
+        <motion.div 
+          className="w-14 h-14 rounded-full bg-white/95 text-[#522742] flex items-center justify-center shadow-xl backdrop-blur-xs"
+          whileHover={{ scale: 1.15 }}
+        >
+          <Play size={22} className="ml-1 fill-[#522742]" />
+        </motion.div>
       </div>
     </motion.div>
   );
@@ -375,8 +321,6 @@ const CustomerVideoReels = () => {
             <div key={review.id || index} className="snap-start">
               <ReelCard
                 review={review}
-                isHovered={hoveredIndex === index}
-                onHover={() => setHoveredIndex(index)}
                 onClick={() => handleOpenModal(review)}
                 isGlobalMuted={isGlobalMuted}
               />
