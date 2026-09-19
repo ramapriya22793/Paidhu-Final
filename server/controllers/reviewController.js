@@ -38,21 +38,23 @@ const getAllReviews = async (req, res) => {
 
 const createReview = async (req, res) => {
   try {
-    const { productId, rating, comment, reviewerName, image } = req.body;
+    const { productId, rating, comment, reviewerName, image, video } = req.body;
     
     const review = await prisma.review.create({
       data: {
-        rating: Number(rating),
-        comment,
-        reviewerName,
-        image,
+        rating: rating ? Number(rating) : 5,
+        comment: comment || '',
+        reviewerName: (reviewerName && reviewerName.trim()) ? reviewerName.trim() : 'Verified Customer',
+        image: image || null,
+        video: video || null,
         productId: Number(productId),
-        isApproved: true // Auto-approved by default per plan
+        isApproved: true
       }
     });
     
     res.status(201).json(review);
   } catch (error) {
+    console.error("Create Review Error:", error);
     res.status(500).json({ message: error.message });
   }
 };

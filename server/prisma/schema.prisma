@@ -231,6 +231,7 @@ model Review {
   comment         String
   reviewerName    String
   image           String?
+  video           String?
   isApproved      Boolean   @default(true)
   createdAt       DateTime  @default(now())
   
