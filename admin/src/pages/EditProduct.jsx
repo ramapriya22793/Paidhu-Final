@@ -144,31 +144,40 @@ const EditProduct = () => {
     if (files.length === 0) return;
     setUploading(true);
     try {
-      for (const file of files) {
-        // Show placeholder preview immediately
-        const placeholderUrl = URL.createObjectURL(file);
-        setFormData(prev => ({
+      const placeholders = files.map(file => ({ file, placeholderUrl: URL.createObjectURL(file) }));
+      setFormData(prev => ({
+        ...prev,
+        newImagePreviewUrls: [...prev.newImagePreviewUrls, ...placeholders.map(p => p.placeholderUrl)]
+      }));
+
+      // Upload all images in parallel at maximum speed
+      const uploadResults = await Promise.all(
+        placeholders.map(async ({ file, placeholderUrl }) => {
+          const res = await uploadImage(file, 'products');
+          return { ...res, placeholderUrl };
+        })
+      );
+
+      setFormData(prev => {
+        let updatedUrls = [...prev.newImagePreviewUrls];
+        const newUploaded = [...prev.uploadedNewImages];
+
+        uploadResults.forEach(({ publicUrl, imagePath, error, placeholderUrl }) => {
+          if (error) {
+            console.error('Image upload failed:', error);
+            updatedUrls = updatedUrls.filter(u => u !== placeholderUrl);
+          } else if (publicUrl) {
+            updatedUrls = updatedUrls.map(u => u === placeholderUrl ? publicUrl : u);
+            newUploaded.push({ publicUrl, imagePath });
+          }
+        });
+
+        return {
           ...prev,
-          newImagePreviewUrls: [...prev.newImagePreviewUrls, placeholderUrl]
-        }));
-        // Upload to Supabase (handles HEIC conversion internally)
-        const { publicUrl, imagePath, error } = await uploadImage(file, 'products');
-        if (error) {
-          alert('Upload failed: ' + error);
-          // Remove the placeholder
-          setFormData(prev => ({
-            ...prev,
-            newImagePreviewUrls: prev.newImagePreviewUrls.filter(u => u !== placeholderUrl)
-          }));
-          continue;
-        }
-        // Replace placeholder with real Supabase URL
-        setFormData(prev => ({
-          ...prev,
-          newImagePreviewUrls: prev.newImagePreviewUrls.map(u => u === placeholderUrl ? publicUrl : u),
-          uploadedNewImages: [...prev.uploadedNewImages, { publicUrl, imagePath }]
-        }));
-      }
+          newImagePreviewUrls: updatedUrls,
+          uploadedNewImages: newUploaded
+        };
+      });
     } finally {
       setUploading(false);
     }

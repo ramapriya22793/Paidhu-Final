@@ -116,26 +116,37 @@ const Banners = () => {
       let finalMobileImage = formData.mobileImage;
       let finalMobileImagePath = formData.mobileImagePath;
 
-      // Upload Web Image if new
+      // Upload Web Image and Mobile Image in Parallel at high speed
+      const uploadTasks = [];
+
       if (newWebFile) {
         if (editingBanner && editingBanner.webImagePath) {
-          try { await deleteImage(editingBanner.webImagePath); } catch (err) { console.warn("Failed deleting old web banner", err); }
+          uploadTasks.push(deleteImage(editingBanner.webImagePath).catch(() => {}));
         }
-        const { publicUrl, imagePath, error } = await uploadImage(newWebFile, 'banners');
-        if (error) throw new Error(`Web banner upload failed: ${error}`);
-        finalWebImage = publicUrl;
-        finalWebImagePath = imagePath;
+        uploadTasks.push(
+          uploadImage(newWebFile, 'banners').then(res => {
+            if (res.error) throw new Error(`Web banner upload failed: ${res.error}`);
+            finalWebImage = res.publicUrl;
+            finalWebImagePath = res.imagePath;
+          })
+        );
       }
 
-      // Upload Mobile Image if new
       if (newMobileFile) {
         if (editingBanner && editingBanner.mobileImagePath) {
-          try { await deleteImage(editingBanner.mobileImagePath); } catch (err) { console.warn("Failed deleting old mobile banner", err); }
+          uploadTasks.push(deleteImage(editingBanner.mobileImagePath).catch(() => {}));
         }
-        const { publicUrl, imagePath, error } = await uploadImage(newMobileFile, 'banners');
-        if (error) throw new Error(`Mobile banner upload failed: ${error}`);
-        finalMobileImage = publicUrl;
-        finalMobileImagePath = imagePath;
+        uploadTasks.push(
+          uploadImage(newMobileFile, 'banners').then(res => {
+            if (res.error) throw new Error(`Mobile banner upload failed: ${res.error}`);
+            finalMobileImage = res.publicUrl;
+            finalMobileImagePath = res.imagePath;
+          })
+        );
+      }
+
+      if (uploadTasks.length > 0) {
+        await Promise.all(uploadTasks);
       }
 
       // Delete mobile image entirely if it was removed

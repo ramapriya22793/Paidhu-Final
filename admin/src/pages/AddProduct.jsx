@@ -99,27 +99,40 @@ const AddProduct = () => {
     if (files.length === 0) return;
     setUploading(true);
     try {
-      for (const file of files) {
-        const placeholderUrl = URL.createObjectURL(file);
-        setFormData(prev => ({
+      const placeholders = files.map(file => ({ file, placeholderUrl: URL.createObjectURL(file) }));
+      setFormData(prev => ({
+        ...prev,
+        imagePreviewUrls: [...prev.imagePreviewUrls, ...placeholders.map(p => p.placeholderUrl)]
+      }));
+
+      // Upload all images in parallel at maximum speed
+      const uploadResults = await Promise.all(
+        placeholders.map(async ({ file, placeholderUrl }) => {
+          const res = await uploadImage(file, 'products');
+          return { ...res, placeholderUrl };
+        })
+      );
+
+      setFormData(prev => {
+        let updatedUrls = [...prev.imagePreviewUrls];
+        const newUploaded = [...prev.uploadedImages];
+
+        uploadResults.forEach(({ publicUrl, imagePath, error, placeholderUrl }) => {
+          if (error) {
+            console.error('Image upload failed:', error);
+            updatedUrls = updatedUrls.filter(u => u !== placeholderUrl);
+          } else if (publicUrl) {
+            updatedUrls = updatedUrls.map(u => u === placeholderUrl ? publicUrl : u);
+            newUploaded.push({ publicUrl, imagePath });
+          }
+        });
+
+        return {
           ...prev,
-          imagePreviewUrls: [...prev.imagePreviewUrls, placeholderUrl]
-        }));
-        const { publicUrl, imagePath, error } = await uploadImage(file, 'products');
-        if (error) {
-          alert('Upload failed: ' + error);
-          setFormData(prev => ({
-            ...prev,
-            imagePreviewUrls: prev.imagePreviewUrls.filter(u => u !== placeholderUrl)
-          }));
-          continue;
-        }
-        setFormData(prev => ({
-          ...prev,
-          imagePreviewUrls: prev.imagePreviewUrls.map(u => u === placeholderUrl ? publicUrl : u),
-          uploadedImages: [...prev.uploadedImages, { publicUrl, imagePath }]
-        }));
-      }
+          imagePreviewUrls: updatedUrls,
+          uploadedImages: newUploaded
+        };
+      });
     } finally {
       setUploading(false);
     }
