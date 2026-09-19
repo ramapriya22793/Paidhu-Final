@@ -127,6 +127,7 @@ app.get("/api/categories", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch categories" });
   }
 });
+app.use("/api/upload", require("./routes/uploadRoutes"));
 app.use("/api/products", require("./routes/productRoutes"));
 app.use("/api/settings", require("./routes/settingsRoutes"));
 app.use("/api/orders", require("./routes/orderRoutes"));

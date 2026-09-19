@@ -33,7 +33,7 @@ const FlowerIcon = () => (
   </svg>
 );
 
-const SUPABASE_STORAGE_URL = 'https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/community';
+const SUPABASE_STORAGE_URL = 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/community';
 
 const sliderImages = [
   '/paidhu_mom_community_event_2.jpg',

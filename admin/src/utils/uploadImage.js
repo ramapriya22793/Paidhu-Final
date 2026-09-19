@@ -1,20 +1,18 @@
 import { supabase } from './supabaseClient';
+import { API_BASE_URL } from '../services/apiConfig';
 
 const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
-const MAX_SIZE_MB = 5;
+const MAX_SIZE_MB = 10;
 const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
 const BUCKET_NAME = 'products';
 
 export const uploadImage = async (file, folder = 'products') => {
   try {
-    if (!supabase) {
-      throw new Error("Supabase is not configured. Please add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables.");
-    }
     // 1. Validation
     if (!file) throw new Error("No file provided");
 
     let processedFile = file;
-    if (file.name.toLowerCase().endsWith('.heic') || file.type === 'image/heic') {
+    if (file.name && (file.name.toLowerCase().endsWith('.heic') || file.type === 'image/heic')) {
       try {
         const heic2any = (await import('heic2any')).default;
         const converted = await heic2any({
@@ -25,11 +23,11 @@ export const uploadImage = async (file, folder = 'products') => {
         const newFileName = file.name.replace(/\.heic$/i, '') + '.jpeg';
         processedFile = new File([Array.isArray(converted) ? converted[0] : converted], newFileName, { type: 'image/jpeg' });
       } catch (err) {
-        throw new Error("Failed to convert HEIC image: " + err.message);
+        console.warn("Failed to convert HEIC image: " + err.message);
       }
     }
     
-    if (!ALLOWED_TYPES.includes(processedFile.type)) {
+    if (processedFile.type && !ALLOWED_TYPES.includes(processedFile.type)) {
       throw new Error("Invalid image format. Allowed: PNG, JPG, JPEG, WebP");
     }
 
@@ -38,33 +36,58 @@ export const uploadImage = async (file, folder = 'products') => {
     }
 
     // 2. Generate unique filename
-    const fileExt = processedFile.name.split('.').pop();
+    const fileExt = processedFile.name.split('.').pop() || 'jpg';
     const cleanName = processedFile.name.replace(/[^a-zA-Z0-9]/g, '');
     const fileName = `${folder}/${Date.now()}-${cleanName}.${fileExt}`;
 
-    // 3. Upload to Supabase Storage
-    const { data, error } = await supabase.storage
-      .from(BUCKET_NAME)
-      .upload(fileName, processedFile, {
-        cacheControl: '3600',
-        upsert: false
-      });
+    // 3. Primary Upload: Direct to Supabase Storage
+    if (supabase) {
+      try {
+        const { data, error } = await supabase.storage
+          .from(BUCKET_NAME)
+          .upload(fileName, processedFile, {
+            cacheControl: '3600',
+            upsert: true
+          });
 
-    if (error) {
-      throw error;
+        if (!error && data) {
+          const { data: publicUrlData } = supabase.storage
+            .from(BUCKET_NAME)
+            .getPublicUrl(fileName);
+
+          return {
+            publicUrl: publicUrlData.publicUrl,
+            imagePath: fileName,
+            error: null
+          };
+        }
+      } catch (directErr) {
+        console.warn("Direct Supabase storage upload notice, trying server fallback:", directErr.message);
+      }
     }
 
-    // 4. Generate Public URL
-    const { data: publicUrlData } = supabase.storage
-      .from(BUCKET_NAME)
-      .getPublicUrl(fileName);
+    // 4. Secondary Fallback: Upload via backend Express API (/api/upload)
+    const formData = new FormData();
+    formData.append('file', processedFile);
+    formData.append('folder', folder);
 
-    return {
-      publicUrl: publicUrlData.publicUrl,
-      imagePath: fileName,
-      error: null
-    };
+    const res = await fetch(`${API_BASE_URL}/api/upload`, {
+      method: 'POST',
+      body: formData
+    });
 
+    if (res.ok) {
+      const data = await res.json();
+      if (data.success && data.publicUrl) {
+        return {
+          publicUrl: data.publicUrl,
+          imagePath: data.imagePath,
+          error: null
+        };
+      }
+    }
+
+    throw new Error("Unable to complete image upload");
   } catch (error) {
     console.error("Upload Error:", error);
     return {
@@ -79,15 +102,13 @@ export const deleteImage = async (imagePath) => {
   if (!imagePath) return { success: false, error: "No image path provided" };
 
   try {
-    if (!supabase) {
-      throw new Error("Supabase is not configured. Please add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables.");
-    }
-    const { error } = await supabase.storage
-      .from(BUCKET_NAME)
-      .remove([imagePath]);
+    if (supabase) {
+      const { error } = await supabase.storage
+        .from(BUCKET_NAME)
+        .remove([imagePath]);
 
-    if (error) throw error;
-    
+      if (!error) return { success: true, error: null };
+    }
     return { success: true, error: null };
   } catch (error) {
     console.error("Delete Error:", error);

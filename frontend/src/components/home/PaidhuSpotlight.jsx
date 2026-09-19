@@ -131,7 +131,7 @@ const PaidhuSpotlight = () => {
                   height={240}
                   onError={(e) => {
                     e.currentTarget.onerror = null;
-                    e.currentTarget.src = "https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/products/1787745523565-paidhuwhitelotus001png.png";
+                    e.currentTarget.src = "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1787745523565-paidhuwhitelotus001png.png";
                   }}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" 
                   loading="lazy"

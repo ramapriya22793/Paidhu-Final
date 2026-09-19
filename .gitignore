@@ -26,6 +26,13 @@ lerna-debug.log*
 # Scratch files
 **/scratch/
 node_modules_old 
-.vercel
-.env*
+.vercel/
+..vercel_out_tmp/
+.env
+.env.local
+.env.production
+.env.vercel
+.env.vercel.production
+!.env.example
 server/uploads/
+server/storage_backup/

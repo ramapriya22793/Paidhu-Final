@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ChevronLeft, ChevronRight, Heart, Sparkles } from 'lucide-react';
 
-const SUPABASE_STORAGE_URL = 'https://ljrwcciuacjbwocsxiqc.supabase.co/storage/v1/object/public/products/community';
+const SUPABASE_STORAGE_URL = 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/community';
 
 const communitySlides = [
   '/paidhu_mom_community_event_2.jpg',

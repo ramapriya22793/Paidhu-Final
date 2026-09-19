@@ -1,0 +1,22 @@
+[
+  {
+    "schemaname": "public",
+    "tablename": "Category",
+    "policyname": "Allow public read access",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "true",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "Product",
+    "policyname": "Allow public read access",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "true",
+    "with_check": null
+  }
+]
