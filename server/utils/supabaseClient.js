@@ -1,13 +1,25 @@
 const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config();
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_ANON_KEY;
+const DEFAULT_SUPABASE_URL = 'https://xittsoabiuzuzrzdjktb.supabase.co';
+const DEFAULT_SUPABASE_ANON_KEY = 'sb_publishable_SuDUNZP6gbn0BuyMcTbrNA_k75HNFAj';
 
-if (!supabaseUrl || !supabaseKey) {
-  console.warn("⚠️ Warning: Supabase URL or ANON KEY is missing in .env");
+let supabaseUrl = process.env.SUPABASE_URL;
+let supabaseKey = process.env.SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || supabaseUrl.includes('ljrwcciuacjbwocsxiqc')) {
+  supabaseUrl = DEFAULT_SUPABASE_URL;
+}
+if (!supabaseKey || supabaseKey.includes('ljrwcciuacjbwocsxiqc') || supabaseKey.includes('uPYZRyuqH')) {
+  supabaseKey = DEFAULT_SUPABASE_ANON_KEY;
 }
 
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: {
+    persistSession: false,
+    autoRefreshToken: false,
+    detectSessionInUrl: false
+  }
+});
 
 module.exports = supabase;

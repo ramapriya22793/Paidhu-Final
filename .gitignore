@@ -36,3 +36,5 @@ node_modules_old
 !.env.example
 server/uploads/
 server/storage_backup/
+.vercel
+.env*
