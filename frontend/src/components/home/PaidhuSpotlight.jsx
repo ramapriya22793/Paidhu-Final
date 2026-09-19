@@ -6,6 +6,45 @@ const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || (type
 
 const spotlightCache = { current: null };
 
+const formatSpotlightName = (name) => {
+  if (!name) return '';
+  let clean = name.split(/[|•]/)[0].trim();
+
+  if (/neem.*flower/i.test(clean)) return "Dried Neem Flowers";
+  if (/chamomile/i.test(clean)) return "Chamomile Brew";
+  if (/lavender.*brew|brew.*lavender/i.test(clean)) return "Lavender Petals";
+  if (/blue\s*pea.*30g|brew.*blue\s*pea/i.test(clean)) return "Blue Pea Flowers";
+  if (/aavaram.*30g|brew.*aavaram/i.test(clean)) return "Aavaram Poo Brew";
+  if (/hibiscus.*30g|brew.*hibiscus/i.test(clean)) return "Hibiscus Tea Brew";
+  if (/kashmiri\s*mongra/i.test(clean)) return "Kashmiri Mongra";
+  if (/super\s*ne[i]*gin/i.test(clean)) return "Super Negin Saffron";
+  if (/saffron\s*powder/i.test(clean)) return "Saffron Powder";
+  if (/white\s*lotus.*cookie/i.test(clean)) return "White Lotus Cookies";
+  if (/hibiscus.*cookie/i.test(clean)) return "Hibiscus Cookies";
+  if (/aavaram.*cookie/i.test(clean)) return "Aavaram Cookies";
+  if (/tanner/i.test(clean)) return "Tanner's Jam";
+  if (/gulkhand/i.test(clean)) return "Rose Gulkhand Jam";
+  if (/sinensis/i.test(clean)) return "Sinensis Syrup";
+  if (/neem.*jam/i.test(clean)) return "Neem Petal Jam";
+
+  if (clean.includes(' - ')) {
+    const parts = clean.split(' - ');
+    if (parts[1] && parts[1].length <= 25) {
+      clean = parts[1].trim();
+    } else if (parts[0]) {
+      clean = parts[0].trim();
+    }
+  }
+
+  clean = clean.replace(/–\s*Paidhu.*$/i, '')
+               .replace(/–\s*Premium.*$/i, '')
+               .replace(/\(\d+\s*Dips\)/i, '')
+               .replace(/\(\d+g\)/i, '')
+               .trim();
+
+  return clean;
+};
+
 const PaidhuSpotlight = () => {
   const resolveImage = (img) => {
     if (!img) return null;
@@ -18,7 +57,7 @@ const PaidhuSpotlight = () => {
     const initialList = fallbacks["Bestsellers"] || [];
     return initialList.map(p => ({
       id: p.id,
-      name: p.title,
+      name: formatSpotlightName(p.title),
       slug: p.raw ? p.raw.slug : `product-${p.id}`,
       image: p.image
     }));
@@ -40,7 +79,7 @@ const PaidhuSpotlight = () => {
           const image = p.image || (p.productImages && p.productImages.length > 0 ? p.productImages[0].imageUrl : null);
           return {
             id: p.id,
-            name: p.name,
+            name: formatSpotlightName(p.name),
             slug: p.slug,
             image: resolveImage(image) || "https://images.unsplash.com/photo-1599598425947-330026217432?q=80&w=500&auto=format&fit=crop"
           };
@@ -138,16 +177,16 @@ const PaidhuSpotlight = () => {
                 />
                 
                 {/* Premium Dark Backdrop Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent transition-opacity duration-300 opacity-85 group-hover:opacity-95" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-300 opacity-80 group-hover:opacity-95" />
 
                 {/* Text Content Overlay */}
-                <div className="absolute bottom-4 sm:bottom-6 left-0 right-0 text-center z-10 px-3">
-                  <span className="text-white text-xs sm:text-sm md:text-base font-black uppercase tracking-wider block mb-1.5 drop-shadow-sm group-hover:text-[#d4af37] transition-colors duration-300 line-clamp-1">
+                <div className="absolute bottom-3 sm:bottom-4 left-0 right-0 text-center z-10 px-2.5">
+                  <span className="text-white text-[11px] sm:text-[13px] md:text-[14px] font-bold uppercase tracking-wider block mb-1 drop-shadow-md group-hover:text-[#d4af37] transition-colors duration-300 line-clamp-1 leading-snug">
                     {item.name}
                   </span>
                   
                   {/* Expanding Gold Underline on Hover */}
-                  <div className="w-4 h-0.5 bg-[#d4af37] mx-auto transition-all duration-300 group-hover:w-16" />
+                  <div className="w-3.5 h-0.5 bg-[#d4af37] mx-auto transition-all duration-300 group-hover:w-12 rounded-full" />
                 </div>
               </Link>
             ))}

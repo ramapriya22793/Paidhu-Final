@@ -82,7 +82,10 @@ const updateSettings = async (req, res) => {
 
 const getHabitatVideos = async (req, res) => {
   try {
-    const supabaseUrl = process.env.SUPABASE_URL || 'https://fvtgukindzmoiwqqkwcl.supabase.co';
+    let supabaseUrl = process.env.SUPABASE_URL || 'https://xittsoabiuzuzrzdjktb.supabase.co';
+    if (!supabaseUrl || !supabaseUrl.includes('xittsoabiuzuzrzdjktb')) {
+      supabaseUrl = 'https://xittsoabiuzuzrzdjktb.supabase.co';
+    }
     let files = [];
     let bucketName = 'products';
     let folderName = 'starting floral habits videos';
