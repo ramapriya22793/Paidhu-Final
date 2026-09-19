@@ -485,32 +485,39 @@ const updateProduct = async (req, res) => {
       updateData.categoryId = categoryRecord.id;
     }
 
-    const product = await prisma.product.update({
-      where: {
-        id: Number(req.params.id),
-      },
-      data: updateData,
-    });
+    // Execute product update and images refresh in a fast single transaction
+    const operations = [
+      prisma.product.update({
+        where: { id: Number(req.params.id) },
+        data: updateData,
+      })
+    ];
 
     if (productImages && Array.isArray(productImages)) {
-      // First delete existing product images if we are updating them
-      await prisma.productImage.deleteMany({
-        where: { productId: product.id }
-      });
+      operations.push(
+        prisma.productImage.deleteMany({
+          where: { productId: Number(req.params.id) }
+        })
+      );
       if (productImages.length > 0) {
-        await prisma.productImage.createMany({
-          data: productImages.map(img => ({
-            imageUrl: typeof img === 'string' ? img : img.imageUrl,
-            imagePath: (typeof img === 'object' && img.imagePath) ? img.imagePath : '',
-            productId: product.id
-          }))
-        });
+        operations.push(
+          prisma.productImage.createMany({
+            data: productImages.map(img => ({
+              imageUrl: typeof img === 'string' ? img : img.imageUrl,
+              imagePath: (typeof img === 'object' && img.imagePath) ? img.imagePath : '',
+              productId: Number(req.params.id)
+            }))
+          })
+        );
       }
     }
 
-    res.json(product);
+    const [updatedProduct] = await prisma.$transaction(operations);
+
+    return res.json(updatedProduct);
   } catch (error) {
-    res.status(500).json({
+    console.error("UPDATE PRODUCT ERROR:", error);
+    return res.status(500).json({
       message: error.message,
     });
   }

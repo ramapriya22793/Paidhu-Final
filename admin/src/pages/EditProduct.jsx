@@ -222,15 +222,15 @@ const EditProduct = () => {
     if (uploading) { alert('Please wait for images to finish uploading.'); return; }
     setLoading(true);
     try {
-      // 1. Delete removed images from Supabase
-      for (const path of formData.imagesToDelete) {
-        await deleteImage(path);
+      // 1. Delete removed images from Supabase in background (non-blocking)
+      if (formData.imagesToDelete && formData.imagesToDelete.length > 0) {
+        Promise.allSettled(formData.imagesToDelete.map(path => deleteImage(path))).catch(err => console.warn(err));
       }
 
-      // 2. Images are already uploaded on selection — just compose the payload
+      // 2. Compose payload instantly from already-uploaded image states
       let primaryImage = formData.image;
       let primaryImagePath = formData.imagePath;
-      const allProductImages = [...formData.images]; // keep remaining old gallery images
+      const allProductImages = [...formData.images];
 
       for (const uploaded of formData.uploadedNewImages) {
         if (!primaryImage) {
