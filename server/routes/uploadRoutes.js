@@ -8,22 +8,23 @@ const upload = multer({
   limits: { fileSize: 15 * 1024 * 1024 }
 });
 
-router.post('/', upload.single('file'), async (req, res) => {
+router.post('/', upload.any(), async (req, res) => {
   try {
-    if (!req.file) {
+    const file = req.files && req.files.length > 0 ? req.files[0] : req.file;
+    if (!file) {
       return res.status(400).json({ success: false, error: 'No file uploaded' });
     }
 
     const folder = req.body.folder || 'products';
-    const originalName = req.file.originalname || 'upload.jpg';
+    const originalName = file.originalname || 'upload.jpg';
     const ext = originalName.split('.').pop() || 'jpg';
     const cleanName = originalName.replace(/[^a-zA-Z0-9]/g, '');
     const fileName = `${folder}/${Date.now()}-${cleanName}.${ext}`;
 
     const { data, error } = await supabase.storage
       .from('products')
-      .upload(fileName, req.file.buffer, {
-        contentType: req.file.mimetype || 'image/jpeg',
+      .upload(fileName, file.buffer, {
+        contentType: file.mimetype || 'image/jpeg',
         upsert: true
       });
 
