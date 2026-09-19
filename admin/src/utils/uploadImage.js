@@ -60,6 +60,8 @@ export const uploadImage = async (file, folder = 'products') => {
             imagePath: fileName,
             error: null
           };
+        } else if (error) {
+          console.warn("Direct Supabase storage notice:", error.message);
         }
       } catch (directErr) {
         console.warn("Direct Supabase storage upload notice, trying server fallback:", directErr.message);
@@ -84,6 +86,11 @@ export const uploadImage = async (file, folder = 'products') => {
           imagePath: data.imagePath,
           error: null
         };
+      }
+    } else {
+      const errJson = await res.json().catch(() => ({}));
+      if (errJson.error) {
+        throw new Error(errJson.error);
       }
     }
 

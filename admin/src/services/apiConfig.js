@@ -11,13 +11,14 @@ export const getApiBaseUrl = () => {
     if (isLocalhost) {
       return envUrl || 'http://localhost:5000';
     }
-    // If not running on localhost (e.g. deployed to Vercel/production), do NOT use localhost backend
-    if (!isLocalhost && envUrl && (envUrl.includes('localhost') || envUrl.includes('127.0.0.1'))) {
+    // If running in production (e.g. admin.paidhuethicalfoods.com or vercel.app)
+    if (!envUrl || envUrl.includes('localhost') || envUrl.includes('127.0.0.1')) {
       return 'https://paidhu-final-anm2.vercel.app';
     }
+    return envUrl;
   }
 
-  return envUrl || 'http://localhost:5000';
+  return envUrl || 'https://paidhu-final-anm2.vercel.app';
 };
 
 export const API_BASE_URL = getApiBaseUrl();
