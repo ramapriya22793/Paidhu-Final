@@ -7,10 +7,8 @@ const DEFAULT_SUPABASE_ANON_KEY = 'sb_publishable_SuDUNZP6gbn0BuyMcTbrNA_k75HNFA
 let supabaseUrl = process.env.SUPABASE_URL;
 let supabaseKey = process.env.SUPABASE_ANON_KEY;
 
-if (!supabaseUrl || supabaseUrl.includes('ljrwcciuacjbwocsxiqc')) {
+if (!supabaseUrl || !supabaseUrl.includes('xittsoabiuzuzrzdjktb')) {
   supabaseUrl = DEFAULT_SUPABASE_URL;
-}
-if (!supabaseKey || supabaseKey.includes('ljrwcciuacjbwocsxiqc') || supabaseKey.includes('uPYZRyuqH')) {
   supabaseKey = DEFAULT_SUPABASE_ANON_KEY;
 }
 
