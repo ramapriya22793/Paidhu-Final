@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "Paidhu Ethical Foods - Monorepo (Frontend, Admin, Server)",
   "scripts": {
-    "build": "npm run build --prefix frontend && npm run build --prefix admin",
+    "build": "npx prisma generate --schema=./server/prisma/schema.prisma && npm run build --prefix frontend && npm run build --prefix admin",
     "build:frontend": "npm run build --prefix frontend",
     "build:admin": "npm run build --prefix admin",
     "start:server": "npm start --prefix server",
-    "postinstall": "npm --prefix server install && npm --prefix server run postinstall"
+    "postinstall": "npm --prefix server install && npx prisma generate --schema=./server/prisma/schema.prisma"
   }
 }
