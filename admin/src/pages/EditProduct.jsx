@@ -6,14 +6,19 @@ import { FiSave, FiArrowLeft, FiImage, FiPlus, FiTrash2, FiLoader } from 'react-
 import ProductSeoManager from '../components/ProductSeoManager';
 
 
-const categories = [
+const defaultCategories = [
   'Bloom Cookies',
   'Bloom Powder',
   'Petal Jam',
   'Medley Teas',
   'Brew Flora',
   'Saffron',
-  'Combos'
+  'Combos',
+  'Dry Flower',
+  'Powder',
+  'Pregnancy',
+  'Events',
+  'Uncategorized'
 ];
 
 const EditProduct = () => {
@@ -22,15 +27,16 @@ const EditProduct = () => {
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
   const [activeTab, setActiveTab] = useState('basic'); // basic, media, details, nutrition, faq
+  const [availableCategories, setAvailableCategories] = useState(defaultCategories);
 
   const [formData, setFormData] = useState({
     name: '',
     shortDescription: '',
     description: '',
-    category: categories[0],
+    category: defaultCategories[0],
     price: '',
     offerPrice: '',
-    stock: '',
+    stock: '0',
     image: '',
     imagePath: '',
     images: [],
@@ -46,21 +52,29 @@ const EditProduct = () => {
     highlights: [],
     nutritionInfo: { calories: '', protein: '', fat: '', carbs: '' },
     faqData: [],
-    variants: []
+    variants: [],
+    status: 'ACTIVE',
+    featured: false
   });
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const product = await productService.getProductById(id);
+        const resolvedCategory = (typeof product.category === 'object' ? product.category?.name : product.category) || defaultCategories[0];
+        
+        if (resolvedCategory && !defaultCategories.includes(resolvedCategory)) {
+          setAvailableCategories(prev => [...new Set([...prev, resolvedCategory])]);
+        }
+
         setFormData({
           name: product.name || '',
           shortDescription: product.shortDescription || '',
           description: product.description || '',
-          category: product.category || categories[0],
-          price: product.price || '',
-          offerPrice: product.offerPrice || '',
-          stock: product.stock || '',
+          category: resolvedCategory,
+          price: product.price !== undefined && product.price !== null ? product.price : '',
+          offerPrice: product.offerPrice !== undefined && product.offerPrice !== null ? product.offerPrice : (product.discountPrice || ''),
+          stock: product.stock !== undefined && product.stock !== null ? product.stock : '0',
           image: product.image || '',
           imagePath: product.imagePath || '',
           images: product.images || [], // { imageUrl, imagePath }
@@ -76,11 +90,13 @@ const EditProduct = () => {
           highlights: product.highlights || [],
           nutritionInfo: product.nutritionInfo || { calories: '', protein: '', fat: '', carbs: '' },
           faqData: product.faqData || [],
-          variants: product.variants ? (typeof product.variants === 'string' ? JSON.parse(product.variants) : product.variants) : []
+          variants: product.variants ? (typeof product.variants === 'string' ? JSON.parse(product.variants) : product.variants) : [],
+          status: product.status || 'ACTIVE',
+          featured: Boolean(product.featured)
         });
       } catch (error) {
         console.error("Failed to load product", error);
-        alert("Failed to load product data");
+        alert("Failed to load product data: " + (error.message || ''));
       } finally {
         setFetching(false);
       }
@@ -220,6 +236,19 @@ const EditProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (uploading) { alert('Please wait for images to finish uploading.'); return; }
+    
+    // Tab-safe validation
+    if (!formData.name?.trim()) {
+      setActiveTab('basic');
+      alert('Product Name is required.');
+      return;
+    }
+    if (formData.price === '' || formData.price === undefined || isNaN(Number(formData.price))) {
+      setActiveTab('basic');
+      alert('Valid Price is required.');
+      return;
+    }
+
     setLoading(true);
     try {
       // 1. Delete removed images from Supabase in background (non-blocking)
@@ -243,6 +272,9 @@ const EditProduct = () => {
 
       const payload = {
         ...formData,
+        price: Number(formData.price),
+        offerPrice: formData.offerPrice !== '' && formData.offerPrice !== undefined ? Number(formData.offerPrice) : null,
+        stock: formData.stock !== '' && formData.stock !== undefined ? Number(formData.stock) : 0,
         image: primaryImage,
         imagePath: primaryImagePath,
         productImages: allProductImages
@@ -258,7 +290,7 @@ const EditProduct = () => {
       navigate('/products');
     } catch (error) {
       console.error(error);
-      alert('Failed to update product: ' + (error.message || 'Check console for errors.'));
+      alert('Failed to update product: ' + (error.response?.data?.message || error.message || 'Check console for errors.'));
     } finally {
       setLoading(false);
     }
@@ -300,7 +332,6 @@ const EditProduct = () => {
           <TabButton id="details" label="Ingredients & Highlights" />
           <TabButton id="nutrition" label="Nutrition" />
           <TabButton id="faq" label="SEO Management Suite 🚀" />
-
         </div>
 
         <div className="p-8">
@@ -316,12 +347,12 @@ const EditProduct = () => {
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Category *</label>
                   <select name="category" value={formData.category} onChange={handleChange} className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-plum/20 outline-none bg-white">
-                    {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                    {availableCategories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
                   </select>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Price (₹) *</label>
                   <input type="number" name="price" required value={formData.price} onChange={handleChange} className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-plum/20 outline-none" />
@@ -333,6 +364,15 @@ const EditProduct = () => {
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Stock Quantity *</label>
                   <input type="number" name="stock" required value={formData.stock} onChange={handleChange} className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-plum/20 outline-none" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">Product Status</label>
+                  <select name="status" value={formData.status} onChange={handleChange} className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-plum/20 outline-none bg-white font-medium">
+                    <option value="ACTIVE">ACTIVE</option>
+                    <option value="INACTIVE">INACTIVE</option>
+                    <option value="DRAFT">DRAFT</option>
+                    <option value="OUT_OF_STOCK">OUT OF STOCK</option>
+                  </select>
                 </div>
               </div>
 
