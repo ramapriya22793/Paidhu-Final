@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   Calendar, 
@@ -22,10 +22,34 @@ const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || (type
 
 const BlogDetailPage = () => {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const [blogData, setBlogData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
+
+  const handleContentClick = (e) => {
+    const target = e.target;
+    if (target.tagName === 'IMG' || target.closest('a')) {
+      const link = target.closest('a');
+      if (link) {
+        e.preventDefault();
+        const href = link.getAttribute('href') || '';
+        if (href.includes('product/') || href.includes('paidhu.com/product/')) {
+          const productSlug = href.split('product/')[1]?.replace(/\/$/, '') || '';
+          navigate(productSlug ? `/product/${productSlug}` : '/shop');
+        } else if (href.includes('paidhu.com') || href.includes('/shop')) {
+          navigate('/shop');
+        } else if (href.startsWith('http')) {
+          window.open(href, '_blank');
+        } else {
+          navigate('/shop');
+        }
+      } else if (target.tagName === 'IMG') {
+        navigate('/shop');
+      }
+    }
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -196,14 +220,23 @@ const BlogDetailPage = () => {
           </div>
         </div>
 
-        {/* Hero Featured Image */}
-        <div className="relative h-[200px] sm:h-[260px] md:h-[300px] w-full rounded-[2rem] overflow-hidden shadow-xl border border-gray-100 bg-gray-100">
+        {/* Hero Featured Image — Clicking navigates to Shop Now */}
+        <Link
+          to="/shop"
+          className="group relative h-[200px] sm:h-[260px] md:h-[300px] w-full rounded-[2rem] overflow-hidden shadow-xl border border-gray-100 bg-gray-100 block cursor-pointer"
+        >
           <img
             src={getBlogImageSrc(blog)}
             alt={blog.featuredImageAlt || blog.title}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
-        </div>
+          {/* Floating Shop Now Badge */}
+          <div className="absolute bottom-4 right-4 bg-[#662654] hover:bg-[#7a2e64] text-white px-4 py-2 rounded-full font-bold text-xs shadow-lg flex items-center gap-2 group-hover:scale-105 transition-all">
+            <ShoppingBag size={14} className="text-[#d4af37]" />
+            <span>Shop Now</span>
+            <ChevronRight size={14} />
+          </div>
+        </Link>
 
         {/* Social Share Bar */}
         <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between gap-4 flex-wrap">
@@ -255,12 +288,36 @@ const BlogDetailPage = () => {
           </div>
         )}
 
-        {/* Main Article HTML Body Content */}
+        {/* Main Article HTML Body Content with click-to-shop support */}
         <div className="bg-white p-6 sm:p-10 rounded-[2.5rem] border border-gray-100 shadow-sm">
           <div 
-            className="prose prose-sm sm:prose-base lg:prose-lg max-w-none text-gray-800 font-medium leading-relaxed prose-headings:font-serif prose-headings:text-[#662654] prose-headings:font-black prose-a:text-[#662654] prose-a:font-bold hover:prose-a:underline prose-img:rounded-3xl prose-img:shadow-md prose-blockquote:border-l-4 prose-blockquote:border-[#662654] prose-blockquote:pl-4 prose-blockquote:italic text-justify space-y-4"
+            onClick={handleContentClick}
+            className="prose prose-sm sm:prose-base lg:prose-lg max-w-none text-gray-800 font-medium leading-relaxed prose-headings:font-serif prose-headings:text-[#662654] prose-headings:font-black prose-a:text-[#662654] prose-a:font-bold hover:prose-a:underline prose-img:rounded-3xl prose-img:shadow-md prose-img:cursor-pointer hover:prose-img:opacity-95 prose-blockquote:border-l-4 prose-blockquote:border-[#662654] prose-blockquote:pl-4 prose-blockquote:italic text-justify space-y-4"
             dangerouslySetInnerHTML={{ __html: blog.content }}
           />
+
+          {/* Inline Shop Now CTA Banner */}
+          <div className="mt-10 p-6 sm:p-8 bg-gradient-to-r from-[#662654] to-[#4c163b] rounded-3xl text-white shadow-xl flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="space-y-1 text-center sm:text-left">
+              <span className="text-[11px] font-black uppercase tracking-widest text-[#d4af37] bg-white/10 px-3 py-1 rounded-full inline-block">
+                Featured in Paidhu Store
+              </span>
+              <h3 className="text-xl sm:text-2xl font-serif font-bold pt-1">
+                Shop Artisanal Floral Foods &amp; Treats
+              </h3>
+              <p className="text-xs sm:text-sm text-white/80 max-w-md">
+                Discover organic bloom cookies, wild petal teas, pure Kashmiri saffron, and sun-cured gulkand.
+              </p>
+            </div>
+            <Link
+              to="/shop"
+              className="bg-[#d4af37] hover:bg-[#c29f2e] text-[#4c163b] font-black text-xs uppercase tracking-wider px-6 py-3.5 rounded-full shadow-lg flex items-center gap-2 transition-all hover:scale-105 shrink-0 cursor-pointer"
+            >
+              <ShoppingBag size={16} />
+              <span>Shop Now</span>
+              <ChevronRight size={16} />
+            </Link>
+          </div>
         </div>
 
         {/* Navigation Next & Previous Articles */}
