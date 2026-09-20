@@ -1,60 +1,142 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ShoppingBag } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const features = [
   {
     id: '01',
     title: 'Healthy Kids Snacks',
-    description: 'Nutritious and delicious snacks made with premium natural ingredients for growing kids.',
+    description: 'Nutritious and crunchy bloom cookies crafted with pure millets, butter, and edible flower extracts—100% free of refined sugar and preservatives.',
+    link: '/shop/shop-by-category?category=Bloom%20Cookies',
     images: [
-      '/bento/kids_snack_1.jpg',
-      '/bento/kids_snack_2.jpg'
+      {
+        src: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807099194-whitelotuscookiepng.png',
+        title: 'Bloom Cookies - White Lotus',
+        isProduct: true
+      },
+      {
+        src: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807081906-AAVARAMPOOpng.png',
+        title: 'Bloom Cookies - Aavaram Poo',
+        isProduct: true
+      },
+      {
+        src: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807060350-hibiscuscookiespng.png',
+        title: 'Bloom Cookies - Hibiscus',
+        isProduct: true
+      }
     ]
   },
   {
     id: '02',
     title: 'Flower Based Infusions',
-    description: 'Discover wellness blends crafted from edible flowers, herbs, and traditional ingredients.',
+    description: 'Discover pure whole-flower wellness teas and dip infusions crafted from sun-dried edible blossoms and ancient botanical traditions.',
+    link: '/shop/shop-by-category?category=Brew%20Flora',
     images: [
-      '/bento/infusion_1.jpg',
-      '/bento/infusion_2.jpg',
-      '/bento/infusion_3.jpg',
-      '/bento/infusion_4.jpg',
-      '/bento/infusion_5.jpg'
+      {
+        src: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806532876-Aavarempng.png',
+        title: 'Brew Flora - Aavaram Poo (30g)',
+        isProduct: true
+      },
+      {
+        src: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806858400-CHAMOMILEBREWFLORApng.png',
+        title: 'Brew Flora - Chamomile (30g)',
+        isProduct: true
+      },
+      {
+        src: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806997507-6png.png',
+        title: 'Brew Flora - Blue Pea (30g)',
+        isProduct: true
+      },
+      {
+        src: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789803500245-MEDLEYTEAS1png.png',
+        title: 'Medly Teas - Hibiscus (20 Dips)',
+        isProduct: true
+      },
+      {
+        src: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806823754-4png.png',
+        title: 'Medly Teas - Lavender (20 Dips)',
+        isProduct: true
+      },
+      {
+        src: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806919503-7png.png',
+        title: 'Brew Flora - Hibiscus Tea (30g)',
+        isProduct: true
+      }
     ]
   },
   {
     id: '03',
     title: 'Paidhu Community',
-    description: 'Join the Paidhu community to share wholesome food experiences, delicious recipe ideas, and lifestyle tips.',
+    description: 'Join thousands of mindful mothers and families sharing natural wellness recipes, parenting stories, and holistic lifestyle journeys.',
+    link: '/blogs',
     images: [
-      '/paidhu_mom_community_event_2.jpg',
-      '/paidhu_mom_community_event_1.jpg',
-      '/paidhu_mom_community_event_3.jpg',
-      '/paidhu_mom_community_event_4.jpg',
-      '/moms_sharing_cookies.png',
-      '/mom_drinking_tea.png',
-      '/moms_garden_gathering.png'
+      {
+        src: '/paidhu_mom_community_event_2.jpg',
+        title: 'Paidhu Moms & Families Gathering',
+        isProduct: false
+      },
+      {
+        src: '/paidhu_mom_community_event_1.jpg',
+        title: 'Community Wellness & Tasting Session',
+        isProduct: false
+      },
+      {
+        src: '/paidhu_mom_community_event_3.jpg',
+        title: 'Wholesome Gathering & Recipe Sharing',
+        isProduct: false
+      },
+      {
+        src: '/paidhu_mom_community_event_4.jpg',
+        title: 'Family Health & Natural Nutrition',
+        isProduct: false
+      },
+      {
+        src: '/moms_garden_gathering.png',
+        title: 'Paidhu Garden Community',
+        isProduct: false
+      }
     ]
   },
   {
     id: '04',
     title: 'Travel Friendly Foods',
-    description: 'Convenient healthy snacks and ready-to-carry products designed for modern families on the go.',
+    description: 'Convenient dip teas, royal Kashmiri saffron, and artisanal petal preserves designed for effortless nourishment wherever you travel.',
+    link: '/shop',
     images: [
-      '/bento/travel_1.png',
-      '/bento/travel_2.jpg',
-      '/bento/travel_3.jpg',
-      '/bento/travel_4.png'
+      {
+        src: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789803563135-Screenshot202608061246502png.png',
+        title: 'Cassia Fistula Medley Tea (20 Dips)',
+        isProduct: true
+      },
+      {
+        src: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806804404-2png.png',
+        title: 'Medly Teas - Saffron (20 Dips)',
+        isProduct: true
+      },
+      {
+        src: 'https://wp.paidhu.com/wp-content/uploads/2024/08/saffron-neign.jpg',
+        title: 'Super Negin Kashmiri Saffron',
+        isProduct: true
+      },
+      {
+        src: 'https://wp.paidhu.com/wp-content/uploads/2025/07/Gulkand-final.jpg',
+        title: 'Artisanal Rose Gulkhand Jam',
+        isProduct: true
+      },
+      {
+        src: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807238758-ChatGPTImageApr242026105405AM180x180png.png',
+        title: "Tanner's Flower Petal Jam",
+        isProduct: true
+      }
     ]
   }
 ];
 
-
 const FeaturedBento = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const navigate = useNavigate();
 
   // Automatically cycle images for the active category
   useEffect(() => {
@@ -65,14 +147,22 @@ const FeaturedBento = () => {
 
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % activeFeature.images.length);
-    }, 4000); // Cycle images every 4 seconds
+    }, 3800); // Cycle images every 3.8 seconds
 
     return () => clearInterval(interval);
   }, [activeIndex]);
 
+  const activeFeature = features[activeIndex];
+  const currentImgData = activeFeature.images[currentImageIndex] || activeFeature.images[0];
+
+  const handleExplore = (link) => {
+    if (link) {
+      navigate(link);
+    }
+  };
+
   return (
     <section className="w-full bg-[#fcfbfa] pt-2 pb-6 md:pt-4 md:pb-8">
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -125,9 +215,15 @@ const FeaturedBento = () => {
                             <p className="text-gray-600 text-sm md:text-base font-medium leading-relaxed max-w-sm">
                               {feature.description}
                             </p>
-                            <div className="mt-4 flex items-center gap-2 text-[#662654] text-xs font-bold uppercase tracking-wider">
+                            <button 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleExplore(feature.link);
+                              }}
+                              className="mt-4 inline-flex items-center gap-2 text-[#662654] text-xs font-bold uppercase tracking-wider hover:text-[#8b235c] transition-colors"
+                            >
                               Explore <ArrowRight size={14} className="transform group-hover:translate-x-1 transition-transform" />
-                            </div>
+                            </button>
                           </motion.div>
                         )}
                       </AnimatePresence>
@@ -139,40 +235,65 @@ const FeaturedBento = () => {
           </div>
 
           {/* Right Column: Image Reveal Window */}
-          <div className="lg:col-span-7 h-[400px] md:h-[500px] lg:h-[600px] rounded-[2rem] overflow-hidden relative shadow-2xl bg-gray-100">
+          <div 
+            onClick={() => handleExplore(activeFeature.link)}
+            className="lg:col-span-7 h-[400px] md:h-[500px] lg:h-[560px] rounded-[2rem] overflow-hidden relative shadow-xl bg-gradient-to-br from-white via-[#fdfbf9] to-[#f5eeea] border border-[#662654]/10 cursor-pointer group"
+          >
             <AnimatePresence mode="wait">
-              <motion.img
+              <motion.div
                 key={`${activeIndex}-${currentImageIndex}`}
-                src={features[activeIndex].images[currentImageIndex]}
-                alt={features[activeIndex].title}
-                width={600}
-                height={600}
-                loading="lazy"
-                initial={{ opacity: 0, scale: 1.05 }}
+                initial={{ opacity: 0, scale: 1.03 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className="absolute inset-0 w-full h-full flex items-center justify-center p-4 md:p-8"
+              >
+                <img
+                  src={currentImgData.src}
+                  alt={currentImgData.title || activeFeature.title}
+                  loading="lazy"
+                  className={`w-full h-full ${
+                    currentImgData.isProduct 
+                      ? 'object-contain max-h-[85%] drop-shadow-xl group-hover:scale-105 transition-transform duration-500' 
+                      : 'object-cover rounded-xl shadow-md group-hover:scale-105 transition-transform duration-500'
+                  }`}
+                />
+              </motion.div>
             </AnimatePresence>
             
-            {/* Elegant overlay gradient to make it look premium */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
+            {/* Top Right "Shop Now" Action Pill */}
+            <div className="absolute top-5 right-5 z-20 opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300">
+              <div className="flex items-center gap-1.5 px-3.5 py-1.5 bg-[#662654] text-white text-xs font-semibold rounded-full shadow-lg">
+                <ShoppingBag size={13} />
+                <span>Shop Collection</span>
+              </div>
+            </div>
+
+            {/* Bottom Floating Caption Card */}
+            {currentImgData.title && (
+              <div className="absolute bottom-6 left-6 right-20 z-20">
+                <div className="inline-block bg-white/95 backdrop-blur-md px-4 py-2 rounded-xl shadow-md border border-[#662654]/10 max-w-full">
+                  <p className="text-[#662654] text-xs md:text-sm font-bold truncate">
+                    {currentImgData.title}
+                  </p>
+                </div>
+              </div>
+            )}
 
             {/* Premium Slide indicators (Dots) */}
-            {features[activeIndex].images && features[activeIndex].images.length > 1 && (
-              <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-2 z-10">
-                {features[activeIndex].images.map((_, idx) => (
+            {activeFeature.images && activeFeature.images.length > 1 && (
+              <div className="absolute bottom-6 right-6 flex items-center gap-1.5 z-20 bg-black/20 backdrop-blur-sm px-2.5 py-1.5 rounded-full">
+                {activeFeature.images.map((_, idx) => (
                   <button
                     key={idx}
                     onClick={(e) => {
                       e.stopPropagation();
                       setCurrentImageIndex(idx);
                     }}
-                    className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                    className={`h-2 rounded-full transition-all duration-300 ${
                       currentImageIndex === idx 
-                        ? 'bg-white w-6 shadow-md' 
-                        : 'bg-white/40 hover:bg-white/80'
+                        ? 'bg-white w-5 shadow-sm' 
+                        : 'bg-white/50 hover:bg-white/90 w-2'
                     }`}
                     aria-label={`Go to slide ${idx + 1}`}
                   />
