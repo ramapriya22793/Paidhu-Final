@@ -106,31 +106,36 @@ const FALLBACK_VIDEO_REELS = [
   }
 ];
 
-// Single Reel Card with simultaneous continuous autoplay & clean unobstructed full-screen video
-const ReelCard = ({ review, onClick, isGlobalMuted }) => {
+// Single Reel Card with simultaneous continuous autoplay & individual sound toggle
+const ReelCard = ({ review, onClick, isSoundActive, onToggleSound }) => {
   const videoRef = useRef(null);
 
   useEffect(() => {
     if (!videoRef.current) return;
-    videoRef.current.muted = isGlobalMuted;
+    videoRef.current.muted = !isSoundActive;
+    if (isSoundActive) {
+      videoRef.current.volume = 1.0;
+    }
     const playPromise = videoRef.current.play();
     if (playPromise !== undefined) {
-      playPromise.catch((err) => {
-        // Auto-play was prevented (e.g. browser policy), ensure muted and retry
+      playPromise.catch(() => {
+        // Auto-play policy fallback
         if (videoRef.current) {
           videoRef.current.muted = true;
           videoRef.current.play().catch(() => {});
         }
       });
     }
-  }, [isGlobalMuted, review.video]);
+  }, [isSoundActive, review.video]);
 
   return (
     <motion.div
       whileHover={{ y: -8, scale: 1.03 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
       onClick={onClick}
-      className="relative shrink-0 w-[240px] sm:w-[270px] md:w-[290px] aspect-[9/16] rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl border-2 border-[#522742]/10 bg-black cursor-pointer group select-none"
+      className={`relative shrink-0 w-[240px] sm:w-[270px] md:w-[290px] aspect-[9/16] rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl border-2 transition-all duration-300 bg-black cursor-pointer group select-none ${
+        isSoundActive ? 'border-[#38ef7d] shadow-[0_0_25px_rgba(56,239,125,0.35)] ring-2 ring-[#38ef7d]/50' : 'border-[#522742]/10'
+      }`}
     >
       {/* Background Autoplay Video Element */}
       <video
@@ -140,15 +145,41 @@ const ReelCard = ({ review, onClick, isGlobalMuted }) => {
         loop
         autoPlay
         playsInline
-        muted={isGlobalMuted}
+        muted={!isSoundActive}
         preload="auto"
       />
+
+      {/* Top Sound Control Button (Dedicated per-card selector) */}
+      <div className="absolute top-3.5 right-3.5 z-20">
+        <button
+          type="button"
+          onClick={(e) => onToggleSound(review.id, e)}
+          className={`px-3 py-1.5 rounded-full text-xs font-bold shadow-lg backdrop-blur-md flex items-center gap-1.5 transition-all duration-300 cursor-pointer ${
+            isSoundActive 
+              ? 'bg-[#38ef7d] text-gray-950 scale-105 shadow-[0_0_12px_rgba(56,239,125,0.6)] animate-pulse' 
+              : 'bg-black/60 hover:bg-black/80 text-white/90 border border-white/20'
+          }`}
+          title={isSoundActive ? "Mute audio" : "Listen to this video audio"}
+        >
+          {isSoundActive ? (
+            <>
+              <Volume2 size={14} className="fill-current text-gray-950" />
+              <span>Playing Audio</span>
+            </>
+          ) : (
+            <>
+              <VolumeX size={14} />
+              <span>Tap for Audio</span>
+            </>
+          )}
+        </button>
+      </div>
 
       {/* Subtle Bottom Vignette */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
       {/* Hover Expand/Play Indicator */}
-      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/20">
+      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/20 pointer-events-none">
         <motion.div 
           className="w-14 h-14 rounded-full bg-white/95 text-[#522742] flex items-center justify-center shadow-xl backdrop-blur-xs"
           whileHover={{ scale: 1.15 }}
@@ -167,7 +198,7 @@ const CustomerVideoReels = () => {
   const [activeModalReview, setActiveModalReview] = useState(null);
   const [modalPlaying, setModalPlaying] = useState(true);
   const [modalMuted, setModalMuted] = useState(false);
-  const [isGlobalMuted, setIsGlobalMuted] = useState(true);
+  const [activeAudioId, setActiveAudioId] = useState(null);
 
   const sliderRef = useRef(null);
   const modalVideoRef = useRef(null);
@@ -213,7 +244,17 @@ const CustomerVideoReels = () => {
     sliderRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
   };
 
+  const handleToggleSound = (id, e) => {
+    if (e) e.stopPropagation();
+    setActiveAudioId(prev => (prev === id ? null : id));
+  };
+
+  const handleMuteAll = () => {
+    setActiveAudioId(null);
+  };
+
   const handleOpenModal = (review) => {
+    setActiveAudioId(null); // Mute background videos
     setActiveModalReview(review);
     setModalPlaying(true);
     setModalMuted(false);
@@ -285,14 +326,22 @@ const CustomerVideoReels = () => {
 
           {/* Navigation Controls */}
           <div className="flex items-center gap-3 self-start md:self-end">
-            <button
-              onClick={() => setIsGlobalMuted(!isGlobalMuted)}
-              className="px-3.5 py-2 rounded-full bg-white/90 hover:bg-white text-[#522742] text-xs font-bold shadow-sm border border-[#522742]/15 flex items-center gap-1.5 transition-all cursor-pointer"
-              title={isGlobalMuted ? "Unmute Previews" : "Mute Previews"}
-            >
-              {isGlobalMuted ? <VolumeX size={14} /> : <Volume2 size={14} className="text-[#38ef7d]" />}
-              <span>{isGlobalMuted ? "Muted" : "Sound On"}</span>
-            </button>
+            {activeAudioId ? (
+              <button
+                onClick={handleMuteAll}
+                className="px-3.5 py-2 rounded-full bg-[#522742] hover:bg-[#6a2b53] text-white text-xs font-bold shadow-md flex items-center gap-1.5 transition-all cursor-pointer"
+                title="Mute all audio"
+              >
+                <Volume2 size={14} className="text-[#38ef7d] animate-pulse" />
+                <span>Mute All Audio</span>
+              </button>
+            ) : (
+              <div className="px-3.5 py-2 rounded-full bg-white/90 text-[#522742] text-xs font-semibold shadow-xs border border-[#522742]/15 flex items-center gap-1.5">
+                <VolumeX size={14} className="text-gray-400" />
+                <span className="hidden sm:inline">Tap any video for sound</span>
+                <span className="sm:hidden">Tap for audio</span>
+              </div>
+            )}
 
             <button
               onClick={() => scrollSlider('left')}
@@ -317,15 +366,20 @@ const CustomerVideoReels = () => {
           className="flex items-center gap-5 sm:gap-6 overflow-x-auto pb-6 pt-2 scrollbar-none snap-x snap-mandatory"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          {reviews.map((review, index) => (
-            <div key={review.id || index} className="snap-start">
-              <ReelCard
-                review={review}
-                onClick={() => handleOpenModal(review)}
-                isGlobalMuted={isGlobalMuted}
-              />
-            </div>
-          ))}
+          {reviews.map((review, index) => {
+            const reelId = review.id || `reel-${index}`;
+            const isSoundActive = activeAudioId === reelId;
+            return (
+              <div key={reelId} className="snap-start">
+                <ReelCard
+                  review={review}
+                  onClick={() => handleOpenModal(review)}
+                  isSoundActive={isSoundActive}
+                  onToggleSound={(id, e) => handleToggleSound(reelId, e)}
+                />
+              </div>
+            );
+          })}
         </div>
 
       </div>
