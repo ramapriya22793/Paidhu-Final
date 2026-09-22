@@ -8,8 +8,29 @@ import { CartProvider } from './context/CartContext';
 import SEO from './components/seo/SEO';
 import MaintenancePage from './pages/MaintenancePage';
 
-const Footer = lazy(() => import('./components/layout/Footer'));
-const WhatsAppButton = lazy(() => import('./components/ui/WhatsAppButton'));
+import Footer from './components/layout/Footer';
+import WhatsAppButton from './components/ui/WhatsAppButton';
+
+// Direct Page & Component imports to guarantee zero chunk load failures
+import ShopPage from './pages/ShopPage';
+import ProductDetailPage from './pages/ProductDetailPage';
+import CheckoutPage from './pages/CheckoutPage';
+import OrderSuccessPage from './pages/OrderSuccessPage';
+import SaffronGuidancePage from './pages/SaffronGuidancePage';
+import BYOCPage from './pages/BYOCPage';
+import LegalPage from './pages/LegalPage';
+import CareersPage from './pages/CareersPage';
+import BlogsPage from './pages/BlogsPage';
+import BlogDetailPage from './pages/BlogDetailPage';
+
+// Home components
+import ExploreCategory from './components/home/ExploreCategory';
+import BenefitsMarquee from './components/home/BenefitsMarquee';
+import FeaturedBento from './components/home/FeaturedBento';
+import PaidhuSpotlight from './components/home/PaidhuSpotlight';
+import CustomerVideoReels from './components/home/CustomerVideoReels';
+import RealMomsSection from './components/home/RealMomsSection';
+import BrandCharactersBanner from './components/home/BrandCharactersBanner';
 
 // MAINTENANCE MODE SWITCH:
 // Set to true to display the Under Maintenance page across the store with WhatsApp navigation.
@@ -17,7 +38,7 @@ const WhatsAppButton = lazy(() => import('./components/ui/WhatsAppButton'));
 // Preview bypass: add ?preview=true to any URL to inspect the live store during maintenance.
 const IS_MAINTENANCE_MODE = false;
 
-// Error boundary and safe lazy-loading helper to auto-recover when deployment chunks update
+// Error boundary with clean recovery
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -28,37 +49,26 @@ class ErrorBoundary extends React.Component {
     return { hasError: true };
   }
 
-  componentDidCatch(error) {
-    console.error("Route chunk loading error:", error);
-    const chunkFailed = error?.name === 'ChunkLoadError' || 
-                        error?.message?.includes('Failed to fetch dynamically imported module') ||
-                        error?.message?.includes('Importing a module script failed');
-    if (chunkFailed) {
-      const hasReloaded = sessionStorage.getItem('chunk_reload_retry');
-      if (!hasReloaded) {
-        sessionStorage.setItem('chunk_reload_retry', 'true');
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
-      }
-    }
+  componentDidCatch(error, errorInfo) {
+    console.error("App render error:", error, errorInfo);
   }
 
   render() {
     if (this.state.hasError) {
       return (
         <div className="min-h-[50vh] flex flex-col items-center justify-center p-6 text-center bg-white">
-          <div className="w-10 h-10 border-4 border-[#662654] border-t-transparent rounded-full animate-spin mb-4"></div>
-          <h2 className="text-xl font-bold text-gray-800 mb-2">Updating to Latest Version...</h2>
-          <p className="text-sm text-gray-600 mb-4">A new update was deployed. Refreshing automatically.</p>
+          <h2 className="text-xl font-bold text-gray-800 mb-2">Something went wrong</h2>
+          <p className="text-sm text-gray-600 mb-4">Please refresh the page to reload the store.</p>
           <button
             onClick={() => {
-              sessionStorage.removeItem('chunk_reload_retry');
-              window.location.reload();
+              if (typeof window !== 'undefined') {
+                sessionStorage.clear();
+                window.location.href = window.location.origin + window.location.pathname;
+              }
             }}
-            className="px-5 py-2.5 bg-[#662654] text-white font-bold text-sm rounded-full shadow hover:bg-[#7a2e64] transition-all cursor-pointer"
+            className="px-6 py-2.5 bg-[#662654] text-white font-bold text-sm rounded-full shadow hover:bg-[#7a2e64] transition-all cursor-pointer"
           >
-            Refresh Now
+            Reload Store
           </button>
         </div>
       );
@@ -66,44 +76,6 @@ class ErrorBoundary extends React.Component {
     return this.props.children;
   }
 }
-
-const safeLazy = (importFn) => {
-  return lazy(() => 
-    importFn().catch((err) => {
-      console.warn("Lazy import failed, attempting auto reload...", err);
-      const hasReloaded = sessionStorage.getItem('chunk_reload_retry');
-      if (!hasReloaded) {
-        sessionStorage.setItem('chunk_reload_retry', 'true');
-        window.location.reload();
-        return new Promise(() => {});
-      }
-      sessionStorage.removeItem('chunk_reload_retry');
-      throw err;
-    })
-  );
-};
-
-// Safe Lazy load pages to speed up initial site rendering
-const ShopPage = safeLazy(() => import('./pages/ShopPage'));
-const ProductDetailPage = safeLazy(() => import('./pages/ProductDetailPage'));
-const CheckoutPage = safeLazy(() => import('./pages/CheckoutPage'));
-const OrderSuccessPage = safeLazy(() => import('./pages/OrderSuccessPage'));
-const SaffronGuidancePage = safeLazy(() => import('./pages/SaffronGuidancePage'));
-const BYOCPage = safeLazy(() => import('./pages/BYOCPage'));
-const LegalPage = safeLazy(() => import('./pages/LegalPage'));
-const CareersPage = safeLazy(() => import('./pages/CareersPage'));
-const BlogsPage = safeLazy(() => import('./pages/BlogsPage'));
-const BlogDetailPage = safeLazy(() => import('./pages/BlogDetailPage'));
-
-// Safe Lazy load below-the-fold home components
-const ExploreCategory = safeLazy(() => import('./components/home/ExploreCategory'));
-const BenefitsMarquee = safeLazy(() => import('./components/home/BenefitsMarquee'));
-const FeaturedBento = safeLazy(() => import('./components/home/FeaturedBento'));
-const PaidhuSpotlight = safeLazy(() => import('./components/home/PaidhuSpotlight'));
-const CustomerVideoReels = safeLazy(() => import('./components/home/CustomerVideoReels'));
-const RealMomsSection = safeLazy(() => import('./components/home/RealMomsSection'));
-const BrandCharactersBanner = safeLazy(() => import('./components/home/BrandCharactersBanner'));
-
 
 // ---------- HOME PAGE ----------
 const HomePage = () => (
@@ -115,16 +87,12 @@ const HomePage = () => (
 
     <Hero />
     <ProductCollection />
-    
-    <Suspense fallback={null}>
-      <ExploreCategory />
-      <FeaturedBento />
-      <PaidhuSpotlight />
-      <CustomerVideoReels />
-      <RealMomsSection />
-      <BrandCharactersBanner />
-    </Suspense>
-
+    <ExploreCategory />
+    <FeaturedBento />
+    <PaidhuSpotlight />
+    <CustomerVideoReels />
+    <RealMomsSection />
+    <BrandCharactersBanner />
   </main>
 );
 
