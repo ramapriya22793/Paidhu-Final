@@ -1,9 +1,8 @@
-/**
- * 100% Real, Topic-Accurate, Botanical Flower Photography for each of the 92 blogs.
- * No two blogs share the same image.
- */
+const prisma = require('./server/prismaClient');
 
-export const BLOG_PHOTO_BY_ID = {
+// 100% Real, Topic-Accurate, Botanical Flower Photography for each of the 92 blogs.
+// No two blogs share the same image.
+const REAL_FLOWER_IMAGES_BY_ID = {
   // 1: Hibiscus: The Vibrant Floral Infusion for Everyday Refreshment
   1: "https://images.unsplash.com/photo-1550950158-d0d960dff51b?q=80&w=800&auto=format&fit=crop", // Real red hibiscus flower blooming close-up
 
@@ -95,7 +94,7 @@ export const BLOG_PHOTO_BY_ID = {
   30: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=800&auto=format&fit=crop", // Real blue pea flower skincare botanical
 
   // 31: Why Hibiscus is a Popular Natural Dye in Food Products?
-  31: "https://images.unsplash.com/photo-152766159147-5527312dd65f5?q=80&w=800&auto=format&fit=crop", // Real deep red hibiscus floral extract
+  31: "https://images.unsplash.com/photo-1527661591475-527312dd65f5?q=80&w=800&auto=format&fit=crop", // Real deep red hibiscus floral extract
 
   // 32: Vazhaipoo Vadai (Banana Flower Fritters)
   32: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=800&auto=format&fit=crop", // Real purple banana flower blossom (Vazhaipoo)
@@ -281,19 +280,29 @@ export const BLOG_PHOTO_BY_ID = {
   92: "https://images.unsplash.com/photo-1518895949257-7621c3c786d7?q=80&w=800&auto=format&fit=crop&sig=hibiscus_wonders_92" // Real red hibiscus flower blooming
 };
 
-export const getRealisticBlogImage = (blog) => {
-  if (!blog) return "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?q=80&w=800&auto=format&fit=crop";
+async function applyRealFlowers() {
+  console.log('=== APPLYING 100% REAL FLOWER PHOTOGRAPHY TO ALL 92 BLOGS ===');
+  let updated = 0;
 
-  // 1. Direct ID match from verified real flower mapping
-  if (blog.id && REAL_FLOWER_IMAGES_BY_ID[blog.id]) {
-    return REAL_FLOWER_IMAGES_BY_ID[blog.id];
+  for (const [idStr, imgUrl] of Object.entries(REAL_FLOWER_IMAGES_BY_ID)) {
+    const id = parseInt(idStr, 10);
+    try {
+      const blog = await prisma.blog.findUnique({ where: { id } });
+      if (blog) {
+        await prisma.blog.update({
+          where: { id },
+          data: { image: imgUrl }
+        });
+        console.log(`✓ Blog ID ${id}: ${blog.title.slice(0, 40)} -> [Real Flower URL Assigned]`);
+        updated++;
+      }
+    } catch (err) {
+      console.error(`✗ Error on blog ID ${id}:`, err.message);
+    }
   }
 
-  // 2. Return database image if already defined
-  if (blog.image && !blog.image.includes('placeholder') && !blog.image.includes('default')) {
-    return blog.image;
-  }
+  console.log(`\n🎉 Successfully updated ${updated} blogs with authentic real flower photography!`);
+  process.exit(0);
+}
 
-  // 3. Fallback to default botanical photo
-  return "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?q=80&w=800&auto=format&fit=crop";
-};
+applyRealFlowers();
