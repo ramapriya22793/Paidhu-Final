@@ -10,8 +10,6 @@ import {
   BookOpen, 
   Tag, 
   Clock, 
-  ChevronLeft, 
-  ChevronRight,
   Filter,
   Sparkles
 } from 'lucide-react';
@@ -392,41 +390,6 @@ const BlogsPage = () => {
             </div>
           )}
         </div>
-
-        {/* Pagination Controls */}
-        {totalPages > 1 && (
-          <div className="flex justify-center items-center gap-2 pt-8">
-            <button
-              onClick={() => handlePageChange(page - 1)}
-              disabled={page === 1}
-              className="p-3 rounded-full border border-gray-200 bg-white hover:bg-gray-50 text-gray-600 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-            >
-              <ChevronLeft size={18} />
-            </button>
-
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-              <button
-                key={p}
-                onClick={() => handlePageChange(p)}
-                className={`w-10 h-10 rounded-full font-bold text-xs transition-all ${
-                  page === p
-                    ? 'bg-[#662654] text-white shadow-md shadow-[#662654]/25 scale-105'
-                    : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'
-                }`}
-              >
-                {p}
-              </button>
-            ))}
-
-            <button
-              onClick={() => handlePageChange(page + 1)}
-              disabled={page === totalPages}
-              className="p-3 rounded-full border border-gray-200 bg-white hover:bg-gray-50 text-gray-600 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-            >
-              <ChevronRight size={18} />
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );
