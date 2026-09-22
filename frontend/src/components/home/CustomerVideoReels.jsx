@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
 import { 
   Play, 
   Pause, 
@@ -10,11 +9,7 @@ import {
   ChevronLeft, 
   ChevronRight, 
   Star, 
-  ShoppingBag, 
-  Sparkles, 
-  CheckCircle2, 
-  ArrowRight,
-  Maximize2
+  Sparkles
 } from 'lucide-react';
 
 const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || 
@@ -488,7 +483,7 @@ const CustomerVideoReels = () => {
 
                 {/* Attached Product Box */}
                 {activeModalReview.product && (
-                  <div className="space-y-4 pt-4 border-t border-white/10">
+                  <div className="pt-4 border-t border-white/10">
                     <div className="flex items-center gap-3">
                       {activeModalReview.product.image && (
                         <img
@@ -508,16 +503,6 @@ const CustomerVideoReels = () => {
                         )}
                       </div>
                     </div>
-
-                    <Link
-                      to={activeModalReview.product.id ? `/product/${activeModalReview.product.id}` : '/shop'}
-                      onClick={handleCloseModal}
-                      className="w-full py-3 px-4 bg-gradient-to-r from-[#d4af37] to-[#e6ca65] hover:from-[#c5a028] hover:to-[#d4af37] text-[#522742] font-black text-xs sm:text-sm rounded-full shadow-lg flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
-                    >
-                      <ShoppingBag size={16} />
-                      <span>Shop This Product</span>
-                      <ArrowRight size={14} />
-                    </Link>
                   </div>
                 )}
               </div>
