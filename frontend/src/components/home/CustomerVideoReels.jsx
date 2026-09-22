@@ -481,30 +481,6 @@ const CustomerVideoReels = () => {
                   </div>
                 </div>
 
-                {/* Attached Product Box */}
-                {activeModalReview.product && (
-                  <div className="pt-4 border-t border-white/10">
-                    <div className="flex items-center gap-3">
-                      {activeModalReview.product.image && (
-                        <img
-                          src={activeModalReview.product.image}
-                          alt={activeModalReview.product.name}
-                          className="w-14 h-14 rounded-2xl object-contain bg-white p-1 shrink-0 shadow-sm"
-                        />
-                      )}
-                      <div>
-                        <h5 className="text-white font-bold text-xs sm:text-sm line-clamp-2">
-                          {activeModalReview.product.name}
-                        </h5>
-                        {activeModalReview.product.price && (
-                          <span className="text-[#d4af37] font-extrabold text-sm sm:text-base">
-                            ₹{activeModalReview.product.price}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )}
               </div>
 
             </motion.div>
