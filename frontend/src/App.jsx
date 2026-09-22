@@ -37,7 +37,9 @@ class ErrorBoundary extends React.Component {
       const hasReloaded = sessionStorage.getItem('chunk_reload_retry');
       if (!hasReloaded) {
         sessionStorage.setItem('chunk_reload_retry', 'true');
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       }
     }
   }
@@ -46,8 +48,9 @@ class ErrorBoundary extends React.Component {
     if (this.state.hasError) {
       return (
         <div className="min-h-[50vh] flex flex-col items-center justify-center p-6 text-center bg-white">
-          <h2 className="text-xl font-bold text-gray-800 mb-2">Updating Store App...</h2>
-          <p className="text-sm text-gray-600 mb-4">Refreshing to load the latest version.</p>
+          <div className="w-10 h-10 border-4 border-[#662654] border-t-transparent rounded-full animate-spin mb-4"></div>
+          <h2 className="text-xl font-bold text-gray-800 mb-2">Updating to Latest Version...</h2>
+          <p className="text-sm text-gray-600 mb-4">A new update was deployed. Refreshing automatically.</p>
           <button
             onClick={() => {
               sessionStorage.removeItem('chunk_reload_retry');
