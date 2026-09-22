@@ -1,9 +1,7 @@
-/**
- * Real website product photography for Paidhu Blogs.
- * Using authentic Paidhu product packages, jars, boxes, and pouches from our store.
- */
+const prisma = require('./server/prismaClient');
 
-export const PAIDHU_REAL_PRODUCTS = {
+// Real Paidhu website product images
+const PAIDHU_REAL_PRODUCTS = {
   aavaram_brew_flora: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807037614-Aavarempng.png",
   aavaram_cookies: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807081906-AAVARAMPOOpng.png",
   aavaram_brew_alt: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806532876-Aavarempng.png",
@@ -36,7 +34,7 @@ export const PAIDHU_REAL_PRODUCTS = {
   cassia_medley: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789803563135-Screenshot202608061246502png.png"
 };
 
-export const BLOG_PHOTO_BY_ID = {
+const BLOG_REAL_PRODUCT_MAP = {
   1: PAIDHU_REAL_PRODUCTS.hibiscus_brew_flora,
   2: PAIDHU_REAL_PRODUCTS.bluepea_brew_flora,
   3: PAIDHU_REAL_PRODUCTS.saffron_mongra,
@@ -131,72 +129,40 @@ export const BLOG_PHOTO_BY_ID = {
   92: PAIDHU_REAL_PRODUCTS.hibiscus_brew_flora
 };
 
-export const getRealisticBlogImage = (blog) => {
-  if (!blog) return PAIDHU_REAL_PRODUCTS.aavaram_brew_flora;
+async function updateBlogs() {
+  console.log('Starting blog updates with real Paidhu website products...');
+  
+  // Update Blog 14 title if needed
+  await prisma.blog.updateMany({
+    where: { id: 14 },
+    data: {
+      title: "Aavaram Poo: Nature’s Golden Super Flower of Tamil Nadu",
+      slug: "aavaram-poo-natures-golden-super-flower-of-tamil-nadu",
+      category: "Brew Flora- Aavaram Poo"
+    }
+  });
 
-  // 1. Direct ID match from our real website product map
-  if (blog.id && BLOG_PHOTO_BY_ID[blog.id]) {
-    return BLOG_PHOTO_BY_ID[blog.id];
+  const blogs = await prisma.blog.findMany({ select: { id: true, title: true } });
+  
+  let updated = 0;
+  for (const b of blogs) {
+    const realImg = BLOG_REAL_PRODUCT_MAP[b.id] || PAIDHU_REAL_PRODUCTS.aavaram_brew_flora;
+    await prisma.blog.update({
+      where: { id: b.id },
+      data: {
+        image: realImg,
+        featuredImage: realImg
+      }
+    });
+    updated++;
   }
+  
+  console.log(`Updated ${updated} blogs with real Paidhu product photography.`);
+}
 
-  // 2. Direct featuredImage if present
-  const img = blog.featuredImage || blog.image;
-  if (img && typeof img === 'string' && (img.startsWith('http') || img.startsWith('/'))) {
-    return img;
-  }
-
-  // 3. Fallback based on title/category keywords matching real products
-  const text = `${blog.title || ''} ${blog.category || ''}`.toLowerCase();
-  
-  if (text.includes('saffron') || text.includes('kesar') || text.includes('mongra')) {
-    if (text.includes('powder')) return PAIDHU_REAL_PRODUCTS.saffron_powder;
-    if (text.includes('gift')) return PAIDHU_REAL_PRODUCTS.saffron_giftbox;
-    return PAIDHU_REAL_PRODUCTS.saffron_mongra;
-  }
-  
-  if (text.includes('blue pea') || text.includes('butterfly pea') || text.includes('bluepea')) {
-    if (text.includes('medley') || text.includes('dip') || text.includes('tea bag')) return PAIDHU_REAL_PRODUCTS.bluepea_medley;
-    return PAIDHU_REAL_PRODUCTS.bluepea_brew_flora;
-  }
-  
-  if (text.includes('hibiscus') || text.includes('sembaruthi')) {
-    if (text.includes('cookie')) return PAIDHU_REAL_PRODUCTS.hibiscus_cookies;
-    if (text.includes('jam')) return PAIDHU_REAL_PRODUCTS.hibiscus_jam;
-    if (text.includes('syrup') || text.includes('sinensis')) return PAIDHU_REAL_PRODUCTS.sinensis_syrup;
-    if (text.includes('medley') || text.includes('dip')) return PAIDHU_REAL_PRODUCTS.hibiscus_medley;
-    return PAIDHU_REAL_PRODUCTS.hibiscus_brew_flora;
-  }
-  
-  if (text.includes('lavender')) {
-    if (text.includes('medley') || text.includes('dip')) return PAIDHU_REAL_PRODUCTS.lavender_medley;
-    return PAIDHU_REAL_PRODUCTS.lavender_brew_flora;
-  }
-  
-  if (text.includes('chamomile')) {
-    return PAIDHU_REAL_PRODUCTS.chamomile_brew_flora;
-  }
-  
-  if (text.includes('white lotus') || text.includes('lotus')) {
-    return PAIDHU_REAL_PRODUCTS.whitelotus_cookies;
-  }
-  
-  if (text.includes('rose') || text.includes('gulkand') || text.includes('gulkhand') || text.includes('damask')) {
-    return PAIDHU_REAL_PRODUCTS.rose_gulkhand;
-  }
-  
-  if (text.includes('neem')) {
-    return PAIDHU_REAL_PRODUCTS.neem_jam;
-  }
-  
-  if (text.includes('kondrai') || text.includes('cassia') || text.includes('golden shower') || text.includes('tanner')) {
-    if (text.includes('jam')) return PAIDHU_REAL_PRODUCTS.tanners_jam;
-    return PAIDHU_REAL_PRODUCTS.cassia_medley;
-  }
-  
-  if (text.includes('aavaram') || text.includes('senna')) {
-    if (text.includes('cookie')) return PAIDHU_REAL_PRODUCTS.aavaram_cookies;
-    return PAIDHU_REAL_PRODUCTS.aavaram_brew_flora;
-  }
-
-  return PAIDHU_REAL_PRODUCTS.aavaram_brew_flora;
-};
+updateBlogs()
+  .then(() => process.exit(0))
+  .catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
