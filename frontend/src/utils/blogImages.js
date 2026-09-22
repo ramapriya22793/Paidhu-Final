@@ -281,12 +281,14 @@ export const BLOG_PHOTO_BY_ID = {
   92: "https://images.unsplash.com/photo-1518895949257-7621c3c786d7?q=80&w=800&auto=format&fit=crop&sig=hibiscus_wonders_92" // Real red hibiscus flower blooming
 };
 
+export const REAL_FLOWER_IMAGES_BY_ID = BLOG_PHOTO_BY_ID;
+
 export const getRealisticBlogImage = (blog) => {
   if (!blog) return "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?q=80&w=800&auto=format&fit=crop";
 
   // 1. Direct ID match from verified real flower mapping
-  if (blog.id && REAL_FLOWER_IMAGES_BY_ID[blog.id]) {
-    return REAL_FLOWER_IMAGES_BY_ID[blog.id];
+  if (blog.id && BLOG_PHOTO_BY_ID[blog.id]) {
+    return BLOG_PHOTO_BY_ID[blog.id];
   }
 
   // 2. Return database image if already defined
