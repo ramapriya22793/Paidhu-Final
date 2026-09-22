@@ -117,13 +117,6 @@ const allFallbackProducts = (() => {
   return filterAndSortBYOCProducts(list);
 })();
 
-// Pricing logic perfectly mimicking the reference
-const TIERS = [
-  { items: 3, price: 799 },
-  { items: 4, price: 1049 },
-  { items: 5, price: 1399 }
-];
-
 const MAX_ITEMS = 5;
 
 const BYOCPage = () => {
@@ -183,15 +176,13 @@ const BYOCPage = () => {
     }
   };
 
-  const currentTier = [...TIERS].reverse().find(t => bundle.length >= t.items) || { items: 0, price: 0 };
-  const currentTotal = bundle.length < 3 
-    ? bundle.reduce((sum, item) => sum + (item.discountPrice || item.price), 0)
-    : currentTier.price + (bundle.length > currentTier.items ? bundle[bundle.length - 1].discountPrice || bundle[bundle.length - 1].price : 0);
-
-  const nextTier = TIERS.find(t => t.items > bundle.length);
+  // Dynamic price calculation directly based on customer's product selections
+  const currentTotal = useMemo(() => {
+    return bundle.reduce((sum, item) => sum + Number(item.discountPrice || item.price || 0), 0);
+  }, [bundle]);
 
   const handleAddBundleToCart = async () => {
-    if (bundle.length < 3) return; // Must have at least 3 items
+    if (bundle.length === 0) return;
     
     setIsAddingToCart(true);
     
@@ -210,6 +201,7 @@ const BYOCPage = () => {
       const variant = variantSorted.length > 0 ? variantSorted[0] : null;
       const baseVariantSize = variant ? variant.size : 'default';
       const key = `${item.id}-${baseVariantSize}`;
+      const itemUnitPrice = Number(item.discountPrice || item.price || 0);
 
       if (!grouped.has(key)) {
         grouped.set(key, {
@@ -217,29 +209,18 @@ const BYOCPage = () => {
           variant,
           baseVariantSize,
           count: 1,
-          unitPrice: Number(item.discountPrice || item.price)
+          unitPrice: itemUnitPrice
         });
       } else {
         grouped.get(key).count += 1;
       }
     }
 
-    // Exact mathematical distribution of tier price
-    const originalTotal = Array.from(grouped.values()).reduce((sum, g) => sum + (g.unitPrice * g.count), 0);
-    const discountFactor = currentTotal / originalTotal;
     const groupEntries = Array.from(grouped.values());
-    let runningTotal = 0;
 
     for (let i = 0; i < groupEntries.length; i++) {
       const g = groupEntries[i];
-      let bundledUnitPrice = Math.round(g.unitPrice * discountFactor);
-      
-      if (i === groupEntries.length - 1) {
-        const remaining = currentTotal - runningTotal;
-        bundledUnitPrice = Math.max(1, Math.round(remaining / g.count));
-      } else {
-        runningTotal += (bundledUnitPrice * g.count);
-      }
+      const bundledUnitPrice = g.unitPrice;
 
       const bundledVariant = g.variant 
         ? { ...g.variant, size: `${g.variant.size}-byoc`, offerPrice: bundledUnitPrice } 
@@ -264,13 +245,13 @@ const BYOCPage = () => {
   return (
     <div className="min-h-screen bg-[#faf8f6] w-full max-w-full overflow-x-clip">
       <SEO 
-        title="Build Your Own Cart"
-        description="Mix and match your favorite Paidhu products. Choose at least 3 items to unlock special bundle pricing!"
-        keywords="BYOC, build your own cart, custom box, bundle pricing, edible flowers, Paidhu"
+        title="Build Your Own Box"
+        description="Mix and match your favorite Paidhu products to create your custom floral box."
+        keywords="BYOC, build your own box, custom box, edible flowers, Paidhu"
       />
       {/* Top Promotional Banner */}
       <div className="w-full bg-[#662654] text-white text-center py-2.5 font-extrabold tracking-wide text-xs md:text-sm uppercase shadow-sm sticky top-0 z-40">
-        BUY 3 FOR ₹799 | 4 FOR ₹1049 | 5 FOR ₹1399 — BUY NOW!
+        BUILD YOUR CUSTOM BOX — SELECT YOUR FAVORITE FLORAL DELIGHTS!
       </div>
 
       <div className="max-w-[1400px] w-full mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-6 md:py-10 flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
@@ -280,7 +261,7 @@ const BYOCPage = () => {
           <div className="mb-6">
             <h1 className="text-3xl md:text-4xl font-extrabold text-[#662654] mb-3 font-serif">Build Your Box</h1>
             <p className="text-gray-600 font-medium text-sm md:text-base max-w-2xl">
-              Mix and match your favorite Paidhu products. Choose at least 3 items to unlock special bundle pricing!
+              Mix and match your favorite Paidhu products to create your custom floral box.
             </p>
           </div>
 
@@ -447,7 +428,7 @@ const BYOCPage = () => {
             
             {/* Sidebar Header */}
             <div className="p-5 border-b border-gray-100 flex items-center justify-between">
-              <h2 className="text-xl font-extrabold text-[#662654] uppercase tracking-wider font-serif">My Bundle</h2>
+              <h2 className="text-xl font-extrabold text-[#662654] uppercase tracking-wider font-serif">My Custom Box</h2>
               <div className="bg-[#f0f4f8] w-12 h-12 rounded-full flex items-center justify-center relative shadow-inner">
                 <span className="text-xl">🌸</span>
                 <div className="absolute -bottom-1 -right-1 bg-green-500 w-5 h-5 rounded-full border-2 border-white flex items-center justify-center text-[10px] font-bold text-white shadow-sm">
@@ -456,23 +437,18 @@ const BYOCPage = () => {
               </div>
             </div>
 
-            {/* Pricing Tiers Indicator */}
-            <div className="bg-[#faf9f7] p-5 border-b border-gray-100 flex justify-between relative">
-              <div className="absolute top-1/2 left-8 right-8 h-0.5 bg-gray-200 -translate-y-1/2 z-0" />
-              <div 
-                className="absolute top-1/2 left-8 h-0.5 bg-[#662654] -translate-y-1/2 z-0 transition-all duration-500" 
-                style={{ width: `${bundle.length >= 5 ? 100 : bundle.length >= 4 ? 50 : bundle.length >= 3 ? 0 : 0}%` }}
-              />
-              
-              {TIERS.map((tier, idx) => {
-                const isReached = bundle.length >= tier.items;
-                return (
-                  <div key={idx} className="flex flex-col items-center relative z-10">
-                    <div className={`w-4 h-4 rounded-full mb-1.5 border-2 transition-colors ${isReached ? 'bg-[#662654] border-[#662654]' : 'bg-white border-gray-300'}`} />
-                    <span className={`text-[12px] font-extrabold ${isReached ? 'text-gray-900' : 'text-gray-400'}`}>₹{tier.price}</span>
-                  </div>
-                );
-              })}
+            {/* Box Progress Bar */}
+            <div className="bg-[#faf9f7] px-5 py-4 border-b border-gray-100">
+              <div className="flex items-center justify-between text-xs font-bold text-gray-700 mb-2">
+                <span>Box Progress</span>
+                <span className="text-[#662654] font-extrabold">{bundle.length} / {MAX_ITEMS} Selected</span>
+              </div>
+              <div className="w-full h-2.5 bg-gray-200 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-gradient-to-r from-[#662654] to-[#913b7e] rounded-full transition-all duration-300" 
+                  style={{ width: `${(bundle.length / MAX_ITEMS) * 100}%` }}
+                />
+              </div>
             </div>
 
             {/* Selected Items Slots */}
@@ -523,14 +499,10 @@ const BYOCPage = () => {
             <div className="p-5 bg-[#faf9f7] border-t border-gray-100 rounded-b-3xl">
               <div className="flex items-end justify-between mb-4">
                 <div>
-                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider mb-1">Bundle Total</p>
-                  {bundle.length < 3 ? (
-                    <p className="text-[11px] font-bold text-[#662654]">{3 - bundle.length} more item{3 - bundle.length > 1 ? 's' : ''} to unlock ₹799 tier!</p>
-                  ) : (
-                    <p className="text-[11px] font-bold text-green-600 flex items-center gap-1">
-                      <Check size={12} strokeWidth={3} /> Tier Unlocked!
-                    </p>
-                  )}
+                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider mb-1">Box Total</p>
+                  <p className="text-[11px] font-bold text-gray-600">
+                    {bundle.length === 0 ? 'No products selected' : `${bundle.length} product${bundle.length === 1 ? '' : 's'} in box`}
+                  </p>
                 </div>
                 <div className="text-right">
                   <p className="text-2xl font-extrabold text-gray-900 leading-none">₹{currentTotal}</p>
@@ -539,16 +511,16 @@ const BYOCPage = () => {
 
               <button
                 onClick={handleAddBundleToCart}
-                disabled={bundle.length < 3 || isAddingToCart}
-                className="w-full bg-[#913b7e] disabled:bg-[#e2cbe0] disabled:text-[#662654]/60 hover:bg-[#7a2e64] text-white font-extrabold uppercase tracking-widest text-sm py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm"
-                style={{ backgroundColor: bundle.length >= 3 ? '#662654' : '#e2cbe0' }}
+                disabled={bundle.length === 0 || isAddingToCart}
+                className="w-full bg-[#913b7e] disabled:bg-[#e2cbe0] disabled:text-[#662654]/60 hover:bg-[#7a2e64] text-white font-extrabold uppercase tracking-widest text-sm py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer disabled:cursor-not-allowed"
+                style={{ backgroundColor: bundle.length > 0 ? '#662654' : '#e2cbe0' }}
               >
                 {isAddingToCart ? (
                   <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }}>
                     <ShoppingCart size={18} />
                   </motion.div>
                 ) : (
-                  <span>{bundle.length < 3 ? 'Add 3 items to start' : 'Add Bundle To Cart'}</span>
+                  <span>{bundle.length === 0 ? 'Select products to start' : 'Add Box To Cart'}</span>
                 )}
               </button>
             </div>
@@ -557,14 +529,14 @@ const BYOCPage = () => {
 
       </div>
 
-      {/* Sticky Mobile Bar so bundle progress is NEVER hidden on smaller screens */}
+      {/* Sticky Mobile Bar so box progress is NEVER hidden on smaller screens */}
       {bundle.length > 0 && (
         <div className="fixed bottom-4 left-4 right-4 z-50 lg:hidden flex justify-center">
           <div className="bg-[#662654] text-white px-5 py-3 rounded-full shadow-2xl flex items-center justify-between w-full max-w-md border border-white/20 backdrop-blur-md">
             <div className="flex items-center gap-2">
               <span className="text-base">🌸</span>
               <div>
-                <span className="text-xs font-extrabold uppercase tracking-wider block">My Bundle ({bundle.length}/{MAX_ITEMS})</span>
+                <span className="text-xs font-extrabold uppercase tracking-wider block">My Box ({bundle.length}/{MAX_ITEMS})</span>
                 <span className="text-sm font-black">₹{currentTotal}</span>
               </div>
             </div>
@@ -575,7 +547,7 @@ const BYOCPage = () => {
               }}
               className="bg-white text-[#662654] hover:bg-white/90 text-xs font-black uppercase px-4 py-2 rounded-full shadow-sm cursor-pointer"
             >
-              {bundle.length < 3 ? `Add ${3 - bundle.length} more` : 'Checkout'}
+              View Box
             </button>
           </div>
         </div>
