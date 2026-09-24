@@ -482,26 +482,9 @@ const ProductDetailPage = () => {
 
           {/* 1. Left Column: Product Image Gallery */}
           {isSaffron ? (
-            <div className="relative w-full rounded-[2.5rem] overflow-hidden p-4 sm:p-6 md:p-8 border border-[#dce1f0] shadow-sm bg-[#eef1f8] flex flex-col items-center justify-between min-h-[480px] sm:min-h-[540px] md:min-h-[580px]">
-              {/* Subtle Saffron Pattern Watermark */}
-              <div 
-                className="absolute inset-0 opacity-25 pointer-events-none bg-repeat bg-center"
-                style={{ backgroundImage: "url('/saffron_bg_pattern.png')", backgroundSize: "260px 260px" }}
-              />
-
-              {/* Ambient radial glows */}
-              <div className="absolute -top-12 -right-12 w-64 h-64 rounded-full bg-gradient-to-br from-red-500/10 to-transparent blur-3xl pointer-events-none" />
-              <div className="absolute -bottom-12 -left-12 w-64 h-64 rounded-full bg-gradient-to-tr from-amber-500/10 to-transparent blur-3xl pointer-events-none" />
-
-              {/* Top Breadcrumb Bar matching user mockup */}
-              <div className="relative z-10 w-full text-center pt-1 pb-3 sm:pb-4">
-                <span className="text-[10px] sm:text-xs font-semibold tracking-[0.25em] text-[#55647a] uppercase">
-                  HOME &nbsp;–&nbsp; PRODUCTS &nbsp;–&nbsp; {resolveProductName(product.name)}
-                </span>
-              </div>
-
+            <div className="relative w-full flex items-center justify-center p-2 sm:p-4 my-auto">
               {/* Flex Container: Curved Arc Thumbnails + Central Circle */}
-              <div className="relative flex flex-col md:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-8 w-full z-10 my-auto">
+              <div className="relative flex flex-col md:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-8 w-full z-10">
                 
                 {/* 🌸 Side Circular Thumbnails Arranged along Left Curve */}
                 {galleryItems.length > 1 && (
