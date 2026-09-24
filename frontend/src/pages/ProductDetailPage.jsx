@@ -127,8 +127,6 @@ const ProductDetailPage = () => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  const isSaffron = isSaffronProduct(product, selectedVariant);
-
   const handleAddToCart = async () => {
     if (isAdding) return;
     setIsAdding(true);
@@ -356,63 +354,88 @@ const ProductDetailPage = () => {
 
 
 
-  // Collect all admin-uploaded product images strictly
-  const galleryItems = [];
-  const addImageToGallery = (rawUrl, title) => {
-    if (!rawUrl) return;
-    const url = resolveImage(rawUrl);
-    if (url && !galleryItems.some(g => g.full === url)) {
-      galleryItems.push({
-        full: url,
-        thumb: url,
-        circle: url,
-        title: title || product?.name || 'Product Image'
-      });
-    }
-  };
+  const isSaffron = isSaffronProduct(product);
 
-  if (product) {
-    // 1. Primary main image uploaded by admin
-    if (product.image) {
-      addImageToGallery(product.image, `${product.name} - View 1`);
+  // 🌸 Saffron 5-item Signature Gallery (Matches user mockup)
+  const saffronGallery = [
+    {
+      full: resolveImage(product?.image) || '/saffron_highres_1.png',
+      thumb: '/saffron_thumb_1.png',
+      circle: '/saffron_circle_1.png',
+      title: `${resolveProductName(product?.name) || 'Kashmiri Mongra Saffron'} - Box & Bottle`
+    },
+    {
+      full: (product?.images && product.images[0] ? resolveImage(product.images[0]) : null) || '/saffron_highres_2.png',
+      thumb: '/saffron_thumb_2.png',
+      circle: '/saffron_circle_2.png',
+      title: 'Glass Vial Bottle with Cork Lid'
+    },
+    {
+      full: (product?.images && product.images[1] ? resolveImage(product.images[1]) : null) || '/saffron_highres_3.png',
+      thumb: '/saffron_thumb_3.png',
+      circle: '/saffron_circle_3.png',
+      title: 'Luxury Saffron Packaging Box'
+    },
+    {
+      full: (product?.images && product.images[2] ? resolveImage(product.images[2]) : null) || '/saffron_highres_4.png',
+      thumb: '/saffron_thumb_4.png',
+      circle: '/saffron_circle_4.png',
+      title: 'Quality & Lab Purity Certificate'
+    },
+    {
+      full: (product?.images && product.images[3] ? resolveImage(product.images[3]) : null) || '/saffron_highres_5.png',
+      thumb: '/saffron_thumb_5.png',
+      circle: '/saffron_circle_5.png',
+      title: 'Nutrition Facts & Analysis'
     }
+  ];
 
-    // 2. Extra images uploaded by admin in images field
-    let extraImages = product.images;
-    if (typeof extraImages === 'string') {
-      extraImages = parseJsonField(extraImages);
-    }
-    if (Array.isArray(extraImages)) {
-      extraImages.forEach((img, idx) => {
-        const url = typeof img === 'string' ? img : (img?.imageUrl || img?.url || img?.imagePath);
-        if (url) addImageToGallery(url, `${product.name} - View ${galleryItems.length + 1}`);
-      });
-    }
-
-    // 3. Product images uploaded by admin in productImages field
-    let extraProductImages = product.productImages;
-    if (typeof extraProductImages === 'string') {
-      extraProductImages = parseJsonField(extraProductImages);
-    }
-    if (Array.isArray(extraProductImages)) {
-      extraProductImages.forEach((img, idx) => {
-        const url = typeof img === 'string' ? img : (img?.imageUrl || img?.url || img?.imagePath);
-        if (url) addImageToGallery(url, `${product.name} - View ${galleryItems.length + 1}`);
-      });
-    }
+  // Standard gallery for other products
+  const standardGallery = [];
+  if (product && product.image) {
+    standardGallery.push({
+      full: resolveImage(product.image),
+      thumb: resolveImage(product.image),
+      circle: resolveImage(product.image),
+      title: product.name
+    });
   }
-
-  // Fallback ONLY if product has absolutely zero images
-  if (galleryItems.length === 0) {
-    const fallbackImg = isSaffron ? '/saffron_highres_1.png' : '/white_lotus_cookies_new.png';
-    galleryItems.push({
-      full: fallbackImg,
-      thumb: fallbackImg,
-      circle: fallbackImg,
+  if (product && Array.isArray(product.images)) {
+    product.images.forEach((img, idx) => {
+      const url = resolveImage(typeof img === 'string' ? img : img.imageUrl);
+      if (url && !standardGallery.some(g => g.full === url)) {
+        standardGallery.push({
+          full: url,
+          thumb: url,
+          circle: url,
+          title: `${product.name} - View ${idx + 1}`
+        });
+      }
+    });
+  }
+  if (product && Array.isArray(product.productImages)) {
+    product.productImages.forEach((img, idx) => {
+      const url = resolveImage(img.imageUrl);
+      if (url && !standardGallery.some(g => g.full === url)) {
+        standardGallery.push({
+          full: url,
+          thumb: url,
+          circle: url,
+          title: `${product.name} - View ${idx + 1}`
+        });
+      }
+    });
+  }
+  if (standardGallery.length === 0) {
+    standardGallery.push({
+      full: '/white_lotus_cookies_new.png',
+      thumb: '/white_lotus_cookies_new.png',
+      circle: '/white_lotus_cookies_new.png',
       title: product?.name || 'Product'
     });
   }
 
+  const galleryItems = isSaffron ? saffronGallery : standardGallery;
   const currentItem = galleryItems[activeImageIndex] || galleryItems[0];
   const currentImage = currentItem?.full || (isSaffron ? '/saffron_highres_1.png' : '/white_lotus_cookies_new.png');
   const productImage = currentImage;
@@ -453,78 +476,98 @@ const ProductDetailPage = () => {
       <div className="max-w-[1400px] mx-auto px-4 md:px-8">
 
         {/* ── Main Product Section ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start p-6 md:p-10 rounded-[2.5rem] border border-gray-100/80 relative overflow-hidden bg-white shadow-[0_20px_50px_rgba(102,38,84,0.03)]">
-          
-          {/* Decorative luxury radial background */}
-          <div className="absolute top-[-10%] right-[-10%] w-[35%] aspect-square rounded-full bg-gradient-to-br from-[#662654]/5 to-transparent blur-[80px] pointer-events-none" />
-          <div className="absolute bottom-[-10%] left-[-10%] w-[35%] aspect-square rounded-full bg-gradient-to-tr from-[#d4af37]/5 to-transparent blur-[80px] pointer-events-none" />
+        {isSaffron ? (
+          <div className="w-full rounded-[2.5rem] overflow-hidden border border-[#d5daf0] shadow-[0_20px_50px_rgba(70,80,120,0.06)] bg-[#eef1f8] relative p-6 sm:p-10 lg:p-12 xl:p-14 mb-12">
+            {/* Subtle Saffron Pattern Watermark across entire section */}
+            <div 
+              className="absolute inset-0 opacity-35 pointer-events-none bg-repeat bg-center"
+              style={{ backgroundImage: "url('/saffron_bg_pattern.png')", backgroundSize: "240px 240px" }}
+            />
+            {/* Ambient radial glows */}
+            <div className="absolute -top-12 -right-12 w-80 h-80 rounded-full bg-gradient-to-br from-red-500/10 to-transparent blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-12 -left-12 w-80 h-80 rounded-full bg-gradient-to-tr from-amber-500/10 to-transparent blur-3xl pointer-events-none" />
 
-          {/* 1. Left Column: Product Image Gallery */}
-          {isSaffron ? (
-            <div className="relative w-full flex items-center justify-center p-2 sm:p-4">
-              {/* Flex Container: Side Round Thumbnails + Central Circle */}
-              <div className="relative flex flex-col md:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-8 w-full z-10">
+            {/* Top Spaced Breadcrumbs: HOME - PRODUCTS - KASHMIRI MONGRA */}
+            <div className="w-full text-center py-2 mb-6 sm:mb-8 relative z-10">
+              <nav className="inline-flex items-center gap-2.5 sm:gap-4 text-xs sm:text-sm font-semibold tracking-[0.25em] text-[#334155] uppercase font-sans">
+                <Link to="/" className="hover:text-[#b91c1c] transition-colors">HOME</Link>
+                <span className="text-gray-400 font-light">-</span>
+                <Link to="/shop" className="hover:text-[#b91c1c] transition-colors">PRODUCTS</Link>
+                <span className="text-gray-400 font-light">-</span>
+                <span className="text-[#b91c1c] font-bold">{resolveProductName(product.name).toUpperCase()}</span>
+              </nav>
+            </div>
+
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-14 items-center">
+              
+              {/* 🌸 LEFT: Curved Arc Thumbnails + Central Large White Circle */}
+              <div className="lg:col-span-7 flex flex-col md:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-4 lg:gap-6">
                 
-                {/* 🌸 Side Circular Thumbnails (Only shown when admin added multiple images) */}
-                {galleryItems.length > 1 && (
-                  <div className="flex flex-row md:flex-col items-center justify-center gap-3 sm:gap-3.5 z-30 order-2 md:order-1 shrink-0 overflow-visible py-2 px-2">
-                    {galleryItems.map((item, idx) => {
-                      const isSelected = activeImageIndex === idx;
+                {/* 5 Curved Circular Thumbnails Arc along the left side */}
+                <div className="flex flex-row md:flex-col items-center justify-center gap-3 sm:gap-4 md:gap-4 lg:gap-5 order-2 md:order-1 shrink-0 z-20 py-2 px-1">
+                  {galleryItems.map((item, idx) => {
+                    // Arc curve offsets for desktop (md:):
+                    // Tracing gracefully along the circular showcase perimeter!
+                    const arcOffsets = [48, 14, 0, 14, 48];
+                    const xOffset = arcOffsets[idx] !== undefined ? arcOffsets[idx] : 0;
+                    const isSelected = activeImageIndex === idx;
 
-                      return (
-                        <button
-                          key={idx}
-                          type="button"
-                          onClick={() => {
-                            setActiveImageIndex(idx);
-                            setMainImgLoading(false);
+                    return (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => {
+                          setActiveImageIndex(idx);
+                          setMainImgLoading(false);
+                        }}
+                        onMouseEnter={() => {
+                          setActiveImageIndex(idx);
+                          setMainImgLoading(false);
+                        }}
+                        onTouchStart={() => {
+                          setActiveImageIndex(idx);
+                          setMainImgLoading(false);
+                        }}
+                        style={{
+                          transform: typeof window !== 'undefined' && window.innerWidth >= 768 
+                            ? `translateX(${xOffset}px)` 
+                            : undefined
+                        }}
+                        className={`group relative w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-18 lg:h-18 rounded-full bg-white p-1 flex items-center justify-center cursor-pointer transition-all duration-300 shadow-md hover:scale-110 ${
+                          isSelected
+                            ? 'border-2 border-[#c31c22] ring-3 ring-red-500/25 scale-105 shadow-xl z-10'
+                            : 'border border-gray-200/90 hover:border-red-300 opacity-85 hover:opacity-100'
+                        }`}
+                        title={item.title}
+                        aria-label={item.title}
+                      >
+                        <img
+                          src={item.circle || item.thumb || item.full}
+                          alt={item.title}
+                          className="w-full h-full object-contain rounded-full select-none pointer-events-none"
+                          loading="eager"
+                          onError={(e) => {
+                            e.currentTarget.src = '/saffron_circle_1.png';
                           }}
-                          onMouseEnter={() => {
-                            setActiveImageIndex(idx);
-                            setMainImgLoading(false);
-                          }}
-                          onTouchStart={() => {
-                            setActiveImageIndex(idx);
-                            setMainImgLoading(false);
-                          }}
-                          className={`group/thumb relative rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer ${
-                            isSelected 
-                              ? 'w-14 h-14 sm:w-16 sm:h-16 ring-4 ring-[#b91c1c]/25 ring-offset-2 ring-offset-[#f8f9fd] border-2 border-[#b91c1c] shadow-[0_6px_20px_rgba(185,28,28,0.3)] scale-110 z-20 bg-white' 
-                              : 'w-12 h-12 sm:w-14 sm:h-14 border-2 border-gray-300 shadow-[0_4px_12px_rgba(0,0,0,0.12)] bg-white hover:border-[#b91c1c] hover:scale-105 opacity-100'
-                          }`}
-                          title={item.title}
-                          aria-label={item.title}
-                        >
-                          <div className="w-full h-full rounded-full overflow-hidden bg-white p-1.5 flex items-center justify-center">
-                            <img 
-                              src={item.thumb || item.circle || item.full} 
-                              alt={item.title}
-                              className="w-full h-full object-contain rounded-full transition-transform duration-300 group-hover/thumb:scale-110 select-none"
-                              loading="eager"
-                              onError={(e) => {
-                                e.currentTarget.src = isSaffron ? '/saffron_highres_1.png' : '/white_lotus_cookies_new.png';
-                              }}
-                            />
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                )}
+                        />
+                      </button>
+                    );
+                  })}
+                </div>
 
-                {/* Clean Main Product Image (No inside circular shape) */}
-                <div className="relative w-full max-w-[480px] aspect-square rounded-[2rem] bg-white flex items-center justify-center p-4 sm:p-6 md:p-8 order-1 md:order-2 z-20 shadow-[0_10px_35px_rgba(0,0,0,0.04)] border border-gray-100">
+                {/* 🌸 Central Large White Showcase Circle */}
+                <div className="relative w-full max-w-[320px] sm:max-w-[380px] md:max-w-[430px] lg:max-w-[470px] aspect-square rounded-full bg-white shadow-[0_20px_50px_rgba(30,41,59,0.08)] border border-white flex items-center justify-center p-6 sm:p-8 lg:p-10 order-1 md:order-2 group">
                   
                   {/* Discount badge if present */}
                   {discountPercent > 0 && (
-                    <div className="absolute top-4 left-4 md:top-6 md:left-6 bg-gradient-to-r from-[#b91c1c] to-[#d4af37] text-white px-3.5 py-1 text-[11px] font-black uppercase tracking-wider rounded-full shadow-lg z-10 flex items-center gap-1 border border-white/20">
+                    <div className="absolute top-4 left-8 md:top-6 md:left-10 bg-gradient-to-r from-[#c31c22] to-[#d4af37] text-white px-3.5 py-1 text-[11px] font-black uppercase tracking-wider rounded-full shadow-lg z-10 flex items-center gap-1 border border-white/20">
                       <span>✨</span> {discountPercent}% OFF
                     </div>
                   )}
 
-                  {/* Active Image with smooth transition */}
+                  {/* Active Image with smooth crossfade transition */}
                   <div 
-                    className="w-full h-full flex items-center justify-center relative cursor-zoom-in rounded-2xl overflow-hidden"
+                    className="w-full h-full flex items-center justify-center relative cursor-zoom-in"
                     onClick={() => setLightboxOpen(true)}
                     title="Click to zoom image"
                   >
@@ -545,20 +588,20 @@ const ProductDetailPage = () => {
                     </AnimatePresence>
 
                     {mainImgLoading && (
-                      <div className="absolute inset-0 bg-white/70 backdrop-blur-xs rounded-2xl flex items-center justify-center">
+                      <div className="absolute inset-0 bg-white/70 backdrop-blur-xs rounded-full flex items-center justify-center">
                         <div className="flex flex-col items-center gap-2">
-                          <span className="text-3xl animate-spin text-[#b91c1c]">🌸</span>
+                          <span className="text-3xl animate-spin text-[#c31c22]">🌸</span>
                           <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Loading...</span>
                         </div>
                       </div>
                     )}
                   </div>
 
-                  {/* Red Zoom Button at Bottom-Right */}
+                  {/* Red Zoom Magnifier Button at Bottom-Right */}
                   <button
                     type="button"
                     onClick={() => setLightboxOpen(true)}
-                    className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white border border-gray-200 text-[#b91c1c] flex items-center justify-center shadow-md hover:bg-[#b91c1c] hover:text-white transition-all duration-300 cursor-pointer z-10 hover:scale-110"
+                    className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white border-2 border-[#c31c22] text-[#c31c22] flex items-center justify-center shadow-md hover:bg-[#c31c22] hover:text-white transition-all duration-300 cursor-pointer z-10 hover:scale-110"
                     title="Zoom Full View"
                     aria-label="Zoom Full View"
                   >
@@ -567,8 +610,135 @@ const ProductDetailPage = () => {
                 </div>
 
               </div>
+
+              {/* 🌸 RIGHT: Saffron Info Panel with Red Title & Red CTA */}
+              <div className="lg:col-span-5 space-y-6">
+                <div>
+                  <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-black text-[#c31c22] tracking-tight leading-tight">
+                    {product.name}
+                  </h1>
+                </div>
+
+                {/* Ratings and Reviews Summary */}
+                <div className="flex items-center gap-2.5 border-b border-gray-200/80 pb-4">
+                  <div className="flex text-amber-400">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star key={i} size={16} fill="currentColor" className="stroke-current" />
+                    ))}
+                  </div>
+                  <span className="text-sm font-bold text-gray-700">4.9 / 5.0</span>
+                  <span className="text-gray-300">|</span>
+                  <span className="text-sm font-semibold text-[#c31c22] hover:underline cursor-pointer">
+                    18 Verified Reviews
+                  </span>
+                </div>
+
+                {/* Price Section */}
+                <div className="space-y-1">
+                  <div className="flex items-baseline gap-3">
+                    {offerPrice ? (
+                      <>
+                        <span className="text-3xl sm:text-4xl font-black text-gray-900">
+                          ₹{offerPrice.toLocaleString()}
+                        </span>
+                        <span className="text-lg text-gray-400 line-through">
+                          ₹{price.toLocaleString()}
+                        </span>
+                      </>
+                    ) : (
+                      <span className="text-3xl sm:text-4xl font-black text-gray-900">
+                        ₹{price.toLocaleString()}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-gray-500 font-medium">Inclusive of all taxes • Free Express Shipping</p>
+                </div>
+
+                {/* Variants / Weight Selector */}
+                {variants.length > 0 && (
+                  <div className="space-y-3">
+                    <span className="block text-xs font-black text-gray-500 uppercase tracking-wider">Select Weight / Pack Size</span>
+                    <div className="flex flex-wrap gap-2.5">
+                      {variants.map((v, i) => (
+                        <button
+                          key={i}
+                          type="button"
+                          onClick={() => handleVariantSelect(v)}
+                          className={`text-sm font-bold px-5 py-2.5 rounded-xl border transition-all duration-300 ${
+                            selectedVariant?.size === v.size
+                              ? 'border-[#c31c22] bg-[#c31c22] text-white shadow-md shadow-red-500/20 scale-[1.02]'
+                              : 'border-gray-300 text-gray-700 bg-white hover:border-[#c31c22]/50 hover:bg-gray-50'
+                          }`}
+                        >
+                          {v.size}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Stock status indicator */}
+                <div className="flex items-center gap-2">
+                  <span className={`relative flex h-2.5 w-2.5`}>
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-emerald-400"></span>
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                  </span>
+                  <span className="text-xs font-bold text-gray-700">
+                    {product.stock > 0 ? `In Stock (Fresh Crop 2026 Batch)` : 'Out of Stock'}
+                  </span>
+                </div>
+
+                {/* Action Bar: Quantity & Buy Now */}
+                {(() => {
+                  const currentVariantSize = selectedVariant?.size || 'default';
+                  return (
+                    <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                      {/* Qty Selector */}
+                      <div className="flex items-center justify-between border-2 border-gray-300 bg-white rounded-full p-1.5 w-full sm:w-36 shadow-sm">
+                        <button
+                          type="button"
+                          onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                          className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-100 text-gray-600 transition-colors"
+                        >
+                          <Minus size={14} />
+                        </button>
+                        <span className="font-black text-sm text-gray-900">{quantity}</span>
+                        <button
+                          type="button"
+                          onClick={() => setQuantity((q) => q + 1)}
+                          className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-100 text-gray-600 transition-colors"
+                        >
+                          <Plus size={14} />
+                        </button>
+                      </div>
+
+                      {/* Red Saffron Buy Now Button */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          addToCart(product, quantity, selectedVariant);
+                          navigate('/checkout');
+                        }}
+                        className="flex-1 bg-[#c31c22] hover:bg-[#a8161b] text-white py-3.5 px-8 rounded-full font-black text-sm uppercase tracking-wider shadow-lg shadow-red-600/25 hover:shadow-xl transition-all flex items-center justify-center gap-2.5 cursor-pointer active:scale-95"
+                      >
+                        <ShoppingCart size={18} />
+                        <span>Buy Now</span>
+                      </button>
+                    </div>
+                  );
+                })()}
+
+              </div>
+
             </div>
-          ) : (
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start p-6 md:p-10 rounded-[2.5rem] border border-gray-100/80 relative overflow-hidden bg-white shadow-[0_20px_50px_rgba(102,38,84,0.03)] mb-12">
+            {/* Decorative luxury radial background */}
+            <div className="absolute top-[-10%] right-[-10%] w-[35%] aspect-square rounded-full bg-gradient-to-br from-[#662654]/5 to-transparent blur-[80px] pointer-events-none" />
+            <div className="absolute bottom-[-10%] left-[-10%] w-[35%] aspect-square rounded-full bg-gradient-to-tr from-[#d4af37]/5 to-transparent blur-[80px] pointer-events-none" />
+
+            {/* 1. Left Column: Standard Product Image Gallery */}
             <div>
               <div
                 className="relative aspect-square bg-[#faf9f7] rounded-[2rem] overflow-hidden border border-gray-100 flex items-center justify-center shadow-inner group cursor-zoom-in"
@@ -647,9 +817,8 @@ const ProductDetailPage = () => {
                 </div>
               )}
             </div>
-          )}
 
-          {/* 2. Right Column: Rich Info Panel */}
+            {/* 2. Right Column: Rich Info Panel */}
           <div className="space-y-6 lg:space-y-8">
             <div>
               <h1 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight leading-tight">
@@ -938,6 +1107,7 @@ const ProductDetailPage = () => {
             </div>
           </div>
         </div>
+        )}
 
         {/* ── Detailed Tabs Section (Below the fold) ── */}
         <div className="mt-12 md:mt-16 bg-white rounded-[2.5rem] shadow-[0_10px_35px_rgba(0,0,0,0.01)] border border-gray-100/60 overflow-hidden">
