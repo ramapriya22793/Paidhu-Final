@@ -482,7 +482,7 @@ const ProductDetailPage = () => {
 
           {/* 1. Left Column: Product Image Gallery */}
           {isSaffron ? (
-            <div className="relative w-full flex items-center justify-center p-2 sm:p-4 my-auto">
+            <div className="relative w-full flex items-start justify-center p-0 sm:p-2">
               {/* Flex Container: Curved Arc Thumbnails + Central Circle */}
               <div className="relative flex flex-col md:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-8 w-full z-10">
                 
@@ -735,7 +735,11 @@ const ProductDetailPage = () => {
                         const selected = variants.find(v => v.size === e.target.value);
                         if (selected) handleVariantSelect(selected);
                       }}
-                      className="w-full text-sm font-bold px-4 py-3 rounded-xl border border-gray-200 text-[#662654] bg-white hover:border-[#662654]/50 focus:outline-none focus:ring-2 focus:ring-[#662654]/20 focus:border-[#662654] appearance-none cursor-pointer pr-10 shadow-sm"
+                      className={`w-full text-sm font-bold px-4 py-3 rounded-xl border border-gray-200 ${
+                        isSaffron 
+                          ? 'text-[#cc2229] hover:border-[#cc2229]/50 focus:ring-[#cc2229]/20 focus:border-[#cc2229]' 
+                          : 'text-[#662654] hover:border-[#662654]/50 focus:ring-[#662654]/20 focus:border-[#662654]'
+                      } bg-white focus:outline-none focus:ring-2 appearance-none cursor-pointer pr-10 shadow-sm`}
                       aria-label="Select product variation option"
                     >
                       {variants.map((v, i) => (
@@ -744,7 +748,7 @@ const ProductDetailPage = () => {
                         </option>
                       ))}
                     </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-[#662654]">
+                    <div className={`pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 ${isSaffron ? 'text-[#cc2229]' : 'text-[#662654]'}`}>
                       <svg className="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                         <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
                       </svg>
@@ -759,8 +763,12 @@ const ProductDetailPage = () => {
                         onClick={() => handleVariantSelect(v)}
                         className={`text-sm font-bold px-5 py-2.5 rounded-xl border transition-all duration-300 ${
                           selectedVariant?.size === v.size
-                            ? 'border-[#662654] bg-[#662654] text-white shadow-md shadow-[#662654]/20 scale-[1.02]'
-                            : 'border-gray-200 text-gray-600 bg-white hover:border-[#662654]/50 hover:bg-gray-50'
+                            ? (isSaffron 
+                                ? 'border-[#cc2229] bg-gradient-to-r from-[#cc2229] to-[#b91c1c] text-white shadow-md shadow-[#cc2229]/25 scale-[1.02]' 
+                                : 'border-[#662654] bg-[#662654] text-white shadow-md shadow-[#662654]/20 scale-[1.02]')
+                            : (isSaffron 
+                                ? 'border-gray-200 text-gray-700 bg-white hover:border-[#cc2229]/50 hover:bg-red-50/30' 
+                                : 'border-gray-200 text-gray-600 bg-white hover:border-[#662654]/50 hover:bg-gray-50')
                         }`}
                       >
                         {v.size}
@@ -790,23 +798,23 @@ const ProductDetailPage = () => {
                 <div className="flex flex-col sm:flex-row gap-4 border-t border-b border-gray-100 py-6">
                   {/* Qty Selector */}
                   {inCartQty > 0 ? (
-                    <div className="flex items-center justify-between border border-[#662654]/30 rounded-full p-1 bg-[#662654]/5 w-full sm:w-36 shadow-xs">
+                    <div className={`flex items-center justify-between border ${isSaffron ? 'border-[#cc2229]/30 bg-[#cc2229]/5' : 'border-[#662654]/30 bg-[#662654]/5'} rounded-full p-1 w-full sm:w-36 shadow-xs`}>
                       <motion.button 
                         onClick={() => updateQuantity(product.id, inCartQty - 1, currentVariantSize)}
                         whileTap={{ scale: 0.8 }}
-                        className="w-8 h-8 rounded-full flex items-center justify-center text-[#662654] hover:bg-[#662654] hover:text-white transition-all cursor-pointer"
+                        className={`w-8 h-8 rounded-full flex items-center justify-center ${isSaffron ? 'text-[#cc2229] hover:bg-[#cc2229]' : 'text-[#662654] hover:bg-[#662654]'} hover:text-white transition-all cursor-pointer`}
                         title="Decrease quantity in cart"
                       >
                         <Minus size={14} strokeWidth={2.5} />
                       </motion.button>
                       <div className="flex flex-col items-center leading-none">
-                        <span className="text-sm font-black text-[#662654]">{inCartQty}</span>
+                        <span className={`text-sm font-black ${isSaffron ? 'text-[#cc2229]' : 'text-[#662654]'}`}>{inCartQty}</span>
                         <span className="text-[9px] font-bold text-gray-500 uppercase tracking-wider">in cart</span>
                       </div>
                       <motion.button 
                         onClick={() => updateQuantity(product.id, inCartQty + 1, currentVariantSize)}
                         whileTap={{ scale: 0.8 }}
-                        className="w-8 h-8 rounded-full flex items-center justify-center text-[#662654] hover:bg-[#662654] hover:text-white transition-all cursor-pointer"
+                        className={`w-8 h-8 rounded-full flex items-center justify-center ${isSaffron ? 'text-[#cc2229] hover:bg-[#cc2229]' : 'text-[#662654] hover:bg-[#662654]'} hover:text-white transition-all cursor-pointer`}
                         title="Increase quantity in cart"
                       >
                         <Plus size={14} strokeWidth={2.5} />
@@ -818,15 +826,15 @@ const ProductDetailPage = () => {
                         onClick={() => setQuantity(q => Math.max(1, q - 1))}
                         disabled={quantity <= 1}
                         whileTap={{ scale: 0.8 }}
-                        className="w-8 h-8 rounded-full flex items-center justify-center text-gray-500 hover:bg-white hover:text-[#662654] shadow-sm disabled:shadow-none transition-all disabled:opacity-30 cursor-pointer"
+                        className={`w-8 h-8 rounded-full flex items-center justify-center text-gray-500 hover:bg-white ${isSaffron ? 'hover:text-[#cc2229]' : 'hover:text-[#662654]'} shadow-sm disabled:shadow-none transition-all disabled:opacity-30 cursor-pointer`}
                       >
                         <Minus size={14} />
                       </motion.button>
-                      <span className="text-sm font-black text-[#662654]">{quantity}</span>
+                      <span className={`text-sm font-black ${isSaffron ? 'text-[#cc2229]' : 'text-[#662654]'}`}>{quantity}</span>
                       <motion.button 
                         onClick={() => setQuantity(q => q + 1)}
                         whileTap={{ scale: 0.8 }}
-                        className="w-8 h-8 rounded-full flex items-center justify-center text-gray-500 hover:bg-white hover:text-[#662654] shadow-sm transition-all cursor-pointer"
+                        className={`w-8 h-8 rounded-full flex items-center justify-center text-gray-500 hover:bg-white ${isSaffron ? 'hover:text-[#cc2229]' : 'hover:text-[#662654]'} shadow-sm transition-all cursor-pointer`}
                       >
                         <Plus size={14} />
                       </motion.button>
@@ -839,7 +847,11 @@ const ProductDetailPage = () => {
                     disabled={isAdding}
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
-                    className="flex-1 bg-gradient-to-r from-[#662654] via-[#7a2e64] to-[#662654] hover:brightness-110 disabled:bg-emerald-600 text-white rounded-full py-4 px-8 flex items-center justify-center gap-3 font-black text-sm uppercase tracking-wider transition-all shadow-xl shadow-[#662654]/20 hover:shadow-2xl hover:shadow-[#662654]/35 cursor-pointer relative overflow-hidden group"
+                    className={`flex-1 ${
+                      isSaffron 
+                        ? 'bg-gradient-to-r from-[#cc2229] via-[#b91c1c] to-[#991b1b] shadow-xl shadow-[#cc2229]/25 hover:shadow-2xl hover:shadow-[#cc2229]/40' 
+                        : 'bg-gradient-to-r from-[#662654] via-[#7a2e64] to-[#662654] shadow-xl shadow-[#662654]/20 hover:shadow-2xl hover:shadow-[#662654]/35'
+                    } hover:brightness-110 disabled:bg-emerald-600 text-white rounded-full py-4 px-8 flex items-center justify-center gap-3 font-black text-sm uppercase tracking-wider transition-all cursor-pointer relative overflow-hidden group`}
                   >
                     {/* Shining reflection animation overlay on hover */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-shimmer pointer-events-none" />
@@ -868,10 +880,12 @@ const ProductDetailPage = () => {
                     whileHover={{ scale: 1.08 }}
                     whileTap={{ scale: 0.9 }}
                     className={`w-12 h-12 rounded-full border flex items-center justify-center transition-all cursor-pointer ${
-                      isInWishlist ? 'border-[#662654] bg-[#662654]/5 text-[#662654]' : 'border-gray-200 text-gray-400 hover:text-[#662654]'
+                      isInWishlist 
+                        ? (isSaffron ? 'border-[#cc2229] bg-[#cc2229]/5 text-[#cc2229]' : 'border-[#662654] bg-[#662654]/5 text-[#662654]') 
+                        : (isSaffron ? 'border-gray-200 text-gray-400 hover:text-[#cc2229]' : 'border-gray-200 text-gray-400 hover:text-[#662654]')
                     }`}
                   >
-                    <Heart size={18} className={isInWishlist ? 'fill-[#662654]' : ''} />
+                    <Heart size={18} className={isInWishlist ? (isSaffron ? 'fill-[#cc2229]' : 'fill-[#662654]') : ''} />
                   </motion.button>
                 </div>
               );
@@ -887,7 +901,7 @@ const ProductDetailPage = () => {
                 <div className="absolute top-0 right-0 w-32 h-32 bg-[#d4af37]/10 rounded-full blur-2xl pointer-events-none -mr-10 -mt-10" />
                 
                 <div className="flex items-start gap-3.5 relative z-10">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#662654] to-[#9b3b82] p-1 flex-shrink-0 shadow-md flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#cc2229] to-[#b91c1c] p-1 flex-shrink-0 shadow-md flex items-center justify-center">
                     <img 
                       src="/saffron_icon.png" 
                       alt="Saffron Guidance" 
@@ -902,7 +916,7 @@ const ProductDetailPage = () => {
                         Free Saffron Guidance
                       </span>
                     </div>
-                    <h3 className="text-sm md:text-[15px] font-black text-[#662654] mt-1.5 font-serif leading-snug">
+                    <h3 className="text-sm md:text-[15px] font-black text-[#cc2229] mt-1.5 font-serif leading-snug">
                       Need Guidance on Saffron for Pregnancy or Daily Wellness?
                     </h3>
                     <p className="text-xs text-gray-600 mt-1 leading-relaxed">
@@ -910,7 +924,7 @@ const ProductDetailPage = () => {
                     </p>
 
                     {/* Quick highlight pills */}
-                    <div className="flex flex-wrap gap-2 mt-2.5 text-[11px] font-bold text-[#662654]/90">
+                    <div className="flex flex-wrap gap-2 mt-2.5 text-[11px] font-bold text-[#85581a]">
                       <span className="bg-white/80 border border-[#d4af37]/30 rounded-md px-2 py-0.5 shadow-xs flex items-center gap-1">
                         🌸 Trimester-wise Dosage
                       </span>
@@ -926,7 +940,7 @@ const ProductDetailPage = () => {
                     <div className="flex flex-wrap items-center gap-2.5 mt-3.5">
                       <Link
                         to="/saffron-guidance"
-                        className="inline-flex items-center gap-1.5 bg-[#662654] hover:bg-[#4a1c3d] text-white text-xs font-black px-4 py-2.5 rounded-full shadow-md hover:shadow-lg transition-all cursor-pointer"
+                        className="inline-flex items-center gap-1.5 bg-gradient-to-r from-[#cc2229] to-[#b91c1c] hover:brightness-110 text-white text-xs font-black px-4 py-2.5 rounded-full shadow-md hover:shadow-lg transition-all cursor-pointer"
                       >
                         <span>Consult Saffron Guidance</span>
                         <ArrowRight size={13} />
