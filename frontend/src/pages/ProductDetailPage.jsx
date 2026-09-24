@@ -400,32 +400,19 @@ const ProductDetailPage = () => {
         if (url) addImageToGallery(url, `${product.name} - View ${galleryItems.length + 1}`);
       });
     }
-  }
-
-  // Ensure Saffron showcases the 5 signature circular angles matching the mockup layout
-  if (isSaffron && galleryItems.length < 5) {
-    const defaultSaffronViews = [
-      { full: resolveImage(product?.image) || '/saffron_highres_1.png', thumb: '/saffron_circle_1.png', circle: '/saffron_circle_1.png', title: 'Kashmiri Mongra Saffron Box & Bottle' },
-      { full: '/saffron_highres_2.png', thumb: '/saffron_circle_2.png', circle: '/saffron_circle_2.png', title: 'Glass Vial Bottle with Cork Lid' },
-      { full: '/saffron_highres_3.png', thumb: '/saffron_circle_3.png', circle: '/saffron_circle_3.png', title: 'Luxury Saffron Packaging Box' },
-      { full: '/saffron_highres_4.png', thumb: '/saffron_circle_4.png', circle: '/saffron_circle_4.png', title: 'Quality & Lab Purity Certificate' },
-      { full: '/saffron_highres_5.png', thumb: '/saffron_circle_5.png', circle: '/saffron_circle_5.png', title: 'Nutrition Facts & Analysis' }
-    ];
-
-    if (galleryItems.length <= 1) {
-      galleryItems.length = 0;
-      defaultSaffronViews.forEach(v => {
-        if (v.title === 'Kashmiri Mongra Saffron Box & Bottle' && product?.image) {
-          v.full = resolveImage(product.image);
+    // 4. Variant images if any variant has specific image
+    if (Array.isArray(variants)) {
+      variants.forEach(v => {
+        if (v?.image) {
+          addImageToGallery(v.image, `${product.name} - ${v.size || 'Variant'}`);
         }
-        galleryItems.push(v);
       });
     }
   }
 
-  // Fallback ONLY if product has absolutely zero images
+  // Fallback ONLY if product has absolutely zero images in database
   if (galleryItems.length === 0) {
-    const fallbackImg = isSaffron ? '/saffron_highres_1.png' : '/white_lotus_cookies_new.png';
+    const fallbackImg = resolveImage(product?.image) || '/mascot.png';
     galleryItems.push({
       full: fallbackImg,
       thumb: fallbackImg,
@@ -435,7 +422,7 @@ const ProductDetailPage = () => {
   }
 
   const currentItem = galleryItems[activeImageIndex] || galleryItems[0];
-  const currentImage = currentItem?.full || (isSaffron ? '/saffron_highres_1.png' : '/white_lotus_cookies_new.png');
+  const currentImage = currentItem?.full || resolveImage(product?.image) || '/mascot.png';
   const productImage = currentImage;
 
   const breadcrumbItems = [
@@ -491,9 +478,13 @@ const ProductDetailPage = () => {
                   <div className="flex flex-row md:flex-col items-center justify-center gap-2.5 sm:gap-3 md:gap-3.5 z-30 order-2 md:order-1 shrink-0 overflow-visible py-2 px-2">
                     {galleryItems.map((item, idx) => {
                       const isSelected = activeImageIndex === idx;
-                      // Dynamic C-curve arc offset for thumbnails (0 -> top inner, 2 -> middle outer, 4 -> bottom inner)
-                      const arcOffsets = [26, 8, -8, 8, 26];
-                      const xOffset = arcOffsets[idx] !== undefined ? arcOffsets[idx] : 0;
+                      // Dynamic C-curve arc offset for thumbnails (for any count of admin-uploaded photos)
+                      const count = galleryItems.length;
+                      let xOffset = 0;
+                      if (count > 1) {
+                        const norm = (idx - (count - 1) / 2) / ((count - 1) / 2); // ranges from -1 to 1
+                        xOffset = Math.round(24 * (norm * norm) - 6);
+                      }
 
                       return (
                         <button
@@ -533,7 +524,7 @@ const ProductDetailPage = () => {
                               className="w-full h-full object-contain rounded-full transition-transform duration-300 group-hover/thumb:scale-110 select-none"
                               loading="eager"
                               onError={(e) => {
-                                e.currentTarget.src = isSaffron ? '/saffron_highres_1.png' : '/white_lotus_cookies_new.png';
+                                e.currentTarget.src = resolveImage(product?.image) || '/mascot.png';
                               }}
                             />
                           </div>
