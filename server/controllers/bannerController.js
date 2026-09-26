@@ -23,7 +23,8 @@ async function maybeSyncFromLive() {
             mobileImagePath: b.mobileImagePath || null,
             size: b.size || 'medium',
             isActive: b.isActive === true || b.isActive === 'true',
-            category: b.category || null
+            category: b.category || null,
+            link: b.link || null
           },
           create: {
             id: b.id,
@@ -34,7 +35,8 @@ async function maybeSyncFromLive() {
             mobileImagePath: b.mobileImagePath || null,
             size: b.size || 'medium',
             isActive: b.isActive === true || b.isActive === 'true',
-            category: b.category || null
+            category: b.category || null,
+            link: b.link || null
           }
         });
       }
@@ -90,7 +92,7 @@ const getActiveBannerByPage = async (req, res) => {
 
 const createBanner = async (req, res) => {
   try {
-    const { pageSlug, webImage, webImagePath, mobileImage, mobileImagePath, size, isActive, category } = req.body;
+    const { pageSlug, webImage, webImagePath, mobileImage, mobileImagePath, size, isActive, category, link } = req.body;
     const banner = await prisma.banner.create({
       data: {
         pageSlug: (pageSlug || '').toLowerCase().trim(),
@@ -100,7 +102,8 @@ const createBanner = async (req, res) => {
         mobileImagePath: mobileImagePath || null,
         size: size || "medium",
         isActive: isActive !== undefined ? (isActive === true || isActive === 'true') : true,
-        category: category || null
+        category: category || null,
+        link: link ? link.trim() : null
       }
     });
     res.status(201).json(banner);
@@ -112,7 +115,7 @@ const createBanner = async (req, res) => {
 const updateBanner = async (req, res) => {
   try {
     const { id } = req.params;
-    const { pageSlug, webImage, webImagePath, mobileImage, mobileImagePath, size, isActive, category } = req.body;
+    const { pageSlug, webImage, webImagePath, mobileImage, mobileImagePath, size, isActive, category, link } = req.body;
     
     const updateData = {};
     if (pageSlug !== undefined) updateData.pageSlug = pageSlug.toLowerCase().trim();
@@ -122,6 +125,7 @@ const updateBanner = async (req, res) => {
     if (mobileImagePath !== undefined) updateData.mobileImagePath = mobileImagePath || null;
     if (size !== undefined) updateData.size = size;
     if (category !== undefined) updateData.category = category || null;
+    if (link !== undefined) updateData.link = link ? link.trim() : null;
     if (isActive !== undefined) {
       updateData.isActive = (isActive === true || isActive === 'true');
     }

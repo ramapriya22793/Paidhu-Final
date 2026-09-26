@@ -33,9 +33,15 @@ const resolveUrl = (path) => {
 
 const getBannerLink = (slide) => {
   if (!slide) return '/shop';
-  if (slide.category) {
-    return `/shop/shop-by-category?category=${encodeURIComponent(slide.category)}`;
+  // 1. Direct custom redirect link configured in admin
+  if (slide.link && typeof slide.link === 'string' && slide.link.trim()) {
+    return slide.link.trim();
   }
+  // 2. Category mapping configured in admin
+  if (slide.category && typeof slide.category === 'string' && slide.category.trim()) {
+    return `/shop/shop-by-category?category=${encodeURIComponent(slide.category.trim())}`;
+  }
+  // 3. Fallback product routes based on image names
   if (!slide.image) return '/shop';
   const imgUrl = slide.image.toLowerCase();
   
@@ -105,6 +111,7 @@ const Hero = () => {
           bgColor: 'bg-[#faf5eb]',
           isBackendBanner: true,
           category: b.category || null,
+          link: b.link || null,
         })).filter(s => s.image);
         if (backendSlides.length > 0) {
           setSlides(backendSlides);
@@ -150,50 +157,87 @@ const Hero = () => {
       >
 
         {/* CSS fade transition — replaces framer-motion to reduce TBT */}
-        {slides.map((slide, index) => (
-          <div
-            key={slide.id}
-            className="absolute inset-0 w-full h-full flex items-center justify-center"
-            style={{
-              opacity: index === currentSlide ? 1 : 0,
-              transition: 'opacity 0.5s ease-in-out',
-              pointerEvents: index === currentSlide ? 'auto' : 'none',
-              backgroundColor: slide.bgColor?.replace('bg-', '') || '#f8f4ef',
-            }}
-          >
-            {/* Image Wrapper - Clickable full-bleed object-cover */}
-            <Link 
-              to={getBannerLink(slide)} 
-              className="absolute inset-0 w-full h-full block cursor-pointer z-10"
-              tabIndex={index === currentSlide ? 0 : -1}
+        {slides.map((slide, index) => {
+          const targetUrl = getBannerLink(slide);
+          const isExternal = targetUrl.startsWith('http://') || targetUrl.startsWith('https://');
+
+          return (
+            <div
+              key={slide.id}
+              className="absolute inset-0 w-full h-full flex items-center justify-center"
+              style={{
+                opacity: index === currentSlide ? 1 : 0,
+                transition: 'opacity 0.5s ease-in-out',
+                pointerEvents: index === currentSlide ? 'auto' : 'none',
+                backgroundColor: slide.bgColor?.replace('bg-', '') || '#f8f4ef',
+              }}
             >
-              {/* Mobile image (if backend banner has separate mobile img) */}
-              {slide.mobileImage && (
-                <img
-                  src={slide.mobileImage}
-                  alt={slide.headline || 'Paidhu Banner'}
-                  width={600}
-                  height={300}
-                  className="md:hidden w-full h-full object-cover object-center"
-                  loading={index === 0 ? 'eager' : 'lazy'}
-                  fetchPriority={index === 0 ? 'high' : 'auto'}
-                />
+              {/* Image Wrapper - Clickable full-bleed object-cover */}
+              {isExternal ? (
+                <a
+                  href={targetUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute inset-0 w-full h-full block cursor-pointer z-10"
+                  tabIndex={index === currentSlide ? 0 : -1}
+                  aria-label={slide.headline || 'Paidhu Hero Banner'}
+                >
+                  {slide.mobileImage && (
+                    <img
+                      src={slide.mobileImage}
+                      alt={slide.headline || 'Paidhu Banner'}
+                      width={600}
+                      height={300}
+                      className="md:hidden w-full h-full object-cover object-center"
+                      loading={index === 0 ? 'eager' : 'lazy'}
+                      fetchPriority={index === 0 ? 'high' : 'auto'}
+                    />
+                  )}
+
+                  <img
+                    src={slide.image}
+                    alt={slide.headline || 'Paidhu Banner'}
+                    width={1440}
+                    height={600}
+                    className={`${slide.mobileImage ? 'hidden md:block' : 'block'} w-full h-full object-cover object-center`}
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    fetchPriority={index === 0 ? 'high' : 'auto'}
+                  />
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none" />
+                </a>
+              ) : (
+                <Link 
+                  to={targetUrl.startsWith('/') ? targetUrl : `/${targetUrl}`}
+                  className="absolute inset-0 w-full h-full block cursor-pointer z-10"
+                  tabIndex={index === currentSlide ? 0 : -1}
+                  aria-label={slide.headline || 'Paidhu Hero Banner'}
+                >
+                  {slide.mobileImage && (
+                    <img
+                      src={slide.mobileImage}
+                      alt={slide.headline || 'Paidhu Banner'}
+                      width={600}
+                      height={300}
+                      className="md:hidden w-full h-full object-cover object-center"
+                      loading={index === 0 ? 'eager' : 'lazy'}
+                      fetchPriority={index === 0 ? 'high' : 'auto'}
+                    />
+                  )}
+
+                  <img
+                    src={slide.image}
+                    alt={slide.headline || 'Paidhu Banner'}
+                    width={1440}
+                    height={600}
+                    className={`${slide.mobileImage ? 'hidden md:block' : 'block'} w-full h-full object-cover object-center`}
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    fetchPriority={index === 0 ? 'high' : 'auto'}
+                  />
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none" />
+                </Link>
               )}
-
-              {/* Web / main image */}
-              <img
-                src={slide.image}
-                alt={slide.headline || 'Paidhu Banner'}
-                width={1440}
-                height={600}
-                className={`${slide.mobileImage ? 'hidden md:block' : 'block'} w-full h-full object-cover object-center`}
-                loading={index === 0 ? 'eager' : 'lazy'}
-                fetchPriority={index === 0 ? 'high' : 'auto'}
-              />
-
-              {/* Gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none" />
-            </Link>
 
             {/* Text overlay for fallback/text banners (no motion — pure CSS) */}
             {!slide.isBackendBanner && !slide.hideTextOverlay && slide.headline && (
@@ -219,7 +263,8 @@ const Hero = () => {
               </div>
             )}
           </div>
-        ))}
+          );
+        })}
 
         {/* Glassmorphic Navigation Arrows (always visible on mobile/tablet, hover-only on desktop) */}
         <button

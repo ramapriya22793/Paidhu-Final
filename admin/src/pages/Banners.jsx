@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import bannerService from '../services/bannerService';
 import { uploadImage, deleteImage } from '../utils/uploadImage';
-import { FiImage, FiPlus, FiEdit2, FiTrash2, FiX, FiMonitor, FiSmartphone, FiFilter } from 'react-icons/fi';
+import { FiImage, FiPlus, FiEdit2, FiTrash2, FiX, FiMonitor, FiSmartphone, FiFilter, FiLink, FiExternalLink } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
 const PAGES = [
@@ -31,7 +31,17 @@ const Banners = () => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingBanner, setEditingBanner] = useState(null);
-  const [formData, setFormData] = useState({ pageSlug: 'home', size: 'medium', webImage: '', webImagePath: '', mobileImage: '', mobileImagePath: '', isActive: true, category: '' });
+  const [formData, setFormData] = useState({ 
+    pageSlug: 'home', 
+    size: 'medium', 
+    webImage: '', 
+    webImagePath: '', 
+    mobileImage: '', 
+    mobileImagePath: '', 
+    isActive: true, 
+    category: '',
+    link: '' 
+  });
   const [newWebFile, setNewWebFile] = useState(null);
   const [newMobileFile, setNewMobileFile] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -84,7 +94,17 @@ const Banners = () => {
 
   const openAddModal = () => {
     setEditingBanner(null);
-    setFormData({ pageSlug: 'home', size: 'medium', webImage: '', webImagePath: '', mobileImage: '', mobileImagePath: '', isActive: true, category: '' });
+    setFormData({ 
+      pageSlug: 'home', 
+      size: 'medium', 
+      webImage: '', 
+      webImagePath: '', 
+      mobileImage: '', 
+      mobileImagePath: '', 
+      isActive: true, 
+      category: '',
+      link: '' 
+    });
     setNewWebFile(null);
     setNewMobileFile(null);
     setShowModal(true);
@@ -100,7 +120,8 @@ const Banners = () => {
       mobileImage: banner.mobileImage || '',
       mobileImagePath: banner.mobileImagePath || '',
       isActive: banner.isActive,
-      category: banner.category || ''
+      category: banner.category || '',
+      link: banner.link || ''
     });
     setNewWebFile(null);
     setNewMobileFile(null);
@@ -248,6 +269,7 @@ const Banners = () => {
                 <th className="px-6 py-4">Page</th>
                 <th className="px-6 py-4">Web Banner</th>
                 <th className="px-6 py-4">Mobile Banner</th>
+                <th className="px-6 py-4">Click Destination Link</th>
                 <th className="px-6 py-4">Mapped Category</th>
                 <th className="px-6 py-4">Size</th>
                 <th className="px-6 py-4">Status</th>
@@ -257,11 +279,11 @@ const Banners = () => {
             <tbody className="divide-y divide-gray-100">
               {loading ? (
                 <tr>
-                  <td colSpan="7" className="px-6 py-12 text-center text-brand-plum">Loading banners...</td>
+                  <td colSpan="8" className="px-6 py-12 text-center text-brand-plum">Loading banners...</td>
                 </tr>
               ) : filteredBanners.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="px-6 py-12 text-center text-gray-500">No banners found for this filter.</td>
+                  <td colSpan="8" className="px-6 py-12 text-center text-gray-500">No banners found for this filter.</td>
                 </tr>
               ) : (
                 filteredBanners.map((banner) => (
@@ -285,8 +307,23 @@ const Banners = () => {
                     </td>
 
                     <td className="px-6 py-4">
+                      {banner.link ? (
+                        <div className="flex items-center gap-1.5 text-xs text-brand-plum font-bold bg-brand-plum/5 px-2.5 py-1 rounded-md border border-brand-plum/15 max-w-[200px] truncate" title={banner.link}>
+                          <FiLink className="shrink-0 text-brand-plum" size={12} />
+                          <span className="truncate">{banner.link}</span>
+                        </div>
+                      ) : banner.category ? (
+                        <span className="text-xs text-amber-800 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200 font-medium">
+                          Category: {banner.category}
+                        </span>
+                      ) : (
+                        <span className="text-xs text-gray-400 italic">Default (/shop)</span>
+                      )}
+                    </td>
+
+                    <td className="px-6 py-4">
                       {banner.category ? (
-                        <span className="bg-brand-plum/5 text-brand-plum px-2.5 py-1 rounded-full text-xs font-bold border border-brand-plum/10">
+                        <span className="bg-brand-plum/5 text-brand-plum px-2.5 py-1 rounded-md text-xs font-bold border border-brand-plum/10">
                           {banner.category}
                         </span>
                       ) : (
@@ -371,6 +408,99 @@ const Banners = () => {
                   </div>
                 </div>
 
+                {/* Destination Link Input with Quick Selectors */}
+                <div className="bg-brand-plum/5 p-4 rounded-xl border border-brand-plum/15 space-y-2.5">
+                  <label className="block text-sm font-bold text-gray-800 flex items-center justify-between">
+                    <span className="flex items-center gap-1.5 text-brand-plum">
+                      <FiLink className="stroke-[2.5]" /> Banner Click Destination Link (Where to navigate when touched/clicked)
+                    </span>
+                    <span className="text-[11px] font-medium text-gray-500">Path or URL</span>
+                  </label>
+                  
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="e.g. /shop, /product/kashmiri-mongra, /byoc, /deals, or full URL"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-plum bg-white text-sm font-semibold text-gray-800"
+                      value={formData.link}
+                      onChange={e => setFormData({ ...formData, link: e.target.value })}
+                    />
+                    {formData.link && (
+                      <button
+                        type="button"
+                        onClick={() => setFormData({ ...formData, link: '' })}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs font-bold"
+                      >
+                        Clear
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Quick Shortcut Buttons */}
+                  <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-wider">Quick Presets:</span>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, link: '/shop' })}
+                      className="text-[11px] font-bold bg-white border border-gray-200 hover:border-brand-plum hover:bg-brand-plum hover:text-white px-2.5 py-1 rounded-md shadow-xs transition-all"
+                    >
+                      🛍️ Shop All (/shop)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, link: '/shop/shop-by-category?category=Bloom Cookies' })}
+                      className="text-[11px] font-bold bg-white border border-gray-200 hover:border-brand-plum hover:bg-brand-plum hover:text-white px-2.5 py-1 rounded-md shadow-xs transition-all"
+                    >
+                      🍪 Bloom Cookies
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, link: '/shop/shop-by-category?category=Saffron' })}
+                      className="text-[11px] font-bold bg-white border border-gray-200 hover:border-brand-plum hover:bg-brand-plum hover:text-white px-2.5 py-1 rounded-md shadow-xs transition-all"
+                    >
+                      ✨ Saffron
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, link: '/shop/shop-by-category?category=Petal Jam' })}
+                      className="text-[11px] font-bold bg-white border border-gray-200 hover:border-brand-plum hover:bg-brand-plum hover:text-white px-2.5 py-1 rounded-md shadow-xs transition-all"
+                    >
+                      🍯 Petal Jam
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, link: '/shop/shop-by-category?category=Medley Teas' })}
+                      className="text-[11px] font-bold bg-white border border-gray-200 hover:border-brand-plum hover:bg-brand-plum hover:text-white px-2.5 py-1 rounded-md shadow-xs transition-all"
+                    >
+                      🍵 Medley Teas
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, link: '/shop/shop-by-category?category=Brew Flora' })}
+                      className="text-[11px] font-bold bg-white border border-gray-200 hover:border-brand-plum hover:bg-brand-plum hover:text-white px-2.5 py-1 rounded-md shadow-xs transition-all"
+                    >
+                      🌸 Brew Flora
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, link: '/byoc' })}
+                      className="text-[11px] font-bold bg-white border border-gray-200 hover:border-brand-plum hover:bg-brand-plum hover:text-white px-2.5 py-1 rounded-md shadow-xs transition-all"
+                    >
+                      🎁 BYOC
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, link: '/deal-of-the-day' })}
+                      className="text-[11px] font-bold bg-white border border-gray-200 hover:border-brand-plum hover:bg-brand-plum hover:text-white px-2.5 py-1 rounded-md shadow-xs transition-all"
+                    >
+                      ⚡ Deals
+                    </button>
+                  </div>
+                  <p className="text-[11px] text-gray-500 font-medium">
+                    When customers touch or click this hero banner on mobile or desktop, they will be immediately redirected to this page.
+                  </p>
+                </div>
+
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-1">Mapped Category (Optional)</label>
                   <select 
@@ -387,7 +517,7 @@ const Banners = () => {
                     <option value="Saffron">Saffron</option>
                     <option value="Combos">Combos</option>
                   </select>
-                  <p className="text-xs text-gray-400 mt-1">If selected, clicking this banner on the store will navigate users to that category listing page.</p>
+                  <p className="text-xs text-gray-400 mt-1">If set and no custom link is provided, clicking the banner navigates to this category.</p>
                 </div>
 
                 {/* IMAGES */}

@@ -23,6 +23,7 @@ const toSlide = (b) => ({
   bgColor:     '#f8f4ef',
   isBackend:   true,
   category:    b.category || null,
+  link:        b.link || null,
 });
 
 // Local fallback per section (used only when DB + home fallback both return nothing)
@@ -192,51 +193,66 @@ const PageBanner = ({ pageSlug }) => {
             className="absolute inset-0 w-full h-full"
             style={{ background: current.bgColor || '#f8f4ef' }}
           >
-            {current.category ? (
-              <Link to={`/shop/shop-by-category?category=${encodeURIComponent(current.category)}`} className="absolute inset-0 w-full h-full block cursor-pointer z-10">
-                {current.mobileImage && (
+            {(() => {
+              const targetLink = (current.link && current.link.trim() !== '')
+                ? current.link.trim()
+                : (current.category ? `/shop/shop-by-category?category=${encodeURIComponent(current.category)}` : null);
+
+              const isExternal = targetLink && (targetLink.startsWith('http://') || targetLink.startsWith('https://'));
+
+              const images = (
+                <>
+                  {current.mobileImage && (
+                    <img
+                      src={current.mobileImage}
+                      alt="Paidhu Banner"
+                      className="md:hidden absolute inset-0 w-full h-full object-cover object-center"
+                      onLoad={handleLoad}
+                    />
+                  )}
                   <img
-                    src={current.mobileImage}
+                    src={imgSrc}
                     alt="Paidhu Banner"
-                    className="md:hidden absolute inset-0 w-full h-full object-cover object-center"
+                    className={[
+                      current.mobileImage ? 'hidden md:block' : 'block',
+                      'absolute inset-0 w-full h-full object-cover object-center',
+                      'transition-transform duration-700 group-hover:scale-[1.015]',
+                    ].join(' ')}
                     onLoad={handleLoad}
+                    onError={e => { e.currentTarget.style.display = 'none'; }}
                   />
-                )}
-                <img
-                  src={imgSrc}
-                  alt="Paidhu Banner"
-                  className={[
-                    current.mobileImage ? 'hidden md:block' : 'block',
-                    'absolute inset-0 w-full h-full object-cover object-center',
-                    'transition-transform duration-700 group-hover:scale-[1.015]',
-                  ].join(' ')}
-                  onLoad={handleLoad}
-                  onError={e => { e.currentTarget.style.display = 'none'; }}
-                />
-              </Link>
-            ) : (
-              <>
-                {current.mobileImage && (
-                  <img
-                    src={current.mobileImage}
-                    alt="Paidhu Banner"
-                    className="md:hidden absolute inset-0 w-full h-full object-cover object-center"
-                    onLoad={handleLoad}
-                  />
-                )}
-                <img
-                  src={imgSrc}
-                  alt="Paidhu Banner"
-                  className={[
-                    current.mobileImage ? 'hidden md:block' : 'block',
-                    'absolute inset-0 w-full h-full object-cover object-center',
-                    'transition-transform duration-700 group-hover:scale-[1.015]',
-                  ].join(' ')}
-                  onLoad={handleLoad}
-                  onError={e => { e.currentTarget.style.display = 'none'; }}
-                />
-              </>
-            )}
+                </>
+              );
+
+              if (targetLink) {
+                if (isExternal) {
+                  return (
+                    <a
+                      href={targetLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="absolute inset-0 w-full h-full block cursor-pointer z-10"
+                    >
+                      {images}
+                    </a>
+                  );
+                }
+                return (
+                  <Link
+                    to={targetLink}
+                    className="absolute inset-0 w-full h-full block cursor-pointer z-10"
+                  >
+                    {images}
+                  </Link>
+                );
+              }
+
+              return (
+                <div className="absolute inset-0 w-full h-full block">
+                  {images}
+                </div>
+              );
+            })()}
 
             {/* Subtle gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none" />

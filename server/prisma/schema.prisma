@@ -312,6 +312,7 @@ model Banner {
   isActive        Boolean   @default(true)
   category        String?
   categoryRef     Category? @relation(fields: [category], references: [name], onDelete: SetNull)
+  link            String?   // Custom redirect destination URL when banner is clicked
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 }
