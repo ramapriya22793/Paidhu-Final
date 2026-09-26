@@ -1,10 +1,36 @@
 const prisma = require("../prismaClient");
 
+let bannerColumnsChecked = false;
+const ensureBannerColumns = async () => {
+  if (bannerColumnsChecked) return;
+  try {
+    await prisma.$executeRawUnsafe(`
+      ALTER TABLE "Banner"
+      ADD COLUMN IF NOT EXISTS "link" TEXT,
+      ADD COLUMN IF NOT EXISTS "webImagePath" TEXT,
+      ADD COLUMN IF NOT EXISTS "mobileImagePath" TEXT,
+      ADD COLUMN IF NOT EXISTS "category" TEXT;
+    `);
+    bannerColumnsChecked = true;
+  } catch (err) {
+    console.log("ensureBannerColumns notice:", err.message);
+  }
+};
+
 const getAllBanners = async (req, res) => {
   try {
-    const banners = await prisma.banner.findMany({
-      orderBy: { id: 'desc' }
-    });
+    let banners;
+    try {
+      banners = await prisma.banner.findMany({
+        orderBy: { id: 'desc' }
+      });
+    } catch (queryErr) {
+      console.warn("Banner query initial error, ensuring columns:", queryErr.message);
+      await ensureBannerColumns();
+      banners = await prisma.banner.findMany({
+        orderBy: { id: 'desc' }
+      });
+    }
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0');
     res.json(banners);
   } catch (error) {
@@ -29,13 +55,26 @@ const getActiveBannerByPage = async (req, res) => {
       ];
     }
 
-    const banners = await prisma.banner.findMany({
-      where: {
-        OR: slugConditions,
-        isActive: true
-      },
-      orderBy: { id: 'desc' }
-    });
+    let banners;
+    try {
+      banners = await prisma.banner.findMany({
+        where: {
+          OR: slugConditions,
+          isActive: true
+        },
+        orderBy: { id: 'desc' }
+      });
+    } catch (queryErr) {
+      console.warn("Active banner query error, ensuring columns:", queryErr.message);
+      await ensureBannerColumns();
+      banners = await prisma.banner.findMany({
+        where: {
+          OR: slugConditions,
+          isActive: true
+        },
+        orderBy: { id: 'desc' }
+      });
+    }
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0');
     res.json(banners);
   } catch (error) {

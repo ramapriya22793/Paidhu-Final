@@ -164,7 +164,13 @@ const initializeAdmin = async () => {
       await prisma.$executeRawUnsafe(`
         ALTER TABLE "User"
         ADD COLUMN IF NOT EXISTS "role" TEXT NOT NULL DEFAULT 'CUSTOMER',
-        ADD COLUMN IF NOT EXISTS "mustChangePassword" BOOLEAN NOT NULL DEFAULT false
+        ADD COLUMN IF NOT EXISTS "mustChangePassword" BOOLEAN NOT NULL DEFAULT false;
+
+        ALTER TABLE "Banner"
+        ADD COLUMN IF NOT EXISTS "link" TEXT,
+        ADD COLUMN IF NOT EXISTS "webImagePath" TEXT,
+        ADD COLUMN IF NOT EXISTS "mobileImagePath" TEXT,
+        ADD COLUMN IF NOT EXISTS "category" TEXT;
       `);
       console.log("Startup: Database columns verified/added successfully.");
     } catch (schemaErr) {
