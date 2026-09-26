@@ -4,33 +4,50 @@ const jwt = require('jsonwebtoken');
 
 const adminLogin = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const rawEmail = (req.body.email || '').trim().toLowerCase();
+    const password = req.body.password;
+
+    if (!rawEmail || !password) {
+      return res.status(400).json({ message: 'Email and password are required' });
+    }
+
     const rawIp = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'Unknown';
     const ipAddress = typeof rawIp === 'string' ? rawIp.split(',')[0].trim() : 'Unknown';
     const userAgent = req.headers['user-agent'] || 'Unknown';
 
-    const user = await prisma.user.findUnique({ where: { email } });
+    // Case-insensitive lookup
+    const user = await prisma.user.findFirst({
+      where: {
+        email: { equals: rawEmail, mode: 'insensitive' }
+      }
+    });
 
     if (!user || !user.isAdmin) {
       if (user) {
-        await prisma.loginHistory.create({
-          data: { userId: user.id, ipAddress, userAgent, status: 'FAILED' }
-        });
+        try {
+          await prisma.loginHistory.create({
+            data: { userId: user.id, ipAddress, userAgent, status: 'FAILED' }
+          });
+        } catch (e) {}
       }
       return res.status(401).json({ message: 'Invalid credentials or unauthorized' });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      await prisma.loginHistory.create({
-        data: { userId: user.id, ipAddress, userAgent, status: 'FAILED' }
-      });
+      try {
+        await prisma.loginHistory.create({
+          data: { userId: user.id, ipAddress, userAgent, status: 'FAILED' }
+        });
+      } catch (e) {}
       return res.status(401).json({ message: 'Invalid credentials or unauthorized' });
     }
 
-    await prisma.loginHistory.create({
-      data: { userId: user.id, ipAddress, userAgent, status: 'SUCCESS' }
-    });
+    try {
+      await prisma.loginHistory.create({
+        data: { userId: user.id, ipAddress, userAgent, status: 'SUCCESS' }
+      });
+    } catch (e) {}
 
     if (user.mustChangePassword) {
       const tempToken = jwt.sign(
@@ -55,7 +72,7 @@ const adminLogin = async (req, res) => {
     const token = jwt.sign(
       { id: user.id, isAdmin: user.isAdmin, role: user.role || 'SUPER_ADMIN' },
       process.env.JWT_SECRET || 'fallback_secret_key',
-      { expiresIn: '1d' }
+      { expiresIn: '7d' }
     );
 
     res.json({
@@ -71,7 +88,7 @@ const adminLogin = async (req, res) => {
 
   } catch (error) {
     console.error("Admin login error:", error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: error.message || 'Server error' });
   }
 };
 

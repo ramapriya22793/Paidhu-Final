@@ -189,9 +189,31 @@ const initializeAdmin = async () => {
     } else if (!existingAdmin.role || existingAdmin.role === 'CUSTOMER') {
       await prisma.user.update({
         where: { email: adminEmail },
-        data: { role: "SUPER_ADMIN" }
+        data: { role: "SUPER_ADMIN", isAdmin: true }
       });
       console.log("Admin user role updated to SUPER_ADMIN.");
+    }
+
+    const domainAdminEmail = "admin@paidhuethicalfoods.com";
+    const existingDomainAdmin = await prisma.user.findUnique({ where: { email: domainAdminEmail } });
+    if (!existingDomainAdmin) {
+      const hashedPassword = await bcrypt.hash("Paidhu2026", 10);
+      await prisma.user.create({
+        data: {
+          name: "Super Admin",
+          email: domainAdminEmail,
+          password: hashedPassword,
+          isAdmin: true,
+          role: "SUPER_ADMIN"
+        }
+      });
+      console.log("Domain Super Admin created successfully.");
+    } else if (!existingDomainAdmin.role || existingDomainAdmin.role === 'CUSTOMER' || !existingDomainAdmin.isAdmin) {
+      await prisma.user.update({
+        where: { email: domainAdminEmail },
+        data: { role: "SUPER_ADMIN", isAdmin: true }
+      });
+      console.log("Domain Super Admin user role updated to SUPER_ADMIN.");
     }
 
     // Seed E-Commerce Admin
