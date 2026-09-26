@@ -394,6 +394,31 @@ const BlogDetailPage = () => {
           </div>
         )}
 
+        {/* 🌸 Shop Collection Banner */}
+        <div className="bg-gradient-to-br from-[#fdfbf7] via-[#fbf6ee] to-[#f7eedf] border border-[#e8dac7] rounded-[2rem] p-6 sm:p-8 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-5">
+          <div className="space-y-1.5 text-center sm:text-left">
+            <span className="text-[10px] font-black uppercase tracking-widest text-[#9a5d1a] bg-[#9a5d1a]/10 px-3 py-0.5 rounded-full border border-[#9a5d1a]/20 inline-flex items-center gap-1">
+              <Sparkles size={10} className="text-[#9a5d1a]" />
+              Authentic Organic Food
+            </span>
+            <h3 className="text-xl sm:text-2xl font-serif font-black text-gray-900 tracking-tight">
+              Bring Home Paidhu Floral Delicacies
+            </h3>
+            <p className="text-gray-600 text-xs sm:text-sm font-medium">
+              Explore our full collection of natural blossom cookies, pure saffron, herbal teas, and handcrafted petal jams.
+            </p>
+          </div>
+
+          <Link
+            to="/shop"
+            className="shrink-0 bg-[#662654] hover:bg-[#521d43] text-white font-black text-xs uppercase tracking-wider px-7 py-3.5 rounded-full shadow-md hover:shadow-xl hover:scale-105 transition-all flex items-center gap-2"
+          >
+            <ShoppingBag size={15} />
+            <span>Shop All Products</span>
+            <ArrowRight size={13} />
+          </Link>
+        </div>
+
         {/* Newsletter Subscription Banner */}
         <div className="bg-gradient-to-br from-[#662654] to-[#4c163b] text-white p-8 sm:p-12 rounded-[2.5rem] shadow-xl text-center space-y-4 relative overflow-hidden">
           <div className="relative z-10 max-w-lg mx-auto space-y-3">

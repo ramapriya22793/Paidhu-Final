@@ -11,7 +11,8 @@ import {
   Tag, 
   Clock, 
   Filter,
-  Sparkles
+  Sparkles,
+  ShoppingBag
 } from 'lucide-react';
 import SEO from '../components/seo/SEO';
 import { getRealisticBlogImage } from '../utils/blogImages';
@@ -189,11 +190,33 @@ const BlogsPage = () => {
           >
             Discover holistic wellness, culinary edible flower recipes, saffron heritage, and natural health tips curated by our specialists.
           </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="pt-2 flex flex-wrap items-center justify-center gap-3.5"
+          >
+            <Link
+              to="/shop"
+              className="bg-gradient-to-r from-[#d4af37] via-[#e5c158] to-[#c29f2e] text-[#4a163a] font-black text-xs uppercase tracking-wider px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all flex items-center gap-2"
+            >
+              <ShoppingBag size={15} className="stroke-[2.5]" />
+              <span>Shop All Products</span>
+            </Link>
+            <a
+              href="#articles-grid"
+              className="bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-wider px-5 py-3 rounded-full border border-white/20 transition-all flex items-center gap-2"
+            >
+              <span>Explore Articles</span>
+              <ArrowRight size={14} />
+            </a>
+          </motion.div>
         </div>
       </div>
 
       {/* Main Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 space-y-8">
+      <div id="articles-grid" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 space-y-8">
         {/* Filters and Search Control Bar */}
         <div className="bg-white rounded-3xl p-4 sm:p-6 shadow-sm border border-gray-100 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           {/* Categories Horizontal Scroll */}
@@ -389,6 +412,34 @@ const BlogsPage = () => {
               ))}
             </div>
           )}
+        </div>
+
+        {/* 🌸 Bottom Shop All Collection Banner */}
+        <div className="bg-gradient-to-br from-[#662654] via-[#521d43] to-[#3b1230] rounded-3xl p-8 sm:p-12 text-white shadow-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[radial-gradient(circle,rgba(212,175,55,0.2)_0%,transparent_70%)] pointer-events-none" />
+          <div className="space-y-2 text-center md:text-left z-10 max-w-xl">
+            <span className="text-[10px] font-black uppercase tracking-[0.25em] text-[#d4af37] bg-white/10 px-3.5 py-1 rounded-full border border-white/15 inline-flex items-center gap-1.5">
+              <Sparkles size={11} className="text-[#d4af37]" />
+              Taste The Real Flowers
+            </span>
+            <h3 className="text-2xl sm:text-3xl font-serif font-black tracking-tight text-white">
+              Experience Our Handcrafted Floral Collection
+            </h3>
+            <p className="text-white/80 text-xs sm:text-sm font-medium leading-relaxed">
+              Explore 100% natural flower cookies, certified Kashmiri saffron, handcrafted petal jams, and whole blossom herbal teas.
+            </p>
+          </div>
+
+          <div className="z-10 shrink-0">
+            <Link
+              to="/shop"
+              className="bg-gradient-to-r from-[#d4af37] via-[#e5c158] to-[#c29f2e] text-[#4a163a] font-black text-xs uppercase tracking-wider px-8 py-4 rounded-full shadow-lg hover:shadow-2xl hover:scale-105 transition-all flex items-center gap-2.5"
+            >
+              <ShoppingBag size={16} className="stroke-[2.5]" />
+              <span>Shop All Products</span>
+              <ArrowRight size={14} className="stroke-[2.5]" />
+            </Link>
+          </div>
         </div>
       </div>
     </div>

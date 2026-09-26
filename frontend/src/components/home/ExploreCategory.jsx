@@ -79,8 +79,8 @@ const CATEGORY_CONFIG = [
     temptationQuote: "Prized Kashmiri Mongra and Super Negin saffron hand-harvested for deep crimson threads, exceptional potency, and rich aroma.",
     bgClass: "from-[#fffdfa] via-[#fef7eb] to-[#faeedb]",
     borderClass: "border-[#f0dbc0]",
-    img: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1787745899482-paidhukashmirimongrapng.png",
-    fallback: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1787745899482-paidhukashmirimongrapng.png",
+    img: "/cat_saffron.png",
+    fallback: "/cat_saffron.png",
     productCount: 4,
     products: [
       {
@@ -136,8 +136,8 @@ const CATEGORY_CONFIG = [
     temptationQuote: "Artisanal flower petal jams and traditional gulkhand slow-simmered from fresh Damask rose, aavaram, and hibiscus petals to retain delicate floral essence and natural wellness.",
     bgClass: "from-[#fffcfd] via-[#fef2f6] to-[#fae5ed]",
     borderClass: "border-[#f2d4e0]",
-    img: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1787746427907-WhatsAppImage20260806at1138202jpeg.jpeg",
-    fallback: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1787746427907-WhatsAppImage20260806at1138202jpeg.jpeg",
+    img: "/cat_petal_jam.png",
+    fallback: "/cat_petal_jam.png",
     productCount: 5,
     products: [
       {
@@ -199,8 +199,8 @@ const CATEGORY_CONFIG = [
     temptationQuote: "Intact sun-dried whole edible flowers (Aavaram, Chamomile, Lavender, Blue Pea, Hibiscus) crafted to bring calmness, relaxation, and gentle wellness.",
     bgClass: "from-[#fcfaff] via-[#f7f1fc] to-[#eee2f7]",
     borderClass: "border-[#e0d2f2]",
-    img: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1787156882780-brewfloraavarampoojpg.jpg",
-    fallback: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1787156882780-brewfloraavarampoojpg.jpg",
+    img: "/cat_brew_flora.png",
+    fallback: "/cat_brew_flora.png",
     productCount: 5,
     products: [
       {
@@ -235,7 +235,7 @@ const CATEGORY_CONFIG = [
       }
     ],
     images: [
-      "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1787156882780-brewfloraavarampoojpg.jpg",
+      "/cat_brew_flora.png",
       "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1787141815115-WhatsAppImage20251113at2330215f60b43f180x180jpg.jpg",
       "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1787138689761-WhatsAppImage20251113at233021b33d20d8180x1801jpg.jpg",
       "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1787137806392-WhatsAppImage20251113at233024f74fae34180x180jpg.jpg",
@@ -262,8 +262,8 @@ const CATEGORY_CONFIG = [
     temptationQuote: "Whole flower herbal tea infusions blending butterfly pea, hibiscus, pure saffron, and lavender for calming, antioxidant-rich hydration.",
     bgClass: "from-[#fafffc] via-[#f3f9f5] to-[#e6f2e9]",
     borderClass: "border-[#d2e7d7]",
-    img: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1787751567516-medleyteahibiscus005png.png",
-    fallback: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1787751567516-medleyteahibiscus005png.png",
+    img: "/cat_medley_teas.png",
+    fallback: "/cat_medley_teas.png",
     productCount: 5,
     products: [
       {
