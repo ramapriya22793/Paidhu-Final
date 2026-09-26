@@ -55,9 +55,10 @@ const Banners = () => {
     setLoading(true);
     try {
       const data = await bannerService.getAllBanners();
-      setBanners(data);
+      setBanners(Array.isArray(data) ? data : (data?.banners || []));
     } catch (error) {
       console.error("Failed to fetch banners", error);
+      toast.error("Failed to fetch banners from server");
     } finally {
       setLoading(false);
     }
