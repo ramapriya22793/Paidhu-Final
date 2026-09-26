@@ -161,17 +161,12 @@ const initializeAdmin = async () => {
     // This ensures the schema is always up-to-date on the live database,
     // since running 'prisma db push' in a Vercel serverless environment is unreliable.
     try {
-      await prisma.$executeRawUnsafe(`
-        ALTER TABLE "User"
-        ADD COLUMN IF NOT EXISTS "role" TEXT NOT NULL DEFAULT 'CUSTOMER',
-        ADD COLUMN IF NOT EXISTS "mustChangePassword" BOOLEAN NOT NULL DEFAULT false;
-
-        ALTER TABLE "Banner"
-        ADD COLUMN IF NOT EXISTS "link" TEXT,
-        ADD COLUMN IF NOT EXISTS "webImagePath" TEXT,
-        ADD COLUMN IF NOT EXISTS "mobileImagePath" TEXT,
-        ADD COLUMN IF NOT EXISTS "category" TEXT;
-      `);
+      await prisma.$executeRawUnsafe(`ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "role" TEXT NOT NULL DEFAULT 'CUSTOMER'`);
+      await prisma.$executeRawUnsafe(`ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "mustChangePassword" BOOLEAN NOT NULL DEFAULT false`);
+      await prisma.$executeRawUnsafe(`ALTER TABLE "Banner" ADD COLUMN IF NOT EXISTS "link" TEXT`);
+      await prisma.$executeRawUnsafe(`ALTER TABLE "Banner" ADD COLUMN IF NOT EXISTS "webImagePath" TEXT`);
+      await prisma.$executeRawUnsafe(`ALTER TABLE "Banner" ADD COLUMN IF NOT EXISTS "mobileImagePath" TEXT`);
+      await prisma.$executeRawUnsafe(`ALTER TABLE "Banner" ADD COLUMN IF NOT EXISTS "category" TEXT`);
       console.log("Startup: Database columns verified/added successfully.");
     } catch (schemaErr) {
       // Columns may already exist — that is fine, the login will still work.

@@ -4,13 +4,10 @@ let bannerColumnsChecked = false;
 const ensureBannerColumns = async () => {
   if (bannerColumnsChecked) return;
   try {
-    await prisma.$executeRawUnsafe(`
-      ALTER TABLE "Banner"
-      ADD COLUMN IF NOT EXISTS "link" TEXT,
-      ADD COLUMN IF NOT EXISTS "webImagePath" TEXT,
-      ADD COLUMN IF NOT EXISTS "mobileImagePath" TEXT,
-      ADD COLUMN IF NOT EXISTS "category" TEXT;
-    `);
+    await prisma.$executeRawUnsafe(`ALTER TABLE "Banner" ADD COLUMN IF NOT EXISTS "link" TEXT`);
+    await prisma.$executeRawUnsafe(`ALTER TABLE "Banner" ADD COLUMN IF NOT EXISTS "webImagePath" TEXT`);
+    await prisma.$executeRawUnsafe(`ALTER TABLE "Banner" ADD COLUMN IF NOT EXISTS "mobileImagePath" TEXT`);
+    await prisma.$executeRawUnsafe(`ALTER TABLE "Banner" ADD COLUMN IF NOT EXISTS "category" TEXT`);
     bannerColumnsChecked = true;
   } catch (err) {
     console.log("ensureBannerColumns notice:", err.message);
