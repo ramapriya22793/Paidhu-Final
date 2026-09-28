@@ -69,7 +69,7 @@ const features = [
     id: '03',
     title: 'Paidhu Community',
     description: 'Join thousands of mindful mothers and families sharing natural wellness recipes, parenting stories, and holistic lifestyle journeys.',
-    link: '/blogs',
+    link: '/shop/shop-all',
     images: [
       {
         src: '/paidhu_mom_community_event_2.jpg',

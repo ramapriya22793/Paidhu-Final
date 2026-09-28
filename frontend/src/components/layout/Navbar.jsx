@@ -103,7 +103,7 @@ const navSlugMap = {
   'Bulk Orders':                 'bulk-orders',
   'Know us better':              'about-us',
   'Our Own Community':           'our-own-community',
-  'Blogs':                       '__direct__/blogs',
+  'Blogs':                       'shop-all',
   'About Us':                    'about-us',
   'Careers':                     '__direct__/careers',
   'Saffron Guidance':            '__direct__/saffron-guidance',
