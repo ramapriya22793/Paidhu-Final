@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import blogService from '../services/blogService';
-import { FiPlus, FiEdit2, FiTrash2, FiFileText, FiX, FiCamera } from 'react-icons/fi';
+import { uploadImage } from '../utils/uploadImage';
+import { FiPlus, FiEdit2, FiTrash2, FiFileText, FiX, FiCamera, FiLoader } from 'react-icons/fi';
 
 const FRONTEND_URL = 'https://paidhuethicalfoods.com';
 
 const resolveBlogImage = (img) => {
   if (!img) return null;
-  if (typeof img === 'string' && (img.startsWith('http://') || img.startsWith('https://') || img.startsWith('data:'))) {
+  if (typeof img === 'string' && (img.startsWith('http://') || img.startsWith('https://') || img.startsWith('data:') || img.startsWith('blob:'))) {
     return img;
   }
   const cleanPath = img.startsWith('/') ? img : `/${img}`;
@@ -18,6 +19,7 @@ const Blogs = () => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingBlog, setEditingBlog] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
   const [formData, setFormData] = useState({ title: '', category: '', content: '', author: 'Paidhu Team', image: '' });
   const [submitting, setSubmitting] = useState(false);
 
@@ -42,30 +44,33 @@ const Blogs = () => {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        alert("Image must be smaller than 5MB");
+      if (file.size > 10 * 1024 * 1024) {
+        alert("Image must be smaller than 10MB");
         return;
       }
-      const reader = new FileReader();
-      reader.onloadend = () => setFormData({ ...formData, image: reader.result });
-      reader.readAsDataURL(file);
+      setImageFile(file);
+      const previewUrl = URL.createObjectURL(file);
+      setFormData(prev => ({ ...prev, image: previewUrl }));
     }
   };
 
   const openAddModal = () => {
     setEditingBlog(null);
+    setImageFile(null);
     setFormData({ title: '', category: '', content: '', author: 'Paidhu Team', image: '' });
     setShowModal(true);
   };
 
   const openEditModal = (blog) => {
     setEditingBlog(blog);
+    setImageFile(null);
+    const existingImg = blog.image || blog.featuredImage || '';
     setFormData({
-      title: blog.title,
-      category: blog.category,
-      content: blog.content,
-      author: blog.author,
-      image: blog.image || ''
+      title: blog.title || '',
+      category: blog.category || '',
+      content: blog.content || '',
+      author: blog.author || 'Paidhu Team',
+      image: existingImg
     });
     setShowModal(true);
   };
@@ -74,14 +79,33 @@ const Blogs = () => {
     e.preventDefault();
     setSubmitting(true);
     try {
+      let finalImageUrl = formData.image;
+
+      if (imageFile) {
+        const uploadRes = await uploadImage(imageFile, 'blogs');
+        if (uploadRes.error) {
+          alert(`Image upload failed: ${uploadRes.error}`);
+          setSubmitting(false);
+          return;
+        }
+        finalImageUrl = uploadRes.publicUrl;
+      }
+
+      const payload = {
+        ...formData,
+        image: finalImageUrl,
+        featuredImage: finalImageUrl
+      };
+
       if (editingBlog) {
-        await blogService.updateBlog(editingBlog.id, formData);
+        await blogService.updateBlog(editingBlog.id, payload);
       } else {
-        await blogService.createBlog(formData);
+        await blogService.createBlog(payload);
       }
       setShowModal(false);
       fetchBlogs();
     } catch (error) {
+      console.error("Save blog error:", error);
       alert("Failed to save blog");
     } finally {
       setSubmitting(false);
@@ -226,14 +250,27 @@ const Blogs = () => {
                   <label className="block text-sm font-bold text-gray-700 mb-1">Cover Photo</label>
                   {formData.image ? (
                     <div className="relative inline-block mt-2">
-                      <img src={formData.image} alt="Preview" className="h-40 w-auto rounded-lg border border-gray-200 object-cover" />
-                      <button type="button" onClick={() => setFormData({...formData, image: ''})} className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-2 shadow-md hover:bg-red-600"><FiX size={14} /></button>
+                      <img 
+                        src={resolveBlogImage(formData.image)} 
+                        alt="Preview" 
+                        className="h-40 w-auto max-w-full rounded-lg border border-gray-200 object-cover" 
+                      />
+                      <button 
+                        type="button" 
+                        onClick={() => {
+                          setImageFile(null);
+                          setFormData({...formData, image: ''});
+                        }} 
+                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-2 shadow-md hover:bg-red-600 transition-colors"
+                      >
+                        <FiX size={14} />
+                      </button>
                     </div>
                   ) : (
                     <label className="mt-1 cursor-pointer border-2 border-dashed border-gray-300 rounded-xl p-8 flex flex-col items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors">
                       <FiCamera size={32} className="text-gray-400 mb-2" />
                       <span className="text-sm text-gray-600 font-bold">Click to upload cover photo</span>
-                      <span className="text-xs text-gray-400 mt-1">Recommended size: 1200x600px</span>
+                      <span className="text-xs text-gray-400 mt-1">Recommended size: 1200x600px (JPG, PNG, WebP)</span>
                       <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
                     </label>
                   )}

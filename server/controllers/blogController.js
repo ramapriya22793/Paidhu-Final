@@ -169,19 +169,20 @@ const createBlog = async (req, res) => {
   try {
     const { title, slug, content, excerpt, category, author, image, featuredImage } = req.body;
 
-    const generatedSlug = slug || title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    const generatedSlug = slug || (title ? title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') : `blog-${Date.now()}`);
+    const imgUrl = image || featuredImage || null;
 
     const blog = await prisma.blog.create({
       data: {
         title,
         slug: generatedSlug,
-        content,
-        excerpt: excerpt || content.slice(0, 160),
+        content: content || '',
+        excerpt: excerpt || (content ? content.slice(0, 160) : ''),
         category: category || 'Wellness',
         author: author || 'Paidhu Team',
-        image: image || featuredImage,
-        featuredImage: featuredImage || image,
-        readingTime: Math.max(1, Math.ceil(content.split(/\s+/).length / 200))
+        image: imgUrl,
+        featuredImage: imgUrl,
+        readingTime: content ? Math.max(1, Math.ceil(content.split(/\s+/).length / 200)) : 1
       }
     });
 
@@ -198,7 +199,26 @@ const createBlog = async (req, res) => {
 const updateBlog = async (req, res) => {
   try {
     const { id } = req.params;
-    const updateData = { ...req.body };
+    const { title, slug, content, excerpt, category, author, image, featuredImage, ...otherData } = req.body;
+
+    const imgUrl = image !== undefined ? image : (featuredImage !== undefined ? featuredImage : undefined);
+
+    const updateData = {
+      ...otherData,
+      ...(title !== undefined && { title }),
+      ...(slug !== undefined && { slug }),
+      ...(content !== undefined && { 
+        content,
+        readingTime: Math.max(1, Math.ceil(content.split(/\s+/).length / 200))
+      }),
+      ...(excerpt !== undefined && { excerpt }),
+      ...(category !== undefined && { category }),
+      ...(author !== undefined && { author }),
+      ...(imgUrl !== undefined && {
+        image: imgUrl,
+        featuredImage: imgUrl
+      })
+    };
 
     const blog = await prisma.blog.update({
       where: { id: Number(id) },
