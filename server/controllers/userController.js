@@ -15,12 +15,25 @@ const adminLogin = async (req, res) => {
     const ipAddress = typeof rawIp === 'string' ? rawIp.split(',')[0].trim() : 'Unknown';
     const userAgent = req.headers['user-agent'] || 'Unknown';
 
-    // Case-insensitive lookup
-    const user = await prisma.user.findFirst({
-      where: {
-        email: { equals: rawEmail, mode: 'insensitive' }
+    // Case-insensitive lookup with connection pool retry
+    let user;
+    let retries = 2;
+    while (retries >= 0) {
+      try {
+        user = await prisma.user.findFirst({
+          where: {
+            email: { equals: rawEmail, mode: 'insensitive' }
+          }
+        });
+        break;
+      } catch (err) {
+        if (retries === 0 || (!err.message?.includes('connection') && !err.message?.includes('timeout') && !err.message?.includes('pool'))) {
+          throw err;
+        }
+        retries--;
+        await new Promise(r => setTimeout(r, 600));
       }
-    });
+    }
 
     if (!user || !user.isAdmin) {
       if (user) {
