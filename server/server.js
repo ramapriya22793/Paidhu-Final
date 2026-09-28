@@ -108,6 +108,7 @@ app.get("/api/categories", async (req, res) => {
       include: {
         products: {
           take: 1,
+          orderBy: { id: 'desc' },
           select: { image: true, productImages: { take: 1, select: { imageUrl: true } } }
         }
       }
