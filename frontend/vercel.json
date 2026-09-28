@@ -2,6 +2,26 @@
   "outputDirectory": "dist",
   "redirects": [
     {
+      "source": "/blogs",
+      "destination": "/shop/shop-all",
+      "permanent": false
+    },
+    {
+      "source": "/blogs/:path*",
+      "destination": "/shop/shop-all",
+      "permanent": false
+    },
+    {
+      "source": "/shop/blogs",
+      "destination": "/shop/shop-all",
+      "permanent": false
+    },
+    {
+      "source": "/shop/blogs/:path*",
+      "destination": "/shop/shop-all",
+      "permanent": false
+    },
+    {
       "source": "/:path*",
       "has": [
         {
