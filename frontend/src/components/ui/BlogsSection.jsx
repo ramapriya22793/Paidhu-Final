@@ -85,6 +85,25 @@ const BlogsSection = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const getCuratedFloralImage = (title = '', category = '', originalUrl = '') => {
+    // 1. Direct priority: If a valid custom or Supabase image is provided, return it immediately
+    if (originalUrl && typeof originalUrl === 'string' && originalUrl.trim() !== '') {
+      const clean = originalUrl.trim();
+      const isGeneric = 
+        clean.includes('wp.paidhu.com/wp-content') ||
+        clean.includes('placeholder') || 
+        clean.includes('default') || 
+        clean.includes('child') || 
+        clean.includes('camera') || 
+        clean.includes('toy') ||
+        clean.includes('516627145497') ||
+        clean.includes('546852199-2d7e912e98c6');
+
+      if (!isGeneric && (clean.startsWith('http://') || clean.startsWith('https://') || clean.startsWith('data:') || clean.startsWith('blob:') || clean.startsWith('/'))) {
+        return clean;
+      }
+    }
+
+    // 2. Fallback only if no valid image is assigned
     const text = (title + ' ' + (category || '')).toLowerCase();
 
     if (text.includes('jasmine') && (text.includes('omelette') || text.includes('egg') || text.includes('breakfast'))) {
@@ -140,26 +159,6 @@ const BlogsSection = () => {
     }
     if (text.includes('jasmine') || text.includes('payasam') || text.includes('sweet') || text.includes('dessert')) {
       return '/blogs/rose_petal_delicacy.png';
-    }
-
-    const isGeneric = !originalUrl || 
-      originalUrl.includes('wp.paidhu.com/wp-content') ||
-      originalUrl.includes('placeholder') || 
-      originalUrl.includes('default') || 
-      originalUrl.includes('child') || 
-      originalUrl.includes('camera') || 
-      originalUrl.includes('toy') ||
-      originalUrl.includes('teacora') ||
-      originalUrl.includes('516627145497') ||
-      originalUrl.includes('kms') ||
-      originalUrl.includes('broccoli') ||
-      originalUrl.includes('galaxy') ||
-      originalUrl.includes('546852199-2d7e912e98c6') ||
-      originalUrl.includes('564890369478-c89ca6d9cde9') ||
-      originalUrl.includes('space');
-
-    if (originalUrl && !isGeneric && (originalUrl.startsWith('http') || originalUrl.startsWith('/blogs/'))) {
-      return originalUrl;
     }
 
     return '/blogs/aavaram_dip_tea.png';

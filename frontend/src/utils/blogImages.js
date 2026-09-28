@@ -286,14 +286,15 @@ export const REAL_FLOWER_IMAGES_BY_ID = BLOG_PHOTO_BY_ID;
 export const getRealisticBlogImage = (blog) => {
   if (!blog) return "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?q=80&w=800&auto=format&fit=crop";
 
-  // 1. Direct ID match from verified real flower mapping
-  if (blog.id && BLOG_PHOTO_BY_ID[blog.id]) {
-    return BLOG_PHOTO_BY_ID[blog.id];
+  // 1. Direct priority: Return database/admin image if defined
+  const img = blog.featuredImage || blog.image;
+  if (img && typeof img === 'string' && img.trim() !== '' && !img.includes('placeholder') && !img.includes('default')) {
+    return img;
   }
 
-  // 2. Return database image if already defined
-  if (blog.image && !blog.image.includes('placeholder') && !blog.image.includes('default')) {
-    return blog.image;
+  // 2. Direct ID match from verified real flower mapping fallback
+  if (blog.id && BLOG_PHOTO_BY_ID[blog.id]) {
+    return BLOG_PHOTO_BY_ID[blog.id];
   }
 
   // 3. Fallback to default botanical photo
