@@ -351,7 +351,6 @@ const Navbar = () => {
     { name: 'Deal of the Day' },
     { name: 'Build your Box' },
     { name: 'Know us better' },
-    { name: 'Blogs' },
     { name: 'Saffron Guidance' }
   ];
 
