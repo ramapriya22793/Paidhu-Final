@@ -227,7 +227,7 @@ const PageBanner = ({ pageSlug }) => {
                     <img
                       src={current.mobileImage}
                       alt="Paidhu Banner"
-                      fetchpriority="high"
+                      fetchPriority="high"
                       decoding="async"
                       className="md:hidden absolute inset-0 w-full h-full object-cover object-center"
                       onLoad={handleLoad}
@@ -236,7 +236,7 @@ const PageBanner = ({ pageSlug }) => {
                   <img
                     src={imgSrc}
                     alt="Paidhu Banner"
-                    fetchpriority="high"
+                    fetchPriority="high"
                     decoding="async"
                     className={[
                       current.mobileImage ? 'hidden md:block' : 'block',
