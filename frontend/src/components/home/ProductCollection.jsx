@@ -260,11 +260,6 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
               ₹{(originalPrice || 0).toLocaleString('en-IN')}
             </span>
           )}
-          {discountPercent > 0 && (
-            <span className="text-[9px] sm:text-[10px] font-bold text-white bg-green-500 px-1.5 py-0.5 rounded shadow-sm ml-auto">
-              {discountPercent}% OFF
-            </span>
-          )}
         </div>
 
         {/* Add to Cart or Quantity Stepper */}
@@ -387,29 +382,66 @@ const ProductCollection = () => {
     setTimeout(checkScroll, 750);
   };
 
-  // Product scroller navigation (Mobile / Horizontal Scroll)
+  // Product carousel navigation (Horizontal Carousel Swiping + Bottom-Right Arrows)
   const productsScrollRef = useRef(null);
   const [canScrollProdLeft, setCanScrollProdLeft] = useState(false);
   const [canScrollProdRight, setCanScrollProdRight] = useState(true);
+  const isDraggingRef = useRef(false);
+  const dragStartXRef = useRef(0);
+  const dragScrollLeftRef = useRef(0);
 
   const checkProdScroll = () => {
     if (productsScrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = productsScrollRef.current;
-      setCanScrollProdLeft(scrollLeft > 10);
-      setCanScrollProdRight(scrollLeft < scrollWidth - clientWidth - 10);
+      setCanScrollProdLeft(scrollLeft > 8);
+      setCanScrollProdRight(scrollLeft < scrollWidth - clientWidth - 8);
     }
   };
 
   const scrollProducts = (direction) => {
     if (productsScrollRef.current) {
-      const scrollAmount = Math.max(productsScrollRef.current.clientWidth * 0.75, 240);
-      productsScrollRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
+      const el = productsScrollRef.current;
+      const firstCard = el.querySelector('[data-carousel-card]');
+      const step = firstCard ? firstCard.offsetWidth + 20 : Math.max(el.clientWidth * 0.65, 240);
+      const maxScroll = el.scrollWidth - el.clientWidth;
+
+      if (direction === 'right') {
+        if (el.scrollLeft >= maxScroll - 10 && maxScroll > 10) {
+          el.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          el.scrollBy({ left: step, behavior: 'smooth' });
+        }
+      } else {
+        if (el.scrollLeft <= 10 && maxScroll > 10) {
+          el.scrollTo({ left: maxScroll, behavior: 'smooth' });
+        } else {
+          el.scrollBy({ left: -step, behavior: 'smooth' });
+        }
+      }
       setTimeout(checkProdScroll, 350);
       setTimeout(checkProdScroll, 700);
     }
+  };
+
+  const handleMouseDown = (e) => {
+    const el = productsScrollRef.current;
+    if (!el) return;
+    isDraggingRef.current = true;
+    dragStartXRef.current = e.pageX - el.offsetLeft;
+    dragScrollLeftRef.current = el.scrollLeft;
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDraggingRef.current || !productsScrollRef.current) return;
+    const x = e.pageX - productsScrollRef.current.offsetLeft;
+    const walk = (x - dragStartXRef.current) * 1.2;
+    if (Math.abs(walk) > 6) {
+      productsScrollRef.current.scrollLeft = dragScrollLeftRef.current - walk;
+    }
+  };
+
+  const handleMouseUpOrLeave = () => {
+    isDraggingRef.current = false;
   };
 
   useEffect(() => {
@@ -435,7 +467,7 @@ const ProductCollection = () => {
       clearTimeout(t1);
       clearTimeout(t2);
     };
-  }, [activeCategory]);
+  }, [activeCategory, products]);
 
   const handleViewAllClick = () => {
     const config = COLLECTION_TERMS[activeCategory];
@@ -581,8 +613,6 @@ const ProductCollection = () => {
               });
             }
 
-
-
             // Deduplicate by title
             const seen = new Set();
             matched = matched.filter(p => {
@@ -621,21 +651,6 @@ const ProductCollection = () => {
 
       <div className="max-w-[1600px] mx-auto px-4 md:px-8">
         
-        {/* Mobile Category Swipe Notification */}
-        <div className="flex sm:hidden items-center justify-between px-1 mb-2">
-          <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#662654]">
-            Categories
-          </span>
-          <button
-            type="button"
-            onClick={() => scrollTabs('right')}
-            className="flex items-center gap-1 text-[11px] font-extrabold text-[#662654] bg-[#f6f2f5] hover:bg-[#eddfe9] px-2.5 py-1 rounded-full shadow-xs active:scale-95 transition-all cursor-pointer"
-          >
-            <span>Swipe for more options</span>
-            <ChevronRight size={13} strokeWidth={3} className="animate-pulse text-[#662654]" />
-          </button>
-        </div>
-
         {/* Category Tabs with Scroll Arrows */}
         <div className="relative mb-6 border-b border-gray-100 pb-4">
           {/* Left Arrow & Fade Gradient */}
@@ -700,56 +715,24 @@ const ProductCollection = () => {
           </div>
         </div>
 
-        {/* Mobile Product Swipe Notification */}
-        <div className="flex sm:hidden items-center justify-between px-1 mb-2.5">
-          <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#662654]">
-            {activeCategory} ({products.length})
-          </span>
-          <button
-            type="button"
-            onClick={() => scrollProducts('right')}
-            className="flex items-center gap-1 text-[11px] font-extrabold text-white bg-[#662654] hover:bg-[#7e3168] px-3 py-1 rounded-full shadow-xs active:scale-95 transition-all cursor-pointer"
-          >
-            <span>Swipe to view all products</span>
-            <ChevronRight size={13} strokeWidth={3} className="animate-pulse text-white" />
-          </button>
-        </div>
-
-        {/* Product Scroller & Grid Container with Navigation Arrows */}
-        <div className="relative group/prodScroller">
-          
-          {/* Left Arrow Button & Edge Fade */}
-          <div 
-            className={`absolute left-0 top-1/2 -translate-y-1/2 z-30 flex items-center transition-opacity duration-300 pointer-events-none ${
-              canScrollProdLeft ? 'opacity-100' : 'opacity-40'
-            }`}
-          >
-            <div className="w-8 sm:w-12 h-64 bg-gradient-to-r from-white via-white/80 to-transparent pointer-events-none" />
-            <button
-              type="button"
-              onClick={() => scrollProducts('left')}
-              aria-label="Scroll products left"
-              tabIndex={canScrollProdLeft ? 0 : -1}
-              className={`absolute left-0 z-40 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white text-[#662654] shadow-[0_4px_18px_rgba(102,38,84,0.32)] border border-[#662654]/25 flex items-center justify-center hover:bg-[#662654] hover:text-white transition-all duration-200 active:scale-90 cursor-pointer ${
-                canScrollProdLeft ? 'pointer-events-auto hover:scale-105' : 'pointer-events-none opacity-40'
-              }`}
-            >
-              <ChevronLeft size={22} strokeWidth={2.5} />
-            </button>
-          </div>
-
-          {/* Product Grid / Horizontal Scroller */}
+        {/* Horizontal Carousel Swiping Container */}
+        <div className="relative">
           <div 
             ref={productsScrollRef}
             key={activeCategory}
-            className="flex overflow-x-auto gap-3.5 sm:gap-6 pb-4 snap-x snap-mandatory hide-scrollbar sm:grid sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 sm:overflow-visible sm:pb-0 scroll-smooth pr-10 sm:pr-0 pl-0.5"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUpOrLeave}
+            onMouseLeave={handleMouseUpOrLeave}
+            className="flex overflow-x-auto gap-3.5 sm:gap-5 md:gap-6 pb-3 pt-1 snap-x snap-mandatory hide-scrollbar scroll-smooth cursor-grab active:cursor-grabbing select-none"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
           >
             {loading ? (
               Array.from({ length: 5 }).map((_, idx) => (
                 <div 
                   key={`skeleton-${idx}`} 
-                  className="w-[42vw] max-w-[170px] flex-shrink-0 snap-center sm:w-auto sm:max-w-none sm:snap-align-none"
+                  data-carousel-card
+                  className="w-[45vw] min-w-[160px] max-w-[190px] sm:w-[calc(33.333%-14px)] sm:min-w-[215px] sm:max-w-[270px] md:w-[calc(25%-18px)] md:min-w-[230px] md:max-w-[295px] lg:w-[calc(25%-18px)] xl:w-[calc(20%-20px)] flex-shrink-0 snap-start"
                 >
                   <div className="w-full bg-white rounded-2xl border border-gray-100 overflow-hidden flex flex-col shadow-sm animate-pulse">
                     <div className="aspect-square bg-gray-50 flex items-center justify-center p-4">
@@ -765,12 +748,16 @@ const ProductCollection = () => {
                 </div>
               ))
             ) : products.length === 0 ? (
-              <div className="col-span-full py-12 flex flex-col items-center justify-center text-gray-500">
+              <div className="w-full py-12 flex flex-col items-center justify-center text-gray-500">
                 <p className="text-base font-semibold">No products found in this category.</p>
               </div>
             ) : (
-              products.slice(0, 10).map((product) => (
-                <div key={product.id} className="w-[42vw] max-w-[170px] flex-shrink-0 snap-center sm:w-auto sm:max-w-none sm:snap-align-none">
+              products.map((product) => (
+                <div
+                  key={product.id}
+                  data-carousel-card
+                  className="w-[45vw] min-w-[160px] max-w-[190px] sm:w-[calc(33.333%-14px)] sm:min-w-[215px] sm:max-w-[270px] md:w-[calc(25%-18px)] md:min-w-[230px] md:max-w-[295px] lg:w-[calc(25%-18px)] xl:w-[calc(20%-20px)] flex-shrink-0 snap-start"
+                >
                   <CollectionProductCard
                     product={product}
                     activeCategory={activeCategory}
@@ -780,44 +767,45 @@ const ProductCollection = () => {
                     handleToggleWishlist={handleToggleWishlist}
                   />
                 </div>
-              )))}
-          </div>
-
-          {/* Right Arrow Button & Edge Fade */}
-          <div 
-            className={`absolute right-0 top-1/2 -translate-y-1/2 z-30 flex items-center justify-end transition-opacity duration-300 pointer-events-none ${
-              canScrollProdRight ? 'opacity-100' : 'opacity-40'
-            }`}
-          >
-            <div className="w-10 sm:w-14 h-64 bg-gradient-to-l from-white via-white/80 to-transparent pointer-events-none" />
-            <button
-              type="button"
-              onClick={() => scrollProducts('right')}
-              aria-label="Scroll products right"
-              tabIndex={canScrollProdRight ? 0 : -1}
-              className={`absolute right-0 z-40 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white text-[#662654] shadow-[0_4px_18px_rgba(102,38,84,0.32)] border border-[#662654]/25 flex items-center justify-center hover:bg-[#662654] hover:text-white transition-all duration-200 active:scale-90 cursor-pointer ${
-                canScrollProdRight ? 'pointer-events-auto hover:scale-105' : 'pointer-events-none opacity-40'
-              }`}
-            >
-              <ChevronRight size={22} strokeWidth={2.5} />
-            </button>
+              ))
+            )}
           </div>
         </div>
 
-        {/* Bottom Actions */}
-        <div className="mt-6 flex justify-center items-center w-full">
+        {/* Bottom Actions: View All Button & Carousel Left/Right Arrow Buttons */}
+        <div className="mt-4 sm:mt-5 relative flex items-center justify-between sm:justify-center w-full min-h-[44px]">
           {/* View All Button */}
           <button 
             onClick={handleViewAllClick}
             className="flex items-center bg-[#eef0f3] rounded-full pl-4 pr-1 md:pl-5 md:pr-1.5 py-1 md:py-1.5 group hover:bg-[#e2e4e8] transition-colors shadow-sm cursor-pointer"
           >
-            <span className="text-[12px] md:text-[15px] font-bold text-[#111] mr-2 md:mr-4 tracking-wide truncate max-w-[200px] md:max-w-none">
+            <span className="text-[12px] md:text-[15px] font-bold text-[#111] mr-2 md:mr-4 tracking-wide truncate max-w-[190px] sm:max-w-none">
               View All {activeCategory}
             </span>
             <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-[#cbd1d9] flex items-center justify-center group-hover:bg-[#aeb6c1] transition-colors flex-shrink-0">
               <ChevronRight size={16} className="text-white ml-0.5" strokeWidth={3.5} />
             </div>
           </button>
+
+          {/* Carousel Navigation Arrows (< and >) on Bottom Right matching reference screenshot */}
+          <div className="flex items-center gap-2.5 sm:gap-3 sm:absolute sm:right-0">
+            <button
+              type="button"
+              onClick={() => scrollProducts('left')}
+              aria-label="Previous products"
+              className="w-11 h-10 sm:w-12 sm:h-11 rounded-[18px] bg-[#e9ecef] hover:bg-[#dcdfe4] text-[#222222] flex items-center justify-center transition-all duration-200 active:scale-95 cursor-pointer"
+            >
+              <ChevronLeft size={20} strokeWidth={2.5} />
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollProducts('right')}
+              aria-label="Next products"
+              className="w-11 h-10 sm:w-12 sm:h-11 rounded-[18px] bg-[#e9ecef] hover:bg-[#dcdfe4] text-[#222222] flex items-center justify-center transition-all duration-200 active:scale-95 cursor-pointer"
+            >
+              <ChevronRight size={20} strokeWidth={2.5} />
+            </button>
+          </div>
         </div>
 
       </div>

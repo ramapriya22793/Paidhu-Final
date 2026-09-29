@@ -336,11 +336,6 @@ const BYOCPage = () => {
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         onError={e => { e.currentTarget.src = '/mascot.png'; }}
                       />
-                      {product.discountPrice && product.price && product.discountPrice < product.price && (
-                        <div className="absolute top-2 left-2 bg-green-500 text-white text-[9px] font-bold px-2 py-0.5 rounded shadow-sm">
-                          {Math.round(((product.price - product.discountPrice) / product.price) * 100)}% OFF
-                        </div>
-                      )}
                       {inBundleCount > 0 && (
                         <div className="absolute top-2 right-2 bg-[#662654] text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow-sm flex items-center gap-1">
                           <span>{inBundleCount} in box</span>

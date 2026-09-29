@@ -536,13 +536,6 @@ const ProductDetailPage = () => {
 
                 {/* 🌸 Central Large White Showcase Circle */}
                 <div className="relative w-full max-w-[320px] sm:max-w-[380px] md:max-w-[440px] lg:max-w-[480px] aspect-square rounded-full bg-white shadow-[0_15px_45px_rgba(30,45,75,0.08)] border border-white/80 flex items-center justify-center p-6 sm:p-8 md:p-10 order-1 md:order-2 group z-20">
-                  
-                  {/* Discount badge if present */}
-                  {discountPercent > 0 && (
-                    <div className="absolute top-4 left-4 md:top-6 md:left-6 bg-gradient-to-r from-[#b91c1c] to-[#d4af37] text-white px-3.5 py-1 text-[11px] font-black uppercase tracking-wider rounded-full shadow-lg z-10 flex items-center gap-1 border border-white/20">
-                      <span>✨</span> {discountPercent}% OFF
-                    </div>
-                  )}
 
                   {/* Active Image with smooth transition */}
                   <div 
@@ -630,11 +623,6 @@ const ProductDetailPage = () => {
                       <span className="text-4xl animate-spin text-[#662654] opacity-35">🌸</span>
                       <span className="text-[10px] font-black tracking-widest text-[#662654]/40 uppercase">Loading image…</span>
                     </div>
-                  </div>
-                )}
-                {discountPercent > 0 && (
-                  <div className="absolute top-4 left-4 bg-gradient-to-r from-[#662654] to-[#d4af37] text-white px-4 py-1.5 text-[11px] font-black uppercase tracking-wider rounded-full shadow-lg z-10 flex items-center gap-1 border border-white/20">
-                    <span>✨</span> {discountPercent}% OFF
                   </div>
                 )}
                 <button
