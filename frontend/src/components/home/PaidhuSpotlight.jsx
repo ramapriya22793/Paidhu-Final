@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import fallbacks from './fallbacks.json';
 
-const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://paidhu-final-anm2.vercel.app');
+const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || 'https://paidhu-final-anm2.vercel.app';
 
 const spotlightCache = { current: null };
 
@@ -75,7 +75,16 @@ const PaidhuSpotlight = () => {
     fetch(`${API_BASE}/api/products?limit=25&_t=${Date.now()}`, { cache: 'no-store' })
       .then(res => res.ok ? res.json() : { products: [] })
       .then(data => {
-        const mapped = (data.products || []).map(p => {
+        const priorityIds = [53, 55, 20, 8, 3, 31, 22, 10, 4, 15];
+        const sortedProducts = [...(data.products || [])].sort((a, b) => {
+          const idxA = priorityIds.indexOf(a.id);
+          const idxB = priorityIds.indexOf(b.id);
+          if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+          if (idxA !== -1) return -1;
+          if (idxB !== -1) return 1;
+          return a.id - b.id;
+        });
+        const mapped = sortedProducts.map(p => {
           const image = p.image || (p.productImages && p.productImages.length > 0 ? p.productImages[0].imageUrl : null);
           return {
             id: p.id,

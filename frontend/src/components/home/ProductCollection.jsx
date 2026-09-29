@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import fallbacks from './fallbacks.json';
 
-const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://paidhu-final-anm2.vercel.app');
+const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || 'https://paidhu-final-anm2.vercel.app';
 
 const productsCache = {};
 let allProductsMemory = null;
@@ -13,8 +13,8 @@ let lastFetchTime = 0;
 // Thematic terms directly based on Paidhu's floral food products
 const COLLECTION_TERMS = {
   "Bestsellers": {
-    filter: (p) => (p.tags && p.tags.toLowerCase().includes("bestseller")) || [20, 8, 3, 31, 22, 10, 4, 15].includes(p.id),
-    priorityIds: [20, 8, 3, 31, 22, 10, 4, 15],
+    filter: (p) => (p.tags && p.tags.toLowerCase().includes("bestseller")) || [53, 55, 20, 8, 3, 31, 22, 10, 4, 15].includes(p.id),
+    priorityIds: [53, 55, 20, 8, 3, 31, 22, 10, 4, 15],
     shopUrl: "/shop/shop-all?tag=bestseller",
   },
   "Bloom Cookies": {
@@ -336,6 +336,27 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
 const ProductCollection = () => {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState("Bestsellers");
+
+  const getFallbackProducts = (cat) => {
+    return productsCache[cat] ||
+      fallbacks[cat] ||
+      (cat === "Bloom Cookies" ? fallbacks["Crispy Bloom Cookies"] : null) ||
+      (cat === "Pure Saffron" ? fallbacks["Pure Kashmiri Saffron"] : null) ||
+      (cat === "Petal Jams" ? fallbacks["Artisanal Petal Preserves"] : null) ||
+      (cat === "Medley Teas" ? fallbacks["Fragrant Medley Teas"] : null) ||
+      [];
+  };
+
+  const [products, setProducts] = useState(() => {
+    return getFallbackProducts("Bestsellers");
+  });
+  const [loading, setLoading] = useState(() => {
+    const initialList = getFallbackProducts("Bestsellers");
+    return initialList.length === 0;
+  });
+  const [addingId, setAddingId] = useState(null);
+  const { addToCart, wishlist, toggleWishlist } = useCart();
+
   const tabsRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -412,7 +433,8 @@ const ProductCollection = () => {
     if (productsScrollRef.current) {
       const el = productsScrollRef.current;
       const firstCard = el.querySelector('[data-carousel-card]');
-      const step = firstCard ? firstCard.offsetWidth + 20 : Math.max(el.clientWidth * 0.65, 240);
+      const cardWidth = firstCard ? firstCard.offsetWidth : 240;
+      const step = cardWidth * 2;
       const maxScroll = el.scrollWidth - el.clientWidth;
 
       if (direction === 'right') {
@@ -487,26 +509,6 @@ const ProductCollection = () => {
       navigate("/shop/shop-all");
     }
   };
-
-  const getFallbackProducts = (cat) => {
-    return productsCache[cat] ||
-      fallbacks[cat] ||
-      (cat === "Bloom Cookies" ? fallbacks["Crispy Bloom Cookies"] : null) ||
-      (cat === "Pure Saffron" ? fallbacks["Pure Kashmiri Saffron"] : null) ||
-      (cat === "Petal Jams" ? fallbacks["Artisanal Petal Preserves"] : null) ||
-      (cat === "Medley Teas" ? fallbacks["Fragrant Medley Teas"] : null) ||
-      [];
-  };
-
-  const [products, setProducts] = useState(() => {
-    return getFallbackProducts(activeCategory);
-  });
-  const [loading, setLoading] = useState(() => {
-    const initialList = getFallbackProducts(activeCategory);
-    return initialList.length === 0;
-  });
-  const [addingId, setAddingId] = useState(null);
-  const { addToCart, wishlist, toggleWishlist } = useCart();
 
   const handleToggleWishlist = (e, product) => {
     e.preventDefault();

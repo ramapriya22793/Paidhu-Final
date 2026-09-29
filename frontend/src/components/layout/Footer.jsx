@@ -34,7 +34,8 @@ const Footer = () => {
     setLoading(true);
     setMessage('');
     try {
-      const res = await fetch(`${(import.meta.env && import.meta.env.VITE_API_BASE_URL) || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://paidhu-final-anm2.vercel.app')}/api/newsletter`, {
+      const apiBase = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || 'https://paidhu-final-anm2.vercel.app';
+      const res = await fetch(`${apiBase}/api/newsletter`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })

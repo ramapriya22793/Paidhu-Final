@@ -2,26 +2,29 @@ import { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://paidhu-final-anm2.vercel.app');
+const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || 'https://paidhu-final-anm2.vercel.app';
 
 const FALLBACK_SLIDES = [
   {
-    id: 'fallback-1',
-    image: '/banner_tea.jpeg',
+    id: 'banner-15',
+    image: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/banners/1790590940099-newnavarathricombowebp.webp',
     bgColor: '#faf5eb',
-    isBackendBanner: false
+    link: 'https://www.paidhuethicalfoods.com/product/medley-teas-combo',
+    isBackendBanner: true
   },
   {
-    id: 'fallback-2',
-    image: '/banner_jam.jpeg',
+    id: 'banner-14',
+    image: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/banners/1790404943695-PREMIUMSEGMENTSSwebp.webp',
     bgColor: '#faf5eb',
-    isBackendBanner: false
+    link: 'https://www.paidhuethicalfoods.com/product/navratri-best-combo',
+    isBackendBanner: true
   },
   {
-    id: 'fallback-3',
-    image: '/white_lotus_cookies_new.png',
+    id: 'banner-7',
+    image: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/banners/1790404979298-ECONOMYCOMBOwebp.webp',
     bgColor: '#faf5eb',
-    isBackendBanner: false
+    link: 'https://www.paidhuethicalfoods.com/product/navratri-best-combo',
+    isBackendBanner: true
   }
 ];
 
