@@ -78,9 +78,9 @@ const COLLECTION_TERMS = {
     filter: (p) => {
       const name = (p.name || p.title || '').toLowerCase();
       const cat = (p.category?.name || (typeof p.category === 'string' ? p.category : '') || '').toLowerCase();
-      return cat.includes('combo') || cat.includes('gift') || /gift|combo|box/i.test(name + ' ' + (p.tags || '')) || p.id === 30 || p.id === 47;
+      return cat.includes('combo') || cat.includes('gift') || /gift|combo|box/i.test(name + ' ' + (p.tags || '')) || [53, 55, 30, 47].includes(p.id);
     },
-    priorityIds: [30, 47],
+    priorityIds: [53, 55, 30, 47],
     shopUrl: "/shop/shop-all?tag=family_combos",
   }
 };
@@ -191,6 +191,10 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
           height={300}
           loading="lazy"
           decoding="async"
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = "/paidhulogo.png";
+          }}
           className="w-full h-full object-contain p-3 transition-transform duration-500 ease-out group-hover:scale-105"
           style={{ imageRendering: 'high-quality', WebkitBackfaceVisibility: 'hidden', WebkitTransform: 'translateZ(0)' }}
         />
