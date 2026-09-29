@@ -1,7 +1,7 @@
 // PageBanner — Full-width shop section banner carousel.
 // Same visual style as the Home Hero.jsx banner.
-// Fetch order: specific pageSlug → 'home' banners → local fallback.
-// Height is driven by the image's native aspect ratio (no white side-bars, no fixed height).
+// Fetch order: specific pageSlug → 'shop-all' banners → instant fallback.
+// Height is driven by the image's native aspect ratio with 0ms blank loading delay.
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -26,15 +26,62 @@ const toSlide = (b) => ({
   link:        b.link || null,
 });
 
-// Local fallback per section (used only when DB + home fallback both return nothing)
-const LOCAL_FALLBACK = '/shop_all_banner.jpg';
+// Verified active live database banner for shop pages
+const ACTIVE_SHOP_BANNER_URL = 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/banners/1789880166235-shopallbanner001webp.webp';
+
+const BANNER_FALLBACKS = {
+  'shop-all': [
+    {
+      id: 'banner-shop-all-20',
+      image: ACTIVE_SHOP_BANNER_URL,
+      mobileImage: null,
+      bgColor: '#faf9f7',
+      isBackend: true,
+      category: null,
+      link: null,
+    }
+  ],
+  'shop': [
+    {
+      id: 'banner-shop-20',
+      image: ACTIVE_SHOP_BANNER_URL,
+      mobileImage: null,
+      bgColor: '#faf9f7',
+      isBackend: true,
+      category: null,
+      link: null,
+    }
+  ],
+  'shop-by-category': [
+    {
+      id: 'banner-category-20',
+      image: ACTIVE_SHOP_BANNER_URL,
+      mobileImage: null,
+      bgColor: '#faf9f7',
+      isBackend: true,
+      category: null,
+      link: null,
+    }
+  ]
+};
+
+const bannersMemoryCache = {};
 
 const PageBanner = ({ pageSlug }) => {
-  const [slides, setSlides]             = useState([]);
+  const isShopAll = ['shop-all', 'shop-by-category', 'deal-of-the-day', 'shop'].includes(pageSlug);
+
+  const getInitialSlides = () => {
+    if (pageSlug && bannersMemoryCache[pageSlug]) return bannersMemoryCache[pageSlug];
+    if (pageSlug && BANNER_FALLBACKS[pageSlug]) return BANNER_FALLBACKS[pageSlug];
+    if (isShopAll && BANNER_FALLBACKS['shop-all']) return BANNER_FALLBACKS['shop-all'];
+    return [];
+  };
+
+  const [slides, setSlides]             = useState(getInitialSlides);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isMobile, setIsMobile]         = useState(false);
+  const [isMobile, setIsMobile]         = useState(() => typeof window !== 'undefined' ? window.innerWidth < 768 : false);
   const [aspectRatios, setAspectRatios] = useState({});
-  const [ready, setReady]               = useState(false);
+  const [ready, setReady]               = useState(() => getInitialSlides().length > 0);
 
   // ── Responsive detection ─────────────────────────────────────────────────
   useEffect(() => {
@@ -51,8 +98,13 @@ const PageBanner = ({ pageSlug }) => {
       setReady(true);
       return;
     }
-    setCurrentSlide(0);
-    setReady(false);
+
+    // If already in memory cache, update state immediately
+    if (bannersMemoryCache[pageSlug]) {
+      setSlides(bannersMemoryCache[pageSlug]);
+      setReady(true);
+      return;
+    }
 
     const resolvedSlug = pageSlug;
 
@@ -71,10 +123,11 @@ const PageBanner = ({ pageSlug }) => {
       }
 
       if (data && data.length > 0) {
-        const activeData = data.filter(b => (b.isActive === true || b.isActive === 'true') && (b.webImage || b.webImagePath));
+        const activeData = data.filter(b => (b.isActive === true || b.isActive === 'true' || b.isActive === 1) && (b.webImage || b.webImagePath));
         if (activeData.length > 0) {
           const validSlides = activeData.map(toSlide).filter(s => s.image);
           if (validSlides.length > 0) {
+            bannersMemoryCache[resolvedSlug] = validSlides;
             setSlides(validSlides);
             setReady(true);
             return;
@@ -82,27 +135,13 @@ const PageBanner = ({ pageSlug }) => {
         }
       }
 
-      // 3. No active banners for this page in the table -> return empty
-      setSlides([]);
+      // 3. Fallback to preconfigured active shop banner
+      const fallback = BANNER_FALLBACKS[resolvedSlug] || (isShopAll ? BANNER_FALLBACKS['shop-all'] : []);
+      bannersMemoryCache[resolvedSlug] = fallback;
+      setSlides(fallback);
       setReady(true);
     })();
-  }, [pageSlug]);
-
-  // ── Pre-load images & compute aspect ratios ──────────────────────────────
-  useEffect(() => {
-    slides.forEach(slide => {
-      const url = (isMobile && slide.mobileImage) ? slide.mobileImage : slide.image;
-      if (!url) return;
-      const key = `${slide.id}-${isMobile ? 'm' : 'w'}`;
-      if (aspectRatios[key]) return;
-
-      const img = new Image();
-      img.onload = () => {
-        setAspectRatios(prev => ({ ...prev, [key]: img.naturalWidth / img.naturalHeight }));
-      };
-      img.src = url;
-    });
-  }, [slides, isMobile]);
+  }, [pageSlug, isShopAll]);
 
   // ── Auto-advance every 6 s ────────────────────────────────────────────────
   useEffect(() => {
@@ -116,37 +155,19 @@ const PageBanner = ({ pageSlug }) => {
   const next = () => setCurrentSlide(p => (p === slides.length - 1 ? 0 : p + 1));
   const prev = () => setCurrentSlide(p => (p === 0 ? slides.length - 1 : p - 1));
 
-  // ── Skeleton ──────────────────────────────────────────────────────────────
-  const isShopAll = ['shop-all', 'shop-by-category', 'deal-of-the-day', 'shop'].includes(pageSlug);
-
-  if (!ready) {
-    return (
-      <div 
-        className={
-          isShopAll
-            ? "w-full bg-[#faf9f7] pt-0 pb-2 md:pb-3 px-0"
-            : "w-full bg-[#f8f4ef] py-3 md:py-4 px-3 sm:px-4 lg:px-6"
-        }
-      >
-        <div
-          className={
-            isShopAll
-              ? "w-full rounded-none overflow-hidden animate-pulse bg-gradient-to-r from-[#e8e0d5] via-[#f0e8db] to-[#e8e0d5]"
-              : "w-full rounded-[28px] md:rounded-[36px] overflow-hidden animate-pulse bg-gradient-to-r from-[#e8e0d5] via-[#f0e8db] to-[#e8e0d5]"
-          }
-          style={{ aspectRatio: isShopAll ? (isMobile ? 2 : 1920 / 427) : 2 }}
-        />
-      </div>
-    );
+  if (!ready && slides.length === 0) {
+    return null;
   }
 
   if (slides.length === 0) return null;
 
-  const current  = slides[currentSlide];
+  const current  = slides[currentSlide] || slides[0];
+  if (!current) return null;
+
   const cacheKey = `${current.id}-${(isMobile && current.mobileImage) ? 'm' : 'w'}`;
   const aspect = isShopAll
     ? (isMobile ? 2 : 1920 / 427)
-    : (aspectRatios[cacheKey] || 2);
+    : (aspectRatios[cacheKey] || (isMobile ? 2 : 1920 / 427));
   const imgSrc   = (isMobile && current.mobileImage) ? current.mobileImage : current.image;
 
   const handleLoad = (e) => {
@@ -186,10 +207,10 @@ const PageBanner = ({ pageSlug }) => {
         <AnimatePresence mode="wait">
           <motion.div
             key={current.id}
-            initial={{ opacity: 0, scale: 1.015 }}
-            animate={{ opacity: 1,  scale: 1     }}
-            exit={  { opacity: 0,  scale: 0.985  }}
-            transition={{ duration: 0.55, ease: 'easeInOut' }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, ease: 'easeInOut' }}
             className="absolute inset-0 w-full h-full"
             style={{ background: current.bgColor || '#f8f4ef' }}
           >
@@ -206,6 +227,8 @@ const PageBanner = ({ pageSlug }) => {
                     <img
                       src={current.mobileImage}
                       alt="Paidhu Banner"
+                      fetchpriority="high"
+                      decoding="async"
                       className="md:hidden absolute inset-0 w-full h-full object-cover object-center"
                       onLoad={handleLoad}
                     />
@@ -213,13 +236,19 @@ const PageBanner = ({ pageSlug }) => {
                   <img
                     src={imgSrc}
                     alt="Paidhu Banner"
+                    fetchpriority="high"
+                    decoding="async"
                     className={[
                       current.mobileImage ? 'hidden md:block' : 'block',
                       'absolute inset-0 w-full h-full object-cover object-center',
-                      'transition-transform duration-700 group-hover:scale-[1.015]',
+                      'transition-transform duration-700 group-hover:scale-[1.01]',
                     ].join(' ')}
                     onLoad={handleLoad}
-                    onError={e => { e.currentTarget.style.display = 'none'; }}
+                    onError={e => {
+                      if (imgSrc !== ACTIVE_SHOP_BANNER_URL) {
+                        e.currentTarget.src = ACTIVE_SHOP_BANNER_URL;
+                      }
+                    }}
                   />
                 </>
               );
@@ -255,7 +284,7 @@ const PageBanner = ({ pageSlug }) => {
             })()}
 
             {/* Subtle gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent pointer-events-none" />
           </motion.div>
         </AnimatePresence>
 
@@ -265,14 +294,14 @@ const PageBanner = ({ pageSlug }) => {
             <button
               onClick={prev}
               aria-label="Previous banner"
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white hover:text-[#662654] hover:scale-110 shadow-lg z-20"
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white hover:text-[#662654] hover:scale-110 shadow-lg z-20 cursor-pointer"
             >
               <ChevronLeft size={20} />
             </button>
             <button
               onClick={next}
               aria-label="Next banner"
-              className="absolute right-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white hover:text-[#662654] hover:scale-110 shadow-lg z-20"
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white hover:text-[#662654] hover:scale-110 shadow-lg z-20 cursor-pointer"
             >
               <ChevronRight size={20} />
             </button>
@@ -287,7 +316,7 @@ const PageBanner = ({ pageSlug }) => {
                 key={i}
                 onClick={() => setCurrentSlide(i)}
                 aria-label={`Slide ${i + 1}`}
-                className={`transition-all duration-300 rounded-full ${
+                className={`transition-all duration-300 rounded-full cursor-pointer ${
                   currentSlide === i
                     ? 'w-5 h-2 bg-[#d4af37]'
                     : 'w-2 h-2 bg-white/50 hover:bg-white'
