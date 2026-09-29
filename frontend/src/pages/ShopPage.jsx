@@ -157,15 +157,24 @@ const ProductCard = ({ product, index, navSection }) => {
   const [isAdding, setIsAdding] = useState(false);
   const { addToCart, updateQuantity, wishlist, toggleWishlist, getItemQuantity } = useCart();
 
-  const variantsRaw = typeof product.variants === 'string' 
-    ? JSON.parse(product.variants) 
-    : (product.variants || []);
+  let variantsRaw = [];
+  try {
+    if (typeof product.variants === 'string') {
+      variantsRaw = JSON.parse(product.variants);
+    } else if (Array.isArray(product.variants)) {
+      variantsRaw = product.variants;
+    }
+  } catch (e) {
+    variantsRaw = [];
+  }
+  if (!Array.isArray(variantsRaw)) variantsRaw = [];
+
   const isJam = product.name?.toLowerCase().includes('jam');
-  const variants = Array.isArray(variantsRaw) ? [...variantsRaw].sort((a, b) => {
-    const sizeA = parseInt(a.size) || 0;
-    const sizeB = parseInt(b.size) || 0;
+  const variants = [...variantsRaw].sort((a, b) => {
+    const sizeA = parseInt(a?.size) || 0;
+    const sizeB = parseInt(b?.size) || 0;
     return isJam ? sizeB - sizeA : sizeA - sizeB;
-  }) : [];
+  });
   const hasVariants = variants.length > 0;
   const [selectedVariant, setSelectedVariant] = useState(hasVariants ? variants[0] : null);
 

@@ -96,14 +96,24 @@ const resolveImage = (img) => {
 // ---------- COLLECTION PRODUCT CARD ----------
 const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId, isInWishlist, handleToggleWishlist }) => {
   const { addToCart, updateQuantity, getItemQuantity } = useCart();
-  const raw = product.raw || {};
-  const rawVariants = typeof raw.variants === 'string' 
-    ? JSON.parse(raw.variants) 
-    : (raw.variants || []);
+  const raw = product?.raw || {};
+  
+  let rawVariants = [];
+  try {
+    if (typeof raw.variants === 'string') {
+      rawVariants = JSON.parse(raw.variants);
+    } else if (Array.isArray(raw.variants)) {
+      rawVariants = raw.variants;
+    }
+  } catch (e) {
+    rawVariants = [];
+  }
+  if (!Array.isArray(rawVariants)) rawVariants = [];
+
   const isJam = raw.name?.toLowerCase().includes('jam');
   const variants = [...rawVariants].sort((a, b) => {
-    const sizeA = parseInt(a.size) || 0;
-    const sizeB = parseInt(b.size) || 0;
+    const sizeA = parseInt(a?.size) || 0;
+    const sizeB = parseInt(b?.size) || 0;
     return isJam ? sizeB - sizeA : sizeA - sizeB;
   });
   const hasVariants = Array.isArray(variants) && variants.length > 0;

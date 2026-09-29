@@ -102,12 +102,17 @@ const ProductDetailPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState(() => {
     if (stateProduct && stateProduct.variants) {
-      const parsed = typeof stateProduct.variants === 'string' ? JSON.parse(stateProduct.variants) : stateProduct.variants;
+      let parsed = [];
+      try {
+        parsed = typeof stateProduct.variants === 'string' ? JSON.parse(stateProduct.variants) : stateProduct.variants;
+      } catch (e) {
+        parsed = [];
+      }
       if (Array.isArray(parsed) && parsed.length > 0) {
         const isJam = stateProduct.name?.toLowerCase().includes('jam');
         const sorted = [...parsed].sort((a, b) => {
-          const sizeA = parseInt(a.size) || 0;
-          const sizeB = parseInt(b.size) || 0;
+          const sizeA = parseInt(a?.size) || 0;
+          const sizeB = parseInt(b?.size) || 0;
           return isJam ? sizeB - sizeA : sizeA - sizeB;
         });
         return sorted[0];
@@ -223,12 +228,17 @@ const ProductDetailPage = () => {
         
         // Set variant if not set
         if (data.variants) {
-          const parsed = typeof data.variants === 'string' ? JSON.parse(data.variants) : data.variants;
+          let parsed = [];
+          try {
+            parsed = typeof data.variants === 'string' ? JSON.parse(data.variants) : data.variants;
+          } catch (e) {
+            parsed = [];
+          }
           if (Array.isArray(parsed) && parsed.length > 0 && !selectedVariant) {
             const isJam = data.name?.toLowerCase().includes('jam');
             const sorted = [...parsed].sort((a, b) => {
-              const sizeA = parseInt(a.size) || 0;
-              const sizeB = parseInt(b.size) || 0;
+              const sizeA = parseInt(a?.size) || 0;
+              const sizeB = parseInt(b?.size) || 0;
               return isJam ? sizeB - sizeA : sizeA - sizeB;
             });
             setSelectedVariant(sorted[0]);
