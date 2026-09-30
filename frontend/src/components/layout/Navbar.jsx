@@ -208,40 +208,15 @@ const Navbar = () => {
     return () => clearTimeout(timer);
   }, [currentText, isDeleting, currentPhraseIndex]);
 
-  // Scroll detection & footer proximity detection
-  const [hideNearFooter, setHideNearFooter] = useState(false);
-
+  // Scroll detection for header shadow
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-
-      const footer = document.querySelector('footer');
-      if (footer) {
-        const rect = footer.getBoundingClientRect();
-        // Hide header when the footer enters the upper half of viewport
-        if (rect.top <= window.innerHeight * 0.5) {
-          setHideNearFooter(true);
-        } else {
-          setHideNearFooter(false);
-        }
-      } else {
-        const scrollBottom = window.innerHeight + window.scrollY;
-        const totalHeight = document.documentElement.scrollHeight;
-        if (totalHeight - scrollBottom < 300) {
-          setHideNearFooter(true);
-        } else {
-          setHideNearFooter(false);
-        }
-      }
+      setIsScrolled(window.scrollY > 10);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll, { passive: true });
     handleScroll();
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // Fetch products and map categories from backend (deferred to not block initial paint)
@@ -391,10 +366,8 @@ const Navbar = () => {
 
   return (
     <header
-      className={`sticky top-0 w-full z-50 bg-[#662654] transition-all duration-300 ease-in-out font-sans ${
-        isScrolled ? 'shadow-md' : ''
-      } ${
-        hideNearFooter ? '-translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'
+      className={`sticky top-0 w-full z-50 bg-[#662654] transition-all duration-300 font-sans ${
+        isScrolled ? 'shadow-md shadow-black/10' : ''
       }`}
     >
 
