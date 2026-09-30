@@ -128,10 +128,8 @@ function App() {
   return (
     <CartProvider>
       <div className="w-full min-h-screen relative font-sans text-gray-800 bg-white flex flex-col">
-        {/* Sticky Navigation */}
-        <div className="sticky top-0 z-50 w-full shadow-lg">
-          <Navbar />
-        </div>
+        {/* Navigation */}
+        <Navbar />
 
         <ErrorBoundary>
           <Suspense fallback={

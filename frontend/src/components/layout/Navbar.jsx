@@ -208,11 +208,40 @@ const Navbar = () => {
     return () => clearTimeout(timer);
   }, [currentText, isDeleting, currentPhraseIndex]);
 
-  // Scroll detection
+  // Scroll detection & footer proximity detection
+  const [hideNearFooter, setHideNearFooter] = useState(false);
+
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+
+      const footer = document.querySelector('footer');
+      if (footer) {
+        const rect = footer.getBoundingClientRect();
+        // Hide header when the footer enters the upper half of viewport
+        if (rect.top <= window.innerHeight * 0.5) {
+          setHideNearFooter(true);
+        } else {
+          setHideNearFooter(false);
+        }
+      } else {
+        const scrollBottom = window.innerHeight + window.scrollY;
+        const totalHeight = document.documentElement.scrollHeight;
+        if (totalHeight - scrollBottom < 300) {
+          setHideNearFooter(true);
+        } else {
+          setHideNearFooter(false);
+        }
+      }
+    };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll, { passive: true });
+    handleScroll();
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
   }, []);
 
   // Fetch products and map categories from backend (deferred to not block initial paint)
@@ -362,7 +391,11 @@ const Navbar = () => {
 
   return (
     <header
-      className={`w-full z-50 bg-[#662654] transition-all duration-300 font-sans ${isScrolled ? 'shadow-md' : ''}`}
+      className={`sticky top-0 w-full z-50 bg-[#662654] transition-all duration-300 ease-in-out font-sans ${
+        isScrolled ? 'shadow-md' : ''
+      } ${
+        hideNearFooter ? '-translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'
+      }`}
     >
 
 
