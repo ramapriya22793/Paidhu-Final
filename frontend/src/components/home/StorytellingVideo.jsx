@@ -36,7 +36,7 @@ const StorytellingVideo = () => {
 
   return (
     <section className="relative w-full bg-white overflow-hidden py-8 md:py-16">
-      <div className="max-w-[1200px] mx-auto px-4 relative">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 relative">
         <div className="relative w-full overflow-hidden rounded-[2rem] md:rounded-[3rem] shadow-xl">
           {/* Full Background Frame */}
           <img 
@@ -48,15 +48,15 @@ const StorytellingVideo = () => {
             className="w-full h-auto block"
           />
 
-          {/* Video Preview mapped onto the empty beige space */}
-          <div className="absolute inset-0 z-10 flex items-center justify-center pt-[-5%] pb-[10%]">
+          {/* Video Preview mapped onto the frame - enlarged to prominent display */}
+          <div className="absolute inset-0 z-10 pointer-events-none">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.1 }}
               onClick={() => setIsModalOpen(true)}
-              className="absolute top-[18%] left-[15%] w-[70%] h-[55%] rounded-[10px] md:rounded-[18px] overflow-hidden pointer-events-auto cursor-pointer group shadow-[0_8px_30px_rgba(0,0,0,0.15)] border border-[#662554]/10"
+              className="absolute top-[7%] left-[5%] w-[90%] h-[80%] rounded-[14px] sm:rounded-[22px] md:rounded-[32px] overflow-hidden pointer-events-auto cursor-pointer group shadow-[0_12px_40px_rgba(0,0,0,0.22)] border border-[#662554]/15"
             >
               {/* Autoplay preview video */}
               <video 
@@ -75,13 +75,13 @@ const StorytellingVideo = () => {
               {/* Play Button Overlay with glowing pulse */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <motion.div 
-                  className="w-16 h-16 md:w-20 md:h-20 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg relative"
+                  className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-2xl relative"
                   whileHover={{ scale: 1.12 }}
                   transition={{ type: "spring", stiffness: 400, damping: 15 }}
                 >
                   {/* Glowing Plum Ring */}
                   <div className="absolute inset-0 rounded-full bg-white/20 animate-ping pointer-events-none"></div>
-                  <svg className="w-8 h-8 md:w-10 md:h-10 text-[#662554] ml-1 md:ml-2" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-[#662554] ml-1 md:ml-1.5" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
                   </svg>
                 </motion.div>
@@ -107,7 +107,7 @@ const StorytellingVideo = () => {
               animate={{ scale: 1, y: 0, opacity: 1 }}
               exit={{ scale: 0.9, y: 20, opacity: 0 }}
               transition={{ type: "spring", damping: 25, stiffness: 260 }}
-              className="relative max-w-5xl w-full flex flex-col items-center"
+              className="relative max-w-6xl md:max-w-7xl w-full flex flex-col items-center"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close button */}
