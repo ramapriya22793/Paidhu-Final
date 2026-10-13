@@ -9,7 +9,13 @@ const foundersData = [
     id: 1,
     name: 'Ragapriya Karunakaran',
     role: 'Founder',
-    bio: 'As the Founder of Paidhu, I am driven by a vision to redefine the way generations experience floral-based foods through authenticity, purity, and innovation. At Paidhu, we curate premium floral foods and value-added products that preserve nature\'s goodness while honoring traditional wisdom for today\'s lifestyle. Our flagship Kashmiri saffron is sourced directly from trusted farmers, ensuring unmatched quality and authenticity in every strand. My entrepreneurial journey and years of experience in the FMCG industry inspired me to build a brand founded on ethical sourcing, transparency, and trust.',
+    bio: `As the Founder of Paidhu, I am driven by a vision to redefine how people experience floral-based foods through authenticity, quality, and innovation. At Paidhu, we curate floral foods and value-added products that celebrate the colours, flavours, and culinary possibilities of nature’s finest ingredients.
+
+Our product range includes edible flowers, floral teas, jams, and other distinctive food products.
+
+My entrepreneurial journey and years of experience in the FMCG industry inspired me to build Paidhu on the principles of ethical sourcing, transparency, and customer trust. I contribute to product development, brand growth, and day-to-day operations, working to introduce new products and expand our presence in the floral foods market.
+
+Through Paidhu, I aim to explore new possibilities in edible flowers and floral-based foods, develop innovative value-added products, and bring unique floral ingredients to a wider audience.`,
     image: '/ragapriya.jpg?v=4'
   },
   {
