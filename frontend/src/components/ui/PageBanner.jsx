@@ -185,8 +185,8 @@ const PageBanner = ({ pageSlug }) => {
     <div 
       className={
         isShopAll
-          ? "w-full bg-[#faf9f7] pt-0 pb-2 md:pb-3 px-0"
-          : "w-full bg-[#f8f4ef] py-3 md:py-4 px-3 sm:px-4 lg:px-6"
+          ? "w-full bg-white pt-0 pb-2 md:pb-3 px-0"
+          : "w-full bg-white py-3 md:py-4 px-3 sm:px-4 lg:px-6"
       }
     >
       <div

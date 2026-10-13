@@ -8,21 +8,21 @@ const FALLBACK_SLIDES = [
   {
     id: 'banner-15',
     image: `${API_BASE}/api/storage/banners/1790590940099-newnavarathricombowebp.webp`,
-    bgColor: '#faf5eb',
+    bgColor: '#ffffff',
     link: 'https://www.paidhuethicalfoods.com/product/medley-teas-combo',
     isBackendBanner: true
   },
   {
     id: 'banner-14',
     image: `${API_BASE}/api/storage/banners/1790404943695-PREMIUMSEGMENTSSwebp.webp`,
-    bgColor: '#faf5eb',
+    bgColor: '#ffffff',
     link: 'https://www.paidhuethicalfoods.com/product/navratri-best-combo',
     isBackendBanner: true
   },
   {
     id: 'banner-7',
     image: `${API_BASE}/api/storage/banners/1790404979298-ECONOMYCOMBOwebp.webp`,
-    bgColor: '#faf5eb',
+    bgColor: '#ffffff',
     link: 'https://www.paidhuethicalfoods.com/product/navratri-best-combo',
     isBackendBanner: true
   }
@@ -111,7 +111,7 @@ const Hero = () => {
           id: `banner-${b.id}`,
           image: resolveUrl(b.webImage || b.webImagePath),
           mobileImage: resolveUrl(b.mobileImage || b.mobileImagePath),
-          bgColor: 'bg-[#faf5eb]',
+          bgColor: '#ffffff',
           isBackendBanner: true,
           category: b.category || null,
           link: b.link || null,
@@ -142,7 +142,7 @@ const Hero = () => {
   if (!current) return null;
 
   return (
-    <div className="w-full bg-[#f8f4ef] py-3 md:py-4 px-3 sm:px-4 lg:px-6">
+    <div className="w-full bg-white py-3 md:py-4 px-3 sm:px-4 lg:px-6">
       {/* SEO H1 Heading (Visually Hidden for Crawlers) */}
       <h1 className="sr-only">Premium Ethical Foods & Natural Products from Paidhu</h1>
 
@@ -152,7 +152,7 @@ const Hero = () => {
         className="relative w-full overflow-hidden rounded-[28px] md:rounded-[36px] shadow-[0_8px_40px_rgba(0,0,0,0.10)] hover:shadow-[0_14px_50px_rgba(212,175,55,0.20)] transition-all duration-500 group"
         style={{ 
           aspectRatio: isMobile ? '2 / 1' : '2.4 / 1',
-          background: current.bgColor?.replace('bg-', '') || '#f8f4ef'
+          background: '#ffffff'
         }}
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
@@ -172,7 +172,7 @@ const Hero = () => {
                 opacity: index === currentSlide ? 1 : 0,
                 transition: 'opacity 0.5s ease-in-out',
                 pointerEvents: index === currentSlide ? 'auto' : 'none',
-                backgroundColor: slide.bgColor?.replace('bg-', '') || '#f8f4ef',
+                backgroundColor: '#ffffff',
               }}
             >
               {/* Image Wrapper - Clickable full-bleed object-cover */}
