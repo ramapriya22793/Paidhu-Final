@@ -94,6 +94,12 @@ function extractStorageKey(str) {
     return apiStorageMatch[1];
   }
 
+  // Match any legacy Supabase storage URL https://<proj>.supabase.co/storage/v1/object/public/products/<key>
+  const supabaseMatch = str.match(/^https?:\/\/[a-z0-9_-]+\.supabase\.co\/storage\/v1\/object\/public\/(?:products|Products)\/([^?#\s"']+)/i);
+  if (supabaseMatch && supabaseMatch[1]) {
+    return supabaseMatch[1];
+  }
+
   // Match direct R2 URL https://<bucket>.<account>.r2.cloudflarestorage.com/<key>?...
   const r2DirectMatch = str.match(/^https?:\/\/[^/]+\.r2\.cloudflarestorage\.com\/([^?#\s"']+)/i);
   if (r2DirectMatch && r2DirectMatch[1]) {
@@ -120,8 +126,8 @@ async function signStorageUrlsInData(data) {
     if (directKey && (data.startsWith('/api/storage/') || data.startsWith('http'))) {
       return getDirectR2Url(directKey);
     }
-    // Check if it's a JSON string containing /api/storage/
-    if (data.includes('/api/storage/')) {
+    // Check if it's a JSON string containing /api/storage/ or .supabase.co/storage/
+    if (data.includes('/api/storage/') || data.includes('.supabase.co/storage/')) {
       try {
         const parsed = JSON.parse(data);
         const signedParsed = await signStorageUrlsInData(parsed);
