@@ -16,14 +16,16 @@ Our product range includes edible flowers, floral teas, jams, and other distinct
 My entrepreneurial journey and years of experience in the FMCG industry inspired me to build Paidhu on the principles of ethical sourcing, transparency, and customer trust. I contribute to product development, brand growth, and day-to-day operations, working to introduce new products and expand our presence in the floral foods market.
 
 Through Paidhu, I aim to explore new possibilities in edible flowers and floral-based foods, develop innovative value-added products, and bring unique floral ingredients to a wider audience.`,
-    image: '/ragapriya.jpg?v=4'
+    image: '/ragapriya.jpg?v=5'
   },
   {
     id: 2,
     name: 'Vikram AB',
     role: 'Co-founder',
-    bio: 'As the Co-founder of Paidhu Ethical Foods Pvt. Ltd., I support the company\'s vision of promoting natural wellness through authentic floral and herbal products. I contribute to product development, brand growth, and day-to-day operations while helping strengthen Paidhu\'s commitment to quality, ethical sourcing, and customer trust. Together, we aim to bring nature-inspired wellness products to more people and build a brand that reflects authenticity, sustainability, and care.',
-    image: '/vikram.jpg?v=4'
+    bio: `As the Co-founder of Paidhu Ethical Foods Pvt. Ltd., I contribute to the company’s vision of bringing distinctive floral foods and value-added products to a wider audience. Our focus is on exploring the potential of edible flowers, floral ingredients, and nature-inspired food products while maintaining a strong commitment to quality, authenticity, and responsible sourcing.
+
+Together, we aim to expand the possibilities of floral-based foods through product innovation, ethical sourcing, and a clear focus on customer trust. Our goal is to build a distinctive brand that celebrates the diversity of floral ingredients and introduces unique food experiences to modern consumers.`,
+    image: '/vikram.jpg?v=5'
   }
 ];
 
@@ -302,7 +304,7 @@ const AboutUsSection = () => {
                   className="w-full h-full object-cover"
                   style={{ objectPosition: 'center center' }}
                   onError={(e) => {
-                    e.target.src = founder.name.toLowerCase().includes('vikram') ? '/vikram.jpg?v=4' : '/ragapriya.jpg?v=4';
+                    e.target.src = founder.name.toLowerCase().includes('vikram') ? '/vikram.jpg?v=5' : '/ragapriya.jpg?v=5';
                   }}
                 />
               </div>

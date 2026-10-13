@@ -42,15 +42,23 @@ const defaultData = {
     list: [
       {
         id: 1,
-        name: 'Ramapriya',
-        bio: 'Ramapriya is the visionary founder of Paidhu. Passionate about children\'s nutrition and reclaiming traditional, wholesome foods, her journey began with her own search for healthy, chemical-free, and natural food options for her family. She is committed to making a positive difference in kids\' daily nutrition by introducing sustainable, nutrient-dense, and colorful floral ingredients. Ramapriya holds a strong vision of restoring pure, clean eating habits for the modern generation.',
-        image: '/ramapriya.jpg'
+        name: 'Ragapriya Karunakaran',
+        bio: `As the Founder of Paidhu, I am driven by a vision to redefine how people experience floral-based foods through authenticity, quality, and innovation. At Paidhu, we curate floral foods and value-added products that celebrate the colours, flavours, and culinary possibilities of nature’s finest ingredients.
+
+Our product range includes edible flowers, floral teas, jams, and other distinctive food products.
+
+My entrepreneurial journey and years of experience in the FMCG industry inspired me to build Paidhu on the principles of ethical sourcing, transparency, and customer trust. I contribute to product development, brand growth, and day-to-day operations, working to introduce new products and expand our presence in the floral foods market.
+
+Through Paidhu, I aim to explore new possibilities in edible flowers and floral-based foods, develop innovative value-added products, and bring unique floral ingredients to a wider audience.`,
+        image: '/ragapriya.jpg?v=5'
       },
       {
         id: 2,
         name: 'Vikram AB',
-        bio: 'Vikram is the co-founder of Paidhu, leading product innovation and sustainable sourcing. Driven by a mission to build clean food products, Vikram works closely with local, small-holder farmers to source authentic edible flowers and premium ingredients ethically. He is dedicated to establishing a transparent, fair-trade supply chain that benefits both children\'s health and the local agricultural ecosystem.',
-        image: '/vikram.jpg?v=3'
+        bio: `As the Co-founder of Paidhu Ethical Foods Pvt. Ltd., I contribute to the company’s vision of bringing distinctive floral foods and value-added products to a wider audience. Our focus is on exploring the potential of edible flowers, floral ingredients, and nature-inspired food products while maintaining a strong commitment to quality, authenticity, and responsible sourcing.
+
+Together, we aim to expand the possibilities of floral-based foods through product innovation, ethical sourcing, and a clear focus on customer trust. Our goal is to build a distinctive brand that celebrates the diversity of floral ingredients and introduces unique food experiences to modern consumers.`,
+        image: '/vikram.jpg?v=5'
       }
     ]
   },
