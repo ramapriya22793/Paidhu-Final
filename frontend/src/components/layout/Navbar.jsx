@@ -515,7 +515,7 @@ const Navbar = () => {
       </div>
 
       {/* Second Row — Desktop Navigation */}
-      <div className="hidden lg:block w-full bg-[#ede7d7] border-b border-[#662654]/10 py-3 relative z-40">
+      <div className="hidden lg:block w-full bg-white border-b border-[#662654]/10 py-3 relative z-40">
         <nav className="max-w-[1400px] mx-auto px-4 xl:px-8 flex flex-col gap-y-2">
           {/* Row 1 — Primary Links */}
           <div className="flex justify-center items-center gap-x-3 xl:gap-x-6 w-full max-w-full whitespace-nowrap">
