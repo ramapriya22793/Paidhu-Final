@@ -252,15 +252,9 @@ const ProductCard = ({ product, index, navSection }) => {
       ) : null}
 
       {/* Image — single static image, no swap on hover */}
-      <Link to={`/product/${product.slug || product.id}`} state={{ product }} className="block relative aspect-square overflow-hidden bg-[#f8f4ef]">
+      <Link to={`/product/${product.slug || product.id}`} state={{ product }} className="block relative aspect-square overflow-hidden bg-white">
         {product.image ? (
           <>
-            {/* Branded placeholder behind — visible only when image fails to load */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-[#f5efe8] to-[#ede0d4] gap-2">
-              <img src="/Paidhulogo.png" alt="Paidhu" className="w-14 h-14 object-contain opacity-30" />
-              <span className="text-[10px] text-[#662654]/40 font-medium tracking-wide uppercase">Paidhu</span>
-            </div>
-
             <img
               src={product.image || getCategoryIcon(product.category)}
               alt={product.name}
@@ -274,11 +268,9 @@ const ProductCard = ({ product, index, navSection }) => {
               loading={index < 4 ? "eager" : "lazy"}
               fetchPriority={index < 4 ? "high" : "low"}
             />
-
-
           </>
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-[#f5efe8] to-[#ede0d4] gap-2">
+          <div className="w-full h-full flex flex-col items-center justify-center bg-white gap-2">
             <img src="/Paidhulogo.png" alt="Paidhu" className="w-14 h-14 object-contain opacity-30" />
             <span className="text-[10px] text-[#662654]/40 font-medium tracking-wide uppercase">Paidhu</span>
           </div>

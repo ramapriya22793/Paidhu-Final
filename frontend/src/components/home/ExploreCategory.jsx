@@ -951,15 +951,6 @@ const ExploreCategory = () => {
           >
             Explore Our <span className="text-[#662654]">Tempting Creations</span>
           </motion.h2>
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-gray-600 font-medium text-base md:text-lg max-w-2xl leading-relaxed"
-          >
-            Wholesome flower cookies, traditional petal jams, certified Kashmiri saffron, herbal dip teas, and sun-dried whole blossoms — curated for clean, natural wellness.
-          </motion.p>
         </div>
 
         {/* =========================================

@@ -165,7 +165,7 @@ const CollectionProductCard = ({ product, activeCategory, addingId, setAddingId,
       className="w-full h-full bg-white rounded-2xl border border-gray-100 hover:shadow-[0_12px_30px_rgba(102,38,84,0.08)] transition-all duration-300 overflow-hidden flex flex-col group shadow-sm"
     >
       {/* Image Area */}
-      <Link to={`/product/${product.raw?.slug || product.id}`} state={{ product: product.raw }} className="block relative aspect-[1.35/1] sm:aspect-square bg-[#f8f5f0] overflow-hidden">
+      <Link to={`/product/${product.raw?.slug || product.id}`} state={{ product: product.raw }} className="block relative aspect-[1.35/1] sm:aspect-square bg-white overflow-hidden">
         {product.badge && (
           <div className={`absolute top-0 left-0 z-10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${product.badgeColor} rounded-br-lg shadow-sm`}>
             {product.badge}

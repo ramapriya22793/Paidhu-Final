@@ -29,6 +29,7 @@ import BenefitsMarquee from './components/home/BenefitsMarquee';
 import FeaturedBento from './components/home/FeaturedBento';
 import PaidhuSpotlight from './components/home/PaidhuSpotlight';
 import CustomerVideoReels from './components/home/CustomerVideoReels';
+import StorytellingVideo from './components/home/StorytellingVideo';
 import RealMomsSection from './components/home/RealMomsSection';
 import BrandCharactersBanner from './components/home/BrandCharactersBanner';
 
@@ -91,6 +92,7 @@ const HomePage = () => (
     <FeaturedBento />
     <PaidhuSpotlight />
     <CustomerVideoReels />
+    <StorytellingVideo />
     <RealMomsSection />
     <BrandCharactersBanner />
   </main>

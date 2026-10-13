@@ -35,7 +35,7 @@ const StorytellingVideo = () => {
   }, []);
 
   return (
-    <section className="relative w-full bg-[#e9e3d5] overflow-hidden py-12 md:py-20">
+    <section className="relative w-full bg-white overflow-hidden py-8 md:py-16">
       <div className="max-w-[1200px] mx-auto px-4 relative">
         <div className="relative w-full overflow-hidden rounded-[2rem] md:rounded-[3rem] shadow-xl">
           {/* Full Background Frame */}
