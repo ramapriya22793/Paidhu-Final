@@ -36,77 +36,59 @@ const StorytellingVideo = () => {
 
   return (
     <section className="relative w-full bg-white overflow-hidden py-8 md:py-14">
-      <div className="max-w-[820px] mx-auto px-4 sm:px-6 relative">
-        {/* Section Header */}
-        <div className="text-center max-w-xl mx-auto mb-6 md:mb-8">
-          <motion.span 
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-[#662654] font-bold tracking-[0.2em] text-[10px] md:text-xs uppercase mb-2 px-3.5 py-1.5 bg-[#662654]/10 rounded-full inline-flex items-center gap-1.5 shadow-xs"
-          >
-            🌸 The Paidhu Story
-          </motion.span>
-          <motion.h2 
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 tracking-tight"
-          >
-            {videoData.videoTitle}
-          </motion.h2>
-          {videoData.videoSubtitle && (
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="text-gray-500 text-xs sm:text-sm md:text-base mt-2 font-medium"
-            >
-              {videoData.videoSubtitle}
-            </motion.p>
-          )}
-        </div>
-
-        {/* Video Card - Medium sized, clean edge-to-edge container */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.98 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          onClick={() => setIsModalOpen(true)}
-          className="relative w-full aspect-video rounded-2xl md:rounded-[2rem] overflow-hidden shadow-[0_16px_40px_rgba(102,38,84,0.12)] border border-[#662554]/10 bg-black cursor-pointer group"
-        >
-          {/* Autoplay preview video */}
-          <video 
-            src={videoData.videoUrl} 
-            poster={videoData.videoThumbnail}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90"
-            muted
-            loop
-            autoPlay
-            playsInline
+      <div className="max-w-[880px] mx-auto px-4 sm:px-6 relative">
+        {/* Full Background Frame Container */}
+        <div className="relative w-full overflow-hidden rounded-[1.8rem] md:rounded-[2.5rem] shadow-xl">
+          <img 
+            src="/video_frame_bg.png" 
+            alt="Paidhu Video Frame" 
+            width={1024}
+            height={554}
+            loading="lazy"
+            className="w-full h-auto block"
           />
-          
-          {/* Dark overlay on hover */}
-          <div className="absolute inset-0 bg-black/10 group-hover:bg-black/35 transition-colors duration-300"></div>
-          
-          {/* Play Button Overlay with glowing pulse */}
-          <div className="absolute inset-0 flex items-center justify-center">
+
+          {/* Video Preview mapped onto the frame */}
+          <div className="absolute inset-0 z-10 pointer-events-none">
             <motion.div 
-              className="w-14 h-14 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-xl relative"
-              whileHover={{ scale: 1.12 }}
-              transition={{ type: "spring", stiffness: 400, damping: 15 }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              onClick={() => setIsModalOpen(true)}
+              className="absolute top-[16%] left-[12%] w-[76%] h-[60%] rounded-[12px] sm:rounded-[18px] md:rounded-[22px] overflow-hidden pointer-events-auto cursor-pointer group shadow-[0_8px_30px_rgba(0,0,0,0.18)] border border-[#662554]/10"
             >
-              {/* Glowing Plum Ring */}
-              <div className="absolute inset-0 rounded-full bg-white/20 animate-ping pointer-events-none"></div>
-              <svg className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 text-[#662554] ml-1" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-              </svg>
+              {/* Autoplay preview video */}
+              <video 
+                src={videoData.videoUrl} 
+                poster={videoData.videoThumbnail}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90"
+                muted
+                loop
+                autoPlay
+                playsInline
+              />
+              
+              {/* Dark overlay on hover */}
+              <div className="absolute inset-0 bg-black/10 group-hover:bg-black/35 transition-colors duration-300"></div>
+              
+              {/* Play Button Overlay with glowing pulse */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <motion.div 
+                  className="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-xl relative"
+                  whileHover={{ scale: 1.12 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                >
+                  {/* Glowing Plum Ring */}
+                  <div className="absolute inset-0 rounded-full bg-white/20 animate-ping pointer-events-none"></div>
+                  <svg className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 text-[#662554] ml-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                  </svg>
+                </motion.div>
+              </div>
             </motion.div>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       {/* Video Modal Player */}
