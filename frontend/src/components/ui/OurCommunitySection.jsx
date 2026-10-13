@@ -33,21 +33,22 @@ const FlowerIcon = () => (
   </svg>
 );
 
-const SUPABASE_STORAGE_URL = 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/community';
+const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || 'https://paidhu-final-anm2.vercel.app';
+const R2_COMMUNITY_URL = `${API_BASE}/api/storage/community`;
 
 const sliderImages = [
   '/paidhu_mom_community_event_2.jpg',
   '/paidhu_mom_community_event_1.jpg',
   '/paidhu_mom_community_event_3.jpg',
   '/paidhu_mom_community_event_4.jpg',
-  `${SUPABASE_STORAGE_URL}/wp_community_4.jpg`,
-  `${SUPABASE_STORAGE_URL}/wp_community_5.jpg`,
-  `${SUPABASE_STORAGE_URL}/wp_community_6.jpg`,
-  `${SUPABASE_STORAGE_URL}/wp_community_7.jpg`,
-  `${SUPABASE_STORAGE_URL}/wp_community_8.jpg`,
-  `${SUPABASE_STORAGE_URL}/wp_community_1.jpg`,
-  `${SUPABASE_STORAGE_URL}/wp_community_2.jpg`,
-  `${SUPABASE_STORAGE_URL}/wp_community_3.jpg`
+  `${R2_COMMUNITY_URL}/wp_community_4.jpg`,
+  `${R2_COMMUNITY_URL}/wp_community_5.jpg`,
+  `${R2_COMMUNITY_URL}/wp_community_6.jpg`,
+  `${R2_COMMUNITY_URL}/wp_community_7.jpg`,
+  `${R2_COMMUNITY_URL}/wp_community_8.jpg`,
+  `${R2_COMMUNITY_URL}/wp_community_1.jpg`,
+  `${R2_COMMUNITY_URL}/wp_community_2.jpg`,
+  `${R2_COMMUNITY_URL}/wp_community_3.jpg`
 ];
 
 const eventMoments = [

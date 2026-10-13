@@ -59,7 +59,11 @@
   ],
   "rewrites": [
     {
-      "source": "/((?!assets/|favicon\\.ico|manifest\\.json|robots\\.txt|sitemap\\.xml|.*\\..*).*)",
+      "source": "/api/:path*",
+      "destination": "https://paidhu-final-anm2.vercel.app/api/:path*"
+    },
+    {
+      "source": "/((?!api/|assets/|favicon\\.ico|manifest\\.json|robots\\.txt|sitemap\\.xml|.*\\..*).*)",
       "destination": "/index.html"
     }
   ]

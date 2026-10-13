@@ -1,5 +1,6 @@
 const prisma = require("../prismaClient");
-const supabase = require("../utils/supabaseClient");
+const { getR2Client, bucketName: r2BucketName, isR2Configured, getR2PublicUrl } = require("../utils/r2Client");
+const { ListObjectsV2Command } = require("@aws-sdk/client-s3");
 
 const getSettings = async (req, res) => {
   try {
@@ -82,77 +83,6 @@ const updateSettings = async (req, res) => {
 
 const getHabitatVideos = async (req, res) => {
   try {
-    let supabaseUrl = process.env.SUPABASE_URL || 'https://xittsoabiuzuzrzdjktb.supabase.co';
-    if (!supabaseUrl || !supabaseUrl.includes('xittsoabiuzuzrzdjktb')) {
-      supabaseUrl = 'https://xittsoabiuzuzrzdjktb.supabase.co';
-    }
-    let files = [];
-    let bucketName = 'products';
-    let folderName = 'starting floral habits videos';
-
-    // 1. Primary: List directly from Supabase storage under bucket 'products' and folder 'starting floral habits videos'
-    try {
-      const { data, error } = await supabase.storage
-        .from(bucketName)
-        .list(folderName, {
-          limit: 50,
-          sortBy: { column: 'name', order: 'asc' }
-        });
-
-      if (!error && data && data.length > 0) {
-        files = data;
-      }
-    } catch (sErr) {
-      console.warn("Could not list from products/starting floral habits videos:", sErr);
-    }
-
-    // 2. Fallback: Check other possible folder names in 'products' bucket if empty
-    if (!files || files.length === 0) {
-      const fallbackFolders = ['videos', 'starting-floral-food-habitat'];
-      for (const fld of fallbackFolders) {
-        try {
-          const { data, error } = await supabase.storage.from(bucketName).list(fld, { limit: 50 });
-          if (!error && data && data.length > 0) {
-            files = data;
-            folderName = fld;
-            break;
-          }
-        } catch (e) {}
-      }
-    }
-
-    // 3. Fallback: Check bucket 'starting-floral-food-habitat'
-    if (!files || files.length === 0) {
-      try {
-        const { data, error } = await supabase.storage.from('starting-floral-food-habitat').list('', { limit: 50 });
-        if (!error && data && data.length > 0) {
-          files = data;
-          bucketName = 'starting-floral-food-habitat';
-          folderName = '';
-        }
-      } catch (e) {}
-    }
-
-    // 4. Fallback: PostgreSQL direct query if storage API was unavailable
-    if (!files || files.length === 0) {
-      try {
-        const objects = await prisma.$queryRawUnsafe(`
-          SELECT name, metadata, created_at FROM storage.objects
-          WHERE bucket_id IN ('products', 'starting-floral-food-habitat')
-            AND (name ILIKE '%habitat%' OR name ILIKE '%floral%' OR name ILIKE '%habit%')
-          ORDER BY created_at ASC
-        `);
-        if (objects && objects.length > 0) {
-          files = objects.map(o => ({
-            name: o.name.includes('/') ? o.name.split('/').pop() : o.name,
-            fullName: o.name,
-            created_at: o.created_at,
-            metadata: o.metadata
-          }));
-        }
-      } catch (pErr) {}
-    }
-
     const titles = [
       "Curated Floral Food Starter Pack 🌸",
       "Nourishing Your Family Naturally 🍯",
@@ -171,30 +101,39 @@ const getHabitatVideos = async (req, res) => {
       "Experience wholesome edible flower nourishment crafted for your whole family."
     ];
 
-    const videos = (files || [])
-      .filter(file => {
-        const name = (file.name || '').toLowerCase();
-        return name.endsWith('.mp4') || name.endsWith('.mov') || name.endsWith('.webm');
-      })
-      .map((file, index) => {
-        const pathPart = folderName ? `${encodeURIComponent(folderName)}/${encodeURIComponent(file.name)}` : encodeURIComponent(file.name);
-        const publicUrl = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${pathPart}`;
-        const sizeBytes = file.metadata?.size || 0;
+    // List exclusively from Cloudflare R2
+    if (isR2Configured()) {
+      const client = getR2Client();
+      const r2Res = await client.send(new ListObjectsV2Command({
+        Bucket: r2BucketName,
+        Prefix: 'starting floral habits videos',
+        MaxKeys: 50,
+      }));
 
+      const r2Items = (r2Res.Contents || []).filter(item => {
+        const key = (item.Key || '').toLowerCase();
+        return key.endsWith('.mp4') || key.endsWith('.mov') || key.endsWith('.webm');
+      });
+
+      const videos = r2Items.map((item, index) => {
+        const fileName = item.Key.split('/').pop();
         return {
-          id: file.name,
-          name: file.name,
-          url: publicUrl,
-          size: sizeBytes,
-          createdAt: file.created_at || file.updated_at || new Date().toISOString(),
+          id: fileName,
+          name: fileName,
+          url: getR2PublicUrl(item.Key, req),
+          size: item.Size || 0,
+          createdAt: item.LastModified ? item.LastModified.toISOString() : new Date().toISOString(),
           title: titles[index % titles.length],
           description: descs[index % descs.length],
           likes: Math.floor((index * 137 + 452) % 350) + 120,
-          shares: Math.floor((index * 47 + 56) % 120) + 24
+          shares: Math.floor((index * 47 + 56) % 120) + 24,
+          storage: 'cloudflare-r2'
         };
       });
+      return res.json(videos);
+    }
 
-    res.json(videos);
+    return res.json([]);
   } catch (error) {
     console.error("Error in getHabitatVideos:", error);
     res.status(500).json({ message: error.message });

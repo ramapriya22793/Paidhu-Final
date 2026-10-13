@@ -58,6 +58,22 @@ app.use(securityHeaders);
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
+const { signStorageUrlsInData, normalizeStorageUrlsInBody } = require("./utils/r2Client");
+
+app.use((req, res, next) => {
+  if (req.body && typeof req.body === "object" && (req.method === "POST" || req.method === "PUT" || req.method === "PATCH")) {
+    req.body = normalizeStorageUrlsInBody(req.body);
+  }
+  const originalJson = res.json.bind(res);
+  res.json = (data) => {
+    signStorageUrlsInData(data)
+      .then((signedData) => originalJson(signedData))
+      .catch(() => originalJson(data));
+    return res;
+  };
+  next();
+});
+
 // Cache control headers for static uploads
 app.use("/uploads", (req, res, next) => {
   const isVercel = process.env.VERCEL || process.env.NOW_BUILDER;
@@ -129,6 +145,7 @@ app.get("/api/categories", async (req, res) => {
   }
 });
 app.use("/api/upload", require("./routes/uploadRoutes"));
+app.use("/api/storage", require("./routes/storageRoutes"));
 app.use("/api/products", require("./routes/productRoutes"));
 app.use("/api/settings", require("./routes/settingsRoutes"));
 app.use("/api/orders", require("./routes/orderRoutes"));

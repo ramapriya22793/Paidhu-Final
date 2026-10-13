@@ -7,21 +7,21 @@ const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || 'http
 const FALLBACK_SLIDES = [
   {
     id: 'banner-15',
-    image: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/banners/1790590940099-newnavarathricombowebp.webp',
+    image: `${API_BASE}/api/storage/banners/1790590940099-newnavarathricombowebp.webp`,
     bgColor: '#faf5eb',
     link: 'https://www.paidhuethicalfoods.com/product/medley-teas-combo',
     isBackendBanner: true
   },
   {
     id: 'banner-14',
-    image: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/banners/1790404943695-PREMIUMSEGMENTSSwebp.webp',
+    image: `${API_BASE}/api/storage/banners/1790404943695-PREMIUMSEGMENTSSwebp.webp`,
     bgColor: '#faf5eb',
     link: 'https://www.paidhuethicalfoods.com/product/navratri-best-combo',
     isBackendBanner: true
   },
   {
     id: 'banner-7',
-    image: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/banners/1790404979298-ECONOMYCOMBOwebp.webp',
+    image: `${API_BASE}/api/storage/banners/1790404979298-ECONOMYCOMBOwebp.webp`,
     bgColor: '#faf5eb',
     link: 'https://www.paidhuethicalfoods.com/product/navratri-best-combo',
     isBackendBanner: true

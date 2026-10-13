@@ -11,17 +11,17 @@ const features = [
     link: '/shop/shop-by-category?category=Bloom%20Cookies',
     images: [
       {
-        src: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807099194-whitelotuscookiepng.png',
+        src: '/api/storage/products/1789807099194-whitelotuscookiepng.png',
         title: 'Bloom Cookies - White Lotus',
         isProduct: true
       },
       {
-        src: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807081906-AAVARAMPOOpng.png',
+        src: '/api/storage/products/1789807081906-AAVARAMPOOpng.png',
         title: 'Bloom Cookies - Aavaram Poo',
         isProduct: true
       },
       {
-        src: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807060350-hibiscuscookiespng.png',
+        src: '/api/storage/products/1789807060350-hibiscuscookiespng.png',
         title: 'Bloom Cookies - Hibiscus',
         isProduct: true
       }
@@ -34,32 +34,32 @@ const features = [
     link: '/shop/shop-by-category?category=Brew%20Flora',
     images: [
       {
-        src: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806532876-Aavarempng.png',
+        src: '/api/storage/products/1789806532876-Aavarempng.png',
         title: 'Brew Flora - Aavaram Poo (30g)',
         isProduct: true
       },
       {
-        src: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806858400-CHAMOMILEBREWFLORApng.png',
+        src: '/api/storage/products/1789806858400-CHAMOMILEBREWFLORApng.png',
         title: 'Brew Flora - Chamomile (30g)',
         isProduct: true
       },
       {
-        src: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806997507-6png.png',
+        src: '/api/storage/products/1789806997507-6png.png',
         title: 'Brew Flora - Blue Pea (30g)',
         isProduct: true
       },
       {
-        src: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789803500245-MEDLEYTEAS1png.png',
+        src: '/api/storage/products/1789803500245-MEDLEYTEAS1png.png',
         title: 'Medly Teas - Hibiscus (20 Dips)',
         isProduct: true
       },
       {
-        src: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806823754-4png.png',
+        src: '/api/storage/products/1789806823754-4png.png',
         title: 'Medly Teas - Lavender (20 Dips)',
         isProduct: true
       },
       {
-        src: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806919503-7png.png',
+        src: '/api/storage/products/1789806919503-7png.png',
         title: 'Brew Flora - Hibiscus Tea (30g)',
         isProduct: true
       }
@@ -105,12 +105,12 @@ const features = [
     link: '/shop',
     images: [
       {
-        src: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789803563135-Screenshot202608061246502png.png',
+        src: '/api/storage/products/1789803563135-Screenshot202608061246502png.png',
         title: 'Cassia Fistula Medley Tea (20 Dips)',
         isProduct: true
       },
       {
-        src: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806804404-2png.png',
+        src: '/api/storage/products/1789806804404-2png.png',
         title: 'Medly Teas - Saffron (20 Dips)',
         isProduct: true
       },
@@ -125,7 +125,7 @@ const features = [
         isProduct: true
       },
       {
-        src: 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807238758-ChatGPTImageApr242026105405AM180x180png.png',
+        src: '/api/storage/products/1789807238758-ChatGPTImageApr242026105405AM180x180png.png',
         title: "Tanner's Flower Petal Jam",
         isProduct: true
       }

@@ -26,8 +26,8 @@ const toSlide = (b) => ({
   link:        b.link || null,
 });
 
-// Verified active live database banner for shop pages
-const ACTIVE_SHOP_BANNER_URL = 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/banners/1789880166235-shopallbanner001webp.webp';
+// Verified active live database banner for shop pages stored in Cloudflare R2
+const ACTIVE_SHOP_BANNER_URL = `${API_BASE}/api/storage/banners/1789880166235-shopallbanner001webp.webp`;
 
 const BANNER_FALLBACKS = {
   'shop-all': [

@@ -1,10 +1,8 @@
-import { supabase } from './supabaseClient';
 import { API_BASE_URL } from '../services/apiConfig';
 
 const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
 const MAX_SIZE_MB = 10;
 const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
-const BUCKET_NAME = 'products';
 
 /**
  * Fast client-side image compression & format optimization using HTML5 Canvas.
@@ -111,40 +109,7 @@ export const uploadImage = async (file, folder = 'products') => {
       throw new Error(`Image size exceeds ${MAX_SIZE_MB}MB`);
     }
 
-    // 2. Generate unique filename
-    const fileExt = processedFile.name.split('.').pop() || 'webp';
-    const cleanName = processedFile.name.replace(/[^a-zA-Z0-9]/g, '');
-    const fileName = `${folder}/${Date.now()}-${cleanName}.${fileExt}`;
-
-    // 3. Primary Upload: Direct to Supabase Storage
-    if (supabase) {
-      try {
-        const { data, error } = await supabase.storage
-          .from(BUCKET_NAME)
-          .upload(fileName, processedFile, {
-            cacheControl: '31536000',
-            upsert: true
-          });
-
-        if (!error && data) {
-          const { data: publicUrlData } = supabase.storage
-            .from(BUCKET_NAME)
-            .getPublicUrl(fileName);
-
-          return {
-            publicUrl: publicUrlData.publicUrl,
-            imagePath: fileName,
-            error: null
-          };
-        } else if (error) {
-          console.warn("Direct Supabase storage notice:", error.message);
-        }
-      } catch (directErr) {
-        console.warn("Direct Supabase storage upload notice, trying server fallback:", directErr.message);
-      }
-    }
-
-    // 4. Secondary Fallback: Upload via backend Express API (/api/upload)
+    // 2. Upload directly to Cloudflare R2 via Backend API (/api/upload)
     const formData = new FormData();
     formData.append('file', processedFile);
     formData.append('folder', folder);
@@ -160,17 +125,13 @@ export const uploadImage = async (file, folder = 'products') => {
         return {
           publicUrl: data.publicUrl,
           imagePath: data.imagePath,
+          storage: 'cloudflare-r2',
           error: null
         };
       }
-    } else {
-      const errJson = await res.json().catch(() => ({}));
-      if (errJson.error) {
-        throw new Error(errJson.error);
-      }
     }
 
-    throw new Error("Unable to complete image upload");
+    throw new Error("Unable to complete Cloudflare R2 image upload");
   } catch (error) {
     console.error("Upload Error:", error);
     return {
@@ -185,13 +146,11 @@ export const deleteImage = async (imagePath) => {
   if (!imagePath) return { success: false, error: "No image path provided" };
 
   try {
-    if (supabase) {
-      const { error } = await supabase.storage
-        .from(BUCKET_NAME)
-        .remove([imagePath]);
-
-      if (!error) return { success: true, error: null };
-    }
+    await fetch(`${API_BASE_URL}/api/upload`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ imagePath })
+    });
     return { success: true, error: null };
   } catch (error) {
     console.error("Delete Error:", error);
@@ -199,12 +158,8 @@ export const deleteImage = async (imagePath) => {
   }
 };
 
-const SUPABASE_DIRECT_URL = 'https://xittsoabiuzuzrzdjktb.supabase.co';
-const SUPABASE_DIRECT_KEY = 'sb_publishable_SuDUNZP6gbn0BuyMcTbrNA_k75HNFAj';
-
 /**
- * Ultra-fast direct video uploader with real-time percentage progress callback (0% -> 100%).
- * Uses direct REST XHR streaming straight to Supabase Storage with CDN caching.
+ * Direct video uploader to Cloudflare R2 with real-time percentage progress callback (0% -> 100%).
  */
 export const uploadVideoWithProgress = (file, folder = 'reviews/videos', onProgress = () => {}) => {
   return new Promise((resolve, reject) => {
@@ -216,105 +171,6 @@ export const uploadVideoWithProgress = (file, folder = 'reviews/videos', onProgr
     const cleanName = (file.name || 'video').replace(/[^a-zA-Z0-9]/g, '').slice(0, 30);
     const fileName = `${folder}/${Date.now()}-${cleanName}.${fileExt}`;
 
-    // Direct Supabase Storage REST endpoint (Fastest path - direct CDN pipeline)
-    const uploadUrl = `${SUPABASE_DIRECT_URL}/storage/v1/object/${BUCKET_NAME}/${fileName}`;
-
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', uploadUrl, true);
-
-    // Supabase Authorization & Cache headers
-    xhr.setRequestHeader('Authorization', `Bearer ${SUPABASE_DIRECT_KEY}`);
-    xhr.setRequestHeader('apikey', SUPABASE_DIRECT_KEY);
-    xhr.setRequestHeader('Content-Type', file.type || 'video/mp4');
-    xhr.setRequestHeader('x-upsert', 'true');
-    xhr.setRequestHeader('cache-control', '31536000');
-
-    // Live XHR upload progress
-    xhr.upload.onprogress = (event) => {
-      if (event.lengthComputable && event.total > 0) {
-        const percent = Math.min(99, Math.round((event.loaded / event.total) * 100));
-        onProgress({
-          percent,
-          loaded: event.loaded,
-          total: event.total,
-          loadedMB: (event.loaded / (1024 * 1024)).toFixed(1),
-          totalMB: (event.total / (1024 * 1024)).toFixed(1)
-        });
-      }
-    };
-
-    xhr.onload = () => {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        const publicUrl = `${SUPABASE_DIRECT_URL}/storage/v1/object/public/${BUCKET_NAME}/${fileName}`;
-        onProgress({
-          percent: 100,
-          loaded: file.size,
-          total: file.size,
-          loadedMB: (file.size / (1024 * 1024)).toFixed(1),
-          totalMB: (file.size / (1024 * 1024)).toFixed(1)
-        });
-        resolve({
-          publicUrl,
-          videoPath: fileName,
-          error: null
-        });
-      } else {
-        console.warn(`Direct XHR upload returned status ${xhr.status}, attempting fallback...`);
-        fallbackVideoUpload(file, folder, fileName, onProgress)
-          .then(resolve)
-          .catch(reject);
-      }
-    };
-
-    xhr.onerror = () => {
-      console.warn("Direct XHR upload network error, attempting fallback...");
-      fallbackVideoUpload(file, folder, fileName, onProgress)
-        .then(resolve)
-        .catch(reject);
-    };
-
-    xhr.ontimeout = () => {
-      console.warn("Direct XHR upload timeout, attempting fallback...");
-      fallbackVideoUpload(file, folder, fileName, onProgress)
-        .then(resolve)
-        .catch(reject);
-    };
-
-    // Send binary video directly to Supabase storage
-    xhr.send(file);
-  });
-};
-
-const fallbackVideoUpload = async (file, folder, fileName, onProgress) => {
-  // 1. Try Supabase JS SDK
-  if (supabase) {
-    try {
-      const { data, error } = await supabase.storage
-        .from(BUCKET_NAME)
-        .upload(fileName, file, {
-          contentType: file.type || 'video/mp4',
-          cacheControl: '31536000',
-          upsert: true
-        });
-
-      if (!error && data) {
-        const { data: pubData } = supabase.storage.from(BUCKET_NAME).getPublicUrl(fileName);
-        onProgress({
-          percent: 100,
-          loaded: file.size,
-          total: file.size,
-          loadedMB: (file.size / (1024 * 1024)).toFixed(1),
-          totalMB: (file.size / (1024 * 1024)).toFixed(1)
-        });
-        return { publicUrl: pubData.publicUrl, videoPath: fileName, error: null };
-      }
-    } catch (e) {
-      console.warn("SDK upload fallback failed, attempting server upload:", e);
-    }
-  }
-
-  // 2. Server API fallback with XHR progress
-  return new Promise((resolve, reject) => {
     const fd = new FormData();
     fd.append('file', file);
     fd.append('folder', folder);
@@ -347,9 +203,14 @@ const fallbackVideoUpload = async (file, folder, fileName, onProgress) => {
               loadedMB: (file.size / (1024 * 1024)).toFixed(1),
               totalMB: (file.size / (1024 * 1024)).toFixed(1)
             });
-            resolve({ publicUrl: json.publicUrl, videoPath: json.imagePath || fileName, error: null });
+            resolve({
+              publicUrl: json.publicUrl,
+              videoPath: json.imagePath || fileName,
+              storage: 'cloudflare-r2',
+              error: null
+            });
           } else {
-            reject(new Error(json.error || 'Server upload failed'));
+            reject(new Error(json.error || 'Cloudflare R2 upload failed'));
           }
         } catch (err) {
           reject(new Error('Invalid server response during video upload'));
@@ -363,4 +224,3 @@ const fallbackVideoUpload = async (file, folder, fileName, onProgress) => {
     xhr.send(fd);
   });
 };
-

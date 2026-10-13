@@ -14,13 +14,14 @@ import {
 
 const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || 'https://paidhu-final-anm2.vercel.app';
 
-const SUPABASE_STORAGE_URL = 'https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/reviews/videos';
+const R2_STORAGE_URL = `${API_BASE}/api/storage/reviews/videos`;
+const R2_PRODUCTS_URL = `${API_BASE}/api/storage/products`;
 
-// The exact customer review videos uploaded in the Admin panel
+// The exact customer review videos uploaded in the Admin panel and stored in Cloudflare R2
 const FALLBACK_VIDEO_REELS = [
   {
     id: 'user-reel-1',
-    video: `${SUPABASE_STORAGE_URL}/1789837755612-WhatsAppVideo20260919at93243PMmp4.mp4`,
+    video: `${R2_STORAGE_URL}/1789837755612-WhatsAppVideo20260919at93243PMmp4.mp4`,
     comment: "These Bloom Cookies are so fresh, crispy, and delicious. My kids love the natural floral taste!",
     rating: 5,
     reviewerName: "Pooja Hegde (Verified Mom)",
@@ -28,12 +29,12 @@ const FALLBACK_VIDEO_REELS = [
       id: 8,
       name: "Bloom Cookies - White Lotus",
       price: 66,
-      image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807099194-whitelotuscookiepng.png"
+      image: `${R2_PRODUCTS_URL}/1789807099194-whitelotuscookiepng.png`
     }
   },
   {
     id: 'user-reel-2',
-    video: `${SUPABASE_STORAGE_URL}/1789837725773-WhatsAppVideo20260919at93603PMmp4.mp4`,
+    video: `${R2_STORAGE_URL}/1789837725773-WhatsAppVideo20260919at93603PMmp4.mp4`,
     comment: "Authentic Aavaram Poo cookies with traditional herbal goodness. Outstanding crunch & quality.",
     rating: 5,
     reviewerName: "Kavitha R. (Verified Buyer)",
@@ -41,12 +42,12 @@ const FALLBACK_VIDEO_REELS = [
       id: 9,
       name: "Bloom Cookies - Aavaram Poo",
       price: 66,
-      image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807081906-AAVARAMPOOpng.png"
+      image: `${R2_PRODUCTS_URL}/1789807081906-AAVARAMPOOpng.png`
     }
   },
   {
     id: 'user-reel-3',
-    video: `${SUPABASE_STORAGE_URL}/1789837671597-WhatsAppVideo20260919at93553PMmp4.mp4`,
+    video: `${R2_STORAGE_URL}/1789837671597-WhatsAppVideo20260919at93553PMmp4.mp4`,
     comment: "Pure Kashmiri Saffron Powder! Incredible aroma and gives rich golden color to milk and sweets.",
     rating: 5,
     reviewerName: "Ananya Deshmukh",
@@ -59,7 +60,7 @@ const FALLBACK_VIDEO_REELS = [
   },
   {
     id: 'user-reel-4',
-    video: `${SUPABASE_STORAGE_URL}/1789837626809-WhatsAppVideo20260919at93601PMmp4.mp4`,
+    video: `${R2_STORAGE_URL}/1789837626809-WhatsAppVideo20260919at93601PMmp4.mp4`,
     comment: "Traditional sun-cured Gulkand and floral honey treats. Truly healthy with zero refined sugars.",
     rating: 5,
     reviewerName: "Dr. Meenakshi S.",
@@ -67,12 +68,12 @@ const FALLBACK_VIDEO_REELS = [
       id: 11,
       name: "Bloom Cookies - Hibiscus",
       price: 66,
-      image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807065977-hibiscuscookiepng.png"
+      image: `${R2_PRODUCTS_URL}/1789807065977-hibiscuscookiepng.png`
     }
   },
   {
     id: 'user-reel-5',
-    video: `${SUPABASE_STORAGE_URL}/1789837245897-WhatsAppVideo20260919at93603PM1mp4.mp4`,
+    video: `${R2_STORAGE_URL}/1789837245897-WhatsAppVideo20260919at93603PM1mp4.mp4`,
     comment: "The packaging and purity of Paidhu botanical superfoods exceeded my expectations!",
     rating: 5,
     reviewerName: "Divya Balaji",
@@ -80,12 +81,12 @@ const FALLBACK_VIDEO_REELS = [
       id: 8,
       name: "Bloom Cookies - White Lotus",
       price: 66,
-      image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807099194-whitelotuscookiepng.png"
+      image: `${R2_PRODUCTS_URL}/1789807099194-whitelotuscookiepng.png`
     }
   },
   {
     id: 'user-reel-6',
-    video: `${SUPABASE_STORAGE_URL}/1789837100827-WhatsAppVideo20260919at93243PMmp4.mp4`,
+    video: `${R2_STORAGE_URL}/1789837100827-WhatsAppVideo20260919at93243PMmp4.mp4`,
     comment: "Wholesome natural ingredients. We replaced all our usual tea snacks with Paidhu floral cookies.",
     rating: 5,
     reviewerName: "Shalini Menon",
@@ -93,7 +94,7 @@ const FALLBACK_VIDEO_REELS = [
       id: 9,
       name: "Bloom Cookies - Aavaram Poo",
       price: 66,
-      image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807081906-AAVARAMPOOpng.png"
+      image: `${R2_PRODUCTS_URL}/1789807081906-AAVARAMPOOpng.png`
     }
   }
 ];

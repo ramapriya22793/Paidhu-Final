@@ -27,36 +27,36 @@ const CATEGORY_CONFIG = [
     temptationQuote: "Delightful, crunchy floral cookies baked with real petals (Lotus, Hibiscus, Aavaram), pearl millet, and pure country jaggery with zero refined sugar or maida.",
     bgClass: "from-[#fffdfa] via-[#fcf6ee] to-[#f8ede0]",
     borderClass: "border-[#eaddcb]",
-    img: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807099194-whitelotuscookiepng.png",
+    img: "/api/storage/products/1789807099194-whitelotuscookiepng.png",
     fallback: "/white_lotus_cookies_new.png",
     productCount: 3,
     products: [
       {
         id: 8,
         name: "Bloom Cookies - White lotus",
-        image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807099194-whitelotuscookiepng.png",
+        image: "/api/storage/products/1789807099194-whitelotuscookiepng.png",
         shortDescription: "Bloom Cookies White Lotus are a delicate and soothing snack crafted for those who appreciate subtle floral flavors combined with a soft, melt-in-the-mouth texture.",
         description: "Bloom Cookies White Lotus are a delicate and soothing snack crafted for those who appreciate subtle floral flavors combined with a soft and melt-in-the-mouth texture. Infused with natural white lotus petals, pearl millet, and country jaggery."
       },
       {
         id: 9,
         name: "Bloom Cookies- Aavaram poo",
-        image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807081906-AAVARAMPOOpng.png",
+        image: "/api/storage/products/1789807081906-AAVARAMPOOpng.png",
         shortDescription: "Aavaram Poo Bloom Cookies are a delightful and traditional snack crafted for those who appreciate authentic flavors combined with a perfect crunchy texture.",
         description: "Aavaram Poo Bloom Cookies are the perfect combination of tradition, taste, and quality. Infused with natural Aavaram Poo (Senna auriculata) for a unique herbal taste."
       },
       {
         id: 10,
         name: "Bloom Cookies- Hibiscus",
-        image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807060350-hibiscuscookiespng.png",
+        image: "/api/storage/products/1789807060350-hibiscuscookiespng.png",
         shortDescription: "Bloom Cookies Hibiscus are a delightful and refreshing snack crafted for those who appreciate unique flavors combined with a perfect crunchy texture.",
         description: "Bloom Cookies Hibiscus are the perfect combination of taste, quality, and uniqueness. With their natural hibiscus flavor, crispy texture, and balanced sweetness."
       }
     ],
     images: [
-      "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807099194-whitelotuscookiepng.png",
-      "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807081906-AAVARAMPOOpng.png",
-      "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807060350-hibiscuscookiespng.png"
+      "/api/storage/products/1789807099194-whitelotuscookiepng.png",
+      "/api/storage/products/1789807081906-AAVARAMPOOpng.png",
+      "/api/storage/products/1789807060350-hibiscuscookiespng.png"
     ]
   },
   {
@@ -136,20 +136,20 @@ const CATEGORY_CONFIG = [
     temptationQuote: "Artisanal flower petal jams and traditional gulkhand slow-simmered from fresh Damask rose, aavaram, and hibiscus petals to retain delicate floral essence and natural wellness.",
     bgClass: "from-[#fffcfd] via-[#fef2f6] to-[#fae5ed]",
     borderClass: "border-[#f2d4e0]",
-    img: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807238758-ChatGPTImageApr242026105405AM180x180png.png",
+    img: "/api/storage/products/1789807238758-ChatGPTImageApr242026105405AM180x180png.png",
     fallback: "/cat_petal_jam.png",
     productCount: 5,
     products: [
       {
         id: 29,
         name: "Tanner's Jam",
-        image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807238758-ChatGPTImageApr242026105405AM180x180png.png",
+        image: "/api/storage/products/1789807238758-ChatGPTImageApr242026105405AM180x180png.png",
         shortDescription: "Made from the vibrant blossoms of the Avaram Poo (Cassia Auriculata) flower, this jam captures the delicate floral essence and natural goodness of this traditionally cherished medicinal flower."
       },
       {
         id: 6,
         name: "Sinensis Syrup – Petal Jam",
-        image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807221752-ChatGPTImageApr272026024630PM180x180png.png",
+        image: "/api/storage/products/1789807221752-ChatGPTImageApr272026024630PM180x180png.png",
         shortDescription: "Sinensis Petal Jam is a premium artisanal floral preserve made from hand-picked fresh edible petals, carefully crafted to deliver both rich taste and natural wellness benefits."
       },
       {
@@ -161,7 +161,7 @@ const CATEGORY_CONFIG = [
       {
         id: 3,
         name: "Neem Petal Jam",
-        image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807259641-WhatsAppImage20260403at111337AM1180x180jpeg.jpeg",
+        image: "/api/storage/products/1789807259641-WhatsAppImage20260403at111337AM1180x180jpeg.jpeg",
         shortDescription: "Buy Neem Petal Jam made from natural neem flowers. Supports digestion, detox, and overall wellness. 100% natural, chemical-free herbal jam from Paidhu."
       },
       {
@@ -172,10 +172,10 @@ const CATEGORY_CONFIG = [
       }
     ],
     images: [
-      "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807238758-ChatGPTImageApr242026105405AM180x180png.png",
-      "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807221752-ChatGPTImageApr272026024630PM180x180png.png",
+      "/api/storage/products/1789807238758-ChatGPTImageApr242026105405AM180x180png.png",
+      "/api/storage/products/1789807221752-ChatGPTImageApr272026024630PM180x180png.png",
       "https://wp.paidhu.com/wp-content/uploads/2025/07/Gulkand-final.jpg",
-      "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789807259641-WhatsAppImage20260403at111337AM1180x180jpeg.jpeg",
+      "/api/storage/products/1789807259641-WhatsAppImage20260403at111337AM1180x180jpeg.jpeg",
       "https://wp.paidhu.com/wp-content/uploads/2026/04/WhatsApp-Image-2026-04-17-at-1.05.58-PM.jpeg"
     ]
   },
@@ -199,47 +199,47 @@ const CATEGORY_CONFIG = [
     temptationQuote: "Intact sun-dried whole edible flowers (Aavaram, Chamomile, Lavender, Blue Pea, Hibiscus) crafted to bring calmness, relaxation, and gentle wellness.",
     bgClass: "from-[#fcfaff] via-[#f7f1fc] to-[#eee2f7]",
     borderClass: "border-[#e0d2f2]",
-    img: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806532876-Aavarempng.png",
+    img: "/api/storage/products/1789806532876-Aavarempng.png",
     fallback: "/cat_brew_flora.png",
     productCount: 5,
     products: [
       {
         id: 44,
         name: "Brew Flora - Aavaram Poo (30g)",
-        image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806532876-Aavarempng.png",
+        image: "/api/storage/products/1789806532876-Aavarempng.png",
         shortDescription: "Brew Flora Aavaram Poo (30g) is a premium-quality herbal product made from carefully selected and naturally dried Aavaram flowers for overall wellness and skin glow."
       },
       {
         id: 15,
         name: "Brew Flora - Chamomile (30g)",
-        image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806858400-CHAMOMILEBREWFLORApng.png",
+        image: "/api/storage/products/1789806858400-CHAMOMILEBREWFLORApng.png",
         shortDescription: "Sip serenity with Chamomile Tea, crafted from pure dried chamomile flowers. Naturally caffeine-free, it helps promote deep sleep, reduce stress, and calm the digestive system."
       },
       {
         id: 14,
         name: "Brew Flora - Lavender (30g)",
-        image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806884933-9png.png",
+        image: "/api/storage/products/1789806884933-9png.png",
         shortDescription: "Crafted with calmness. Inspired by nature. Premium floral herbal blend carefully crafted to bring relaxation and elegance into your routine."
       },
       {
         id: 13,
         name: "Brew Flora - Hibiscus Tea (30g)",
-        image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806919503-7png.png",
+        image: "/api/storage/products/1789806919503-7png.png",
         shortDescription: "Brew the vibrant taste of Indian Hibiscus Tea — a tart, refreshing floral infusion known for its deep red hue and high vitamin C content."
       },
       {
         id: 12,
         name: "Brew Flora - Blue Pea (30g)",
-        image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806997507-6png.png",
+        image: "/api/storage/products/1789806997507-6png.png",
         shortDescription: "Dive into calm with Bluepea Tea, also known as Shankhpushpi or Aparajita tea. Rich in anthocyanins that improve focus and relieve stress."
       }
     ],
     images: [
-      "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806532876-Aavarempng.png",
-      "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806858400-CHAMOMILEBREWFLORApng.png",
-      "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806884933-9png.png",
-      "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806919503-7png.png",
-      "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806997507-6png.png"
+      "/api/storage/products/1789806532876-Aavarempng.png",
+      "/api/storage/products/1789806858400-CHAMOMILEBREWFLORApng.png",
+      "/api/storage/products/1789806884933-9png.png",
+      "/api/storage/products/1789806919503-7png.png",
+      "/api/storage/products/1789806997507-6png.png"
     ]
   },
   {
@@ -262,47 +262,47 @@ const CATEGORY_CONFIG = [
     temptationQuote: "Whole flower herbal tea infusions blending butterfly pea, hibiscus, pure saffron, and lavender for calming, antioxidant-rich hydration.",
     bgClass: "from-[#fafffc] via-[#f3f9f5] to-[#e6f2e9]",
     borderClass: "border-[#d2e7d7]",
-    img: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789803563135-Screenshot202608061246502png.png",
+    img: "/api/storage/products/1789803563135-Screenshot202608061246502png.png",
     fallback: "/cat_medley_teas.png",
     productCount: 5,
     products: [
       {
         id: 31,
         name: "Cassia Fistula Medley Tea",
-        image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789803563135-Screenshot202608061246502png.png",
+        image: "/api/storage/products/1789803563135-Screenshot202608061246502png.png",
         shortDescription: "A premium herbal tea blend made with Cassia Fistula and carefully selected natural herbs. Rich in antioxidants and crafted to support everyday wellness."
       },
       {
         id: 19,
         name: "Medly Teas - Blue pea (20 Dips)",
-        image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806750989-MEDLEYTEASpng.png",
+        image: "/api/storage/products/1789806750989-MEDLEYTEASpng.png",
         shortDescription: "Enjoy Bluetea Infusion — a pure butterfly pea flower drink that transforms your hydration routine with calming wellness."
       },
       {
         id: 18,
         name: "Medly Teas - Saffron (20 Dips)",
-        image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806804404-2png.png",
+        image: "/api/storage/products/1789806804404-2png.png",
         shortDescription: "Medly Saffron Tea is a premium herbal infusion crafted from high-quality tea leaves and pure saffron strands for daily relaxation."
       },
       {
         id: 17,
         name: "Medly Teas - Lavender (20 Dips)",
-        image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806823754-4png.png",
+        image: "/api/storage/products/1789806823754-4png.png",
         shortDescription: "Soothe your senses with Lavender Infusion — a fragrant herbal beverage that restores calm and balance with delicate floral notes."
       },
       {
         id: 16,
         name: "Medly Teas - Hibiscus (20 Dips)",
-        image: "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806841675-3png.png",
+        image: "/api/storage/products/1789806841675-3png.png",
         shortDescription: "Medly Teas – Hibiscus is a premium herbal tea made from carefully selected and naturally dried hibiscus flowers."
       }
     ],
     images: [
-      "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789803563135-Screenshot202608061246502png.png",
-      "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806750989-MEDLEYTEASpng.png",
-      "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806804404-2png.png",
-      "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806823754-4png.png",
-      "https://xittsoabiuzuzrzdjktb.supabase.co/storage/v1/object/public/products/products/1789806841675-3png.png"
+      "/api/storage/products/1789803563135-Screenshot202608061246502png.png",
+      "/api/storage/products/1789806750989-MEDLEYTEASpng.png",
+      "/api/storage/products/1789806804404-2png.png",
+      "/api/storage/products/1789806823754-4png.png",
+      "/api/storage/products/1789806841675-3png.png"
     ]
   }
 ];

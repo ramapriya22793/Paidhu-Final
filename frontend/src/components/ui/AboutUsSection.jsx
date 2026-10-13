@@ -14,7 +14,7 @@ const foundersData = [
   },
   {
     id: 2,
-    name: 'Vikram AVB',
+    name: 'Vikram AB',
     role: 'Co-founder',
     bio: 'As the Co-founder of Paidhu Ethical Foods Pvt. Ltd., I support the company\'s vision of promoting natural wellness through authentic floral and herbal products. I contribute to product development, brand growth, and day-to-day operations while helping strengthen Paidhu\'s commitment to quality, ethical sourcing, and customer trust. Together, we aim to bring nature-inspired wellness products to more people and build a brand that reflects authenticity, sustainability, and care.',
     image: '/vikram.jpg?v=4'
