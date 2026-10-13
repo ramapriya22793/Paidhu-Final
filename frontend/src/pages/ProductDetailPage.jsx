@@ -67,6 +67,7 @@ const isSaffronProduct = (p) => {
     name.includes('saffron powder') ||
     name.includes('kashmiri saffron') ||
     name.includes('saffron giftbox') ||
+    name.includes('saffron gift box') ||
     (name.includes('saffron') && !name.includes('tea') && !name.includes('combo')) ||
     slug.includes('mongra') ||
     slug.includes('saffron')

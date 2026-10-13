@@ -103,7 +103,7 @@ const CATEGORY_CONFIG = [
       },
       {
         id: 30,
-        name: "Saffron Gift Box",
+        name: "Saffron Gift Box Combo",
         image: "https://wp.paidhu.com/wp-content/uploads/2024/08/gift-box-big-2.jpg",
         shortDescription: "Get our delightful gift box of various saffron combos and give yourself a savory treat. A lovely luxury present for connoisseurs."
       }

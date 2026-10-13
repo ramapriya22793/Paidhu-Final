@@ -53,6 +53,7 @@ const CATEGORY_FALLBACK_IMAGES = {
   'brew flora': '/cat_brew_flora.jpg',
   'bloom cookies': '/cat_bloom_cookies.jpg',
   'petal jam': '/cat_petal_jam.jpg',
+  'saffron gift box combo': '/cat_saffron_giftbox.png',
   'gift box': '/cat_saffron_giftbox.png',
   'gift boxes': '/cat_saffron_giftbox.png',
   'saffron giftbox': '/cat_saffron_giftbox.png',
@@ -69,17 +70,18 @@ const searchPhrases = [
 
 // Category emoji map — add more as needed
 const CATEGORY_EMOJI = {
-  'Saffron':        '🌸',
-  'Honey':          '🍯',
-  'Medley Teas':    '🍵',
-  'Brew Flora':     '🫖',
-  'Bloom Cookies':  '🍪',
-  'Petal Jam':      '🌺',
-  'Floral Jams':    '🍓',
-  'Edible Flowers': '🌺',
-  'Gift Boxes':     '🎁',
-  'Gift Box':       '🎁',
-  'Saffron Giftbox':'🎁',
+  'Saffron':                '🌸',
+  'Saffron Gift Box Combo': '🎁',
+  'Saffron Giftbox':        '🎁',
+  'Honey':                  '🍯',
+  'Medley Teas':            '🍵',
+  'Brew Flora':             '🫖',
+  'Bloom Cookies':          '🍪',
+  'Petal Jam':              '🌺',
+  'Floral Jams':            '🍓',
+  'Edible Flowers':         '🌺',
+  'Gift Boxes':             '🎁',
+  'Gift Box':               '🎁',
   'Combos':         '✨',
   'Herbal':         '🌿',
   'Spices':         '🌶️',
@@ -119,6 +121,7 @@ const Navbar = () => {
   const defaultCategoriesList = [
     { name: 'Bloom Cookies', image: '/cat_bloom_cookies.jpg' },
     { name: 'Saffron', image: '/cat_saffron.jpg' },
+    { name: 'Saffron Gift Box Combo', image: '/cat_saffron_giftbox.png' },
     { name: 'Petal Jam', image: '/cat_petal_jam.jpg' },
     { name: 'Brew Flora', image: '/cat_brew_flora.jpg' },
     { name: 'Medley Teas', image: '/cat_medley_teas.png' },
@@ -261,13 +264,14 @@ const Navbar = () => {
           let catName = p.category;
           if (!catName) return;
           if (catName.toLowerCase() === 'uncategorized') catName = 'Gift Box';
+          if (catName.toLowerCase() === 'saffron giftbox') catName = 'Saffron Gift Box Combo';
           if (!categoryMap[catName]) {
             const img = p.image || (p.productImages && p.productImages.length > 0 ? p.productImages[0].imageUrl : null);
             categoryMap[catName] = img;
           }
         });
         
-        const catOrder = ['Bloom Cookies', 'Saffron', 'Petal Jam', 'Brew Flora', 'Medley Teas', 'Gift Box', 'Saffron Giftbox', 'Combos'];
+        const catOrder = ['Bloom Cookies', 'Saffron', 'Saffron Gift Box Combo', 'Petal Jam', 'Brew Flora', 'Medley Teas', 'Gift Box', 'Combos'];
         const cats = Object.keys(categoryMap)
           .sort((a, b) => {
             const idxA = catOrder.indexOf(a);

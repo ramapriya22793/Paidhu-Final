@@ -81,6 +81,7 @@ const getCategoryIcon = (category) => {
   const map = {
     'Bloom Cookies': '/cat_bloom_cookies.jpg',
     'Saffron': '/cat_saffron.jpg',
+    'Saffron Gift Box Combo': '/cat_saffron_giftbox.png',
     'Saffron Giftbox': '/cat_saffron_giftbox.png',
     'Gift Box': '/cat_saffron_giftbox.png',
     'Petal Jam': '/cat_petal_jam.jpg',
@@ -547,6 +548,7 @@ const CategoryNavigation = ({ categories, activeCategory, onCategoryChange }) =>
     const map = {
       'Bloom Cookies': '/cat_bloom_cookies.jpg',
       'Saffron': '/cat_saffron.jpg',
+      'Saffron Gift Box Combo': '/cat_saffron_giftbox.png',
       'Saffron Giftbox': '/cat_saffron_giftbox.png',
       'Petal Jam': '/cat_petal_jam.jpg',
       'Medley Teas': '/cat_medley_teas.png',
@@ -684,13 +686,13 @@ const ShopPage = () => {
         list = list.filter(p => {
           const cat = (typeof p.category === 'object' ? p.category?.name : p.category || '').toLowerCase();
           const name = (p.name || '').toLowerCase();
-          return cat === 'saffron' || cat === 'saffron giftbox' || cat === 'gift box' || name.includes('gift box') || name.includes('saffron') || p.id === 30;
+          return cat === 'saffron' || cat === 'saffron gift box combo' || cat === 'saffron giftbox' || cat === 'gift box' || name.includes('gift box') || name.includes('saffron') || p.id === 30;
         });
-      } else if (activeCatLower === 'saffron giftbox' || activeCatLower === 'gift box') {
+      } else if (activeCatLower === 'saffron gift box combo' || activeCatLower === 'saffron giftbox' || activeCatLower === 'gift box') {
         list = list.filter(p => {
           const cat = (typeof p.category === 'object' ? p.category?.name : p.category || '').toLowerCase();
           const name = (p.name || '').toLowerCase();
-          return cat === 'saffron giftbox' || cat === 'gift box' || name.includes('gift box') || p.id === 30;
+          return cat === 'saffron gift box combo' || cat === 'saffron giftbox' || cat === 'gift box' || name.includes('gift box') || p.id === 30;
         });
       } else {
         list = list.filter(p => p.category?.name === activeCategory || p.category === activeCategory);
@@ -708,6 +710,7 @@ const ShopPage = () => {
     const categoryOrder = [
       'Bloom Cookies',
       'Saffron',
+      'Saffron Gift Box Combo',
       'Saffron Giftbox',
       'Petal Jam',
       'Brew Flora',
@@ -880,13 +883,14 @@ const ShopPage = () => {
       .then(r => r.json())
       .then(data => {
         const productsList = data.products || [];
-        const desiredOrder = ['Bloom Cookies', 'Saffron', 'Saffron Giftbox', 'Petal Jam', 'Brew Flora', 'Medley Teas', 'Gift Box', 'Combos'];
+        const desiredOrder = ['Bloom Cookies', 'Saffron', 'Saffron Gift Box Combo', 'Petal Jam', 'Brew Flora', 'Medley Teas', 'Gift Box', 'Combos'];
         
         const categoryMap = {};
         productsList.forEach(p => {
           let cat = p.category;
           if (!cat) return;
           if (cat.toLowerCase() === 'uncategorized') cat = 'Gift Box';
+          if (cat.toLowerCase() === 'saffron giftbox') cat = 'Saffron Gift Box Combo';
           if (!categoryMap[cat]) {
             categoryMap[cat] = p.image || (p.productImages && p.productImages.length > 0 ? p.productImages[0].imageUrl : null);
           }
@@ -894,7 +898,12 @@ const ShopPage = () => {
 
         // Filter and map to objects with names and images
         const cats = desiredOrder
-          .filter(c => productsList.some(p => p.category === c || (c === 'Gift Box' && p.category && p.category.toLowerCase() === 'uncategorized')))
+          .filter(c => productsList.some(p => {
+            const pCat = (p.category || '').toLowerCase();
+            if (c === 'Saffron Gift Box Combo') return pCat === 'saffron gift box combo' || pCat === 'saffron giftbox' || p.id === 30;
+            if (c === 'Gift Box') return pCat === 'gift box' || pCat === 'uncategorized';
+            return p.category === c;
+          }))
           .map(name => ({
             name,
             image: name.toLowerCase().includes('brew flora') ? '/cat_brew_flora.jpg' : (categoryMap[name] || getCategoryIcon(name))
@@ -974,6 +983,7 @@ const ShopPage = () => {
           const categoryOrder = [
             'Bloom Cookies',
             'Saffron',
+            'Saffron Gift Box Combo',
             'Saffron Giftbox',
             'Petal Jam',
             'Brew Flora',

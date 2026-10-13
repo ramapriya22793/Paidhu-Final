@@ -50,22 +50,26 @@ const buildCategoryCondition = (category) => {
     return {
       OR: [
         { category: { name: { equals: 'Saffron', mode: 'insensitive' } } },
+        { category: { name: { equals: 'Saffron Gift Box Combo', mode: 'insensitive' } } },
         { category: { name: { equals: 'Saffron Giftbox', mode: 'insensitive' } } },
         { category: { name: { equals: 'Gift Box', mode: 'insensitive' } } },
         { id: 30 },
         { name: { contains: 'Gift Box', mode: 'insensitive' } },
-        { name: { contains: 'Saffron Giftbox', mode: 'insensitive' } }
+        { name: { contains: 'Saffron Giftbox', mode: 'insensitive' } },
+        { name: { contains: 'Saffron Gift Box Combo', mode: 'insensitive' } }
       ]
     };
   }
-  if (catLower === 'saffron giftbox' || catLower === 'gift box') {
+  if (catLower === 'saffron gift box combo' || catLower === 'saffron giftbox' || catLower === 'gift box') {
     return {
       OR: [
+        { category: { name: { equals: 'Saffron Gift Box Combo', mode: 'insensitive' } } },
         { category: { name: { equals: 'Saffron Giftbox', mode: 'insensitive' } } },
         { category: { name: { equals: 'Gift Box', mode: 'insensitive' } } },
         { id: 30 },
         { name: { contains: 'Gift Box', mode: 'insensitive' } },
-        { name: { contains: 'Saffron Giftbox', mode: 'insensitive' } }
+        { name: { contains: 'Saffron Giftbox', mode: 'insensitive' } },
+        { name: { contains: 'Saffron Gift Box Combo', mode: 'insensitive' } }
       ]
     };
   }
