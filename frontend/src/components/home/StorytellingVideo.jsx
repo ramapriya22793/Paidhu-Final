@@ -35,8 +35,8 @@ const StorytellingVideo = () => {
   }, []);
 
   return (
-    <section className="relative w-full bg-white overflow-hidden py-8 md:py-14">
-      <div className="max-w-[880px] mx-auto px-4 sm:px-6 relative">
+    <section className="relative w-full bg-white overflow-hidden py-10 md:py-16">
+      <div className="max-w-[1080px] mx-auto px-4 sm:px-6 relative">
         {/* Full Background Frame Container */}
         <div className="relative w-full overflow-hidden rounded-[1.8rem] md:rounded-[2.5rem] shadow-xl">
           <img 
@@ -48,7 +48,7 @@ const StorytellingVideo = () => {
             className="w-full h-auto block"
           />
 
-          {/* Video Preview mapped onto the frame */}
+          {/* Video Preview mapped onto the frame - moderate / medium balanced scale */}
           <div className="absolute inset-0 z-10 pointer-events-none">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
@@ -56,7 +56,7 @@ const StorytellingVideo = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.1 }}
               onClick={() => setIsModalOpen(true)}
-              className="absolute top-[16%] left-[12%] w-[76%] h-[60%] rounded-[12px] sm:rounded-[18px] md:rounded-[22px] overflow-hidden pointer-events-auto cursor-pointer group shadow-[0_8px_30px_rgba(0,0,0,0.18)] border border-[#662554]/10"
+              className="absolute top-[14%] left-[10%] w-[80%] h-[64%] rounded-[14px] sm:rounded-[20px] md:rounded-[26px] overflow-hidden pointer-events-auto cursor-pointer group shadow-[0_8px_30px_rgba(0,0,0,0.18)] border border-[#662554]/10"
             >
               {/* Autoplay preview video */}
               <video 

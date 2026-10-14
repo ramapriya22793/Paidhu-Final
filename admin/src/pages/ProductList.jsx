@@ -78,9 +78,43 @@ const ProductList = () => {
     }
   };
 
+  const isDeal = (product) => {
+    return Boolean(product.tags && product.tags.toLowerCase().includes('deal'));
+  };
+
+  const toggleDealOfDay = async (product) => {
+    const currentIsDeal = isDeal(product);
+    let tagsArray = (product.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+    
+    if (currentIsDeal) {
+      tagsArray = tagsArray.filter(t => !t.toLowerCase().includes('deal'));
+    } else {
+      tagsArray.push('deal_of_the_day');
+    }
+    const newTags = tagsArray.join(', ');
+
+    // Optimistic Update
+    setProducts(prev => prev.map(p => p.id === product.id ? { ...p, tags: newTags } : p));
+
+    try {
+      await productService.updateProduct(product.id, { tags: newTags });
+      if (!currentIsDeal) {
+        toast.success(`🔥 "${product.name}" is now featured in Deal of the Day!`);
+      } else {
+        toast.info(`"${product.name}" removed from Deal of the Day.`);
+      }
+    } catch (err) {
+      console.error(err);
+      // Revert Optimistic Update
+      setProducts(prev => prev.map(p => p.id === product.id ? { ...p, tags: product.tags } : p));
+      toast.error('Failed to update Deal of the Day');
+    }
+  };
+
   const filteredProducts = products.filter(p => {
     if (filter === 'Active') return p.status === 'ACTIVE';
     if (filter === 'Inactive') return p.status === 'INACTIVE';
+    if (filter === 'Deals') return isDeal(p);
     return true;
   });
 
@@ -98,6 +132,7 @@ const ProductList = () => {
             <button onClick={() => setFilter('All')} className={`px-4 py-1.5 text-sm font-medium rounded-md transition-colors ${filter === 'All' ? 'bg-white text-gray-800 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}>All</button>
             <button onClick={() => setFilter('Active')} className={`px-4 py-1.5 text-sm font-medium rounded-md transition-colors ${filter === 'Active' ? 'bg-green-50 text-green-700 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}>Active</button>
             <button onClick={() => setFilter('Inactive')} className={`px-4 py-1.5 text-sm font-medium rounded-md transition-colors ${filter === 'Inactive' ? 'bg-red-50 text-red-700 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}>Inactive</button>
+            <button onClick={() => setFilter('Deals')} className={`px-4 py-1.5 text-sm font-medium rounded-md transition-colors ${filter === 'Deals' ? 'bg-amber-100 text-amber-800 font-bold shadow-sm' : 'text-gray-500 hover:text-amber-700'}`}>🔥 Deals ({products.filter(isDeal).length})</button>
           </div>
           <Link 
             to="/products/add" 
@@ -119,6 +154,7 @@ const ProductList = () => {
                 <th className="p-4 font-semibold">Category</th>
                 <th className="p-4 font-semibold">Price</th>
                 <th className="p-4 font-semibold">Stock</th>
+                <th className="p-4 font-semibold text-center">Deal of Day</th>
                 <th className="p-4 font-semibold">Status</th>
                 <th className="p-4 font-semibold">Created Date</th>
                 <th className="p-4 font-semibold text-right">Actions</th>
@@ -126,11 +162,11 @@ const ProductList = () => {
             </thead>
             <tbody className="divide-y divide-gray-100">
               {loading ? (
-                <tr><td colSpan="8" className="p-8 text-center text-gray-500">Loading products...</td></tr>
+                <tr><td colSpan="9" className="p-8 text-center text-gray-500">Loading products...</td></tr>
               ) : error ? (
-                <tr><td colSpan="8" className="p-8 text-center text-red-500">{error}</td></tr>
+                <tr><td colSpan="9" className="p-8 text-center text-red-500">{error}</td></tr>
               ) : filteredProducts.length === 0 ? (
-                <tr><td colSpan="8" className="p-8 text-center text-gray-500">No products found for this filter.</td></tr>
+                <tr><td colSpan="9" className="p-8 text-center text-gray-500">No products found for this filter.</td></tr>
               ) : (
                 filteredProducts.map((product) => (
                   <tr key={product.id} className="hover:bg-gray-50/50 transition-colors">
@@ -155,6 +191,20 @@ const ProductList = () => {
                       <span className={`text-sm font-medium ${product.stock > 0 ? 'text-green-600' : 'text-red-500'}`}>
                         {product.stock} in stock
                       </span>
+                    </td>
+                    <td className="p-4 text-center">
+                      <button
+                        type="button"
+                        onClick={() => toggleDealOfDay(product)}
+                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer ${
+                          isDeal(product)
+                            ? 'bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200'
+                            : 'bg-gray-100 text-gray-500 border border-gray-200 hover:bg-amber-50 hover:text-amber-700 hover:border-amber-200'
+                        }`}
+                        title={isDeal(product) ? "Click to remove from Deal of the Day" : "Click to feature in Deal of the Day"}
+                      >
+                        <span>{isDeal(product) ? '🔥 Active' : '+ Deal'}</span>
+                      </button>
                     </td>
                     <td className="p-4">
                       <div className="flex items-center space-x-3">

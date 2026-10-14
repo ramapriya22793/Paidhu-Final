@@ -81,7 +81,10 @@ const buildCategoryCondition = (category) => {
 
 const navSectionFilters = {
   'shop-all': () => ({}),
-  'deal-of-the-day': () => ({ status: { in: ['ACTIVE', 'PREORDER'] } }),
+  'deal-of-the-day': () => ({
+    status: { in: ['ACTIVE', 'PREORDER'] },
+    tags: { contains: 'deal', mode: 'insensitive' }
+  }),
   'shop-by-category': (extra) => {
     const catCond = buildCategoryCondition(extra?.category);
     return catCond || {};

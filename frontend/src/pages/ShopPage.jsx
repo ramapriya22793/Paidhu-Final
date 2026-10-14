@@ -970,6 +970,12 @@ const ShopPage = () => {
             fetchedPages = Math.ceil(fetchedTotal / LIMIT);
           }
 
+          if (navSection === 'deal-of-the-day') {
+            fetchedList = fetchedList.filter(p => p.tags && p.tags.toLowerCase().includes('deal'));
+            fetchedTotal = fetchedList.length;
+            fetchedPages = Math.max(1, Math.ceil(fetchedTotal / LIMIT));
+          }
+
           // Deduplicate fetched products by name/slug to prevent duplicates
           const seen = new Set();
           fetchedList = fetchedList.filter(p => {
@@ -1314,19 +1320,46 @@ const ShopPage = () => {
             ))}
           </div>
         ) : products.length === 0 ? (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
-            className="flex flex-col items-center justify-center py-24 text-center"
-          >
-            <div className="text-7xl mb-6">🌸</div>
-            <h2 className="text-xl font-bold text-gray-800 mb-2">No products found</h2>
-            <p className="text-gray-400 text-[14px] mb-6">
-              {search ? `No results for "${search}"` : "We couldn't find any products for this section yet."}
-            </p>
-            <button onClick={clearFilters} className="px-6 py-2.5 bg-[#662654] text-white rounded-full font-semibold text-[14px] hover:bg-[#7a2e64] transition-colors">
-              Clear Filters
-            </button>
-          </motion.div>
+          navSection === 'deal-of-the-day' ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="flex flex-col items-center justify-center py-20 px-4 text-center max-w-lg mx-auto"
+            >
+              <div className="w-20 h-20 bg-amber-50 rounded-full flex items-center justify-center text-4xl mb-5 shadow-sm border border-amber-100">
+                🔥
+              </div>
+              <span className="text-xs font-bold text-amber-700 bg-amber-100/80 px-3.5 py-1 rounded-full uppercase tracking-widest mb-3">
+                Daily Specials
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-black text-gray-900 mb-3 font-serif">
+                No Deal of the Day
+              </h2>
+              <p className="text-gray-500 text-sm sm:text-base leading-relaxed mb-8">
+                There are currently no active deals of the day. Please check back later or explore our full collection of wholesome floral delicacies!
+              </p>
+              <Link
+                to="/shop/shop-all"
+                className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#662654] hover:bg-[#7a2e64] text-white rounded-full font-bold text-sm shadow-md hover:shadow-lg transition-all"
+              >
+                Explore All Products
+              </Link>
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+              className="flex flex-col items-center justify-center py-24 text-center"
+            >
+              <div className="text-7xl mb-6">🌸</div>
+              <h2 className="text-xl font-bold text-gray-800 mb-2">No products found</h2>
+              <p className="text-gray-400 text-[14px] mb-6">
+                {search ? `No results for "${search}"` : "We couldn't find any products for this section yet."}
+              </p>
+              <button onClick={clearFilters} className="px-6 py-2.5 bg-[#662654] text-white rounded-full font-semibold text-[14px] hover:bg-[#7a2e64] transition-colors">
+                Clear Filters
+              </button>
+            </motion.div>
+          )
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 py-4">
             {products.map((product, i) => (
