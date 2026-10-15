@@ -4,26 +4,10 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const prisma = require('../prismaClient');
-const { uploadToR2, getR2PublicUrl, isR2Configured } = require('../utils/r2Client');
+const { uploadToR2, getR2PublicUrl, isR2Configured, signStorageUrlsInData } = require('../utils/r2Client');
 
-// Ensure upload directory exists
-const uploadDir = path.join(__dirname, '../uploads/farm_applications');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-// Multer disk storage for local storage with fallback
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname) || '';
-    const cleanBase = path.basename(file.originalname, ext).replace(/[^a-zA-Z0-9]/g, '_');
-    const uniqueSuffix = `${Date.now()}_${Math.round(Math.random() * 1E6)}`;
-    cb(null, `${uniqueSuffix}_${cleanBase}${ext}`);
-  }
-});
+// Memory storage for serverless compatibility (avoids read-only filesystem errors on Vercel)
+const storage = multer.memoryStorage();
 
 const upload = multer({
   storage,
@@ -42,34 +26,57 @@ const appUploadFields = upload.fields([
   { name: 'videography', maxCount: 1 }
 ]);
 
-// Helper to get accessible file URL
+// Helper to get accessible file URL via Cloudflare R2
 const processUploadedFile = async (file, req) => {
   if (!file) return null;
-  const localRelativeUrl = `/uploads/farm_applications/${file.filename}`;
-  
-  // Also push to R2 if configured
-  if (isR2Configured()) {
+  const ext = path.extname(file.originalname) || '';
+  const cleanBase = path.basename(file.originalname, ext).replace(/[^a-zA-Z0-9]/g, '_');
+  const uniqueSuffix = `${Date.now()}_${Math.round(Math.random() * 1E6)}`;
+  const filename = `${uniqueSuffix}_${cleanBase}${ext}`;
+  const r2FileName = `farm_applications/${filename}`;
+
+  // 1. Direct upload to Cloudflare R2 edge
+  if (isR2Configured() && file.buffer) {
     try {
-      const fileBuffer = fs.readFileSync(file.path);
-      const r2FileName = `farm_applications/${file.filename}`;
-      await uploadToR2(fileBuffer, r2FileName, file.mimetype);
+      await uploadToR2(file.buffer, r2FileName, file.mimetype || 'application/octet-stream');
       const r2Url = getR2PublicUrl(r2FileName, req);
       return {
-        url: r2Url || localRelativeUrl,
+        url: r2Url,
         name: file.originalname,
-        filename: file.filename,
+        filename: filename,
         size: file.size,
         mimetype: file.mimetype
       };
     } catch (r2Err) {
-      console.warn('R2 upload failed, using local disk path:', r2Err.message);
+      console.warn('R2 upload failed in farm application:', r2Err.message);
     }
   }
 
+  // 2. Safe local write fallback (for offline local development)
+  try {
+    const uploadDir = path.join(__dirname, '../uploads/farm_applications');
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    const localFilePath = path.join(uploadDir, filename);
+    if (file.buffer) {
+      fs.writeFileSync(localFilePath, file.buffer);
+    }
+    return {
+      url: `/uploads/farm_applications/${filename}`,
+      name: file.originalname,
+      filename: filename,
+      size: file.size,
+      mimetype: file.mimetype
+    };
+  } catch (diskErr) {
+    // Read-only filesystem in serverless environments (Vercel)
+  }
+
   return {
-    url: localRelativeUrl,
+    url: `/api/storage/${r2FileName}`,
     name: file.originalname,
-    filename: file.filename,
+    filename: filename,
     size: file.size,
     mimetype: file.mimetype
   };
@@ -232,10 +239,12 @@ router.get('/', async (req, res) => {
       orderBy: { createdAt: 'desc' }
     });
 
+    const signedApplications = await signStorageUrlsInData(applications);
+
     return res.json({
       success: true,
-      count: applications.length,
-      applications
+      count: signedApplications.length,
+      applications: signedApplications
     });
   } catch (error) {
     console.error('Error fetching Farm Applications:', error);
@@ -261,7 +270,9 @@ router.get('/:id', async (req, res) => {
       return res.status(404).json({ success: false, message: 'Application not found' });
     }
 
-    return res.json({ success: true, application });
+    const signedApp = await signStorageUrlsInData(application);
+
+    return res.json({ success: true, application: signedApp });
   } catch (error) {
     console.error('Error fetching application detail:', error);
     return res.status(500).json({ success: false, message: 'Failed to retrieve application.' });
