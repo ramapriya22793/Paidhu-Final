@@ -2,28 +2,31 @@ import { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || 'https://paidhu-final-anm2.vercel.app';
+const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || 
+  (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:5000'
+    : 'https://paidhu-final-anm2.vercel.app');
 
 const FALLBACK_SLIDES = [
   {
-    id: 'banner-15',
-    image: `${API_BASE}/api/storage/banners/1790590940099-newnavarathricombowebp.webp`,
+    id: 'banner-cookies',
+    image: '/banner_cookies.jpeg',
     bgColor: '#ffffff',
-    link: 'https://www.paidhuethicalfoods.com/product/medley-teas-combo',
+    link: '/product/bloom-cookies-hibiscus',
     isBackendBanner: true
   },
   {
-    id: 'banner-14',
-    image: `${API_BASE}/api/storage/banners/1790404943695-PREMIUMSEGMENTSSwebp.webp`,
+    id: 'banner-tea',
+    image: '/banner_tea.jpeg',
     bgColor: '#ffffff',
-    link: 'https://www.paidhuethicalfoods.com/product/navratri-best-combo',
+    link: '/product/medly-teas-hibiscus-20-dips',
     isBackendBanner: true
   },
   {
-    id: 'banner-7',
-    image: `${API_BASE}/api/storage/banners/1790404979298-ECONOMYCOMBOwebp.webp`,
+    id: 'banner-jam',
+    image: '/banner_jam.jpeg',
     bgColor: '#ffffff',
-    link: 'https://www.paidhuethicalfoods.com/product/navratri-best-combo',
+    link: '/product/hibiscus-petal-jam',
     isBackendBanner: true
   }
 ];
@@ -191,6 +194,10 @@ const Hero = () => {
                       alt={slide.headline || 'Paidhu Banner'}
                       width={600}
                       height={300}
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = '/banner_cookies.jpeg';
+                      }}
                       className="md:hidden w-full h-full object-cover object-center"
                       loading={index === 0 ? 'eager' : 'lazy'}
                       fetchPriority={index === 0 ? 'high' : 'auto'}
@@ -202,6 +209,10 @@ const Hero = () => {
                     alt={slide.headline || 'Paidhu Banner'}
                     width={1440}
                     height={600}
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = '/banner_cookies.jpeg';
+                    }}
                     className={`${slide.mobileImage ? 'hidden md:block' : 'block'} w-full h-full object-cover object-center`}
                     loading={index === 0 ? 'eager' : 'lazy'}
                     fetchPriority={index === 0 ? 'high' : 'auto'}
@@ -222,6 +233,10 @@ const Hero = () => {
                       alt={slide.headline || 'Paidhu Banner'}
                       width={600}
                       height={300}
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = '/banner_cookies.jpeg';
+                      }}
                       className="md:hidden w-full h-full object-cover object-center"
                       loading={index === 0 ? 'eager' : 'lazy'}
                       fetchPriority={index === 0 ? 'high' : 'auto'}
@@ -233,6 +248,10 @@ const Hero = () => {
                     alt={slide.headline || 'Paidhu Banner'}
                     width={1440}
                     height={600}
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = '/banner_cookies.jpeg';
+                    }}
                     className={`${slide.mobileImage ? 'hidden md:block' : 'block'} w-full h-full object-cover object-center`}
                     loading={index === 0 ? 'eager' : 'lazy'}
                     fetchPriority={index === 0 ? 'high' : 'auto'}

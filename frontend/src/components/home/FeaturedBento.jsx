@@ -11,17 +11,17 @@ const features = [
     link: '/shop/shop-by-category?category=Bloom%20Cookies',
     images: [
       {
-        src: '/api/storage/products/1789807099194-whitelotuscookiepng.png',
+        src: '/white_lotus_cookies_new.png',
         title: 'Bloom Cookies - White Lotus',
         isProduct: true
       },
       {
-        src: '/api/storage/products/1789807081906-AAVARAMPOOpng.png',
+        src: '/cat_bloom_cookies.png',
         title: 'Bloom Cookies - Aavaram Poo',
         isProduct: true
       },
       {
-        src: '/api/storage/products/1789807060350-hibiscuscookiespng.png',
+        src: '/cat_bloom_cookies.jpg',
         title: 'Bloom Cookies - Hibiscus',
         isProduct: true
       }
@@ -34,33 +34,18 @@ const features = [
     link: '/shop/shop-by-category?category=Brew%20Flora',
     images: [
       {
-        src: '/api/storage/products/1789806532876-Aavarempng.png',
+        src: '/hibiscus_tea.png',
         title: 'Brew Flora - Aavaram Poo (30g)',
         isProduct: true
       },
       {
-        src: '/api/storage/products/1789806858400-CHAMOMILEBREWFLORApng.png',
+        src: '/cat_brew_flora.png',
         title: 'Brew Flora - Chamomile (30g)',
         isProduct: true
       },
       {
-        src: '/api/storage/products/1789806997507-6png.png',
-        title: 'Brew Flora - Blue Pea (30g)',
-        isProduct: true
-      },
-      {
-        src: '/api/storage/products/1789803500245-MEDLEYTEAS1png.png',
+        src: '/cat_medley_teas.png',
         title: 'Medly Teas - Hibiscus (20 Dips)',
-        isProduct: true
-      },
-      {
-        src: '/api/storage/products/1789806823754-4png.png',
-        title: 'Medly Teas - Lavender (20 Dips)',
-        isProduct: true
-      },
-      {
-        src: '/api/storage/products/1789806919503-7png.png',
-        title: 'Brew Flora - Hibiscus Tea (30g)',
         isProduct: true
       }
     ]
@@ -252,6 +237,10 @@ const FeaturedBento = () => {
                   src={currentImgData.src}
                   alt={currentImgData.title || activeFeature.title}
                   loading="lazy"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = currentImgData.isProduct ? '/cat_bloom_cookies.png' : '/hero_family.png';
+                  }}
                   className={`w-full h-full ${
                     currentImgData.isProduct 
                       ? 'object-contain max-h-[85%] drop-shadow-xl group-hover:scale-105 transition-transform duration-500' 

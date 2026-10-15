@@ -7,7 +7,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || 'https://paidhu-final-anm2.vercel.app';
+const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || 
+  (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:5000'
+    : 'https://paidhu-final-anm2.vercel.app');
 
 const resolveUrl = (path) => {
   if (!path) return null;
@@ -26,14 +29,14 @@ const toSlide = (b) => ({
   link:        b.link || null,
 });
 
-// Verified active live database banner for shop pages stored in Cloudflare R2
-const ACTIVE_SHOP_BANNER_URL = `${API_BASE}/api/storage/banners/1789880166235-shopallbanner001webp.webp`;
+// Verified active live database banner for shop pages bundled in public/
+const ACTIVE_SHOP_BANNER_URL = '/shop_all_banner.jpg';
 
 const BANNER_FALLBACKS = {
   'shop-all': [
     {
-      id: 'banner-shop-all-20',
-      image: ACTIVE_SHOP_BANNER_URL,
+      id: 'banner-shop-all-local',
+      image: '/shop_all_banner.jpg',
       mobileImage: null,
       bgColor: '#faf9f7',
       isBackend: true,
@@ -43,8 +46,8 @@ const BANNER_FALLBACKS = {
   ],
   'shop': [
     {
-      id: 'banner-shop-20',
-      image: ACTIVE_SHOP_BANNER_URL,
+      id: 'banner-shop-local',
+      image: '/shop_banner.png',
       mobileImage: null,
       bgColor: '#faf9f7',
       isBackend: true,
@@ -54,8 +57,8 @@ const BANNER_FALLBACKS = {
   ],
   'shop-by-category': [
     {
-      id: 'banner-category-20',
-      image: ACTIVE_SHOP_BANNER_URL,
+      id: 'banner-category-local',
+      image: '/shop_all_banner.jpg',
       mobileImage: null,
       bgColor: '#faf9f7',
       isBackend: true,
