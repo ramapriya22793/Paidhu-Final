@@ -4,7 +4,7 @@ import { API_BASE_URL } from './apiConfig';
 const API_URL = `${API_BASE_URL}/api/users`;
 
 const login = async (email, password) => {
-  const response = await axios.post(`${API_URL}/admin-login`, { email, password });
+  const response = await axios.post(`${API_URL}/admin-login`, { email, password }, { timeout: 15000 });
   if (response.data.token) {
     localStorage.setItem('adminToken', response.data.token);
     const userData = response.data.user || {};

@@ -111,6 +111,9 @@ const navSlugMap = {
   'Saffron Guidance':            '__direct__/saffron-guidance',
   'Just B Happy':                '__direct__/just-b-happy',
   'Just B Happy Farm':           '__direct__/just-b-happy',
+  'Just B Happy Farms':          '__direct__/just-b-happy',
+  'Contract Botanical Farming':  '__direct__/just-b-happy',
+  'Farm Application':            '__direct__/just-b-happy#farm-application-form',
 };
 
 
@@ -137,10 +140,13 @@ const Navbar = () => {
   const [mobileCatOpen, setMobileCatOpen]     = useState(false);
   const [showKnowUsDropdown, setShowKnowUsDropdown] = useState(false);
   const [mobileKnowUsOpen, setMobileKnowUsOpen]     = useState(false);
+  const [showJustBHappyDropdown, setShowJustBHappyDropdown] = useState(false);
+  const [mobileJustBHappyOpen, setMobileJustBHappyOpen]     = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [user, setUser]                       = useState(null);
   const catRef = useRef(null);
   const knowUsRef = useRef(null);
+  const justBHappyRef = useRef(null);
   const searchRef = useRef(null);
   const mobileSearchRef = useRef(null);
   const [allProducts, setAllProducts] = useState([]);
@@ -316,6 +322,9 @@ const Navbar = () => {
       if (knowUsRef.current && !knowUsRef.current.contains(e.target)) {
         setShowKnowUsDropdown(false);
       }
+      if (justBHappyRef.current && !justBHappyRef.current.contains(e.target)) {
+        setShowJustBHappyDropdown(false);
+      }
       if (searchRef.current && !searchRef.current.contains(e.target)) {
         setShowSearchSuggestions(false);
       }
@@ -334,7 +343,18 @@ const Navbar = () => {
         navigate('/');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else if (slug.startsWith('__direct__')) {
-        navigate(slug.replace('__direct__', ''));
+        const target = slug.replace('__direct__', '');
+        if (target.includes('#')) {
+          const [path, hash] = target.split('#');
+          navigate(path);
+          setTimeout(() => {
+            const el = document.getElementById(hash);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+          }, 150);
+        } else {
+          navigate(target);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
       } else {
         navigate(`/shop/${slug}`);
       }
@@ -636,6 +656,77 @@ const Navbar = () => {
                 );
               }
 
+              if (item.name === 'Just B Happy') {
+                return (
+                  <div
+                    key={i}
+                    className="relative z-50"
+                    ref={justBHappyRef}
+                    onMouseEnter={() => setShowJustBHappyDropdown(true)}
+                    onMouseLeave={() => setShowJustBHappyDropdown(false)}
+                  >
+                    <button
+                      onClick={() => setShowJustBHappyDropdown(v => !v)}
+                      className="relative flex items-center gap-1.5 text-[#662654] font-bold text-[14px] xl:text-[15.5px] hover:text-[#4a1c3d] transition-colors cursor-pointer whitespace-nowrap group py-0.5"
+                    >
+                      <span>{item.name}</span>
+                      <ChevronDown
+                        size={15}
+                        className={`transition-transform duration-200 ${showJustBHappyDropdown ? 'rotate-180' : ''}`}
+                      />
+                      <span className="absolute -bottom-0.5 left-0 w-0 h-[2px] bg-[#662654] group-hover:w-full transition-all duration-300 rounded-full" />
+                    </button>
+
+                    {/* ── Just B Happy Dropdown Options ── */}
+                    {showJustBHappyDropdown && (
+                      <div className="absolute top-full left-0 pt-2 w-64 z-[9999]">
+                        <div className="bg-white rounded-xl shadow-2xl border border-gray-100 py-1.5 overflow-hidden flex flex-col">
+                          <button
+                            onClick={() => {
+                              setShowJustBHappyDropdown(false);
+                              handleNavClick('Just B Happy');
+                            }}
+                            className="w-full text-left px-4 py-2.5 hover:bg-[#4E580F]/5 text-[#662654] hover:text-[#4E580F] font-bold text-[13px] transition-colors cursor-pointer flex items-center gap-2.5"
+                          >
+                            <span className="text-base">🌸</span>
+                            <div>
+                              <div className="leading-tight">Just B Happy Farms</div>
+                              <div className="text-[11px] text-gray-500 font-normal">Overview & Vision</div>
+                            </div>
+                          </button>
+                          <button
+                            onClick={() => {
+                              setShowJustBHappyDropdown(false);
+                              handleNavClick('Contract Botanical Farming');
+                            }}
+                            className="w-full text-left px-4 py-2.5 hover:bg-[#4E580F]/5 text-[#662654] hover:text-[#4E580F] font-bold text-[13px] transition-colors cursor-pointer flex items-center gap-2.5"
+                          >
+                            <span className="text-base">📜</span>
+                            <div>
+                              <div className="leading-tight">Contract Botanical Farming</div>
+                              <div className="text-[11px] text-gray-500 font-normal">Guaranteed Buyback & Guidance</div>
+                            </div>
+                          </button>
+                          <button
+                            onClick={() => {
+                              setShowJustBHappyDropdown(false);
+                              handleNavClick('Farm Application');
+                            }}
+                            className="w-full text-left px-4 py-2.5 hover:bg-[#4E580F]/10 text-[#4E580F] font-bold text-[13px] transition-colors cursor-pointer flex items-center gap-2.5 border-t border-gray-100 bg-[#F7F8F0]/40"
+                          >
+                            <span className="text-base">📝</span>
+                            <div>
+                              <div className="leading-tight">Apply for Farming</div>
+                              <div className="text-[11px] text-[#4E580F]/80 font-normal">3-Step Online Form</div>
+                            </div>
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
               if (item.name === 'Know us better') {
                 return (
                   <div
@@ -661,7 +752,7 @@ const Navbar = () => {
                     
                       {showKnowUsDropdown && (
                         <div
-                          className="absolute top-full left-0 pt-2 w-48 z-[9999]"
+                          className="absolute top-full left-0 pt-2 w-52 z-[9999]"
                         >
                           <div className="bg-white rounded-xl shadow-2xl border border-gray-100 py-1.5 overflow-hidden flex flex-col">
                             <button
@@ -681,6 +772,16 @@ const Navbar = () => {
                               className="w-full text-left px-4 py-2 hover:bg-[#662654]/5 hover:text-[#662654] text-[#662654]/80 font-bold text-[13.5px] transition-colors cursor-pointer"
                             >
                               Our Own Community
+                            </button>
+                            <button
+                              onClick={() => {
+                                setShowKnowUsDropdown(false);
+                                handleNavClick('Just B Happy Farms');
+                              }}
+                              className="w-full text-left px-4 py-2 hover:bg-[#4E580F]/5 hover:text-[#4E580F] text-[#4E580F] font-bold text-[13.5px] transition-colors cursor-pointer flex items-center gap-1.5"
+                            >
+                              <span>🌸</span>
+                              <span>Just B Happy Farms</span>
                             </button>
                             <button
                               onClick={() => {
@@ -861,6 +962,57 @@ const Navbar = () => {
                     );
                   }
 
+                  if (link.name === 'Just B Happy') {
+                    return (
+                      <div key={link.name}>
+                        <button
+                          onClick={() => setMobileJustBHappyOpen(v => !v)}
+                          className="w-full text-left text-[#ede7d7] font-medium text-sm border-b border-[#ede7d7]/10 py-3 hover:text-white transition-colors flex items-center justify-between"
+                        >
+                          <span className="flex items-center gap-1.5">
+                            <span>🌸</span>
+                            <span>{link.name}</span>
+                          </span>
+                          <ChevronDown
+                            size={14}
+                            className={`transition-transform duration-200 ${mobileJustBHappyOpen ? 'rotate-180' : ''}`}
+                          />
+                        </button>
+                        {mobileJustBHappyOpen && (
+                          <div className="pl-4 pb-2 pt-1 flex flex-col space-y-1">
+                            <button
+                              onClick={() => {
+                                setIsMobileMenuOpen(false);
+                                handleNavClick('Just B Happy');
+                              }}
+                              className="text-left text-[#ede7d7]/90 font-medium text-sm py-2 hover:text-white transition-colors cursor-pointer flex items-center gap-2"
+                            >
+                              <span>Overview & Vision</span>
+                            </button>
+                            <button
+                              onClick={() => {
+                                setIsMobileMenuOpen(false);
+                                handleNavClick('Contract Botanical Farming');
+                              }}
+                              className="text-left text-[#ede7d7]/90 font-medium text-sm py-2 hover:text-white transition-colors cursor-pointer flex items-center gap-2"
+                            >
+                              <span>Contract Botanical Farming</span>
+                            </button>
+                            <button
+                              onClick={() => {
+                                setIsMobileMenuOpen(false);
+                                handleNavClick('Farm Application');
+                              }}
+                              className="text-left text-[#F9E086] font-bold text-sm py-2 hover:text-white transition-colors cursor-pointer flex items-center gap-2"
+                            >
+                              <span>Apply for Farming (3-Step Form)</span>
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  }
+
                   if (link.name === 'Know us better') {
                     return (
                       <div key={link.name}>
@@ -898,6 +1050,25 @@ const Navbar = () => {
                                   className="text-left text-[#ede7d7]/85 font-medium text-sm py-2 hover:text-white transition-colors cursor-pointer"
                                 >
                                   Our Own Community
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    setIsMobileMenuOpen(false);
+                                    handleNavClick('Just B Happy Farms');
+                                  }}
+                                  className="text-left text-[#F9E086] font-medium text-sm py-2 hover:text-white transition-colors cursor-pointer flex items-center gap-1.5"
+                                >
+                                  <span>🌸</span>
+                                  <span>Just B Happy Farms</span>
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    setIsMobileMenuOpen(false);
+                                    handleNavClick('Careers');
+                                  }}
+                                  className="text-left text-[#ede7d7]/85 font-medium text-sm py-2 hover:text-white transition-colors cursor-pointer"
+                                >
+                                  Careers
                                 </button>
                               </div>
                             </div>
