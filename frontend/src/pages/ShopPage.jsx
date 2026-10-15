@@ -16,7 +16,10 @@ import OurCommunitySection from '../components/ui/OurCommunitySection';
 import fallbacks from '../components/home/fallbacks.json';
 import SEO from '../components/seo/SEO';
 
-const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || 'https://paidhu-final-anm2.vercel.app';
+const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || 
+  (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:5000'
+    : 'https://paidhu-final-anm2.vercel.app');
 
 // Clean up corrupted product names (??? -> -)
 const resolveProductName = (name) => {
@@ -741,7 +744,15 @@ const ShopPage = () => {
       if (p.id === 30 || /gift box|giftbox/i.test(title)) return 4;
       return 99;
     };
+    const priorityShopIds = [53, 55];
     list = [...list].sort((a, b) => {
+      if (!activeCategory) {
+        const pIdxA = priorityShopIds.indexOf(a.id);
+        const pIdxB = priorityShopIds.indexOf(b.id);
+        if (pIdxA !== -1 && pIdxB !== -1) return pIdxA - pIdxB;
+        if (pIdxA !== -1) return -1;
+        if (pIdxB !== -1) return 1;
+      }
       const idxA = getCategoryIndex(a.category);
       const idxB = getCategoryIndex(b.category);
       if (idxA !== idxB) return idxA - idxB;
@@ -1022,7 +1033,15 @@ const ShopPage = () => {
             return 99;
           };
 
+          const priorityShopIds = [53, 55];
           fetchedList.sort((a, b) => {
+            if (!activeCategory && (!sort || sort === 'newest')) {
+              const pIdxA = priorityShopIds.indexOf(a.id);
+              const pIdxB = priorityShopIds.indexOf(b.id);
+              if (pIdxA !== -1 && pIdxB !== -1) return pIdxA - pIdxB;
+              if (pIdxA !== -1) return -1;
+              if (pIdxB !== -1) return 1;
+            }
             const idxA = getCategoryIndex(a.category);
             const idxB = getCategoryIndex(b.category);
             if (idxA !== idxB) return idxA - idxB;

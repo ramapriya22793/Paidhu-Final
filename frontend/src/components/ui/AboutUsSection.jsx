@@ -22,9 +22,7 @@ Through Paidhu, I aim to explore new possibilities in edible flowers and floral-
     id: 2,
     name: 'Vikram AB',
     role: 'Co-founder',
-    bio: `As the Co-founder of Paidhu Ethical Foods Pvt. Ltd., I contribute to the company’s vision of bringing distinctive floral foods and value-added products to a wider audience. Our focus is on exploring the potential of edible flowers, floral ingredients, and nature-inspired food products while maintaining a strong commitment to quality, authenticity, and responsible sourcing.
-
-Together, we aim to expand the possibilities of floral-based foods through product innovation, ethical sourcing, and a clear focus on customer trust. Our goal is to build a distinctive brand that celebrates the diversity of floral ingredients and introduces unique food experiences to modern consumers.`,
+    bio: `As the Co-founder of Paidhu Ethical Foods Pvt. Ltd., I contribute to the company’s vision of bringing distinctive floral foods and value-added products to a wider audience. Our focus is on exploring the potential of edible flowers, floral ingredients, and nature-inspired food products while maintaining a strong commitment to quality, authenticity, and responsible sourcing.`,
     image: '/vikram.jpg?v=5'
   }
 ];
@@ -232,9 +230,6 @@ const AboutUsSection = () => {
             transition={{ duration: 0.5 }}
             className="bg-white rounded-[2rem] p-8 md:p-10 border border-gray-100 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden"
           >
-            <div className="w-12 h-12 rounded-2xl bg-[#662654]/10 flex items-center justify-center mb-6">
-              <Sparkles size={24} className="text-[#662654]" />
-            </div>
             <h3 className="text-xl md:text-2xl font-black text-[#5a2141] mb-3">
               Choose food which is Good for you.
             </h3>
@@ -251,9 +246,6 @@ const AboutUsSection = () => {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="bg-white rounded-[2rem] p-8 md:p-10 border border-gray-100 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden"
           >
-            <div className="w-12 h-12 rounded-2xl bg-[#662654]/10 flex items-center justify-center mb-6">
-              <Leaf size={24} className="text-[#662654]" />
-            </div>
             <h3 className="text-xl md:text-2xl font-black text-[#5a2141] mb-3">
               Good for the Environment
             </h3>

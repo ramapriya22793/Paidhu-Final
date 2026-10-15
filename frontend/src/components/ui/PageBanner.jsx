@@ -29,14 +29,14 @@ const toSlide = (b) => ({
   link:        b.link || null,
 });
 
-// Verified active live database banner for shop pages bundled in public/
-const ACTIVE_SHOP_BANNER_URL = '/shop_all_banner.jpg';
+// Verified active live database banner for shop pages bundled locally in /banners/
+const ACTIVE_SHOP_BANNER_URL = '/banners/shopallbanner001.webp';
 
 const BANNER_FALLBACKS = {
   'shop-all': [
     {
       id: 'banner-shop-all-local',
-      image: '/shop_all_banner.jpg',
+      image: ACTIVE_SHOP_BANNER_URL,
       mobileImage: null,
       bgColor: '#faf9f7',
       isBackend: true,
@@ -47,7 +47,7 @@ const BANNER_FALLBACKS = {
   'shop': [
     {
       id: 'banner-shop-local',
-      image: '/shop_banner.png',
+      image: ACTIVE_SHOP_BANNER_URL,
       mobileImage: null,
       bgColor: '#faf9f7',
       isBackend: true,
@@ -58,7 +58,7 @@ const BANNER_FALLBACKS = {
   'shop-by-category': [
     {
       id: 'banner-category-local',
-      image: '/shop_all_banner.jpg',
+      image: ACTIVE_SHOP_BANNER_URL,
       mobileImage: null,
       bgColor: '#faf9f7',
       isBackend: true,
@@ -126,7 +126,12 @@ const PageBanner = ({ pageSlug }) => {
       }
 
       if (data && data.length > 0) {
-        const activeData = data.filter(b => (b.isActive === true || b.isActive === 'true' || b.isActive === 1) && (b.webImage || b.webImagePath));
+        const activeData = data.filter(b => {
+          const isActive = (b.isActive === true || b.isActive === 'true' || b.isActive === 1);
+          const path = (b.webImage || b.webImagePath || '').toLowerCase();
+          const isObsolete = path.includes('banner_tea') || path.includes('banner_cookies') || path.includes('shop_banner.png') || path.includes('shop_all_banner.jpg');
+          return isActive && (b.webImage || b.webImagePath) && !isObsolete;
+        });
         if (activeData.length > 0) {
           const validSlides = activeData.map(toSlide).filter(s => s.image);
           if (validSlides.length > 0) {

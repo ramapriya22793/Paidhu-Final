@@ -12,7 +12,10 @@ import {
   Sparkles
 } from 'lucide-react';
 
-const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || 'https://paidhu-final-anm2.vercel.app';
+const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || 
+  (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:5000'
+    : 'https://paidhu-final-anm2.vercel.app');
 
 const R2_STORAGE_URL = `${API_BASE}/api/storage/reviews/videos`;
 const R2_PRODUCTS_URL = `${API_BASE}/api/storage/products`;
@@ -185,8 +188,8 @@ const ReelCard = ({ review, onClick, isSoundActive, onToggleSound }) => {
 };
 
 const CustomerVideoReels = () => {
-  const [reviews, setReviews] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [reviews, setReviews] = useState(FALLBACK_VIDEO_REELS);
+  const [loading, setLoading] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [activeModalReview, setActiveModalReview] = useState(null);
   const [modalPlaying, setModalPlaying] = useState(true);
