@@ -40,12 +40,16 @@ const FarmBannerSlider = ({ onScrollToForm }) => {
         if (Array.isArray(data) && data.length > 0) {
           const active = data.filter(b => (b.isActive === true || b.isActive === 'true' || b.isActive === 1) && (b.webImage || b.webImagePath));
           if (active.length > 0) {
+            const resolveUrl = (img) => {
+              if (!img) return null;
+              if (img.startsWith('http://') || img.startsWith('https://')) return img;
+              const path = img.startsWith('/') ? img : `/${img}`;
+              return `${API_BASE}${path}`;
+            };
             const backendSlides = active.map(b => ({
               id: `backend-${b.id}`,
-              image: b.webImage?.startsWith('http') || b.webImage?.startsWith('/') 
-                ? b.webImage 
-                : `${API_BASE}${b.webImage ? (b.webImage.startsWith('/') ? '' : '/') + b.webImage : ''}`,
-              mobileImage: b.mobileImage ? (b.mobileImage.startsWith('http') ? b.mobileImage : `${API_BASE}/${b.mobileImage}`) : null,
+              image: resolveUrl(b.webImage || b.webImagePath),
+              mobileImage: resolveUrl(b.mobileImage || b.mobileImagePath),
               tag: b.category || 'PAIDHU • JUST B HAPPY FARMS',
               headline: b.title || 'Official Botanical Contract Farming',
               sub: b.description || 'Join Paidhu Just B Happy Farms for ethical edible flower cultivation and assured buyback contracts.',
@@ -134,6 +138,12 @@ const FarmBannerSlider = ({ onScrollToForm }) => {
                   alt="Just B Happy Farm Banner" 
                   className="w-full h-full object-cover object-center transform group-hover:scale-[1.02] transition-transform duration-700"
                   loading={index === 0 ? 'eager' : 'lazy'}
+                  onError={(e) => {
+                    const fallback = `/banners/just_b_happy_banner_${(index % 3) + 1}.jpg`;
+                    if (!e.target.src.endsWith(fallback)) {
+                      e.target.src = fallback;
+                    }
+                  }}
                 />
               </picture>
             </div>

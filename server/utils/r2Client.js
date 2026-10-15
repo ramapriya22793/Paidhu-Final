@@ -59,27 +59,9 @@ async function getDirectR2Url(rawKey, method = 'GET') {
     return `${base}/${encodedKey}`;
   }
 
-  const cacheKey = `${method}:${key}`;
-  const now = Date.now();
-  const cached = signedUrlCache.get(cacheKey);
-  if (cached && cached.expiresAt > now) {
-    return cached.url;
-  }
-
-  const client = getR2Client();
-  const CommandClass = method === 'HEAD' ? HeadObjectCommand : GetObjectCommand;
-  const command = new CommandClass({
-    Bucket: bucketName,
-    Key: key,
-  });
-
-  const signedUrl = await getSignedUrl(client, command, { expiresIn: SIGNATURE_EXPIRY_SECONDS });
-  signedUrlCache.set(cacheKey, {
-    url: signedUrl,
-    expiresAt: now + CACHE_TTL_MS,
-  });
-
-  return signedUrl;
+  // Without a public R2 domain, serve via our reliable Cloudflare R2 streaming proxy route:
+  const encodedKey = key.split('/').map(encodeURIComponent).join('/');
+  return `/api/storage/${encodedKey}`;
 }
 
 /**

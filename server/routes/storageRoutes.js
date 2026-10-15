@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { getDirectR2Url, isR2Configured, checkR2Status } = require('../utils/r2Client');
+const { getR2Client, isR2Configured, checkR2Status } = require('../utils/r2Client');
+const { GetObjectCommand, HeadObjectCommand } = require('@aws-sdk/client-s3');
 
-// Direct Cloudflare R2 Redirect / Delivery Route
+// Direct Cloudflare R2 Stream / Delivery Route
 router.use(async (req, res, next) => {
   if (req.method !== 'GET' && req.method !== 'HEAD') {
     return next();
@@ -29,19 +30,36 @@ router.use(async (req, res, next) => {
       return res.status(503).json({ error: 'Cloudflare R2 storage is not configured' });
     }
 
-    // Generate direct Cloudflare R2 URL (cached in memory for 6 days)
-    // Redirecting (307) ensures the browser downloads images & streams videos
-    // 100% directly from Cloudflare R2 edge (zero Vercel/Supabase egress).
-    const directR2Url = await getDirectR2Url(key, req.method);
+    if (process.env.R2_PUBLIC_URL) {
+      const base = process.env.R2_PUBLIC_URL.replace(/\/+$/, '');
+      const encodedKey = key.split('/').map(encodeURIComponent).join('/');
+      return res.redirect(307, `${base}/${encodedKey}`);
+    }
 
+    const client = getR2Client();
+    const CommandClass = req.method === 'HEAD' ? HeadObjectCommand : GetObjectCommand;
+    const s3Res = await client.send(new CommandClass({
+      Bucket: 'paidhu-assets',
+      Key: key
+    }));
+
+    if (s3Res.ContentType) res.setHeader('Content-Type', s3Res.ContentType);
+    if (s3Res.ContentLength) res.setHeader('Content-Length', s3Res.ContentLength);
+    if (s3Res.ETag) res.setHeader('ETag', s3Res.ETag);
+    res.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=604800');
     res.setHeader('X-Storage-Provider', 'Cloudflare-R2');
-    res.setHeader('X-R2-Bucket', 'paidhu-assets');
-    res.setHeader('Cache-Control', 'public, max-age=86400');
 
-    return res.redirect(307, directR2Url);
+    if (req.method === 'HEAD') {
+      return res.status(200).end();
+    }
+
+    return s3Res.Body.pipe(res);
   } catch (err) {
+    if (err.name === 'NoSuchKey' || err.$metadata?.httpStatusCode === 404) {
+      return res.status(404).json({ error: 'Object not found in Cloudflare R2' });
+    }
     console.error('Cloudflare R2 storage route error:', err.message);
-    return res.status(500).json({ error: 'Failed to resolve Cloudflare R2 URL' });
+    return res.status(500).json({ error: 'Failed to deliver object from Cloudflare R2' });
   }
 });
 
