@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, ShoppingCart, User, Menu, X, ChevronDown, Grid3X3, Trash2, Minus, Plus, ArrowRight, Lock, Heart } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import paidhuLogo from '../../assets/paidhulogo.png';
 import { useCart } from '../../context/CartContext';
 const AuthModal = React.lazy(() => import('./AuthModal'));
@@ -109,10 +109,14 @@ const navSlugMap = {
   'About Us':                    'about-us',
   'Careers':                     '__direct__/careers',
   'Saffron Guidance':            '__direct__/saffron-guidance',
+  'Just B Happy':                '__direct__/just-b-happy',
+  'Just B Happy Farm':           '__direct__/just-b-happy',
 };
 
 
 const Navbar = () => {
+  const location = useLocation();
+  const isJustBHappyPage = location.pathname.startsWith('/just-b-happy') || location.pathname.startsWith('/farm-application');
   const [isScrolled, setIsScrolled]           = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [currentText, setCurrentText]         = useState('');
@@ -358,6 +362,7 @@ const Navbar = () => {
     { name: 'Shop by Category' },
     { name: 'Deal of the Day' },
     { name: 'Build your Box' },
+    { name: 'Just B Happy' },
     { name: 'Know us better' },
     { name: 'Saffron Guidance' }
   ];
@@ -370,14 +375,18 @@ const Navbar = () => {
 
   return (
     <header
-      className={`sticky top-0 w-full z-50 bg-[#662654] transition-all duration-300 font-sans ${
+      className={`sticky top-0 w-full z-50 transition-all duration-300 font-sans ${
+        isJustBHappyPage ? 'bg-[#4E580F]' : 'bg-[#662654]'
+      } ${
         isScrolled ? 'shadow-md shadow-black/10' : ''
       }`}
     >
 
 
       {/* Top Row */}
-      <div className="w-full bg-[#662654] py-1 md:py-1.5 px-4 md:px-8">
+      <div className={`w-full py-1 md:py-1.5 px-4 md:px-8 transition-colors duration-300 ${
+        isJustBHappyPage ? 'bg-[#4E580F]' : 'bg-[#662654]'
+      }`}>
         <div className="max-w-[1400px] mx-auto flex justify-between items-center relative">
 
           {/* Left: Mobile Menu & Search */}
@@ -465,13 +474,13 @@ const Navbar = () => {
           {/* Center: Logo */}
           <div className="flex w-1/2 lg:w-1/3 justify-center z-10">
             <div className="flex items-center justify-center">
-              <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center justify-center">
+              <Link to={isJustBHappyPage ? "/just-b-happy" : "/"} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center justify-center">
                 <img
-                  src={paidhuLogo}
-                  alt="Paidhu Ethical Foods"
+                  src={isJustBHappyPage ? "/just_b_happy_logo.png" : paidhuLogo}
+                  alt={isJustBHappyPage ? "Paidhu - Just b happy farms" : "Paidhu Ethical Foods"}
                   width={142}
                   height={64}
-                  className="h-10 md:h-12 lg:h-14 w-auto object-contain drop-shadow-sm"
+                  className={isJustBHappyPage ? "h-11 md:h-13 lg:h-15 w-auto object-contain drop-shadow-md rounded-xl transition-all duration-300" : "h-10 md:h-12 lg:h-14 w-auto object-contain drop-shadow-sm transition-all duration-300"}
                 />
               </Link>
             </div>
@@ -711,7 +720,9 @@ const Navbar = () => {
       
         {isMobileMenuOpen && (
           <div
-            className="lg:hidden bg-[#662654] border-b border-[#ede7d7]/10 overflow-hidden"
+            className={`lg:hidden border-b border-[#ede7d7]/10 overflow-hidden transition-colors duration-300 ${
+              isJustBHappyPage ? 'bg-[#4E580F]' : 'bg-[#662654]'
+            }`}
           >
             <div className="px-4 py-4">
               {/* Mobile search */}

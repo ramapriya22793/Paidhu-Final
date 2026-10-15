@@ -20,6 +20,7 @@ import SaffronGuidancePage from './pages/SaffronGuidancePage';
 import BYOCPage from './pages/BYOCPage';
 import LegalPage from './pages/LegalPage';
 import CareersPage from './pages/CareersPage';
+import JustBHappyPage from './pages/JustBHappyPage';
 import BlogsPage from './pages/BlogsPage';
 import BlogDetailPage from './pages/BlogDetailPage';
 
@@ -152,6 +153,9 @@ function App() {
               <Route path="/order-success/:orderNumber" element={<OrderSuccessPage />} />
               <Route path="/saffron-guidance" element={<SaffronGuidancePage />} />
               <Route path="/careers" element={<CareersPage />} />
+              <Route path="/just-b-happy" element={<JustBHappyPage />} />
+              <Route path="/just-b-happy-farm" element={<JustBHappyPage />} />
+              <Route path="/farm-application" element={<JustBHappyPage />} />
               
               {/* Direct Route Aliases to avoid any broken links */}
               <Route path="/about" element={<ShopPage navSection="about-us" />} />

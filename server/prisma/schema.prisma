@@ -452,5 +452,30 @@ model CareerApplication {
   createdAt        DateTime @default(now())
 }
 
-
-
+model FarmApplication {
+  id                      String   @id @default(uuid())
+  name                    String
+  aadharNumber            String
+  email                   String
+  phone                   String
+  permanentAddress        String
+  landType                String   // "Own" or "Leased"
+  totalCultivationArea    String
+  flowerCultivationArea   String
+  previousCrops           String?
+  soilTestReport          String?
+  soilTestReportName      String?
+  landRegistrationDoc     String?
+  landRegistrationDocName String?
+  landLayout              String?
+  landLayoutName          String?
+  waterSourceDetails      String?
+  waterSourceDetailsName  String?
+  photos                  Json?    @default("[]")
+  videography             String?
+  videographyName         String?
+  status                  String   @default("Pending") // Pending, Under Review, Approved, Rejected
+  notes                   String?
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @default(now()) @updatedAt
+}

@@ -109,6 +109,7 @@ const CategoryGridManagement = safeLazy(() => import('./pages/CategoryGridManage
 const TiffinLeads = safeLazy(() => import('./pages/TiffinLeads'));
 const SaffronGuidanceLeads = safeLazy(() => import('./pages/SaffronGuidanceLeads'));
 const CareerApplications = safeLazy(() => import('./pages/CareerApplications'));
+const JustBHappyApplications = safeLazy(() => import('./pages/JustBHappyApplications'));
 const LoginHistory = safeLazy(() => import('./pages/LoginHistory'));
 const UserManual = safeLazy(() => import('./pages/UserManual'));
 
@@ -126,7 +127,7 @@ const PermissionGuard = ({ module, children }) => {
     ECOMMERCE_ADMIN: [
       'blogs', 'saffron_guidance', 'bulk_enquiry', 'banners', 
       'products', 'orders', 'active_carts', 'whatsapp_leads_byoc',
-      'profile', 'customers'
+      'just_b_happy', 'profile', 'customers'
     ],
     ACCOUNTS_ADMIN: [
       'orders', 'payments', 'stock_management', 'profile'
@@ -244,6 +245,7 @@ const App = () => {
                 <Route path="wishlists" element={<PermissionGuard module="super_only"><WishlistInsights /></PermissionGuard>} />
                 <Route path="tiffin-leads" element={<PermissionGuard module="super_only"><TiffinLeads /></PermissionGuard>} />
                 <Route path="career-applications" element={<PermissionGuard module="super_only"><CareerApplications /></PermissionGuard>} />
+                <Route path="just-b-happy-farm" element={<PermissionGuard module="just_b_happy"><JustBHappyApplications /></PermissionGuard>} />
                 <Route path="login-history" element={<PermissionGuard module="super_only"><LoginHistory /></PermissionGuard>} />
                 <Route path="settings" element={<PermissionGuard module="super_only"><Settings /></PermissionGuard>} />
                 <Route path="tracking" element={<PermissionGuard module="super_only"><TrackingScripts /></PermissionGuard>} />

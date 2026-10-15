@@ -17,6 +17,7 @@ const PAGES = [
   { slug: 'bulk-orders',                name: 'Bulk Orders' },
   { slug: 'about',                      name: 'About Us' },
   { slug: 'blogs',                      name: 'Blogs Page' },
+  { slug: 'just-b-happy',               name: 'Just B Happy Farm' },
 ];
 
 const SIZES = [

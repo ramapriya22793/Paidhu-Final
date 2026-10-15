@@ -169,15 +169,15 @@ app.use("/api/admin", require("./routes/adminRoutes"));
 app.use("/api/saffron-guidance", require("./routes/saffronGuidanceRoutes"));
 app.use("/api/newsletter", require("./routes/newsletterRoutes"));
 app.use("/api/careers", require("./routes/careerRoutes"));
+app.use("/api/farm-applications", require("./routes/farmApplicationRoutes"));
 app.use("/api/sync", require("./routes/woocommerceSyncRoutes"));
 app.use("/api/webhooks", require("./routes/webhookRoutes"));
 
 
 const initializeAdmin = async () => {
   try {
-    // Safely add any missing columns to the User table using raw SQL.
-    // This ensures the schema is always up-to-date on the live database,
-    // since running 'prisma db push' in a Vercel serverless environment is unreliable.
+    // Safely add any missing columns or tables using raw SQL.
+    // This ensures the schema is always up-to-date on the live database.
     try {
       await prisma.$executeRawUnsafe(`ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "role" TEXT NOT NULL DEFAULT 'CUSTOMER'`);
       await prisma.$executeRawUnsafe(`ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "mustChangePassword" BOOLEAN NOT NULL DEFAULT false`);
@@ -185,9 +185,38 @@ const initializeAdmin = async () => {
       await prisma.$executeRawUnsafe(`ALTER TABLE "Banner" ADD COLUMN IF NOT EXISTS "webImagePath" TEXT`);
       await prisma.$executeRawUnsafe(`ALTER TABLE "Banner" ADD COLUMN IF NOT EXISTS "mobileImagePath" TEXT`);
       await prisma.$executeRawUnsafe(`ALTER TABLE "Banner" ADD COLUMN IF NOT EXISTS "category" TEXT`);
-      console.log("Startup: Database columns verified/added successfully.");
+      await prisma.$executeRawUnsafe(`
+        CREATE TABLE IF NOT EXISTS "FarmApplication" (
+          "id" TEXT PRIMARY KEY,
+          "name" TEXT NOT NULL,
+          "aadharNumber" TEXT NOT NULL,
+          "email" TEXT NOT NULL,
+          "phone" TEXT NOT NULL,
+          "permanentAddress" TEXT NOT NULL,
+          "landType" TEXT NOT NULL,
+          "totalCultivationArea" TEXT NOT NULL,
+          "flowerCultivationArea" TEXT NOT NULL,
+          "previousCrops" TEXT,
+          "soilTestReport" TEXT,
+          "soilTestReportName" TEXT,
+          "landRegistrationDoc" TEXT,
+          "landRegistrationDocName" TEXT,
+          "landLayout" TEXT,
+          "landLayoutName" TEXT,
+          "waterSourceDetails" TEXT,
+          "waterSourceDetailsName" TEXT,
+          "photos" JSONB DEFAULT '[]'::jsonb,
+          "videography" TEXT,
+          "videographyName" TEXT,
+          "status" TEXT NOT NULL DEFAULT 'Pending',
+          "notes" TEXT,
+          "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )
+      `);
+      console.log("Startup: Database columns and tables verified/added successfully.");
     } catch (schemaErr) {
-      // Columns may already exist — that is fine, the login will still work.
+      // Columns or tables may already exist — that is fine
       console.log("Startup: Schema check note:", schemaErr.message);
     }
 
