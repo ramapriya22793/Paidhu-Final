@@ -9,24 +9,24 @@ const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) ||
 
 const FALLBACK_SLIDES = [
   {
-    id: 'banner-cookies',
-    image: '/banner_cookies.jpeg',
+    id: 'banner-navarathri',
+    image: '/banners/newnavarathricombo.webp',
     bgColor: '#ffffff',
-    link: '/product/bloom-cookies-hibiscus',
+    link: '/product/navratri-best-combo',
     isBackendBanner: true
   },
   {
-    id: 'banner-tea',
-    image: '/banner_tea.jpeg',
+    id: 'banner-premium',
+    image: '/banners/premiumsegmentscombo.webp',
     bgColor: '#ffffff',
-    link: '/product/medly-teas-hibiscus-20-dips',
+    link: '/product/navratri-best-combo',
     isBackendBanner: true
   },
   {
-    id: 'banner-jam',
-    image: '/banner_jam.jpeg',
+    id: 'banner-economy',
+    image: '/banners/economycombo.webp',
     bgColor: '#ffffff',
-    link: '/product/hibiscus-petal-jam',
+    link: '/product/navratri-best-combo',
     isBackendBanner: true
   }
 ];
@@ -51,6 +51,9 @@ const getBannerLink = (slide) => {
   if (!slide.image) return '/shop';
   const imgUrl = slide.image.toLowerCase();
   
+  if (imgUrl.includes('navarathri') || imgUrl.includes('navratri') || imgUrl.includes('combo')) {
+    return '/product/navratri-best-combo';
+  }
   if (imgUrl.includes('banner1') || imgUrl.includes('cookie')) {
     return '/product/bloom-cookies-hibiscus';
   }
@@ -196,7 +199,7 @@ const Hero = () => {
                       height={300}
                       onError={(e) => {
                         e.currentTarget.onerror = null;
-                        e.currentTarget.src = '/banner_cookies.jpeg';
+                        e.currentTarget.src = '/banners/newnavarathricombo.webp';
                       }}
                       className="md:hidden w-full h-full object-cover object-center"
                       loading={index === 0 ? 'eager' : 'lazy'}
@@ -211,7 +214,7 @@ const Hero = () => {
                     height={600}
                     onError={(e) => {
                       e.currentTarget.onerror = null;
-                      e.currentTarget.src = '/banner_cookies.jpeg';
+                      e.currentTarget.src = '/banners/newnavarathricombo.webp';
                     }}
                     className={`${slide.mobileImage ? 'hidden md:block' : 'block'} w-full h-full object-cover object-center`}
                     loading={index === 0 ? 'eager' : 'lazy'}
@@ -235,7 +238,7 @@ const Hero = () => {
                       height={300}
                       onError={(e) => {
                         e.currentTarget.onerror = null;
-                        e.currentTarget.src = '/banner_cookies.jpeg';
+                        e.currentTarget.src = '/banners/newnavarathricombo.webp';
                       }}
                       className="md:hidden w-full h-full object-cover object-center"
                       loading={index === 0 ? 'eager' : 'lazy'}
@@ -250,7 +253,7 @@ const Hero = () => {
                     height={600}
                     onError={(e) => {
                       e.currentTarget.onerror = null;
-                      e.currentTarget.src = '/banner_cookies.jpeg';
+                      e.currentTarget.src = '/banners/newnavarathricombo.webp';
                     }}
                     className={`${slide.mobileImage ? 'hidden md:block' : 'block'} w-full h-full object-cover object-center`}
                     loading={index === 0 ? 'eager' : 'lazy'}

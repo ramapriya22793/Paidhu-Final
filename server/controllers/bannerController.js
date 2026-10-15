@@ -59,7 +59,7 @@ const getActiveBannerByPage = async (req, res) => {
           OR: slugConditions,
           isActive: true
         },
-        orderBy: { id: 'desc' }
+        orderBy: { id: 'asc' }
       });
     } catch (queryErr) {
       console.warn("Active banner query error, ensuring columns:", queryErr.message);
@@ -69,7 +69,7 @@ const getActiveBannerByPage = async (req, res) => {
           OR: slugConditions,
           isActive: true
         },
-        orderBy: { id: 'desc' }
+        orderBy: { id: 'asc' }
       });
     }
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0');
