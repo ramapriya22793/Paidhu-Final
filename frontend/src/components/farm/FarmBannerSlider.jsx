@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, ArrowDown, Sparkles, CheckCircle2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || 
   (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
@@ -10,47 +10,27 @@ const DEFAULT_SLIDES = [
   {
     id: 'default-1',
     image: '/banners/just_b_happy_banner_1.jpg',
-    mobileImage: '/banners/just_b_happy_banner_1_mobile.jpg',
-    tag: 'PAIDHU • JUST B HAPPY FARMS',
-    headline: 'Official Botanical Contract Farming',
-    sub: 'Join Paidhu Just B Happy Farms for ethical edible flower cultivation and assured buyback contracts.',
-    badge: '🌸 Guaranteed Buyback'
+    mobileImage: '/banners/just_b_happy_banner_1_mobile.jpg'
   },
   {
     id: 'default-2',
     image: '/banners/just_b_happy_banner_2.jpg',
-    mobileImage: '/banners/just_b_happy_banner_2_mobile.jpg',
-    tag: 'COMMUNITY & LIVELIHOOD',
-    headline: 'Empowering Generational Flower Farmers',
-    sub: 'Handpicking radiant blossoms at dawn with technical support and guaranteed pricing.',
-    badge: '🌿 100% Pesticide Free'
+    mobileImage: '/banners/just_b_happy_banner_2_mobile.jpg'
   },
   {
     id: 'default-3',
     image: '/banners/just_b_happy_banner_3.jpg',
-    mobileImage: '/banners/just_b_happy_banner_3_mobile.jpg',
-    tag: 'ETHICAL BOTANICALS',
-    headline: 'Vibrant Natural Bloom Cultivation',
-    sub: 'Sustainable agrarian practices supporting biodiversity, pollinators, and rural empowerment.',
-    badge: '✨ Direct Farm Buyback'
+    mobileImage: '/banners/just_b_happy_banner_3_mobile.jpg'
   },
   {
     id: 'default-4',
     image: '/banners/just_b_happy_banner_4.jpg',
-    mobileImage: '/banners/just_b_happy_banner_4_mobile.jpg',
-    tag: 'JOIN OUR NETWORK',
-    headline: 'Transform Your Acreage Into Botanical Wealth',
-    sub: 'Full agronomist guidance from soil preparation to post-harvest collection.',
-    badge: '🚜 Contract Farming'
+    mobileImage: '/banners/just_b_happy_banner_4_mobile.jpg'
   },
   {
     id: 'default-5',
     image: '/banners/just_b_happy_banner_5.jpg',
-    mobileImage: '/banners/just_b_happy_banner_5_mobile.jpg',
-    tag: 'AGRARIAN VERIFICATION',
-    headline: 'Apply for Paidhu Farm Certification',
-    sub: 'Submit your land details below to enroll in our upcoming cultivation cycle.',
-    badge: '📋 Quick 3-Step Application'
+    mobileImage: '/banners/just_b_happy_banner_5_mobile.jpg'
   }
 ];
 
@@ -80,10 +60,6 @@ const FarmBannerSlider = ({ onScrollToForm }) => {
               id: `backend-${b.id}`,
               image: resolveUrl(b.webImage || b.webImagePath),
               mobileImage: resolveUrl(b.mobileImage || b.mobileImagePath),
-              tag: b.category || 'PAIDHU • JUST B HAPPY FARMS',
-              headline: b.title || 'Official Botanical Contract Farming',
-              sub: b.description || 'Join Paidhu Just B Happy Farms for ethical edible flower cultivation and assured buyback contracts.',
-              badge: '🌸 Guaranteed Buyback',
               link: b.link || null
             }));
             setSlides(backendSlides);
@@ -91,7 +67,7 @@ const FarmBannerSlider = ({ onScrollToForm }) => {
         }
       })
       .catch(() => {
-        // Default authentic farm slides remain active
+        // Default clean banner slides remain active
       });
     return () => { isMounted = false; };
   }, []);
@@ -171,7 +147,7 @@ const FarmBannerSlider = ({ onScrollToForm }) => {
                 )}
                 <img 
                   src={slide.image} 
-                  alt={slide.headline || "Just B Happy Farm Banner"} 
+                  alt="Just B Happy Farm Banner" 
                   className="w-full h-full object-cover object-center transform group-hover:scale-[1.02] transition-transform duration-700"
                   loading={index === 0 ? 'eager' : 'lazy'}
                   onError={(e) => {
@@ -182,24 +158,6 @@ const FarmBannerSlider = ({ onScrollToForm }) => {
                   }}
                 />
               </picture>
-
-              {/* Cinematic Bottom Gradient Overlay with Farm Story text */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-4 sm:p-8 md:p-10 pointer-events-none">
-                <div className="max-w-3xl pointer-events-auto">
-                  {slide.badge && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#4E580F]/90 text-[#F9E086] text-[10px] sm:text-xs font-bold uppercase tracking-wider backdrop-blur-sm border border-[#F9E086]/30 mb-2 shadow-md">
-                      <Sparkles className="w-3 h-3 text-[#F9E086]" />
-                      <span>{slide.badge}</span>
-                    </span>
-                  )}
-                  <h2 className="text-white text-lg sm:text-2xl md:text-3xl lg:text-4xl font-serif font-black drop-shadow-md leading-tight">
-                    {slide.headline || 'PAIDHU • Just B Happy Farms'}
-                  </h2>
-                  <p className="text-gray-200 text-xs sm:text-sm md:text-base mt-1 line-clamp-2 drop-shadow font-medium max-w-2xl hidden xs:block">
-                    {slide.sub || 'Partner with us for guaranteed buyback and ethical flower cultivation.'}
-                  </p>
-                </div>
-              </div>
             </div>
           ))}
         </div>
