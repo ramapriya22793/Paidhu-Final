@@ -1,28 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import videoThumbnail from '../../assets/video_thumbnail.jpg';
 
-const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || 'https://paidhu-final-anm2.vercel.app';
-const FALLBACK_VIDEO_URL = `${API_BASE}/api/storage/videos/WhatsApp%20Video%202026-08-06%20at%2011.23.18%20AM.mp4`;
+const LOCAL_FALLBACK_VIDEO = '/videos/storytelling.mp4';
+const ALT_LOCAL_VIDEO = '/videos/WhatsApp%20Video%202026-08-06%20at%2011.23.18%20AM.mp4';
+const R2_FALLBACK_VIDEO = '/api/storage/videos/WhatsApp%20Video%202026-08-06%20at%2011.23.18%20AM.mp4';
+
+const resolveVideoUrl = (url) => {
+  if (!url) return LOCAL_FALLBACK_VIDEO;
+  // If the backend returned the default WhatsApp storytelling video name or path,
+  // prioritize the lightning-fast, edge-cached same-origin static MP4:
+  if (url.includes('WhatsApp%20Video%202026-08-06') || url.includes('WhatsApp Video')) {
+    return LOCAL_FALLBACK_VIDEO;
+  }
+  return url;
+};
 
 const StorytellingVideo = () => {
   const [videoData, setVideoData] = useState({
-    videoUrl: FALLBACK_VIDEO_URL,
+    videoUrl: LOCAL_FALLBACK_VIDEO,
     videoTitle: "Paidhu Family Storytelling",
     videoSubtitle: "Experience the purity of our handcrafted natural treats",
     videoThumbnail: videoThumbnail
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const previewVideoRef = useRef(null);
 
-  // Fetch settings from the backend
+  // Fetch settings from the backend safely using relative route
   useEffect(() => {
-    fetch(`${API_BASE}/api/settings`)
+    fetch('/api/settings')
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (data) {
           setVideoData({
-            videoUrl: data.videoUrl || FALLBACK_VIDEO_URL,
+            videoUrl: resolveVideoUrl(data.videoUrl),
             videoTitle: data.videoTitle || "Paidhu Family Storytelling",
             videoSubtitle: data.videoSubtitle || "Experience the purity of our handcrafted natural treats",
             videoThumbnail: data.videoThumbnail || videoThumbnail
@@ -33,6 +45,20 @@ const StorytellingVideo = () => {
         console.warn("Failed to fetch storytelling video settings:", err);
       });
   }, []);
+
+  // Ensure autoplay starts smoothly for background preview
+  useEffect(() => {
+    if (previewVideoRef.current) {
+      previewVideoRef.current.defaultMuted = true;
+      previewVideoRef.current.muted = true;
+      const playPromise = previewVideoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Normal browser autoplay restrictions handling
+        });
+      }
+    }
+  }, [videoData.videoUrl]);
 
   return (
     <section className="relative w-full bg-white overflow-hidden py-10 md:py-16">
@@ -56,18 +82,27 @@ const StorytellingVideo = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.1 }}
               onClick={() => setIsModalOpen(true)}
-              className="absolute top-[14%] left-[10%] w-[80%] h-[64%] rounded-[14px] sm:rounded-[20px] md:rounded-[26px] overflow-hidden pointer-events-auto cursor-pointer group shadow-[0_8px_30px_rgba(0,0,0,0.18)] border border-[#662554]/10"
+              className="absolute top-[14%] left-[10%] w-[80%] h-[64%] rounded-[14px] sm:rounded-[20px] md:rounded-[26px] overflow-hidden pointer-events-auto cursor-pointer group shadow-[0_8px_30px_rgba(0,0,0,0.18)] border border-[#662554]/10 bg-black/5"
             >
-              {/* Autoplay preview video */}
+              {/* Autoplay preview video with multiple source fallbacks */}
               <video 
-                src={videoData.videoUrl} 
-                poster={videoData.videoThumbnail}
+                ref={previewVideoRef}
+                key={videoData.videoUrl}
+                poster={videoData.videoThumbnail || videoThumbnail}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90"
                 muted
                 loop
                 autoPlay
                 playsInline
-              />
+                preload="auto"
+              >
+                <source src={videoData.videoUrl} type="video/mp4" />
+                {videoData.videoUrl !== LOCAL_FALLBACK_VIDEO && (
+                  <source src={LOCAL_FALLBACK_VIDEO} type="video/mp4" />
+                )}
+                <source src={ALT_LOCAL_VIDEO} type="video/mp4" />
+                <source src={R2_FALLBACK_VIDEO} type="video/mp4" />
+              </video>
               
               {/* Dark overlay on hover */}
               <div className="absolute inset-0 bg-black/10 group-hover:bg-black/35 transition-colors duration-300"></div>
@@ -113,7 +148,7 @@ const StorytellingVideo = () => {
               {/* Close button */}
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="absolute -top-14 right-0 md:-top-16 text-white hover:text-[#d4af37] transition-colors p-2.5 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center group"
+                className="absolute -top-14 right-0 md:-top-16 text-white hover:text-[#d4af37] transition-colors p-2.5 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center group cursor-pointer"
               >
                 <X size={22} className="group-hover:rotate-90 transition-transform duration-300" />
               </button>
@@ -141,12 +176,22 @@ const StorytellingVideo = () => {
               {/* Video wrapper with glowing brand glow */}
               <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-[0_0_60px_rgba(102,38,84,0.4)] border border-white/10 bg-black">
                 <video
-                  src={videoData.videoUrl}
+                  key={`modal-${videoData.videoUrl}`}
                   controls
                   autoPlay
                   playsInline
+                  preload="auto"
+                  poster={videoData.videoThumbnail || videoThumbnail}
                   className="w-full h-full object-contain"
-                />
+                >
+                  <source src={videoData.videoUrl} type="video/mp4" />
+                  {videoData.videoUrl !== LOCAL_FALLBACK_VIDEO && (
+                    <source src={LOCAL_FALLBACK_VIDEO} type="video/mp4" />
+                  )}
+                  <source src={ALT_LOCAL_VIDEO} type="video/mp4" />
+                  <source src={R2_FALLBACK_VIDEO} type="video/mp4" />
+                  Your browser does not support HTML5 video playback.
+                </video>
               </div>
             </motion.div>
           </motion.div>
@@ -157,4 +202,3 @@ const StorytellingVideo = () => {
 };
 
 export default StorytellingVideo;
-

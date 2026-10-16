@@ -33,9 +33,16 @@ const securityHeaders = helmet({
         "https://api.razorpay.com"
       ],
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
-      objectSrc: ["'none'"],
-      mediaSrc: ["'self'"],
-      frameSrc: ["'self'", "https://api.razorpay.com", "https://checkout.razorpay.com"]
+      mediaSrc: [
+        "'self'", 
+        "blob:", 
+        "data:", 
+        "https://paidhu.com", 
+        "https://www.paidhu.com", 
+        "https://paidhuethicalfoods.com", 
+        "https://www.paidhuethicalfoods.com", 
+        "https://paidhu-final-anm2.vercel.app"
+      ],
     }
   },
   crossOriginEmbedderPolicy: false,

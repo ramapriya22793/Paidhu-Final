@@ -38,14 +38,25 @@ router.use(async (req, res, next) => {
 
     const client = getR2Client();
     const CommandClass = req.method === 'HEAD' ? HeadObjectCommand : GetObjectCommand;
-    const s3Res = await client.send(new CommandClass({
+    const commandParams = {
       Bucket: 'paidhu-assets',
       Key: key
-    }));
+    };
+
+    if (req.headers.range && req.method === 'GET') {
+      commandParams.Range = req.headers.range;
+    }
+
+    const s3Res = await client.send(new CommandClass(commandParams));
 
     if (s3Res.ContentType) res.setHeader('Content-Type', s3Res.ContentType);
     if (s3Res.ContentLength) res.setHeader('Content-Length', s3Res.ContentLength);
     if (s3Res.ETag) res.setHeader('ETag', s3Res.ETag);
+    res.setHeader('Accept-Ranges', 'bytes');
+    if (s3Res.ContentRange) {
+      res.setHeader('Content-Range', s3Res.ContentRange);
+      res.status(206);
+    }
     res.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=604800');
     res.setHeader('X-Storage-Provider', 'Cloudflare-R2');
 
