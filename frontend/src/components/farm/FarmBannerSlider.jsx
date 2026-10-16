@@ -131,7 +131,7 @@ const FarmBannerSlider = ({ onScrollToForm }) => {
                   className="w-full h-full object-cover object-center transform group-hover:scale-[1.02] transition-transform duration-700"
                   loading={index === 0 ? 'eager' : 'lazy'}
                   onError={(e) => {
-                    const fallback = `/banners/just_b_happy_banner_${(index % 5) + 1}.jpg`;
+                    const fallback = '/banners/just_b_happy_banner_1.jpg';
                     if (!e.target.src.endsWith(fallback)) {
                       e.target.src = fallback;
                     }
