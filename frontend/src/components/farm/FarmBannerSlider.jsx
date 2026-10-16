@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight, ArrowDown, Sparkles, CheckCircle2 } from 'lucide-react';
 
 const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || 
   (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
@@ -10,17 +10,47 @@ const DEFAULT_SLIDES = [
   {
     id: 'default-1',
     image: '/banners/just_b_happy_banner_1.jpg',
-    mobileImage: '/banners/just_b_happy_banner_1_mobile.jpg'
+    mobileImage: '/banners/just_b_happy_banner_1_mobile.jpg',
+    tag: 'PAIDHU • JUST B HAPPY FARMS',
+    headline: 'Official Botanical Contract Farming',
+    sub: 'Join Paidhu Just B Happy Farms for ethical edible flower cultivation and assured buyback contracts.',
+    badge: '🌸 Guaranteed Buyback'
   },
   {
     id: 'default-2',
     image: '/banners/just_b_happy_banner_2.jpg',
-    mobileImage: '/banners/just_b_happy_banner_2_mobile.jpg'
+    mobileImage: '/banners/just_b_happy_banner_2_mobile.jpg',
+    tag: 'COMMUNITY & LIVELIHOOD',
+    headline: 'Empowering Generational Flower Farmers',
+    sub: 'Handpicking radiant blossoms at dawn with technical support and guaranteed pricing.',
+    badge: '🌿 100% Pesticide Free'
   },
   {
     id: 'default-3',
     image: '/banners/just_b_happy_banner_3.jpg',
-    mobileImage: '/banners/just_b_happy_banner_3_mobile.jpg'
+    mobileImage: '/banners/just_b_happy_banner_3_mobile.jpg',
+    tag: 'ETHICAL BOTANICALS',
+    headline: 'Vibrant Natural Bloom Cultivation',
+    sub: 'Sustainable agrarian practices supporting biodiversity, pollinators, and rural empowerment.',
+    badge: '✨ Direct Farm Buyback'
+  },
+  {
+    id: 'default-4',
+    image: '/banners/just_b_happy_banner_4.jpg',
+    mobileImage: '/banners/just_b_happy_banner_4_mobile.jpg',
+    tag: 'JOIN OUR NETWORK',
+    headline: 'Transform Your Acreage Into Botanical Wealth',
+    sub: 'Full agronomist guidance from soil preparation to post-harvest collection.',
+    badge: '🚜 Contract Farming'
+  },
+  {
+    id: 'default-5',
+    image: '/banners/just_b_happy_banner_5.jpg',
+    mobileImage: '/banners/just_b_happy_banner_5_mobile.jpg',
+    tag: 'AGRARIAN VERIFICATION',
+    headline: 'Apply for Paidhu Farm Certification',
+    sub: 'Submit your land details below to enroll in our upcoming cultivation cycle.',
+    badge: '📋 Quick 3-Step Application'
   }
 ];
 
@@ -61,17 +91,17 @@ const FarmBannerSlider = ({ onScrollToForm }) => {
         }
       })
       .catch(() => {
-        // Fallbacks remain active
+        // Default authentic farm slides remain active
       });
     return () => { isMounted = false; };
   }, []);
 
-  // Continuous Auto-Carousel: advances every 3 seconds automatically
+  // Continuous Auto-Carousel: advances every 4 seconds automatically
   useEffect(() => {
     if (slides.length <= 1) return;
     const timer = setInterval(() => {
       setCurrentSlide(prev => (prev + 1) % slides.length);
-    }, 3000);
+    }, 4000);
     return () => clearInterval(timer);
   }, [slides.length, currentSlide]);
 
@@ -105,6 +135,15 @@ const FarmBannerSlider = ({ onScrollToForm }) => {
     setTouchEnd(null);
   };
 
+  const scrollToForm = () => {
+    if (onScrollToForm) {
+      onScrollToForm();
+    } else {
+      const el = document.getElementById('farm-application-form');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="relative w-full px-0 pt-0 pb-0">
       {/* Full-Width Edge-to-Edge Banner Container with Auto-Carousel */}
@@ -122,11 +161,8 @@ const FarmBannerSlider = ({ onScrollToForm }) => {
           {slides.map((slide, index) => (
             <div 
               key={slide.id || index}
-              onClick={() => {
-                const el = document.getElementById('farm-application-form');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="w-full flex-shrink-0 relative h-[190px] xs:h-[220px] sm:h-[280px] md:h-[340px] lg:h-[380px] flex items-center overflow-hidden cursor-pointer"
+              onClick={scrollToForm}
+              className="w-full flex-shrink-0 relative h-[220px] xs:h-[260px] sm:h-[320px] md:h-[400px] lg:h-[460px] flex items-center overflow-hidden cursor-pointer"
             >
               {/* Responsive Picture: dedicated mobileImage for mobile screens (<640px) */}
               <picture className="w-full h-full block">
@@ -135,17 +171,35 @@ const FarmBannerSlider = ({ onScrollToForm }) => {
                 )}
                 <img 
                   src={slide.image} 
-                  alt="Just B Happy Farm Banner" 
+                  alt={slide.headline || "Just B Happy Farm Banner"} 
                   className="w-full h-full object-cover object-center transform group-hover:scale-[1.02] transition-transform duration-700"
                   loading={index === 0 ? 'eager' : 'lazy'}
                   onError={(e) => {
-                    const fallback = `/banners/just_b_happy_banner_${(index % 3) + 1}.jpg`;
+                    const fallback = `/banners/just_b_happy_banner_${(index % 5) + 1}.jpg`;
                     if (!e.target.src.endsWith(fallback)) {
                       e.target.src = fallback;
                     }
                   }}
                 />
               </picture>
+
+              {/* Cinematic Bottom Gradient Overlay with Farm Story text */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-4 sm:p-8 md:p-10 pointer-events-none">
+                <div className="max-w-3xl pointer-events-auto">
+                  {slide.badge && (
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#4E580F]/90 text-[#F9E086] text-[10px] sm:text-xs font-bold uppercase tracking-wider backdrop-blur-sm border border-[#F9E086]/30 mb-2 shadow-md">
+                      <Sparkles className="w-3 h-3 text-[#F9E086]" />
+                      <span>{slide.badge}</span>
+                    </span>
+                  )}
+                  <h2 className="text-white text-lg sm:text-2xl md:text-3xl lg:text-4xl font-serif font-black drop-shadow-md leading-tight">
+                    {slide.headline || 'PAIDHU • Just B Happy Farms'}
+                  </h2>
+                  <p className="text-gray-200 text-xs sm:text-sm md:text-base mt-1 line-clamp-2 drop-shadow font-medium max-w-2xl hidden xs:block">
+                    {slide.sub || 'Partner with us for guaranteed buyback and ethical flower cultivation.'}
+                  </p>
+                </div>
+              </div>
             </div>
           ))}
         </div>
@@ -153,9 +207,12 @@ const FarmBannerSlider = ({ onScrollToForm }) => {
         {/* Previous Button */}
         {slides.length > 1 && (
           <button
-            onClick={prevSlide}
+            onClick={(e) => {
+              e.stopPropagation();
+              prevSlide();
+            }}
             aria-label="Previous Slide"
-            className="absolute left-2 sm:left-6 md:left-8 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-black/40 hover:bg-[#4E580F] text-white border border-white/30 backdrop-blur-md flex items-center justify-center transition-all opacity-80 hover:opacity-100 hover:scale-105 cursor-pointer shadow-lg z-20"
+            className="absolute left-2 sm:left-6 md:left-8 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-black/50 hover:bg-[#4E580F] text-white border border-white/30 backdrop-blur-md flex items-center justify-center transition-all opacity-80 hover:opacity-100 hover:scale-105 cursor-pointer shadow-lg z-20"
           >
             <ChevronLeft className="w-4 h-4 sm:w-6 sm:h-6" />
           </button>
@@ -164,9 +221,12 @@ const FarmBannerSlider = ({ onScrollToForm }) => {
         {/* Next Button */}
         {slides.length > 1 && (
           <button
-            onClick={nextSlide}
+            onClick={(e) => {
+              e.stopPropagation();
+              nextSlide();
+            }}
             aria-label="Next Slide"
-            className="absolute right-2 sm:right-6 md:right-8 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-black/40 hover:bg-[#4E580F] text-white border border-white/30 backdrop-blur-md flex items-center justify-center transition-all opacity-80 hover:opacity-100 hover:scale-105 cursor-pointer shadow-lg z-20"
+            className="absolute right-2 sm:right-6 md:right-8 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-black/50 hover:bg-[#4E580F] text-white border border-white/30 backdrop-blur-md flex items-center justify-center transition-all opacity-80 hover:opacity-100 hover:scale-105 cursor-pointer shadow-lg z-20"
           >
             <ChevronRight className="w-4 h-4 sm:w-6 sm:h-6" />
           </button>
@@ -178,7 +238,10 @@ const FarmBannerSlider = ({ onScrollToForm }) => {
             {slides.map((_, dotIdx) => (
               <button
                 key={dotIdx}
-                onClick={() => setCurrentSlide(dotIdx)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCurrentSlide(dotIdx);
+                }}
                 aria-label={`Go to slide ${dotIdx + 1}`}
                 className={`transition-all duration-300 rounded-full cursor-pointer ${
                   currentSlide === dotIdx 
