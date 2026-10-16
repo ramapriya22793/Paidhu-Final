@@ -11,26 +11,6 @@ const DEFAULT_SLIDES = [
     id: 'default-1',
     image: '/banners/just_b_happy_banner_1.jpg',
     mobileImage: '/banners/just_b_happy_banner_1_mobile.jpg'
-  },
-  {
-    id: 'default-2',
-    image: '/banners/just_b_happy_banner_2.jpg',
-    mobileImage: '/banners/just_b_happy_banner_2_mobile.jpg'
-  },
-  {
-    id: 'default-3',
-    image: '/banners/just_b_happy_banner_3.jpg',
-    mobileImage: '/banners/just_b_happy_banner_3_mobile.jpg'
-  },
-  {
-    id: 'default-4',
-    image: '/banners/just_b_happy_banner_4.jpg',
-    mobileImage: '/banners/just_b_happy_banner_4_mobile.jpg'
-  },
-  {
-    id: 'default-5',
-    image: '/banners/just_b_happy_banner_5.jpg',
-    mobileImage: '/banners/just_b_happy_banner_5_mobile.jpg'
   }
 ];
 
