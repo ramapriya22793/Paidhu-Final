@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 
 const InstagramIcon = ({ size = 20 }) => (
@@ -24,6 +24,8 @@ const MessageCircleIcon = ({ size = 20 }) => (
 );
 
 const Footer = () => {
+  const location = useLocation();
+  const isJustBHappyPage = location.pathname.startsWith('/just-b-happy');
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -59,33 +61,35 @@ const Footer = () => {
   };
 
   return (
-    <footer className="w-full bg-[#522742] text-[#fdfaf6] pt-16 pb-8">
+    <footer className={`w-full text-[#fdfaf6] pt-16 pb-8 transition-colors duration-300 ${
+      isJustBHappyPage ? 'bg-[#4E580F]' : 'bg-[#522742]'
+    }`}>
       <div className="max-w-[1400px] mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           
           {/* Quick Links */}
           <div className="flex flex-col space-y-4">
-            <h4 className="font-bold text-xl mb-4 font-serif text-[#ede7d7]">Quick Links</h4>
-            <Link to="/shop/about-us" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">About Us</Link>
-            <Link to="/careers" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Careers</Link>
-            <Link to="/shop" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Shop All</Link>
-            <Link to="/saffron-guidance" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Saffron Guidance</Link>
+            <h4 className={`font-bold text-xl mb-4 font-serif ${isJustBHappyPage ? 'text-[#F9E086]' : 'text-[#ede7d7]'}`}>Quick Links</h4>
+            <Link to="/shop/about-us" className={`text-sm transition-colors relative group w-fit ${isJustBHappyPage ? 'hover:text-[#F9E086]' : 'hover:text-[#ede7d7]'}`}>About Us</Link>
+            <Link to="/careers" className={`text-sm transition-colors relative group w-fit ${isJustBHappyPage ? 'hover:text-[#F9E086]' : 'hover:text-[#ede7d7]'}`}>Careers</Link>
+            <Link to="/shop" className={`text-sm transition-colors relative group w-fit ${isJustBHappyPage ? 'hover:text-[#F9E086]' : 'hover:text-[#ede7d7]'}`}>Shop All</Link>
+            <Link to="/saffron-guidance" className={`text-sm transition-colors relative group w-fit ${isJustBHappyPage ? 'hover:text-[#F9E086]' : 'hover:text-[#ede7d7]'}`}>Saffron Guidance</Link>
           </div>
 
           {/* Legal */}
           <div className="flex flex-col space-y-4">
-            <h4 className="font-bold text-xl mb-4 font-serif text-[#ede7d7]">Legal & Policies</h4>
-            <Link to="/legal/terms-conditions" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Terms & Conditions</Link>
-            <Link to="/legal/privacy-policy" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Privacy Policy</Link>
-            <Link to="/legal/shipping-policy" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Shipping Policy</Link>
-            <Link to="/legal/refund-policy" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Refund & Cancellation Policy</Link>
-            <Link to="/legal/contact-us" className="text-sm hover:text-[#ede7d7] transition-colors relative group w-fit">Contact Us</Link>
+            <h4 className={`font-bold text-xl mb-4 font-serif ${isJustBHappyPage ? 'text-[#F9E086]' : 'text-[#ede7d7]'}`}>Legal & Policies</h4>
+            <Link to="/legal/terms-conditions" className={`text-sm transition-colors relative group w-fit ${isJustBHappyPage ? 'hover:text-[#F9E086]' : 'hover:text-[#ede7d7]'}`}>Terms & Conditions</Link>
+            <Link to="/legal/privacy-policy" className={`text-sm transition-colors relative group w-fit ${isJustBHappyPage ? 'hover:text-[#F9E086]' : 'hover:text-[#ede7d7]'}`}>Privacy Policy</Link>
+            <Link to="/legal/shipping-policy" className={`text-sm transition-colors relative group w-fit ${isJustBHappyPage ? 'hover:text-[#F9E086]' : 'hover:text-[#ede7d7]'}`}>Shipping Policy</Link>
+            <Link to="/legal/refund-policy" className={`text-sm transition-colors relative group w-fit ${isJustBHappyPage ? 'hover:text-[#F9E086]' : 'hover:text-[#ede7d7]'}`}>Refund & Cancellation Policy</Link>
+            <Link to="/legal/contact-us" className={`text-sm transition-colors relative group w-fit ${isJustBHappyPage ? 'hover:text-[#F9E086]' : 'hover:text-[#ede7d7]'}`}>Contact Us</Link>
           </div>
 
 
           {/* Newsletter */}
           <div className="flex flex-col space-y-4">
-            <h4 className="font-bold text-xl mb-4 font-serif text-[#ede7d7]">Subscribe to our newsletter</h4>
+            <h4 className={`font-bold text-xl mb-4 font-serif ${isJustBHappyPage ? 'text-[#F9E086]' : 'text-[#ede7d7]'}`}>Subscribe to our newsletter</h4>
             <p className="text-sm opacity-90 mb-2">Get updates, tips, and exclusive offers straight to your inbox.</p>
             <form onSubmit={handleSubscribe} className="relative flex flex-col space-y-3 mt-2">
               <input 
@@ -100,12 +104,16 @@ const Footer = () => {
               <button 
                 type="submit"
                 disabled={loading}
-                className="bg-[#ede7d7] hover:bg-white text-[#522742] font-bold py-2 px-6 rounded-full w-max text-sm transition-transform hover:scale-105 active:scale-95 disabled:opacity-75"
+                className={`font-bold py-2 px-6 rounded-full w-max text-sm transition-transform hover:scale-105 active:scale-95 disabled:opacity-75 cursor-pointer ${
+                  isJustBHappyPage 
+                    ? 'bg-[#F9E086] text-[#2C3308] hover:bg-white hover:text-[#4E580F]' 
+                    : 'bg-[#ede7d7] text-[#522742] hover:bg-white hover:text-[#522742]'
+                }`}
               >
                 {loading ? 'Subscribing...' : 'Subscribe'}
               </button>
               {message && (
-                <p className="text-xs text-[#ede7d7] mt-1 font-semibold">{message}</p>
+                <p className={`text-xs mt-1 font-semibold ${isJustBHappyPage ? 'text-[#F9E086]' : 'text-[#ede7d7]'}`}>{message}</p>
               )}
             </form>
           </div>
@@ -113,7 +121,7 @@ const Footer = () => {
           {/* Follow Us / Branding */}
           <div className="flex flex-col space-y-6 lg:items-end text-left lg:text-right">
             <div>
-              <h4 className="font-bold text-xl mb-4 font-serif text-[#ede7d7]">Follow Us</h4>
+              <h4 className={`font-bold text-xl mb-4 font-serif ${isJustBHappyPage ? 'text-[#F9E086]' : 'text-[#ede7d7]'}`}>Follow Us</h4>
               <div className="flex space-x-4 lg:justify-end">
                 {/* Instagram */}
                 <div className="relative group">
@@ -170,7 +178,7 @@ const Footer = () => {
 
             <div className="pt-4 flex flex-col lg:items-end">
               <div 
-                className="w-32 h-[58px] mb-2 bg-[#ede7d7]"
+                className={`w-32 h-[58px] mb-2 ${isJustBHappyPage ? 'bg-[#F9E086]' : 'bg-[#ede7d7]'}`}
                 style={{
                   WebkitMaskImage: 'url(/Paidhulogo.png)',
                   WebkitMaskSize: 'contain',
@@ -189,7 +197,7 @@ const Footer = () => {
 
         {/* Bottom Copyright */}
         <div className="mt-16 border-t border-[#fdfaf6]/20 pt-8 flex flex-col items-center justify-center text-center space-y-4">
-          <div className="w-16 h-16 rounded-full overflow-hidden bg-white p-1 border border-[#ede7d7]/30 shadow-lg transition-transform hover:scale-110 duration-300">
+          <div className={`w-16 h-16 rounded-full overflow-hidden bg-white p-1 border shadow-lg transition-transform hover:scale-110 duration-300 ${isJustBHappyPage ? 'border-[#F9E086]/50' : 'border-[#ede7d7]/30'}`}>
             <img 
               src="/mascot.png" 
               alt="Paidhu Mascot" 
