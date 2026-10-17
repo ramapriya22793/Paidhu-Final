@@ -19,8 +19,8 @@ const DEFAULT_SLIDES = [
   },
   {
     id: 'default-3',
-    image: '/banners/shopallbanner001.webp',
-    mobileImage: '/banners/shopallbanner001.webp'
+    image: '/banners/just_b_happy_banner_3.jpg',
+    mobileImage: '/banners/just_b_happy_banner_3_mobile.jpg'
   }
 ];
 
