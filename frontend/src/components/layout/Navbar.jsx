@@ -700,7 +700,12 @@ const Navbar = () => {
               }
 
               return (
-                <NavItem key={i} name={item.name} onClick={() => handleNavClick(item.name)} />
+                <NavItem 
+                  key={i} 
+                  name={item.name} 
+                  onClick={() => handleNavClick(item.name)} 
+                  isActive={item.name === 'Just B Happy' ? isJustBHappyPage : false}
+                />
               );
             })}
           </div>
@@ -907,11 +912,16 @@ const Navbar = () => {
                     );
                   }
 
+                  const isJustBHappy = link.name === 'Just B Happy' || link.name === 'Just B Happy Farm';
                   return (
                     <button
                       key={link.name}
                       onClick={() => handleNavClick(link.name)}
-                      className="text-left text-[#ede7d7] font-medium text-sm border-b border-[#ede7d7]/10 py-3 hover:text-white transition-colors"
+                      className={`text-left font-medium text-sm border-b border-[#ede7d7]/10 py-3 transition-colors ${
+                        isJustBHappy 
+                          ? (isJustBHappyPage ? 'text-[#F9E086] font-bold' : 'text-[#a3e635] font-bold') 
+                          : 'text-[#ede7d7] hover:text-white'
+                      }`}
                     >
                       {link.name}
                     </button>
@@ -1234,8 +1244,30 @@ const getNavHref = (name) => {
 };
 
 // Single nav link with hover underline animation
-const NavItem = ({ name, onClick }) => {
+const NavItem = ({ name, onClick, isActive }) => {
   const href = getNavHref(name);
+  const isJustBHappy = name === 'Just B Happy' || name === 'Just B Happy Farm';
+
+  if (isJustBHappy) {
+    return (
+      <a
+        href={href}
+        onClick={(e) => {
+          e.preventDefault();
+          onClick();
+        }}
+        className="relative text-[#4E580F] font-bold text-[14px] xl:text-[15.5px] leading-snug hover:text-[#2C3308] transition-colors cursor-pointer whitespace-nowrap text-center group py-0.5 inline-block"
+      >
+        {name}
+        <span 
+          className={`absolute -bottom-0.5 left-0 h-[2px] bg-[#4E580F] transition-all duration-300 rounded-full ${
+            isActive ? 'w-full' : 'w-0 group-hover:w-full'
+          }`} 
+        />
+      </a>
+    );
+  }
+
   return (
     <a
       href={href}
