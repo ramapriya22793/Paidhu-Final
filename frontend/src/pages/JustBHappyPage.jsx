@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import SEO from '../components/seo/SEO';
 import FarmBannerSlider from '../components/farm/FarmBannerSlider';
+import FarmCultivationStory from '../components/farm/FarmCultivationStory';
 
 const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || 
   (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
@@ -300,8 +301,8 @@ const JustBHappyPage = () => {
   return (
     <div className="min-h-screen bg-[#F7F8F0] text-gray-800 overflow-x-hidden">
       <SEO 
-        title="PAIDHU - Just B Happy Farm Application | Contract Botanical Farming"
-        description="Official PAIDHU - Just B Happy Farm Application. Partner with us for guaranteed buyback, ethical edible flower cultivation, and technical farming support."
+        title="Cultivation & Botanical Heritage | Just B Happy Farm - Paidhu Ethical Foods"
+        description="Explore the botanical cultivation journey of Just B Happy Farm by Paidhu Ethical Foods. Learn about our hand-harvested edible flowers, traditional sun-curing, rural women empowerment, and contract farming initiative."
         slug="just-b-happy"
         image="/just_b_happy_logo.png"
       />
@@ -312,8 +313,15 @@ const JustBHappyPage = () => {
         if (el) el.scrollIntoView({ behavior: 'smooth' });
       }} />
 
+      {/* ──────────────── CULTIVATION & BOTANICAL HERITAGE STORY ──────────────── */}
+      {/* Inspired by Goodness Vanilla Cultivation, featuring all authentic farm & harvest photos */}
+      <FarmCultivationStory onScrollToForm={() => {
+        const el = document.getElementById('farm-application-form');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }} />
+
       {/* ──────────────── MAIN FORM CONTAINER ──────────────── */}
-      <div id="farm-application-form" className="max-w-3xl sm:max-w-4xl mx-auto px-3.5 sm:px-6 lg:px-8 py-5 sm:py-8">
+      <div id="farm-application-form" className="max-w-3xl sm:max-w-4xl mx-auto px-3.5 sm:px-6 lg:px-8 py-8 sm:py-12">
         
         {/* Success Screen */}
         {submitSuccess ? (
