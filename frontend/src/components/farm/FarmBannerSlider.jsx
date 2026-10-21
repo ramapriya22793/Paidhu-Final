@@ -9,18 +9,18 @@ const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) ||
 const DEFAULT_SLIDES = [
   {
     id: 'default-1',
-    image: '/banners/just_b_happy_banner_1.jpg',
-    mobileImage: '/banners/just_b_happy_banner_1_mobile.jpg'
-  },
-  {
-    id: 'default-2',
     image: '/banners/just_b_happy_banner_2.jpg',
     mobileImage: '/banners/just_b_happy_banner_2_mobile.jpg'
   },
   {
-    id: 'default-3',
+    id: 'default-2',
     image: '/banners/just_b_happy_banner_3.jpg',
     mobileImage: '/banners/just_b_happy_banner_3_mobile.jpg'
+  },
+  {
+    id: 'default-3',
+    image: '/banners/just_b_happy_banner_1.jpg',
+    mobileImage: '/banners/just_b_happy_banner_1_mobile.jpg'
   }
 ];
 
@@ -40,13 +40,23 @@ const FarmBannerSlider = ({ onScrollToForm }) => {
         if (Array.isArray(data) && data.length > 0) {
           const active = data.filter(b => (b.isActive === true || b.isActive === 'true' || b.isActive === 1) && (b.webImage || b.webImagePath));
           if (active.length > 0) {
+            // Sort to ensure the founder photo (just_b_happy_banner_1) is always the last slide
+            const sortedActive = [...active].sort((a, b) => {
+              const imgA = (a.webImage || a.webImagePath || '').toLowerCase();
+              const imgB = (b.webImage || b.webImagePath || '').toLowerCase();
+              const isAFounder = imgA.includes('just_b_happy_banner_1');
+              const isBFounder = imgB.includes('just_b_happy_banner_1');
+              if (isAFounder && !isBFounder) return 1;
+              if (!isAFounder && isBFounder) return -1;
+              return 0;
+            });
             const resolveUrl = (img) => {
               if (!img) return null;
               if (img.startsWith('http://') || img.startsWith('https://')) return img;
               const path = img.startsWith('/') ? img : `/${img}`;
               return `${API_BASE}${path}`;
             };
-            const backendSlides = active.map(b => ({
+            const backendSlides = sortedActive.map(b => ({
               id: `backend-${b.id}`,
               image: resolveUrl(b.webImage || b.webImagePath),
               mobileImage: resolveUrl(b.mobileImage || b.mobileImagePath),
