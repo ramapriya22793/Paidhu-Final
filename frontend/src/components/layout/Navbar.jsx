@@ -384,8 +384,8 @@ const Navbar = () => {
 
 
       {/* Top Row */}
-      <div className={`w-full py-1 md:py-1.5 px-4 md:px-8 transition-colors duration-300 ${
-        isJustBHappyPage ? 'bg-[#4E580F]' : 'bg-[#662654]'
+      <div className={`w-full px-4 md:px-8 transition-colors duration-300 ${
+        isJustBHappyPage ? 'py-1.5 md:py-2.5 bg-[#4E580F]' : 'py-1 md:py-1.5 bg-[#662654]'
       }`}>
         <div className="max-w-[1400px] mx-auto flex justify-between items-center relative">
 
@@ -474,13 +474,13 @@ const Navbar = () => {
           {/* Center: Logo */}
           <div className="flex w-1/2 lg:w-1/3 justify-center z-10">
             <div className="flex items-center justify-center">
-              <Link to={isJustBHappyPage ? "/just-b-happy" : "/"} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center justify-center">
+              <Link to={isJustBHappyPage ? "/just-b-happy" : "/"} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center justify-center py-0.5">
                 <img
                   src={isJustBHappyPage ? "/just_b_happy_logo.png" : paidhuLogo}
                   alt={isJustBHappyPage ? "Paidhu - Just b happy farms" : "Paidhu Ethical Foods"}
-                  width={142}
-                  height={64}
-                  className={isJustBHappyPage ? "h-11 md:h-13 lg:h-15 w-auto object-contain drop-shadow-md rounded-xl transition-all duration-300" : "h-10 md:h-12 lg:h-14 w-auto object-contain drop-shadow-sm transition-all duration-300"}
+                  width={220}
+                  height={80}
+                  className={isJustBHappyPage ? "h-14 xs:h-16 sm:h-18 md:h-20 lg:h-22 w-auto object-contain transition-all duration-300 drop-shadow-sm hover:scale-105" : "h-10 md:h-12 lg:h-14 w-auto object-contain drop-shadow-sm transition-all duration-300"}
                 />
               </Link>
             </div>
