@@ -470,10 +470,10 @@ const Navbar = () => {
           {/* Center: Logo */}
           <div className="flex w-1/2 lg:w-1/3 justify-center z-10">
             <div className="flex items-center justify-center">
-              <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center justify-center">
+              <Link to={isJustBHappyPage ? "/just-b-happy" : "/"} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center justify-center">
                 <img
-                  src={paidhuLogo}
-                  alt="Paidhu Ethical Foods"
+                  src={isJustBHappyPage ? "/just_b_happy_logo_navbar.png" : paidhuLogo}
+                  alt={isJustBHappyPage ? "Just B Happy Farms" : "Paidhu Ethical Foods"}
                   width={142}
                   height={64}
                   className="h-10 md:h-12 lg:h-14 w-auto object-contain drop-shadow-sm transition-all duration-300"
