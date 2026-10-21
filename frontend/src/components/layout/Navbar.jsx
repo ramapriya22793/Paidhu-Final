@@ -375,14 +375,14 @@ const Navbar = () => {
 
   return (
     <header
-      className={`sticky top-0 w-full z-50 transition-all duration-300 font-sans bg-[#662654] ${
+      className={`sticky top-0 w-full z-50 transition-all duration-300 font-sans ${isJustBHappyPage ? 'bg-[#4E580F]' : 'bg-[#662654]'} ${
         isScrolled ? 'shadow-md shadow-black/10' : ''
       }`}
     >
 
 
       {/* Top Row */}
-      <div className="w-full py-1 md:py-1.5 px-4 md:px-8 bg-[#662654] transition-colors duration-300">
+      <div className={`w-full py-1 md:py-1.5 px-4 md:px-8 transition-colors duration-300 ${isJustBHappyPage ? 'bg-[#4E580F]' : 'bg-[#662654]'}`}>
         <div className="max-w-[1400px] mx-auto flex justify-between items-center relative">
 
           {/* Left: Mobile Menu & Search */}
@@ -426,7 +426,7 @@ const Navbar = () => {
                 />
                 {/* Search suggestions dropdown */}
                 {showSearchSuggestions && filteredProducts.length > 0 && (
-                  <div className="absolute left-0 right-0 mt-2 bg-[#662654] border border-[#ede7d7]/20 rounded-lg shadow-xl overflow-hidden z-[9999] max-h-80 overflow-y-auto">
+                  <div className={`absolute left-0 right-0 mt-2 border border-[#ede7d7]/20 rounded-lg shadow-xl overflow-hidden z-[9999] max-h-80 overflow-y-auto ${isJustBHappyPage ? 'bg-[#4E580F]' : 'bg-[#662654]'}`}>
                     <div className="py-2">
                       {filteredProducts.map((p) => {
                         const pImage = resolveSingleImage(
@@ -524,7 +524,7 @@ const Navbar = () => {
       </div>
 
       {/* Second Row — Desktop Navigation */}
-      <div className="hidden lg:block w-full bg-white border-b border-[#662654]/10 py-3 relative z-40">
+      <div className={`hidden lg:block w-full bg-white border-b py-3 relative z-40 ${isJustBHappyPage ? 'border-[#4E580F]/10' : 'border-[#662654]/10'}`}>
         <nav className="max-w-[1400px] mx-auto px-4 xl:px-8 flex flex-col gap-y-2">
           {/* Row 1 — Primary Links */}
           <div className="flex justify-center items-center gap-x-3 xl:gap-x-6 w-full max-w-full whitespace-nowrap">
@@ -721,7 +721,7 @@ const Navbar = () => {
       
         {isMobileMenuOpen && (
           <div
-            className="lg:hidden border-b border-[#ede7d7]/10 overflow-hidden transition-colors duration-300 bg-[#662654]"
+            className={`lg:hidden border-b border-[#ede7d7]/10 overflow-hidden transition-colors duration-300 ${isJustBHappyPage ? 'bg-[#4E580F]' : 'bg-[#662654]'}`}
           >
             <div className="px-4 py-4">
               {/* Mobile search */}
@@ -752,7 +752,7 @@ const Navbar = () => {
                 />
                 {/* Mobile search suggestions */}
                 {showSearchSuggestions && filteredProducts.length > 0 && (
-                  <div className="absolute left-0 right-0 mt-2 bg-[#662654] border border-[#ede7d7]/20 rounded-lg shadow-xl overflow-hidden z-[9999] max-h-60 overflow-y-auto">
+                  <div className={`absolute left-0 right-0 mt-2 border border-[#ede7d7]/20 rounded-lg shadow-xl overflow-hidden z-[9999] max-h-60 overflow-y-auto ${isJustBHappyPage ? 'bg-[#4E580F]' : 'bg-[#662654]'}`}>
                     <div className="py-2">
                       {filteredProducts.map((p) => {
                         const pImage = resolveSingleImage(
