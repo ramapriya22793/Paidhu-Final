@@ -126,7 +126,7 @@ const FarmBannerSlider = ({ onScrollToForm, onOpenApplication }) => {
     <div className="relative w-full px-0 pt-0 pb-0">
       {/* Full-Width Edge-to-Edge Banner Container with Auto-Carousel */}
       <div 
-        className="relative w-full overflow-hidden bg-[#2C3308] select-none shadow-xl border-b-4 border-[#F9E086] group"
+        className="relative w-full overflow-hidden bg-[#2C3308] select-none shadow-md border-b border-[#4E580F]/15 group"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
