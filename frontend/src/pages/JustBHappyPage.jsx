@@ -725,7 +725,7 @@ const JustBHappyPage = () => {
                       rows={2}
                       value={formData.previousCrops}
                       onChange={handleInputChange}
-                      placeholder="e.g. Organic Paddy, Vegetables, Cotton, Turmeric, or Fallow Land for last 2 years..."
+                      placeholder="e.g. Traditional Paddy, Natural Crops, Vegetables, Cotton, Turmeric, or Fallow Land for last 2 years..."
                       className="w-full px-3.5 py-2.5 sm:py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#4E580F]/30 focus:border-[#4E580F] transition text-sm bg-[#F7F8F0]/40 leading-relaxed"
                     />
                   </div>
