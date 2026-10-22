@@ -48,8 +48,15 @@ const formatSpotlightName = (name) => {
 const PaidhuSpotlight = () => {
   const resolveImage = (img) => {
     if (!img) return null;
-    if (img.startsWith('http')) return img;
-    return `${API_BASE}${img.startsWith('/') ? '' : '/'}${img}`;
+    let url = typeof img === 'string' ? img : '';
+    if (url.includes('localhost:5000')) {
+      url = url.replace(/http:\/\/localhost:5000/g, 'https://paidhu-final-anm2.vercel.app');
+    }
+    if (url.startsWith('http://') || url.startsWith('https://')) return url;
+    const base = (API_BASE && !API_BASE.includes('localhost:5000'))
+      ? API_BASE
+      : 'https://paidhu-final-anm2.vercel.app';
+    return `${base}${url.startsWith('/') ? '' : '/'}${url}`;
   };
 
   const [products, setProducts] = useState(() => {
@@ -179,7 +186,10 @@ const PaidhuSpotlight = () => {
                   height={240}
                   onError={(e) => {
                     e.currentTarget.onerror = null;
-                    e.currentTarget.src = `${API_BASE}/api/storage/products/1787745523565-paidhuwhitelotus001png.png`;
+                    const base = (API_BASE && !API_BASE.includes('localhost:5000'))
+                      ? API_BASE
+                      : 'https://paidhu-final-anm2.vercel.app';
+                    e.currentTarget.src = `${base}/api/storage/products/1787745523565-paidhuwhitelotus001png.png`;
                   }}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" 
                   loading="lazy"
