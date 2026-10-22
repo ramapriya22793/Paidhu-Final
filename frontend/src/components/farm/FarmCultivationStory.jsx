@@ -18,31 +18,7 @@ const FarmCultivationStory = ({ onScrollToForm, onOpenApplication }) => {
   return (
     <article className="w-full bg-[#F7F8F0] text-gray-800">
       
-      {/* ──────────────── 1. HERO CULTIVATION BANNER (GOODNESS VANILLA STYLE) ──────────────── */}
-      <div className="relative w-full h-[220px] xs:h-[260px] sm:h-[340px] md:h-[420px] overflow-hidden flex items-center justify-center bg-gray-950 select-none shadow-md">
-        <img 
-          src="/farm/farm_landscape_wide.jpg" 
-          alt="Paidhu - Just B Happy Farm Cultivation" 
-          className="w-full h-full object-cover object-center opacity-80 brightness-[0.85] scale-100 hover:scale-105 transition-transform duration-1000"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/25 to-transparent" />
-        
-        {/* Centered Banner Title */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif text-white tracking-tight drop-shadow-lg">
-            Cultivation
-          </h1>
-          <div className="flex items-center gap-2 mt-2 sm:mt-3">
-            <span className="w-6 sm:w-10 h-[1.5px] bg-[#F9E086]" />
-            <span className="text-[11px] sm:text-xs md:text-sm uppercase tracking-widest text-[#F9E086] font-bold drop-shadow">
-              Just B Happy Farm · Paidhu Ethical Foods
-            </span>
-            <span className="w-6 sm:w-10 h-[1.5px] bg-[#F9E086]" />
-          </div>
-        </div>
-      </div>
-
-      {/* ──────────────── 2. MAIN EDITORIAL CONTENT (65% WIDTH GOODNESS VANILLA LAYOUT) ──────────────── */}
+      {/* ──────────────── MAIN EDITORIAL CONTENT (GOODNESS VANILLA CULTIVATION LAYOUT) ──────────────── */}
       <div className="max-w-4xl mx-auto px-5 sm:px-8 py-8 sm:py-14">
 
         {/* Lead Quote / Philosophy */}
