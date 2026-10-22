@@ -24,7 +24,7 @@ const DEFAULT_SLIDES = [
   }
 ];
 
-const FarmBannerSlider = ({ onScrollToForm }) => {
+const FarmBannerSlider = ({ onScrollToForm, onOpenApplication }) => {
   const [slides, setSlides] = useState(DEFAULT_SLIDES);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [touchStart, setTouchStart] = useState(null);
@@ -112,7 +112,9 @@ const FarmBannerSlider = ({ onScrollToForm }) => {
   };
 
   const scrollToForm = () => {
-    if (onScrollToForm) {
+    if (onOpenApplication) {
+      onOpenApplication();
+    } else if (onScrollToForm) {
       onScrollToForm();
     } else {
       const el = document.getElementById('farm-application-form');

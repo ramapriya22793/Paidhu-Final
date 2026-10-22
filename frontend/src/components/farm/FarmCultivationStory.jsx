@@ -1,11 +1,13 @@
-﻿import React, { useState } from 'react';
-import { ArrowDown, Sparkles, ShieldCheck, CheckCircle2, Maximize2, X } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowDown, ArrowRight, Sparkles, ShieldCheck, CheckCircle2, Maximize2, X } from 'lucide-react';
 
-const FarmCultivationStory = ({ onScrollToForm }) => {
+const FarmCultivationStory = ({ onScrollToForm, onOpenApplication }) => {
   const [activeZoomImg, setActiveZoomImg] = useState(null);
 
-  const scrollToForm = () => {
-    if (onScrollToForm) {
+  const handleOpenForm = () => {
+    if (onOpenApplication) {
+      onOpenApplication();
+    } else if (onScrollToForm) {
       onScrollToForm();
     } else {
       const el = document.getElementById('farm-application-form');
@@ -194,11 +196,11 @@ const FarmCultivationStory = ({ onScrollToForm }) => {
           </p>
 
           <button
-            onClick={scrollToForm}
+            onClick={handleOpenForm}
             className="group inline-flex items-center justify-center gap-2.5 px-8 py-3.5 sm:px-10 sm:py-4 rounded-full bg-gradient-to-r from-[#F9E086] via-[#FFF1B8] to-[#F9E086] hover:from-white hover:to-[#F9E086] text-[#2C3308] font-serif font-black text-xs sm:text-sm tracking-wide shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer border border-white/50"
           >
             <span>Fill Farm Application Form</span>
-            <ArrowDown className="w-4 h-4 text-[#2C3308] transform group-hover:translate-y-0.5 transition-transform" />
+            <ArrowRight className="w-4 h-4 text-[#2C3308] transform group-hover:translate-x-0.5 transition-transform" />
           </button>
         </div>
 
